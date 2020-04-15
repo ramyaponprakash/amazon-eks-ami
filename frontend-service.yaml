@@ -2,7 +2,7 @@ kind: Service
 apiVersion: v1
 metadata:
   labels:
-    k8s-app: nginx-deployment
+    k8s-app: nginx
   name: frontend-service
 spec:
   type: LoadBalancer
