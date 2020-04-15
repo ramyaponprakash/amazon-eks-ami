@@ -10,7 +10,7 @@ spec:
   template:
     metadata:
       labels:
-        k8s-app: nginx
+        app: nginx
     spec:
       containers:
       - name: nginx
