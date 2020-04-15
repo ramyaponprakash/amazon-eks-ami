@@ -4,7 +4,6 @@ metadata:
   labels:
     k8s-app: nginx-deployment
   name: frontend-service
-  namespace: kube-system
 spec:
   type: LoadBalancer
   ports:
