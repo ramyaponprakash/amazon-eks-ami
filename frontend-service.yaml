@@ -2,7 +2,7 @@ kind: Service
 apiVersion: v1
 metadata:
   labels:
-    k8s-app: nginx
+    k8s-app: sdx-frontend
   name: frontend-service
 spec:
   type: LoadBalancer
@@ -11,4 +11,4 @@ spec:
       protocol: TCP
       targetPort: 80
   selector:
-    app: nginx
+    app: sdx-frontend
