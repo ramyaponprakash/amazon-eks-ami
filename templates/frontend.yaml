@@ -1,0 +1,103 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "sense.fullname" . }}-portal
+  namespace:  {{ include "sense.fullname" . }}
+  labels:
+   app.kubernetes.io/name: {{ include "sense.fullname" . }}-portal
+   app.kubernetes.io/instance: {{ include "sense.fullname" . }}-portal
+spec:
+{{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "sense.fullname" . }}-portal
+      app.kubernetes.io/instance: {{ include "sense.fullname" . }}-portal
+  template:
+    metadata:
+    {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        app.kubernetes.io/name: {{ include "sense.fullname" . }}-portal
+        app.kubernetes.io/instance: {{ include "sense.fullname" . }}-portal
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "sense.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name:  "{{ include "sense.fullname" . }}-portal"
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}sense-frontend:latest"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+                - containerPort: 80
+                  name: public
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: portal
+  namespace:  {{ include "sense.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "sense.fullname" . }}-portal
+    app.kubernetes.io/instance: {{ include "sense.fullname" . }}-portal
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: public
+      protocol: TCP
+      port: 8080
+      targetPort: 80
+  selector:
+    app.kubernetes.io/name: {{ include "sense.fullname" . }}-portal
+    app.kubernetes.io/instance: {{ include "sense.fullname" . }}-portal
+---
+{{- $fullName := include "sense.fullname" . -}}
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: {{ $fullName }}-frontend
+  namespace:  {{ include "sense.fullname" . }}
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: "/$1"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /((sdx|auth)/.*)
+        backend:
+          serviceName: portal
+          servicePort: 8080
+---

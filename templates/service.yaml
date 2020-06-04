@@ -1,0 +1,30 @@
+{{- range .Values.service.includes }}
+{{- $rangeItem := . -}}
+{{- with $ }}
+{{- if not $rangeItem.disabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $rangeItem.name }}
+  namespace:  {{ include "sense.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "sense.fullname" . }}-{{ $rangeItem.name }}
+    app.kubernetes.io/instance: {{ include "sense.fullname" . }}-{{ $rangeItem.name }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: public
+      protocol: TCP
+      port: {{ $rangeItem.publicPort }}
+      targetPort: {{ $rangeItem.publicPort }}
+    - name: admin
+      protocol: TCP
+      port: {{ $rangeItem.adminPort }}
+      targetPort: {{ $rangeItem.adminPort }}
+  selector:
+    app.kubernetes.io/name: {{ include "sense.fullname" . }}-{{ $rangeItem.name }}
+    app.kubernetes.io/instance: {{ include "sense.fullname" . }}-{{ $rangeItem.name }}
+---
+{{- end }}
+{{- end }}
+{{- end }}
