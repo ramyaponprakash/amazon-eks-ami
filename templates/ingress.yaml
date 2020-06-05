@@ -12,56 +12,48 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     nginx.ingress.kubernetes.io/backend-protocol: HTTPS
     nginx.ingress.kubernetes.io/secure-backends: "true"
-    nginx.ingress.kubernetes.io/proxy-ssl-secret: "sense/proxy-pass"
+    nginx.ingress.kubernetes.io/proxy-ssl-secret: "sense/proxy-ca-secret"
 spec:
-  tls:
-  - hosts:
-    - "localhost"
-    secretName: proxy-pass
   rules:
   - http:
       paths:
-      - path: /(sdx/home/.*)
-        backend:
-          serviceName: portal
-          servicePort: 8080
-      - path: /(api/auth/.*)
+      - path: /api/(auth/.*)
         backend:
           serviceName: auth
           servicePort: 8080
-      - path: /(api/iam/.*)
+      - path: /api/(iam/.*)
         backend:
           serviceName: iam
           servicePort: 8081
-      - path: /(api/topics/.*)
+      - path: /api/(topics/.*)
         backend:
           serviceName: topics
           servicePort: 8082
-      - path: /(api/policies/.*)
+      - path: /api/(policies/.*)
         backend:
           serviceName: policy
           servicePort: 8083
-      - path: /(api/role/.*)
+      - path: /api/(role/.*)
         backend:
           serviceName: role
           servicePort: 8084
-      - path: /(api/activities/.*)
+      - path: /api/(activities/.*)
         backend:
           serviceName: activity
           servicePort: 8087
-      - path: /(api/subscriptions/.*)
+      - path: /api/(subscriptions/.*)
         backend:
           serviceName: subscription
           servicePort: 8088
-      - path: /(api/lookup/.*)
+      - path: /api/(lookup/.*)
         backend:
           serviceName: lookup
           servicePort: 8999
-      - path: /(api/messages/.*)
+      - path: /api/(messages/.*)
         backend:
           serviceName: message
           servicePort: 8100
-      - path: /(api/notification/.*)
+      - path: /api/(notification/.*)
         backend:
           serviceName: notification
           servicePort: 8101
