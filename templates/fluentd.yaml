@@ -22,8 +22,8 @@ spec:
         effect: NoSchedule
       containers:
       - name: fluentd
-        image: 342446142760.dkr.ecr.ap-southeast-1.amazonaws.com/sense_fluentd
-        imagePullPolicy: Always
+        image: sense_fluentd
+        imagePullPolicy: Never
         env:
           - name:  FLUENT_ELASTICSEARCH_HOST
             value: "palo-it.com"

@@ -180,7 +180,7 @@ spec:
   rules:
   - http:
       paths:
-      - path: /(sdx/.*)
+      - path: /(.*)
         backend:
           serviceName: portal
           servicePort: 8080
