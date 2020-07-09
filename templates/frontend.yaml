@@ -35,7 +35,7 @@ spec:
         - name:  "{{ include "sense.fullname" . }}-portal"
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}sense-frontend:develop-latest"
+          image: "{{ .Values.image.repository }}sense-frontend:latest"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
                 - containerPort: 80
@@ -119,7 +119,7 @@ spec:
         - name:  "{{ include "sense.fullname" . }}-frontend-auth"
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}sense-frontend-auth:develop-latest"
+          image: "{{ .Values.image.repository }}sense-frontend-auth:latest"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
                 - containerPort: 80
