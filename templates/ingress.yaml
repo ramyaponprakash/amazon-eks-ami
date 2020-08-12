@@ -68,5 +68,5 @@ spec:
       - path: /api/(adaptors/?(.*)$)
         backend:
           serviceName: adaptor
-          servicePort: 8081
+          servicePort: 8180
 {{- end }}
