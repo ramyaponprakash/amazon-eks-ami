@@ -65,4 +65,8 @@ spec:
         backend:
           serviceName: notification
           servicePort: 8101
+      - path: /api/(adaptors/?(.*)$)
+        backend:
+          serviceName: adaptor
+          servicePort: 8180
 {{- end }}
