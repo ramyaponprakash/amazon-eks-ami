@@ -1,4 +1,3 @@
-{{- range .Values.service.includes }}
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
@@ -45,4 +44,3 @@ spec:
       - name: varlibdockercontainers
         hostPath:
           path: /var/lib/docker/containers
-{{- end }}          
