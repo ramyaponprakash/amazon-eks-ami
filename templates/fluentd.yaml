@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: fluentd
-  namespace: kube-system
+  namespace: monitoring
   labels:
     k8s-app: fluentd-logging
     version: v1
@@ -17,6 +17,8 @@ spec:
         k8s-app: fluentd-logging
         version: v1
     spec:
+      serviceAccountName: tiller
+      serviceAccount: tiller
       tolerations:
       - key: node-role.kubernetes.io/master
         effect: NoSchedule
@@ -44,3 +46,22 @@ spec:
       - name: varlibdockercontainers
         hostPath:
           path: /var/lib/docker/containers
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: tiller
+  namespace: monitoring
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: tiller
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+  - kind: ServiceAccount
+    name: tiller
+    namespace: monitoring
