@@ -69,4 +69,8 @@ spec:
         backend:
           serviceName: adaptor
           servicePort: 8180
+      - path: /api/(appsettings/?(.*)$)
+        backend:
+          serviceName: appsettings
+          servicePort: 8182              
 {{- end }}
