@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "sense.fullname" . }}-nats
+  namespace:  {{ include "sense.fullname" . }}
+  labels:
+   app.kubernetes.io/name: {{ include "sense.fullname" . }}-nats
+   app.kubernetes.io/instance: {{ include "sense.fullname" . }}-nats
+spec:
+{{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "sense.fullname" . }}-nats
+      app.kubernetes.io/instance: {{ include "sense.fullname" . }}-nats
+  template:
+    metadata:
+    {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        app.kubernetes.io/name: {{ include "sense.fullname" . }}-nats
+        app.kubernetes.io/instance: {{ include "sense.fullname" . }}-nats
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "sense.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name:  "{{ include "sense.fullname" . }}-nats"
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}sense-nats:latest"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 4222
+              name: service
+            - containerPort: 8222
+              name: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nats
+  namespace:  {{ include "sense.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "sense.fullname" . }}-nats
+    app.kubernetes.io/instance: {{ include "sense.fullname" . }}-nats
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: service
+      protocol: TCP
+      port: 4222
+      targetPort: 4222
+    - name: http
+      protocol: TCP
+      port: 8222
+      targetPort: 8222
+  selector:
+    app.kubernetes.io/name: {{ include "sense.fullname" . }}-nats
+    app.kubernetes.io/instance: {{ include "sense.fullname" . }}-nats
+---
