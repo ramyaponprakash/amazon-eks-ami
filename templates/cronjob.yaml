@@ -1,0 +1,37 @@
+{{- if .Values.cronJob.enabled -}}
+{{- range .Values.cronJob.jobs }}
+{{- $rangeItem := . -}}
+{{- with $ }}
+{{- if not $rangeItem.disabled -}}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ $rangeItem.name }}
+  namespace:  {{ include "sense.fullname" . }}
+spec:
+  schedule: {{ $rangeItem.schedule }}
+  concurrencyPolicy: {{ $rangeItem.concurrencyPolicy }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: {{ $rangeItem.containerName }}
+              image: "{{ .Values.image.repository }}sense_cron_jobs:{{ .Values.image.tag | default .Chart.AppVersion }}"
+              resources:
+                {{- toYaml $rangeItem.resources | nindent 16 }}
+              args:
+              {{- if $rangeItem.containerArgs -}}
+              {{- range $rangeItem.containerArgs }}
+                - {{ toYaml . | trim }}
+              {{- end }}
+              {{- end }}
+          restartPolicy: OnFailure
+          terminationGracePeriodSeconds: 30
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+---
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

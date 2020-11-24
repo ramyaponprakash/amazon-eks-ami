@@ -1,0 +1,107 @@
+{{- range .Values.service.includes }}
+{{- $rangeItem := . -}}
+{{- with $ }}
+{{- if not $rangeItem.disabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "sense.fullname" . }}-{{ $rangeItem.name }}
+  namespace:  {{ include "sense.fullname" . }}
+  labels:
+   app.kubernetes.io/name: {{ include "sense.fullname" . }}-{{ $rangeItem.name }}
+   app.kubernetes.io/instance: {{ include "sense.fullname" . }}-{{ $rangeItem.name }}
+spec:
+{{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "sense.fullname" . }}-{{ $rangeItem.name }}
+      app.kubernetes.io/instance: {{ include "sense.fullname" . }}-{{ $rangeItem.name }}
+  template:
+    metadata:
+    {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        app.kubernetes.io/name: {{ include "sense.fullname" . }}-{{ $rangeItem.name }}
+        app.kubernetes.io/instance: {{ include "sense.fullname" . }}-{{ $rangeItem.name }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "sense.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      dnsConfig:
+        searches:
+          - {{ include "sense.fullname" . }}.svc.cluster.local
+          - default.svc.cluster.local
+          - svc.cluster.local
+          - cluster.local
+        options:
+          - name: ndots
+            value: "1"   
+      containers:
+        - name:  "{{ include "sense.fullname" . }}-{{ $rangeItem.name }}"
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}{{ include "sense.fullname" . }}_{{$rangeItem.name | replace "-"  "_"}}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          volumeMounts:
+          - name:  "{{ .Values.env }}-volume"
+            mountPath: "conf/{{ .Values.env }}.config.yaml"
+            subPath: "{{ .Values.env }}.config.yaml"
+          {{- if $rangeItem.volume }}
+          - {{- toYaml $rangeItem.volume.mounts | nindent 12 }}
+          {{- end }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+                - containerPort: {{$rangeItem.publicPort}}
+                  name: public
+                - containerPort: {{$rangeItem.adminPort}}
+                  name: admin
+          env:
+          - name: SENSE_ENV
+            value: "{{ .Values.env }}"
+          - name: SENSE_MODULE
+            value: "{{ $rangeItem.name }}"
+          {{- if $rangeItem.env }}
+          {{ range $rangeItem.env.values }}
+          - {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- end }}
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+      - name: "{{ .Values.env }}-volume"
+        secret:
+          secretName: {{ .Values.env }}-config
+    {{- if $rangeItem.volume }}
+      - {{- toYaml $rangeItem.volume.secrets | nindent 8 }}
+    {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+---
+{{- end }}
+{{- end }}
+{{- end }}

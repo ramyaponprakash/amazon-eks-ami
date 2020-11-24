@@ -1,0 +1,38 @@
+{{- if .Values.autoscaling.enabled }}
+{{- range .Values.service.includes }}
+{{- $rangeItem := . -}}
+{{- with $ }}
+{{- if not $rangeItem.disabled -}}
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ $rangeItem.name }}-hpa
+  namespace:  {{ include "sense.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "sense.fullname" . }}-{{ $rangeItem.name }}-hpa
+    app.kubernetes.io/instance: {{ include "sense.fullname" . }}-{{ $rangeItem.name }}-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "sense.fullname" . }}-{{ $rangeItem.name }}
+  minReplicas: {{ .Values.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.autoscaling.maxReplicas }}
+  metrics:
+  {{- if .Values.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: {{ .Values.autoscaling.targetCPUUtilizationPercentage }}
+  {{- end }}
+  {{- if .Values.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        targetAverageUtilization: {{ .Values.autoscaling.targetMemoryUtilizationPercentage }}
+  {{- end }}
+---  
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
