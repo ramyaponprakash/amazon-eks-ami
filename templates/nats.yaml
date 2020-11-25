@@ -108,8 +108,7 @@ spec:
       terminationGracePeriodSeconds: 60
       containers:
       - name: nats
-        image: vyalagadde/nats-testing:latest
-        # image: nats:2.1.7-alpine3.11
+        image: "{{ .Values.image.repository }}sense-nats:latest"
         ports:
         - containerPort: 4222
           name: service
