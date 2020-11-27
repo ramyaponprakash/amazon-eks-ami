@@ -108,7 +108,7 @@ spec:
       terminationGracePeriodSeconds: 60
       containers:
       - name: nats
-        image: "{{ .Values.image.repository }}sense-nats:latest"
+        image: "{{ .Values.image.repository }}sense_nats:latest"
         ports:
         - containerPort: 4222
           name: service
