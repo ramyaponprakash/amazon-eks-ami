@@ -15,9 +15,9 @@ data:
     cluster {
       port: 6222
       routes [
-        nats://nats-0.nats.sense-bb.svc:6222
-        nats://nats-1.nats.sense-bb.svc:6222
-        nats://nats-2.nats.sense-bb.svc:6222
+        nats://sense-nats-0.sense-nats.sense-bb.svc:6222
+        nats://sense-nats-1.sense-nats.sense-bb.svc:6222
+        nats://sense-nats-2.sense-nats.sense-bb.svc:6222
       ]
 
       cluster_advertise: $CLUSTER_ADVERTISE
@@ -37,7 +37,8 @@ metadata:
     app.kubernetes.io/name: sense-nats
     app.kubernetes.io/instance: sense-nats
 spec:
-  type: ClusterIP
+  # type: ClusterIP
+  ClusterIP: None
   ports:
     - name: service
       protocol: TCP
