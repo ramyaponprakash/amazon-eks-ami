@@ -37,8 +37,8 @@ metadata:
     app.kubernetes.io/name: sense-nats
     app.kubernetes.io/instance: sense-nats
 spec:
-  # type: ClusterIP
-  ClusterIP: None
+  type: ClusterIP
+  # ClusterIP: None
   ports:
     - name: service
       protocol: TCP
