@@ -1,0 +1,51 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: k8s-dashboard
+  namespace: default
+  labels:
+    app.kubernetes.io/component: kubernetes-dashboard
+    app.kubernetes.io/instance: k8s-dashboard
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: kubernetes-dashboard
+    app.kubernetes.io/version: 2.0.3
+    helm.sh/chart: kubernetes-dashboard-2.6.0
+    kubernetes.io/cluster-service: 'true'
+  annotations:
+    meta.helm.sh/release-name: k8s-dashboard
+    meta.helm.sh/release-namespace: default
+spec:
+  ports:
+    - name: https
+      protocol: TCP
+      port: 443
+      targetPort: https
+  selector:
+    app.kubernetes.io/component: kubernetes-dashboard
+    app.kubernetes.io/name: kubernetes-dashboard
+  type: ClusterIP
+  sessionAffinity: None
+status:
+  loadBalancer: {}
+---
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: dashboard-proxy
+  namespace: default
+  labels:
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    meta.helm.sh/release-name: sense
+    meta.helm.sh/release-namespace: default
+    nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /k8s/dashboard(/|$)(.*)
+            backend:
+              serviceName: k8s-dashboard
+              servicePort: 443
