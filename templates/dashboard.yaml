@@ -2,7 +2,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: k8s-dashboard
-  namespace: defaul
+  namespace: default
   labels:
     app.kubernetes.io/component: kubernetes-dashboard
     app.kubernetes.io/instance: k8s-dashboard
