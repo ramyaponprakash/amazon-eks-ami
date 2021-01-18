@@ -38,8 +38,8 @@ spec:
           image: "{{ .Values.image.repository }}sense-frontend:latest"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-                - containerPort: 80
-                  name: public
+          - containerPort: 80
+            name: public
           # livenessProbe:
           #   httpGet:
           #     path: /
@@ -122,8 +122,8 @@ spec:
           image: "{{ .Values.image.repository }}sense-frontend-auth:latest"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-                - containerPort: 80
-                  name: public
+          - containerPort: 80
+            name: public
           # livenessProbe:
           #   httpGet:
           #     path: /
