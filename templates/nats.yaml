@@ -16,8 +16,9 @@ data:
       port: 6222
       routes [
         sense-nats://sense-nats-0.sense-nats.sense-bb.svc:6222
-        sense-nats://sense-nats-1.sense-nats.sense-bb.svc:6222
-        sense-nats://sense-nats-2.sense-nats.sense-bb.svc:6222
+        # NOTE: will use 1 pod for dev
+        # sense-nats://sense-nats-1.sense-nats.sense-bb.svc:6222
+        # sense-nats://sense-nats-2.sense-nats.sense-bb.svc:6222
       ]
 
       cluster_advertise: $CLUSTER_ADVERTISE
@@ -81,7 +82,7 @@ spec:
     matchLabels:
       app.kubernetes.io/name: sense-nats
       app.kubernetes.io/instance: sense-nats
-  replicas: 3
+  replicas: 1 # NOTE: will use 1 pod for dev
   serviceName: "sense-nats"
   template:
     metadata:
