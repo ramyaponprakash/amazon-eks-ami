@@ -29,12 +29,10 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "sense.serviceAccountName" . }}
-      securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      securityContext: {}
       containers:
         - name:  "{{ include "sense.fullname" . }}-portal"
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
+          securityContext: {}
           image: "{{ .Values.image.repository }}sense-frontend:latest"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
@@ -113,12 +111,10 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "sense.serviceAccountName" . }}
-      securityContext: {}  # NOTE: no setting for frontend container for now.
-#        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      securityContext: {}
       containers:
         - name:  "{{ include "sense.fullname" . }}-frontend-auth"
-          securityContext: {} # NOTE: no setting for frontend container for now.
-#            {{- toYaml .Values.securityContext | nindent 12 }}
+          securityContext: {}
           image: "{{ .Values.image.repository }}sense-frontend-auth:latest"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
