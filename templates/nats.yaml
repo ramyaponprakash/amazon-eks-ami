@@ -12,21 +12,36 @@ data:
     pid_file: "/var/run/nats/nats.pid"
     http: 8222
 
-    cluster {
-      port: 6222
-      routes [
-        sense-nats://sense-nats-0.sense-nats.sense-bb.svc:6222
-        # NOTE: will use 1 pod for dev
-        # sense-nats://sense-nats-1.sense-nats.sense-bb.svc:6222
-        # sense-nats://sense-nats-2.sense-nats.sense-bb.svc:6222
-      ]
-
-      cluster_advertise: $CLUSTER_ADVERTISE
-      connect_retries: 30
-    }
+# NOTE: Jetstream require quorum nodes. With 1 node cluster, it is throwing "temporally unavailable" error.
+#       Also Jetstream require server_name
+#
+#    cluster {
+#      port: 6222
+#      routes [
+#        sense-nats://sense-nats-0.sense-nats.sense-bb.svc:6222
+#        # NOTE: will use 1 pod for dev
+#        # sense-nats://sense-nats-1.sense-nats.sense-bb.svc:6222
+#        # sense-nats://sense-nats-2.sense-nats.sense-bb.svc:6222
+#      ]
+#
+#      cluster_advertise: $CLUSTER_ADVERTISE
+#      connect_retries: 30
+#    }
 
     leafnodes {
       port: 7422
+    }
+
+   tls {
+      cert_file: "/etc/sense/cert/nats/server/server_cert.pem"
+      key_file: "/etc/sense/cert/nats/server/private/server_key.pem"
+      ca_file: "/etc/sense/cert/nats/ca/ca_cert.pem"
+    }
+
+    jetstream {
+      store_dir: "/data/jetstream/store"
+      max_file_store: 1G
+      #key: $JS_KEY
     }
 ---
 apiVersion: v1
@@ -82,7 +97,7 @@ spec:
     matchLabels:
       app.kubernetes.io/name: sense-nats
       app.kubernetes.io/instance: sense-nats
-  replicas: 1 # NOTE: will use 1 pod for dev
+  replicas: 1 # NOTE: will use 1 pod for dev (Reason: cost saving - ec2 has own limit max pod)
   serviceName: "sense-nats"
   template:
     metadata:
