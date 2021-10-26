@@ -12,7 +12,7 @@ metadata:
    app.kubernetes.io/instance: {{ include "sense.fullname" . }}-{{ $rangeItem.name }}
 spec:
 {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ default $rangeItem.replicas .Values.replicaCount }}
 {{- end }}
   selector:
     matchLabels:
