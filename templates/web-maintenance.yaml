@@ -1,0 +1,46 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: web-maintenance
+  namespace: sense
+  labels:
+    k8s-app: web-maintenance
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      k8s-app: web-maintenance
+  template:
+    metadata:
+      name: web-maintenance
+      labels:
+        k8s-app: web-maintenance
+    spec:
+      containers:
+        - name: web-maintenance
+          image: >-
+            342446142760.dkr.ecr.ap-southeast-1.amazonaws.com/sdx-web-maintenance
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: web-maintenance
+  namespace: sense
+  labels:
+    k8s-app: web-maintenance
+    app.kubernetes.io/managed-by: Helm
+spec:
+  ports:
+    - name: tcp-8080-80-s4vnp
+      protocol: TCP
+      port: 8080
+      targetPort: 80
+  selector:
+    k8s-app: web-maintenance
+  type: ClusterIP
+  sessionAffinity: None
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+

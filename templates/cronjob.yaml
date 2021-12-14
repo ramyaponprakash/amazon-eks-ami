@@ -17,7 +17,7 @@ spec:
         spec:
           containers:
             - name: {{ $rangeItem.containerName }}
-              image: "{{ .Values.image.repository }}sense_cron_jobs:{{ .Values.image.tag | default .Chart.AppVersion }}"
+              image: "{{ .Values.image.repository }}{{ $rangeItem.imageName }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
               resources:
                 {{- toYaml $rangeItem.resources | nindent 16 }}
               args:
