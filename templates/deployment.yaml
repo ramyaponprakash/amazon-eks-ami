@@ -12,7 +12,7 @@ metadata:
    app.kubernetes.io/instance: {{ include "sense.fullname" . }}-{{ $rangeItem.name }}
 spec:
 {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ default $rangeItem.replicas .Values.replicaCount }}
 {{- end }}
   selector:
     matchLabels:
@@ -48,7 +48,7 @@ spec:
         - name:  "{{ include "sense.fullname" . }}-{{ $rangeItem.name }}"
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}{{ include "sense.fullname" . }}_{{$rangeItem.name | replace "-"  "_"}}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.image.repository }}{{ include "sense.fullname" . }}_{{default $rangeItem.name $rangeItem.imageName | replace "-"  "_" }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           volumeMounts:
           - name:  "{{ .Values.env }}-volume"
             mountPath: "conf/{{ .Values.env }}.config.yaml"
