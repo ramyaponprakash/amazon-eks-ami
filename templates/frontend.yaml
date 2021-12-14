@@ -161,27 +161,3 @@ spec:
   selector:
     app.kubernetes.io/name: {{ include "sense.fullname" . }}-frontend-auth
     app.kubernetes.io/instance: {{ include "sense.fullname" . }}-frontend-auth
----
-{{- $fullName := include "sense.fullname" . -}}
-apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
-metadata:
-  name: {{ $fullName }}-frontend-auth
-  namespace:  {{ include "sense.fullname" . }}
-  annotations:
-    kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/rewrite-target: "/$1"
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-spec:
-  rules:
-  - http:
-      paths:
-      - path: /(.*)
-        backend:
-          serviceName: portal
-          servicePort: 8080
-      - path: /(auth/.*)
-        backend:
-          serviceName: frontend-auth
-          servicePort: 8080
----
