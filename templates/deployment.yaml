@@ -8,8 +8,9 @@ metadata:
   name: {{ include "sense.fullname" . }}-{{ $rangeItem.name }}
   namespace:  {{ include "sense.fullname" . }}
   labels:
-   app.kubernetes.io/name: {{ include "sense.fullname" . }}-{{ $rangeItem.name }}
-   app.kubernetes.io/instance: {{ include "sense.fullname" . }}-{{ $rangeItem.name }}
+    app.kubernetes.io/name: {{ include "sense.fullname" . }}-{{ $rangeItem.name }}
+    app.kubernetes.io/instance: {{ include "sense.fullname" . }}-{{ $rangeItem.name }}
+    app.backend/group: {{ include "sense.fullname" . }}
 spec:
 {{- if not .Values.autoscaling.enabled }}
   replicas: {{ default $rangeItem.replicas .Values.replicaCount }}
@@ -18,6 +19,7 @@ spec:
     matchLabels:
       app.kubernetes.io/name: {{ include "sense.fullname" . }}-{{ $rangeItem.name }}
       app.kubernetes.io/instance: {{ include "sense.fullname" . }}-{{ $rangeItem.name }}
+      app.backend/group: {{ include "sense.fullname" . }}
   template:
     metadata:
     {{- with .Values.podAnnotations }}
@@ -27,6 +29,7 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "sense.fullname" . }}-{{ $rangeItem.name }}
         app.kubernetes.io/instance: {{ include "sense.fullname" . }}-{{ $rangeItem.name }}
+        app.backend/group: {{ include "sense.fullname" . }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:

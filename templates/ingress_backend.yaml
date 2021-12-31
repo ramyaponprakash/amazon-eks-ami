@@ -114,11 +114,6 @@ spec:
                   number: 8182
             path: /api/(appsettings/?(.*)$)
             pathType: Prefix
-          - backend:
-              service:
-                name: iam
-                port:
-                  number: 9091
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -136,35 +131,126 @@ spec:
   rules:
     - http:
         paths:
-          - path: /api/(lookup/?(.*)$)
+          - backend:
+              service:
+                name: auth
+                port:
+                  number: 8080
+            path: /api/(auth/?(.*)$)
             pathType: Prefix
-            backend:
+          - backend:
+              service:
+                name: iam
+                port:
+                  number: 8081
+            path: /api/(iam/?(.*)$)
+            pathType: Prefix
+          - backend:
+              service:
+                name: topics
+                port:
+                  number: 8082
+            path: /api/(topics/?(.*)$)
+            pathType: Prefix
+          - backend:
+              service:
+                name: policy
+                port:
+                  number: 8083
+            path: /api/(policies/?(.*)$)
+            pathType: Prefix
+          - backend:
+              service:
+                name: role
+                port:
+                  number: 8084
+            path: /api/(role/?(.*)$)
+            pathType: Prefix
+          - backend:
+              service:
+                name: client
+                port:
+                  number: 8085
+            path: /api/(clients/?(.*)$)
+            pathType: Prefix
+          - backend:
+              service:
+                name: activity
+                port:
+                  number: 8087
+            path: /api/(activities/?(.*)$)
+            pathType: Prefix
+          - backend:
+              service:
+                name: subscription
+                port:
+                  number: 8088
+            path: /api/(subscriptions/?(.*)$)
+            pathType: Prefix
+          - backend:
+              service:
+                name: onpremtopic
+                port:
+                  number: 8089
+            path: /api/(onpremtopics/?(.*)$)
+            pathType: Prefix
+          - backend:
               service:
                 name: lookup
                 port:
                   number: 8999
-          - path: /api/(iam/?(.*)$)
+            path: /api/(lookup/?(.*)$)
+            pathType: Prefix
+          - backend:
+              service:
+                name: message
+                port:
+                  number: 8100
+            path: /api/(messages/?(.*)$)
+            pathType: Prefix
+          - backend:
+              service:
+                name: notification
+                port:
+                  number: 8101
+            path: /api/(notification/?(.*)$)
+            pathType: Prefix
+          - backend:
+              service:
+                name: adaptor
+                port:
+                  number: 8180
+            path: /api/(adaptors/?(.*)$)
+            pathType: Prefix
+          - backend:
+              service:
+                name: appsettings
+                port:
+                  number: 8182
+            path: /api/(appsettings/?(.*)$)
+            pathType: Prefix
+          - path: /api/admin/(iam/?(.*)$)
             pathType: Prefix
             backend:
               service:
                 name: iam
                 port:
                   number: 9091
-          - path: /api/(topics/?(.*)$)
+          - path: /api/admin/(topics/?(.*)$)
             pathType: Prefix
             backend:
               service:
                 name: topics
                 port:
                   number: 9092
-          - path: /api/(subscriptions/?(.*)$)
+          - path: /api/admin/(subscriptions/?(.*)$)
             pathType: Prefix
             backend:
               service:
                 name: subscription
                 port:
                   number: 9098
-          - path: /api/(clients/?(.*)$)
+          - path: /api/admin/(clients/?(.*)$)
             pathType: Prefix
             backend:
               service:

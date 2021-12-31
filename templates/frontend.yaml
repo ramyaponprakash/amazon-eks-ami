@@ -6,6 +6,7 @@ metadata:
   labels:
    app.kubernetes.io/name: {{ include "sense.fullname" . }}-portal
    app.kubernetes.io/instance: {{ include "sense.fullname" . }}-portal
+   app.frontend/group: {{ include "sense.fullname" . }}
 spec:
 {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
@@ -14,6 +15,7 @@ spec:
     matchLabels:
       app.kubernetes.io/name: {{ include "sense.fullname" . }}-portal
       app.kubernetes.io/instance: {{ include "sense.fullname" . }}-portal
+      app.frontend/group: {{ include "sense.fullname" . }}
   template:
     metadata:
     {{- with .Values.podAnnotations }}
@@ -23,6 +25,7 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "sense.fullname" . }}-portal
         app.kubernetes.io/instance: {{ include "sense.fullname" . }}-portal
+        app.frontend/group: {{ include "sense.fullname" . }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -88,6 +91,7 @@ metadata:
   labels:
    app.kubernetes.io/name: {{ include "sense.fullname" . }}-frontend-auth
    app.kubernetes.io/instance: {{ include "sense.fullname" . }}-frontend-auth
+   app.frontend/group: {{ include "sense.fullname" . }}
 spec:
 {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
@@ -96,6 +100,7 @@ spec:
     matchLabels:
       app.kubernetes.io/name: {{ include "sense.fullname" . }}-frontend-auth
       app.kubernetes.io/instance: {{ include "sense.fullname" . }}-frontend-auth
+      app.frontend/group: {{ include "sense.fullname" . }}
   template:
     metadata:
     {{- with .Values.podAnnotations }}
@@ -105,6 +110,7 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "sense.fullname" . }}-frontend-auth
         app.kubernetes.io/instance: {{ include "sense.fullname" . }}-frontend-auth
+        app.frontend/group: {{ include "sense.fullname" . }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:

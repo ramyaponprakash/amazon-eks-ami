@@ -19,3 +19,16 @@ spec:
                 port:
                   number: 443
 ---
+kind: Service
+apiVersion: v1
+metadata:
+  name: opensearch-dashboard
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/component: opensearch-dashboard
+    app.kubernetes.io/instance: opensearch-dashboard
+    app.kubernetes.io/name: opensearch-dashboard
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ExternalName
+  externalName: vpc-dev-sdx-es-kgfhpvtfio32mmlzxw22wbgi4i.ap-southeast-1.es.amazonaws.com
