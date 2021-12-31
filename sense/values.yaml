@@ -1,0 +1,321 @@
+# Default values for sense.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+env: kube
+replicaCount: 1
+healthCheckPort: 7171
+
+image:
+  repository: 342446142760.dkr.ecr.ap-southeast-1.amazonaws.com/
+  tag: latest
+  pullPolicy: Always
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+
+securityContext:
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  privileged: false
+  runAsNonRoot: true
+  runAsUser: 10001 # appuser
+  capabilities: # linux capabilities
+    drop:
+    - ALL
+
+service:
+  type: ClusterIP
+  includes:
+    - name: auth
+      adminPort: 9090
+      publicPort: 8080
+      env:
+       values:
+        - name: SENSE_CONFIG_FILES
+          value: "auth.config"    
+      volume:
+        secrets:
+          name: auth-volume
+          secret:
+            secretName: auth-config
+        mounts:
+          name: auth-volume
+          mountPath: conf/auth.config.yaml
+          subPath: auth.config.yaml
+    - name: iam
+      adminPort: 9091
+      publicPort: 8081
+      env:
+        values:
+          - name: SENSE_CONFIG_FILES
+            value: "iam.config"
+      volume:
+        secrets:
+          name: iam-volume
+          secret:
+            secretName: iam-config
+        mounts:
+          name: iam-volume
+          mountPath: conf/iam.config.yaml
+          subPath: iam.config.yaml
+    - name: topics
+      adminPort: 9092
+      publicPort: 8082
+      env:
+       values:
+        - name: SENSE_CONFIG_FILES
+          value: "topics.config"      
+      volume:
+        secrets:
+          name: topics-volume
+          secret:
+            secretName: topics-config
+        mounts:
+          name: topics-volume
+          mountPath: conf/topics.config.yaml
+          subPath: topics.config.yaml        
+    - name: policy
+      adminPort: 9093
+      publicPort: 8083
+      pathOverride: policies
+    - name: role
+      adminPort: 9094
+      publicPort: 8084
+    - name: client
+      adminPort: 9095
+      publicPort: 8085
+      pathOverride: clients
+      env:
+       values:
+        - name: SENSE_CONFIG_FILES
+          value: "clients.config"      
+      volume:
+        secrets:
+          name: clients-volume
+          secret:
+            secretName: clients-config
+        mounts:
+          name: clients-volume
+          mountPath: conf/clients.config.yaml
+          subPath: clients.config.yaml         
+    - name: activity
+      adminPort: 9097
+      publicPort: 8087
+      pathOverride: activities
+      env:
+        values:
+          - name: SENSE_CONFIG_FILES
+            value: "activity.config"
+      volume:
+        secrets:
+          name: activity-volume
+          secret:
+            secretName: activity-config
+        mounts:
+          name: activity-volume
+          mountPath: conf/activity.config.yaml
+          subPath: activity.config.yaml
+    - name: subscription
+      adminPort: 9098
+      publicPort: 8088
+      pathOverride: subscriptions
+    - name: onpremtopic
+      adminPort: 9099
+      publicPort: 8089
+      pathOverride: onpremtopics
+      volume:
+        secrets:
+          name: onpremtopic-volume
+          secret:
+            secretName: onpremtopic-config
+        mounts:
+          name: onpremtopic-volume
+          mountPath: conf/onpremtopic.config.yaml
+          subPath: onpremtopic.config.yaml                     
+    - name: lookup
+      adminPort: 9999
+      publicPort: 8999
+      loadConfig: true
+    - name: message
+      adminPort: 9100
+      publicPort: 8100
+    - name: notification
+      adminPort: 9101
+      publicPort: 8101
+      env:
+        values:
+          - name: SENSE_CONFIG_FILES
+            value: "notification.config"
+      volume:
+        secrets:
+          name: notification-volume
+          secret:
+            secretName: notification-config
+        mounts:
+          name: notification-volume
+          mountPath: conf/notification.config.yaml
+          subPath: notification.config.yaml
+    - name: adaptor
+      adminPort: 9190
+      publicPort: 8180
+      pathOverride: adaptors
+      env:
+        values:
+          - name: SENSE_CONFIG_FILES
+            value: "adaptor.config"
+      volume:
+        secrets:
+          name: adaptor-volume
+          secret:
+            secretName: adaptor-config
+        mounts:
+          name: adaptor-volume
+          mountPath: conf/adaptor.config.yaml
+          subPath: adaptor.config.yaml
+    - name: appsettings
+      adminPort: 9192
+      publicPort: 8182
+      pathOverride: appsettings        
+    - name: sniff-agent
+      adminPort: 9191
+      publicPort: 8181
+      env:
+        values:
+          - name: SENSE_CONFIG_FILES
+            value: "agent.config"
+      volume:
+        secrets:
+          name: agent-volume
+          secret:
+            secretName: agent-config
+        mounts:
+          name: agent-volume
+          mountPath: conf/agent.config.yaml
+          subPath: agent.config.yaml
+    - name: sniff-agent-dbtopics
+      adminPort: 9192
+      publicPort: 8182
+      env:
+        values:
+          - name: SENSE_CONFIG_FILES
+            value: "agent.config"
+      volume:
+        secrets:
+          name: agent-volume
+          secret:
+            secretName: agent-config
+        mounts:
+          name: agent-volume
+          mountPath: conf/agent.config.yaml
+          subPath: agent.config.yaml
+    - name: sniff-agent-elastic
+      adminPort: 9193
+      publicPort: 8183
+      env:
+        values:
+          - name: SENSE_CONFIG_FILES
+            value: "agent.config"
+      volume:
+        secrets:
+          name: agent-volume
+          secret:
+            secretName: agent-config
+        mounts:
+          name: agent-volume
+          mountPath: conf/agent.config.yaml
+          subPath: agent.config.yaml
+    - name: sniff-agent-kinesis
+      replicas: 0
+      adminPort: 9194
+      publicPort: 8184
+      env:
+        values:
+          - name: SENSE_CONFIG_FILES
+            value: "agent.config"
+      volume:
+        secrets:
+          name: agent-volume
+          secret:
+            secretName: agent-config
+        mounts:
+          name: agent-volume
+          mountPath: conf/agent.config.yaml
+          subPath: agent.config.yaml
+    - name: bridge-agent-rmq-nats
+      imageName: bridge-agent
+      description: "bridge rmq to remote nats"
+      adminPort: 9197
+      publicPort: 8187
+      env:
+        values:
+          - name: BRIDGE_ENV
+            value: dev
+          - name: SENSE_MODULE
+            value: bridge_agent
+          - name: BRIDGE_CONFIG_PREFIX
+            value: rmq-nats
+    - name: bridge-agent-nats-rmq
+      imageName: bridge-agent
+      description: "bridge nats to rmq"
+      adminPort: 9198
+      publicPort: 8188
+      env:
+        values:
+          - name: BRIDGE_ENV
+            value: dev
+          - name: SENSE_MODULE
+            value: bridge_agent
+          - name: BRIDGE_CONFIG_PREFIX
+            value: nats-rmq
+
+cronJob:
+  enabled: true
+  jobs:
+    - name: sense-cron-jobs-daily
+      imageName: sense_cron_jobs
+      schedule: "0 16 * * *"
+      concurrencyPolicy: Forbid
+      containerName: cron-jobs-daily-midnight-sgt
+      containerArgs:
+        - -env=dev
+        - -events=dev.event.yaml
+      resources:
+        requests:
+          memory: "25Mi"
+        limits:
+          memory: "50Mi"
+
+resources:
+  requests:
+    memory: "64Mi"
+    cpu: "0.1"
+  limits:
+    memory: "128Mi"
+    cpu: "0.2"
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 1
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
