@@ -9,16 +9,11 @@ data:
       - system:bootstrappers
       - system:nodes
       rolearn: arn:aws:iam::342446142760:role/terraform-eks-sdx-node
-      username: system:node:{{EC2PrivateDNSName}}
+      username: system:node:{{"{{"}}EC2PrivateDNSName}}
     - groups:
       - eks-console-dashboard-full-access-group
       rolearn: arn:aws:iam::342446142760:role/admin-role
       username: admin-role
-#  mapUsers: |
-#    - userarn: arn:aws:iam::342446142760:user/eks
-#      username: eks
-#      groups:
-#        - <system:masters>
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
