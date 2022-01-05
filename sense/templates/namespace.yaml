@@ -1,9 +1,4 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: sense
----
-apiVersion: v1
-kind: Namespace
-metadata:
   name: sense-bb

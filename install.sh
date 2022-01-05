@@ -1,11 +1,29 @@
 #!/bin/bash
 
-helm upgrade --install cluster ./cluster --namespace=kube-system --create-namespace
+FRONTEND_TAG=latest
+BACKEND_TAG=latest
+BASE_COMMAND="helm upgrade --install --create-namespace"
+
+while getopts f:b:d flag
+do
+    case "${flag}" in
+        f) FRONTEND_TAG=${OPTARG};;
+        b) BACKEND_TAG=${OPTARG};;
+        d) BASE_COMMAND="${BASE_COMMAND} --dry-run";;
+    esac
+done
+
+$BASE_COMMAND cluster ./cluster --namespace=kube-system
 helm dependency list cluster
 
-helm upgrade --install ingress-nginx ./ingress-nginx --namespace=ingress-nginx --create-namespace
+$BASE_COMMAND ingress-nginx ./ingress-nginx --namespace=ingress-nginx
 
-helm upgrade --install monitoring ./monitoring --namespace=monitoring --create-namespace
+$BASE_COMMAND monitoring ./monitoring --namespace=monitoring
 helm dependency list monitoring
 
-helm upgrade --install sense ./sense --namespace=sense --create-namespace
+echo "Deploying sense with tag frontend=${FRONTEND_TAG}, backend=${BACKEND_TAG}"
+$BASE_COMMAND sense ./sense --namespace=sense \
+  --set image.frontend.tag=${FRONTEND_TAG} \
+  --set image.backend.tag=${BACKEND_TAG}
+
+helm list --all-namespaces

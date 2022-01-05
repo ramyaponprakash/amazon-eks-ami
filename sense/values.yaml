@@ -9,6 +9,10 @@ image:
   repository: 342446142760.dkr.ecr.ap-southeast-1.amazonaws.com/
   tag: latest
   pullPolicy: Always
+  backend:
+    tag: latest
+  frontend:
+    tag: latest
 
 imagePullSecrets: []
 nameOverride: ""
