@@ -137,19 +137,6 @@ service:
       adminPort: 9098
       publicPort: 8088
       pathOverride: subscriptions
-    - name: onpremtopic
-      adminPort: 9099
-      publicPort: 8089
-      pathOverride: onpremtopics
-      volume:
-        secrets:
-          name: onpremtopic-volume
-          secret:
-            secretName: onpremtopic-config
-        mounts:
-          name: onpremtopic-volume
-          mountPath: conf/onpremtopic.config.yaml
-          subPath: onpremtopic.config.yaml                     
     - name: lookup
       adminPort: 9999
       publicPort: 8999
