@@ -36,7 +36,7 @@ spec:
       containers:
         - name:  "{{ include "sense.fullname" . }}-portal"
           securityContext: {}
-          image: "{{ .Values.image.repository }}sense-frontend:latest"
+          image: {{ .Values.image.repository }}sense-frontend:{{ .Values.image.frontend.tag | default "latest" }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
           - containerPort: 80
@@ -121,7 +121,7 @@ spec:
       containers:
         - name:  "{{ include "sense.fullname" . }}-frontend-auth"
           securityContext: {}
-          image: "{{ .Values.image.repository }}sense-frontend-auth:latest"
+          image: {{ .Values.image.repository }}sense-frontend-auth:{{ .Values.image.frontend.tag | default "latest" }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
           - containerPort: 80

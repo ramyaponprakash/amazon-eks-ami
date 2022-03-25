@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tcp-services
+  namespace: ingress-nginx
+data:
+  4222: sense-bb/sense-nats:4222
+  5682: default/solace-dev-pubsubplus-dev:5672
+  5681: default/solace-dev-pubsubplus-dev:5671
+  5683: default/solace-dev-pubsubplus-dev:8080

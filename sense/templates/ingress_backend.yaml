@@ -74,13 +74,6 @@ spec:
             pathType: Prefix
           - backend:
               service:
-                name: onpremtopic
-                port:
-                  number: 8089
-            path: /api/(onpremtopics/?(.*)$)
-            pathType: Prefix
-          - backend:
-              service:
                 name: lookup
                 port:
                   number: 8999
@@ -186,13 +179,6 @@ spec:
                 port:
                   number: 8088
             path: /api/(subscriptions/?(.*)$)
-            pathType: Prefix
-          - backend:
-              service:
-                name: onpremtopic
-                port:
-                  number: 8089
-            path: /api/(onpremtopics/?(.*)$)
             pathType: Prefix
           - backend:
               service:

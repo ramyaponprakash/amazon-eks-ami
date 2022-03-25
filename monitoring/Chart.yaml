@@ -1,0 +1,11 @@
+apiVersion: v2
+name: monitoring
+
+version: 0.1.0
+
+appVersion: 0.1.0
+
+dependencies:
+  - name: jaeger
+    version: 0.51.5
+    repository: https://jaegertracing.github.io/helm-charts

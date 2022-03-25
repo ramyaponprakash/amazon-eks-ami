@@ -1,0 +1,21 @@
+external-secrets:
+  env:
+    AWS_REGION: ap-southeast-1
+    AWS_DEFAULT_REGION: ap-southeast-1
+    LOG_LEVEL: info
+  rbac:
+    create: true
+  serviceAccount:
+    create: true
+
+kubernetes-dashboard:
+  service:
+    externalPort: 443
+
+aws-load-balancer-controller:
+  clusterName: sdx-eks-green-cluster
+  serviceAccount:
+    create: false
+    name: aws-load-balancer-controller
+  region: ap-southeast-1
+  vpcId: vpc-09a58d6d
