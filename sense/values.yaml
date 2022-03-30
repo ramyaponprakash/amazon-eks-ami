@@ -197,6 +197,10 @@ service:
           name: agent-volume
           mountPath: conf/agent.config.yaml
           subPath: agent.config.yaml
+    - name: metric
+      adminPort: 9191
+      publicPort: 8181
+      pathOverride: metrics
     - name: sniff-agent-dbtopics
       adminPort: 9192
       publicPort: 8182
