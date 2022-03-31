@@ -107,6 +107,13 @@ spec:
                   number: 8182
             path: /api/(appsettings/?(.*)$)
             pathType: Prefix
+          - backend:
+              service:
+                name: metric
+                port:
+                  number: 8181
+            path: /api/(metrics/?(.*)$)
+            pathType: Prefix
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
