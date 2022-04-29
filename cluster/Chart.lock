@@ -1,15 +1,15 @@
 dependencies:
-- name: kubernetes-external-secrets
-  repository: https://external-secrets.github.io/kubernetes-external-secrets/
-  version: 8.5.0
+- name: external-secrets
+  repository: https://charts.external-secrets.io
+  version: 0.5.2
 - name: kubernetes-dashboard
   repository: https://kubernetes.github.io/dashboard/
   version: 5.0.5
 - name: aws-load-balancer-controller
   repository: https://aws.github.io/eks-charts
-  version: 1.3.3
+  version: 1.4.1
 - name: metrics-server
   repository: https://kubernetes-sigs.github.io/metrics-server/
   version: 3.7.0
-digest: sha256:b400f14a5696a2d61f22cb2759f0749cbe49177ed17dc20a54eeaa7bf4a05609
-generated: "2022-01-05T13:14:05.496637+08:00"
+digest: sha256:c18fb38db37925f395a6959ab6049098437299fd6f4fe935f593261eb1333f41
+generated: "2022-04-29T15:37:00.19342+08:00"
