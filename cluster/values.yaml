@@ -1,8 +1,5 @@
 external-secrets:
-  env:
-    AWS_REGION: ap-southeast-1
-    AWS_DEFAULT_REGION: ap-southeast-1
-    LOG_LEVEL: info
+  installCRDs: true
   rbac:
     create: true
   serviceAccount:
