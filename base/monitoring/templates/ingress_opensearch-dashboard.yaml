@@ -1,16 +1,19 @@
 kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
-  name: opensearch-dashboard-proxy
-  namespace: monitoring
+  name: opensearch-dashboard
+  namespace: {{ .Values.namespace | default "monitoring" }}
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
     nginx.ingress.kubernetes.io/ssl-redirect: 'false'
     nginx.ingress.kubernetes.io/rewrite-target: /$1
+  labels:
+  {{- include "common.labels" . | nindent 4 }}
 spec:
-  ingressClassName: nginx-external
+  ingressClassName: {{ .Values.opensearch.ingressClassName }}
   rules:
-    - http:
+    - host: {{ .Values.opensearch.hostname }}
+      http:
         paths:
           - path: /(_dashboards/?.*)$
             pathType: Prefix
@@ -19,9 +22,8 @@ spec:
                 name: opensearch-dashboard
                 port:
                   number: 443
-    # opens this for local development with dev ES
-    - http:
-        paths:
+          {{- if .Values.opensearch.openToLocal }}
+          # opens this for local development with dev ES
           - path: /opensearch/?(.*)$
             pathType: Prefix
             backend:
@@ -29,17 +31,15 @@ spec:
                 name: opensearch-dashboard
                 port:
                   number: 443
+          {{- end }}
 ---
 kind: Service
 apiVersion: v1
 metadata:
   name: opensearch-dashboard
-  namespace: monitoring
+  namespace: {{ .Values.namespace | default "monitoring" }}
   labels:
-    app.kubernetes.io/component: opensearch-dashboard
-    app.kubernetes.io/instance: opensearch-dashboard
-    app.kubernetes.io/name: opensearch-dashboard
-    app.kubernetes.io/managed-by: Helm
+  {{- include "common.labels" . | nindent 4 }}
 spec:
   type: ExternalName
-  externalName: vpc-dev-sdx-es-kgfhpvtfio32mmlzxw22wbgi4i.ap-southeast-1.es.amazonaws.com
+  externalName: {{ .Values.opensearch.vpcEndpoint }}

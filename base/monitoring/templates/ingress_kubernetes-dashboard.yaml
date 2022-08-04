@@ -1,0 +1,35 @@
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: kubernetes-dashboard
+  namespace: {{ .Values.namespace | default "monitoring" }}
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: 'HTTPS'
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      rewrite ^(/dashboard)$ $1/ redirect;
+  labels:
+  {{- include "common.labels" . | nindent 4 }}
+spec:
+  ingressClassName: {{ .Values.kube.ingressClassName }}
+  rules:
+     - host: {{ .Values.kube.hostname }}
+       http:
+        paths:
+          - path: /dashboard(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: kubernetes-dashboard
+                port:
+                  number: 443
+          - path: /metric(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: dashboard-metrics-scraper
+                port:
+                  number: 443
+
+
+

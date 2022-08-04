@@ -13,20 +13,23 @@ spec:
   #        and routes all traffic to ingress-nginx external-alb-default class
   ingressClassName: alb
   rules:
-    - http:
+    {{- range .Values.external.alb.default.hosts }}
+    - host: {{ . | quote }}
+      http:
         paths:
           - backend:
               service:
-                name: external-alb-internal-ingress-nginx-controller
+                name: internal-alb-default-ingress-nginx-controller
                 port:
                   number: 80
             path: /*
             pathType: ImplementationSpecific
           - backend:
               service:
-                name: external-alb-internal-ingress-nginx-controller
+                name: internal-alb-default-ingress-nginx-controller
                 port:
                   number: 443
             path: /*
             pathType: ImplementationSpecific
+  {{- end }}
 {{- end }}

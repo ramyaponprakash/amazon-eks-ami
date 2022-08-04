@@ -1,0 +1,3 @@
+ingressClassName: external-alb-default
+
+hostname: k8s.sense-dev.com

@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: sense-frontend-proxy
+  name: {{ .Values.moduleName }}
   namespace: {{ .Values.namespace | default "sense" }}
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
@@ -10,19 +10,13 @@ metadata:
 spec:
   ingressClassName: {{ .Values.ingressClassName }}
   rules:
-    - http:
+     - host: {{ .Values.hostname }}
+       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
                 name: frontend-portal
-                port:
-                  number: 8080
-          - path: /auth
-            pathType: Prefix
-            backend:
-              service:
-                name: frontend-auth
                 port:
                   number: 8080

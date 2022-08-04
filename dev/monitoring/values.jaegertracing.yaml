@@ -1,0 +1,33 @@
+provisionDataStore:
+  cassandra: false
+storage:
+  type: elasticsearch
+  elasticsearch:
+    host: vpc-dev-sdx-es-kgfhpvtfio32mmlzxw22wbgi4i.ap-southeast-1.es.amazonaws.com
+    port: 443
+    scheme: https
+    user:
+    usePassword: false
+    indexPrefix: tracing-dev
+collector:
+  service:
+    zipkin:
+      port: 9441
+  resources:
+    limits:
+      memory: 128Mi
+      cpu: 0.1
+query:
+  basePath: /jaeger
+  resources:
+    limits:
+      memory: 128Mi
+      cpu: 0.1
+agent:
+  resources:
+    limits:
+      memory: 128Mi
+      cpu: 0.1
+esIndexCleaner:
+  enabled: true
+  numberOfDays: 7

@@ -20,6 +20,9 @@ internal:
   alb:
     default:
       enabled: false
+      hosts:
+        # - sense-dev.com
+        - internal.sense-dev.com
       ingressClassName: internal-alb-default
       annotations:
         # https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.2/guide/ingress/annotations/

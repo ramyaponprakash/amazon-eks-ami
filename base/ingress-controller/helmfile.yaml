@@ -10,12 +10,38 @@ environments:
       - namespace: "ingress-controller"
 
 repositories:
+  - name: aws-load-balancer-controller
+    url: https://aws.github.io/eks-charts
   - name: ingress-nginx
     url: https://kubernetes.github.io/ingress-nginx
 
 missingFileHandler: Error
 
 releases:
+  - name: aws-load-balancer-controller
+    namespace: ingress-controller
+    createNamespace: true
+    chart: aws-load-balancer-controller/aws-load-balancer-controller
+    version: 1.4.2
+    missingFileHandler: Warn
+    disableValidationOnInstall: true # CRD
+    values:
+      - ./values.aws-load-balancer-controller.yaml
+      - ../../{{ .Environment.Name }}/ingress-controller/values.aws-load-balancer-controller.yaml.gotmpl
+    hooks:
+      - events: [ "presync" ]
+        showlogs: true
+        command: "./scripts/awslbcontroller-pre.sh"
+        args:
+          - "-a"
+          - "{{`{{ .Values.accountId }}`}}"
+          - "-e"
+          - "{{`{{ .Environment.Name }}`}}"
+          - "-c"
+          - "{{`{{ .Values.clusterName }}`}}"
+          - "-n"
+          - "{{`{{ .Values.namespace }}`}}"
+
   - name: external-alb-default
     namespace: ingress-controller
     createNamespace: true

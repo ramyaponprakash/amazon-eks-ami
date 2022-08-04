@@ -1,5 +1,5 @@
 apiVersion: v2
-name: sense-frontend
+name: sense-frontend-portal
 
 version: 0.0.1
 

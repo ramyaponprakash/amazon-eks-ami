@@ -10,7 +10,7 @@ TAG=$4
 [[ -z "${ENV}" ]] && echo "ENV is required" && exit 1
 [[ -z "${CLUSTER_NAME}" ]] && echo "CLUSTER_NAME is required" && exit 1
 
-echo "deploy $CHART_NAME in $CLUSTER_NAME"
+echo "deploy $CHART_NAME in $CLUSTER_NAME with image tag $TAG"
 
 if [[ -z "${TAG}" ]]; then
   "${LOC}"/helmfile -e "$ENV" -f ./base/"$CHART_NAME"/helmfile.yaml apply || exit 1

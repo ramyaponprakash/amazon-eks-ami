@@ -4,6 +4,10 @@ namespace: sense
 
 enabled: true
 
+hostname:
+  internal:
+  external:
+
 replicas: 1
 healthCheckPort: 7171
 
@@ -73,7 +77,7 @@ deployments:
   # ----- auth -----
   auth:
     imageName: sense_auth
-    imageTag: latest
+    imageTag:
     adminPort: 9090
     publicPort: 8080
     env:
@@ -96,7 +100,7 @@ deployments:
   # ----- iam -----
   iam:
     imageName: sense_iam
-    imageTag: latest
+    imageTag:
     adminPort: 9091
     publicPort: 8081
     env:
@@ -119,7 +123,7 @@ deployments:
   # ----- topics -----
   topics:
     imageName: sense_topics
-    imageTag: latest
+    imageTag:
     adminPort: 9092
     publicPort: 8082
     env:
@@ -142,7 +146,7 @@ deployments:
   # ----- policy -----
   policy:
     imageName: sense_policy
-    imageTag: latest
+    imageTag:
     adminPort: 9093
     publicPort: 8083
     env:
@@ -165,7 +169,7 @@ deployments:
   # ----- role -----
   role:
     imageName: sense_role
-    imageTag: latest
+    imageTag:
     adminPort: 9094
     publicPort: 8084
     env:
@@ -188,7 +192,7 @@ deployments:
   # ----- client -----
   client:
     imageName: sense_client
-    imageTag: latest
+    imageTag:
     adminPort: 9095
     publicPort: 8085
     env:
@@ -211,7 +215,7 @@ deployments:
   # ----- activity -----
   activity:
     imageName: sense_activity
-    imageTag: latest
+    imageTag:
     adminPort: 9097
     publicPort: 8087
     env:
@@ -234,7 +238,7 @@ deployments:
   # ----- subscription -----
   subscription:
     imageName: sense_subscription
-    imageTag: latest
+    imageTag:
     adminPort: 9098
     publicPort: 8088
     env:
@@ -257,7 +261,7 @@ deployments:
   # ----- lookup -----
   lookup:
     imageName: sense_lookup
-    imageTag: latest
+    imageTag:
     adminPort: 9999
     publicPort: 8999
     env:
@@ -280,7 +284,7 @@ deployments:
   # ----- message -----
   message:
     imageName: sense_message
-    imageTag: latest
+    imageTag:
     adminPort: 9100
     publicPort: 8100
     env:
@@ -303,7 +307,7 @@ deployments:
   # ----- notification -----
   notification:
     imageName: sense_notification
-    imageTag: latest
+    imageTag:
     adminPort: 9101
     publicPort: 8101
     env:
@@ -326,7 +330,7 @@ deployments:
   # ----- adaptor -----
   adaptor:
     imageName: sense_adaptor
-    imageTag: latest
+    imageTag:
     adminPort: 9190
     publicPort: 8180
     env:
@@ -349,7 +353,7 @@ deployments:
   # ----- appsettings -----
   appsettings:
     imageName: sense_appsettings
-    imageTag: latest
+    imageTag:
     adminPort: 9192
     publicPort: 8182
     env:

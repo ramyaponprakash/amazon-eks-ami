@@ -1,2 +1,6 @@
 service:
   externalPort: 443
+
+ingressClassName:
+
+hostname:

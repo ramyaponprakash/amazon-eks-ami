@@ -2,7 +2,7 @@
 
 AWS_ACCOUNT_ID="342446142760"
 CLUSTER_NAME=""
-NAMESPACE="cluster-common"
+NAMESPACE="ingress-controller"
 ENV=dev
 LOC="/tmp/"
 

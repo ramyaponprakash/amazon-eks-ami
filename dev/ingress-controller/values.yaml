@@ -1,5 +1,8 @@
 env: dev
 
+vpcId: vpc-09a58d6d
+accountId: 342446142760
+
 external-alb-default:
   enabled: true
 

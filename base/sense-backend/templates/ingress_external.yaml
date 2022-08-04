@@ -14,7 +14,8 @@ metadata:
 spec:
   ingressClassName: {{ .Values.external.ingressClassName }}
   rules:
-    - http:
+    - host: {{ .Values.hostname.external }}
+      http:
         paths:
           - path: /api/(auth/?(.*)$)
             pathType: Prefix

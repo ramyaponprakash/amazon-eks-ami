@@ -20,6 +20,11 @@ external:
   alb:
     default:
       enabled: true
+      hosts:
+        # - sense-dev.com
+        - v2.sense-dev.com
+        - k8.sense-dev.com
+        - opensearch.sense-dev.com
       ingressClassName: external-alb-default
       annotations:
         # https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.2/guide/ingress/annotations/

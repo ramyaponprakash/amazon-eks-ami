@@ -1,6 +1,9 @@
 env: dev
 
 enabled: false
+hostname:
+  internal: v2-internal.sense-dev.com
+  external: v2.sense-dev.com
 
 image:
   repository: 342446142760.dkr.ecr.ap-southeast-1.amazonaws.com

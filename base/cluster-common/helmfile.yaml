@@ -10,12 +10,8 @@ environments:
       - namespace: "cluster-common"
 
 repositories:
-  - name: aws-load-balancer-controller
-    url:  https://aws.github.io/eks-charts
-  - name: kubernetes-dashboard
-    url: https://kubernetes.github.io/dashboard/
-  - name: metrics-server
-    url: https://kubernetes-sigs.github.io/metrics-server/
+  - name: external-dns
+    url: https://kubernetes-sigs.github.io/external-dns/
   - name: external-secrets
     url: https://charts.external-secrets.io
   - name: cluster-autoscaler
@@ -47,24 +43,21 @@ releases:
           - "-n"
           - "{{`{{ .Values.namespace }}`}}"
 
-
-  - name: aws-load-balancer-controller
+  - name: external-dns
     namespace: cluster-common
     createNamespace: true
-    chart: aws-load-balancer-controller/aws-load-balancer-controller
-    version: 1.4.2
+    chart: external-dns/external-dns
+    version: 1.10.1
     missingFileHandler: Warn
-    disableValidationOnInstall: true # CRD
     needs:
-      - cert-manager
       - cluster-common
     values:
-      - ./values.aws-load-balancer-controller.yaml
-      - ../../{{ .Environment.Name }}/cluster-common/values.aws-load-balancer-controller.yaml.gotmpl
+      - ./values.external-dns.yaml
+      - ../../{{ .Environment.Name }}/cluster-common/values.external-dns.yaml
     hooks:
       - events: [ "presync" ]
         showlogs: true
-        command: "./scripts/awslbcontroller-pre.sh"
+        command: "./scripts/externaldns-pre.sh"
         args:
           - "-a"
           - "{{`{{ .Values.accountId }}`}}"
@@ -74,26 +67,6 @@ releases:
           - "{{`{{ .Values.clusterName }}`}}"
           - "-n"
           - "{{`{{ .Values.namespace }}`}}"
-
-  - name: kubernetes-dashboard
-    namespace: cluster-common
-    createNamespace: true
-    chart: kubernetes-dashboard/kubernetes-dashboard
-    version: 5.7.0
-    missingFileHandler: Warn
-    values:
-      - ./values.kubernetes-dashboard.yaml
-      - ../../{{ .Environment.Name }}/cluster-common/values.kubernetes-dashboard.yaml.gotmpl
-
-  - name: metrics-server
-    namespace: cluster-common
-    createNamespace: true
-    chart: metrics-server/metrics-server
-    version: 3.8.2
-    missingFileHandler: Warn
-    values:
-      - ./values.metrics-server.yaml
-      - ../../{{ .Environment.Name }}/cluster-common/values.metrics-server.yaml.gotmpl
 
   - name: external-secrets
     namespace: cluster-common

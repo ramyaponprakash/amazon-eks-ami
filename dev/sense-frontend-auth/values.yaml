@@ -1,0 +1,18 @@
+env: dev
+
+hostname: v2.sense-dev.com
+
+image:
+  repository: 342446142760.dkr.ecr.ap-southeast-1.amazonaws.com
+
+autoscaling:
+  minReplicas: 1
+  maxReplicas: 1
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+ingressClassName: external-alb-default
+
+deployments:
+  frontend-auth: {}
+

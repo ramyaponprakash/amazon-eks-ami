@@ -1,0 +1,17 @@
+namespace: monitoring
+component: monitoring
+env:
+
+jaegertracing:
+  enabled: false
+
+kube:
+  hostname:
+  ingressClassName:
+
+opensearch:
+  enabled: true
+  hostname:
+  ingressClassName:
+  openToLocal: false
+  vpcEndpoint:

@@ -5,6 +5,9 @@ namespace: sense
 replicas: 1
 healthCheckPort:
 
+hostname:
+moduleName: sense-frontend-auth
+
 image:
   repository:
   tag: latest
@@ -49,30 +52,14 @@ mounts: []
 volumes: []
 
 serviceAccount:
-  name: sense-frontend
+  name: sense-frontend-auth
 
 ingressClassName:
 
-# ----- micro-service configs -----
 deployments:
-  # ----- portal -----
-  frontend-portal:
-    imageName: sense-frontend
-    imageTag: latest
-    publicPort: 8080
-    publicTargetPort: 80
-    env: []
-    volumes: []
-    mounts: []
-    nodeSelector: {}
-    tolerations: []
-    affinity: {}
-    autoscaling: {}
-    resources: {}
-  # ----- auth -----
   frontend-auth:
     imageName: sense-frontend-auth
-    imageTag: latest
+    imageTag:
     publicPort: 8080
     publicTargetPort: 80
     env: []

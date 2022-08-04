@@ -1,0 +1,22 @@
+helmBinary: /tmp/helm
+
+environments:
+  dev:
+    values: []
+
+repositories:
+  - name: sense-frontend-portal
+    url: s3://sdx-eks-artifacts/{{ .Environment.Name }}/charts/sense-frontend-portal
+
+missingFileHandler: Error
+
+releases:
+  - name: sense-frontend-portal
+    namespace: sense
+    createNamespace: true
+    chart: sense-frontend-portal/sense-frontend-portal
+    version: 0.0.1
+    missingFileHandler: Warn
+    values:
+      - ./values.yaml
+      - ../../{{ .Environment.Name }}/sense-frontend-portal/values.yaml

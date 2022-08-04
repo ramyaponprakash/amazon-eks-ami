@@ -4,6 +4,7 @@ kind: Ingress
 metadata:
   {{- with .Values.external.alb.default.annotations }}
   annotations:
+    external.dns/group: "external"
     {{- toYaml . | nindent 4 }}
   {{- end }}
   name: external-alb-default-connect-nginx-ingress
@@ -13,7 +14,9 @@ spec:
   #        and routes all traffic to ingress-nginx external-alb-default class
   ingressClassName: alb
   rules:
-    - http:
+  {{- range .Values.external.alb.default.hosts }}
+    - host: {{ . | quote }}
+      http:
         paths:
           - backend:
               service:
@@ -29,4 +32,5 @@ spec:
                   number: 443
             path: /*
             pathType: ImplementationSpecific
+    {{- end }}
 {{- end }}

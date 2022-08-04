@@ -1,95 +1,72 @@
+#helmBinary: /tmp/helm
+
 environments:
   dev:
     values:
       - ./values.yaml
-      - ../../dev/cluster/values.yaml
-      - clusterName: "sdx-eks-green-cluster"
-      - accountId: "342446142760"
-      - namespace: "cluster-common"
+      - ../../dev/monitoring/values.yaml
+      - clusterName: {{ requiredEnv "CLUSTER_NAME" }}
+      - accountId: {{ requiredEnv "AWS_ACC" }}
+      - namespace: "monitoring"
 
 repositories:
-  - name: aws-load-balancer-controller
-    url:  https://aws.github.io/eks-charts
-  - name: external-secrets
-    url: https://charts.external-secrets.io
-  - name: cluster-autoscaler
-    url: https://kubernetes.github.io/autoscaler
-  - name: cert-manager
-    url: https://charts.jetstack.io
-  - name: cert-manager-awspca
-    url: https://cert-manager.github.io/aws-privateca-issuer
+  - name: kubernetes-dashboard
+    url: https://kubernetes.github.io/dashboard/
+  - name: metrics-server
+    url: https://kubernetes-sigs.github.io/metrics-server/
+  - name: jaegertracing
+    url:  https://jaegertracing.github.io/helm-charts
 
 missingFileHandler: Error
 
 releases:
-  - name: cluster-local
-    namespace: cluster-common
+  - name: monitoring
+    namespace: monitoring
     createNamespace: true
     chart: "."
     version: 0.0.1
     missingFileHandler: Warn
     values:
       - ./values.yaml
-      - ../../{{ .Environment.Name }}/cluster/values.yaml.gotmpl
+      - ../../{{ .Environment.Name }}/monitoring/values.yaml
+#    hooks:
+#      - events: [ "presync" ]
+#        showlogs: true
+#        command: "./scripts/cluster-pre.sh"
+#        args:
+#          - "-c"
+#          - "{{`{{ .Values.clusterName }}`}}"
+#          - "-n"
+#          - "{{`{{ .Values.namespace }}`}}"
 
-  - name: aws-load-balancer-controller
-    namespace: cluster-common
+
+  - name: kubernetes-dashboard
+    namespace: monitoring
     createNamespace: true
-    chart: aws-load-balancer-controller/aws-load-balancer-controller
-    version: 1.4.2
+    chart: kubernetes-dashboard/kubernetes-dashboard
+    version: 5.7.0
     missingFileHandler: Warn
     values:
-      - ./values.aws-load-balancer-controller.yaml
-      - ../../{{ .Environment.Name }}/cluster/values.aws-load-balancer-controller.yaml.gotmpl
+      - ./values.kubernetes-dashboard.yaml
+      - ../../{{ .Environment.Name }}/cluster-common/values.kubernetes-dashboard.yaml
 
-  - name: external-secrets
-    namespace: cluster-common
+  - name: metrics-server
+    namespace: monitoring
     createNamespace: true
-    chart: external-secrets/external-secrets
-    version: 0.5.8
+    chart: metrics-server/metrics-server
+    version: 3.8.2
     missingFileHandler: Warn
     values:
-      - ./values.external-secrets.yaml
-      - ../../{{ .Environment.Name }}/cluster/values.external-secrets.yaml.gotmpl
+      - ./values.metrics-server.yaml
+      - ../../{{ .Environment.Name }}/monitoring/values.metrics-server.yaml
 
-  - name: cluster-autoscaler
-    namespace: cluster-common
+  - name: jaegertracing
+    namespace: monitoring
     createNamespace: true
-    chart: cluster-autoscaler/cluster-autoscaler
-    version: 9.19.2
+    chart: jaegertracing/jaegertracing
+    version: 3.8.2
     missingFileHandler: Warn
+    condition: jaegertracing.enabled
     values:
-      - ./values.cluster-autoscaler.yaml
-      - ../../{{ .Environment.Name }}/cluster/values.cluster-autoscaler.yaml.gotmpl
-    hooks:
-      - events: ["prepare"]
-        showlogs: true
-        command: "./scripts/clusterautoscaler.sh"
-        args:
-          - "-a"
-          - "{{`{{ .Values.accountId }}`}}"
-          - "-e"
-          - "{{`{{ .Environment.Name }}`}}"
-          - "-c"
-          - "{{`{{ .Values.clusterName }}`}}"
-          - "-n"
-          - "{{`{{ .Values.namespace }}`}}"
-
-  - name: cert-manager
-    namespace: cluster-common
-    createNamespace: true
-    chart: cert-manager/cert-manager
-    version: 1.9.1
-    missingFileHandler: Warn
-    values:
-      - ./values.cert-manager.yaml
-      - ../../{{ .Environment.Name }}/cluster/values.cert-manager.yaml.gotmpl
-
-  - name: cert-manager-awspca
-    namespace: cluster-common
-    createNamespace: true
-    chart: cert-manager-awspca/aws-privateca-issuer
-    version: 1.2.0
-    missingFileHandler: Warn
-    needs:
-      - cert-manager
+      - ./values.jaegertracing.yaml
+      - ../../{{ .Environment.Name }}/cluster-common/values.jaegertracing.yaml

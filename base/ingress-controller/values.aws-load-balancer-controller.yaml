@@ -7,4 +7,3 @@ replicaCount: 1
 serviceAccount:
   create: false
   name: aws-load-balancer-controller
-

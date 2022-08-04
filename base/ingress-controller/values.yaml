@@ -10,6 +10,7 @@ internal:
   alb:
     default:
       enabled:
+      hosts:
   nlb:
     default:
       enabled:
@@ -18,6 +19,7 @@ external:
   alb:
     default:
       enabled:
+      hosts:
   nlb:
     default:
       enabled:
