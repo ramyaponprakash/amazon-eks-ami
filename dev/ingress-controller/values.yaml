@@ -1,0 +1,13 @@
+env: dev
+
+external-alb-default:
+  enabled: true
+
+external-nlb-default:
+  enabled: true
+
+internal-alb-default:
+  enabled: false
+
+internal-nlb-default:
+  enabled: true

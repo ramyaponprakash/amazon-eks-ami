@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: tcp-services-internal
-  namespace: ingress-nginx
-data:
-  4222: sense-bb/sense-nats:4222

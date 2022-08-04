@@ -1,0 +1,10 @@
+region: ap-southeast-1
+
+enableCertManager: true
+
+replicaCount: 1
+
+serviceAccount:
+  create: false
+  name: aws-load-balancer-controller
+

@@ -1,0 +1,22 @@
+image:
+  tag: v1.22.2 #following eks example version.
+
+awsRegion: ap-southeast-1
+
+replicaCount: 1
+
+extraArgs:
+  skip-nodes-with-system-pods: false
+  balance-similar-node-groups: true
+  skip-nodes-with-local-storage: false
+  expander: least-waste
+
+extraVolumes:
+  - name: ssl-certs
+    hostPath:
+      path: /etc/ssl/certs/ca-bundle.crt
+
+extraVolumeMounts:
+  - name: ssl-certs
+    mountPath: /etc/ssl/certs/ca-certificates.crt
+    readOnly: true

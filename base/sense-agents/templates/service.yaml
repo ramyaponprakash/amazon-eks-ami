@@ -1,0 +1,27 @@
+{{- range $k, $rangeItem := .Values.deployments }}
+{{- with $ }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ default $k $rangeItem.name }}-service
+  namespace: {{ .Values.namespace | default "sense" }}
+  labels:
+    {{- include "common.labels" . | nindent 4 }}
+    app.kubernetes.io/name: {{ default $k $rangeItem.name }}
+spec:
+  selector:
+    {{- include "common.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/name: {{ default $k $rangeItem.name }}
+  type: ClusterIP
+  ports:
+    - name: public
+      protocol: TCP
+      port: {{ $rangeItem.publicPort }}
+      targetPort: {{ default $rangeItem.publicPort $rangeItem.publicTargetPort  }}
+    - name: admin
+      protocol: TCP
+      port: {{ $rangeItem.adminPort }}
+      targetPort: {{ default $rangeItem.adminPort $rangeItem.adminTargetPort }}
+---
+{{- end }}
+{{- end }}

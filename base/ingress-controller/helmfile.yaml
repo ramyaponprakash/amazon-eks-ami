@@ -1,0 +1,88 @@
+helmBinary: /tmp/helm
+
+environments:
+  dev:
+    values:
+      - ./values.yaml
+      - ../../dev/ingress-controller/values.yaml
+      - clusterName: {{ requiredEnv "CLUSTER_NAME" }}
+      - accountId: {{ requiredEnv "AWS_ACC" }}
+      - namespace: "ingress-controller"
+
+repositories:
+  - name: ingress-nginx
+    url: https://kubernetes.github.io/ingress-nginx
+
+missingFileHandler: Error
+
+releases:
+  - name: external-alb-default
+    namespace: ingress-controller
+    createNamespace: true
+    chart: ingress-nginx/ingress-nginx
+    version: 4.2.0
+    condition: external-alb-default.enabled
+    missingFileHandler: Warn
+    values:
+      - ../../{{ .Environment.Name }}/ingress-controller/values.external-alb-default.yaml
+
+  - name: external-nlb-default
+    namespace: ingress-controller
+    createNamespace: true
+    chart: ingress-nginx/ingress-nginx
+    version: 4.2.0
+    condition: external-nlb-default.enabled
+    missingFileHandler: Warn
+    values:
+      - ../../{{ .Environment.Name }}/ingress-controller/values.external-nlb-default.yaml
+
+  - name: internal-alb-default
+    namespace: ingress-controller
+    createNamespace: true
+    chart: ingress-nginx/ingress-nginx
+    version: 4.2.0
+    condition: internal-alb-default.enabled
+    missingFileHandler: Warn
+    values:
+      - ../../{{ .Environment.Name }}/ingress-controller/values.internal-alb-default.yaml
+
+  - name: internal-nlb-default
+    namespace: ingress-controller
+    createNamespace: true
+    chart: ingress-nginx/ingress-nginx
+    version: 4.2.0
+    condition: internal-nlb-default.enabled
+    missingFileHandler: Warn
+    values:
+      - ../../{{ .Environment.Name }}/ingress-controller/values.internal-nlb-default.yaml
+
+  - name: ingress-controller
+    namespace: ingress-controller
+    createNamespace: true
+    chart: "."
+    version: 0.0.1
+    missingFileHandler: Warn
+    values:
+      - ./values.yaml
+      - ../../{{ .Environment.Name }}/ingress-controller/values.yaml
+      - ../../{{ .Environment.Name }}/ingress-controller/values.external-alb-default.yaml
+      - ../../{{ .Environment.Name }}/ingress-controller/values.internal-alb-default.yaml
+    hooks:
+      - events: [ "presync" ]
+        showlogs: true
+        command: "sleep"
+        args:
+          - "45"
+    needs:
+    {{- if .Values.external.alb.default.enabled }}
+      - external-alb-default
+    {{- end }}
+    {{- if .Values.external.nlb.default.enabled }}
+      - external-nlb-default
+    {{- end }}
+    {{- if .Values.internal.alb.default.enabled }}
+      - internal-alb-default
+    {{- end }}
+    {{- if .Values.internal.nlb.default.enabled }}
+      - internal-nlb-default
+    {{- end }}

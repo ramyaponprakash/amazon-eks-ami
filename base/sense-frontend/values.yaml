@@ -1,0 +1,85 @@
+env:
+component: frontend
+namespace: sense
+
+replicas: 1
+healthCheckPort:
+
+image:
+  repository:
+  tag: latest
+  pullPolicy: IfNotPresent
+
+podAnnotations: {}
+
+podSecurityContext: {}
+
+# NOTE: FE container require root for now
+containerSecurityContext: {}
+#  readOnlyRootFilesystem: true
+#  allowPrivilegeEscalation: false
+#  privileged: false
+#  runAsNonRoot: true
+#  runAsUser: 10001 # appuser
+#  capabilities:
+#    drop:
+#    - ALL
+
+resources:
+  requests:
+    memory: "64Mi"
+    cpu: "0.1"
+  limits:
+    memory: "256Mi"
+    cpu: "0.2"
+
+autoscaling:
+  minReplicas: 1
+  maxReplicas: 1
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+livenessProbe: {}
+readinessProbe: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+mounts: []
+volumes: []
+
+serviceAccount:
+  name: sense-frontend
+
+ingressClassName:
+
+# ----- micro-service configs -----
+deployments:
+  # ----- portal -----
+  frontend-portal:
+    imageName: sense-frontend
+    imageTag: latest
+    publicPort: 8080
+    publicTargetPort: 80
+    env: []
+    volumes: []
+    mounts: []
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    autoscaling: {}
+    resources: {}
+  # ----- auth -----
+  frontend-auth:
+    imageName: sense-frontend-auth
+    imageTag: latest
+    publicPort: 8080
+    publicTargetPort: 80
+    env: []
+    volumes: []
+    mounts: []
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    autoscaling: {}
+    resources: {}

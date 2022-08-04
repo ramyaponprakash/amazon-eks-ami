@@ -1,0 +1,13 @@
+env: dev
+
+clusterName: ${CLUSTER_NAME} #NOTE: not working by helm, need to sed
+vpcId: vpc-09a58d6d
+accountId: 342446142760
+
+awsAuth:
+  boostrap:
+    roleArn: arn:aws:iam::342446142760:role/terraform-eks-sdx-node
+  pipeline:
+    roleArn: arn:aws:iam::342446142760:role/forBamboo
+  eksConsoleDashboard:
+    roleArn: arn:aws:iam::342446142760:role/admin-role

@@ -1,0 +1,11 @@
+namespace: cluster-common
+component: common
+env:
+
+awsAuth:
+  boostrap:
+    roleArn:
+  pipeline:
+    roleArn:
+  eksConsoleDashboard:
+    roleArn:

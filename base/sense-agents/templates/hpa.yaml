@@ -1,0 +1,29 @@
+{{- range $k, $rangeItem := .Values.deployments }}
+{{- with $ }}
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ default $k $rangeItem.name }}-hpa
+  namespace: {{ .Values.namespace | default "sense" }}
+  labels:
+    {{- include "common.labels" . | nindent 4 }}
+    app.kubernetes.io/app-name: {{ default $k $rangeItem.name }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ default $k $rangeItem.name }}-deployment
+  minReplicas: {{ default .Values.autoscaling.minReplicas $rangeItem.autoscaling.minReplicas | default 1 }}
+  maxReplicas: {{ default .Values.autoscaling.maxReplicas $rangeItem.autoscaling.maxReplicas | default 1 }}
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: {{ default .Values.autoscaling.targetCPUUtilizationPercentage $rangeItem.autoscaling.targetCPUUtilizationPercentage | default 80 }}
+    - type: Resource
+      resource:
+        name: memory
+        targetAverageUtilization: {{ default .Values.autoscaling.targetMemoryUtilizationPercentage $rangeItem.autoscaling.targetMemoryUtilizationPercentage | default 80 }}
+---  
+{{- end }}
+{{- end }}

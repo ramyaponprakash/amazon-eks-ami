@@ -1,0 +1,36 @@
+env:
+namespace:
+
+serviceAccount:
+  create: true
+  name: aws-load-balancer-controller
+
+# for template
+internal:
+  alb:
+    default:
+      enabled:
+  nlb:
+    default:
+      enabled:
+
+external:
+  alb:
+    default:
+      enabled:
+  nlb:
+    default:
+      enabled:
+
+# for release
+external-alb-default:
+  enabled:
+
+external-nlb-default:
+  enabled:
+
+internal-alb-default:
+  enabled:
+
+internal-nlb-default:
+  enabled:

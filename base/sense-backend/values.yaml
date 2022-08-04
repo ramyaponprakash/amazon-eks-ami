@@ -1,0 +1,387 @@
+env:
+component: backend
+namespace: sense
+
+enabled: true
+
+replicas: 1
+healthCheckPort: 7171
+
+image:
+  repository:
+  tag: latest
+  pullPolicy: IfNotPresent
+
+podAnnotations: {}
+
+podSecurityContext: {}
+
+containerSecurityContext:
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  privileged: false
+  runAsNonRoot: true
+  runAsUser: 10001 # appuser
+  capabilities:
+    drop:
+    - ALL
+
+resources:
+  requests:
+    memory: "64Mi"
+    cpu: "0.1"
+  limits:
+    memory: "256Mi"
+    cpu: "0.2"
+
+internal:
+  ingressClassName: internal-nlb-default
+external:
+  ingressClassName: external-alb-default
+
+autoscaling:
+  minReplicas: 1
+  maxReplicas: 1
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+livenessProbe:
+  httpGet:
+    path: /diagnostics/healthcheck
+    port: healthcheck
+  failureThreshold: 3
+  periodSeconds: 30
+readinessProbe:
+  httpGet:
+    path: /diagnostics/healthcheck
+    port: healthcheck
+  failureThreshold: 3
+  periodSeconds: 30
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+mounts: []
+volumes: []
+
+serviceAccount:
+  name: sense-backend
+
+# ----- micro-service configs -----
+deployments:
+  # ----- auth -----
+  auth:
+    imageName: sense_auth
+    imageTag: latest
+    adminPort: 9090
+    publicPort: 8080
+    env:
+      - name: SENSE_CONFIG_FILES
+        value: "auth.config"
+    volumes:
+      - name: auth-volume
+        secret:
+          secretName: auth-config
+    mounts:
+      - name: auth-volume
+        mountPath: conf/auth.config.yaml
+        subPath: auth.config.yaml
+        readOnly: true
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    autoscaling: {}
+    resources: {}
+  # ----- iam -----
+  iam:
+    imageName: sense_iam
+    imageTag: latest
+    adminPort: 9091
+    publicPort: 8081
+    env:
+      - name: SENSE_CONFIG_FILES
+        value: "iam.config"
+    volumes:
+      - name: iam-volume
+        secret:
+          secretName: iam-config
+    mounts:
+      - name: iam-volume
+        mountPath: conf/iam.config.yaml
+        subPath: iam.config.yaml
+        readOnly: true
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    autoscaling: {}
+    resources: {}
+  # ----- topics -----
+  topics:
+    imageName: sense_topics
+    imageTag: latest
+    adminPort: 9092
+    publicPort: 8082
+    env:
+      - name: SENSE_CONFIG_FILES
+        value: "topics.config"
+    volumes:
+      - name: topics-volume
+        secret:
+          secretName: topics-config
+    mounts:
+      - name: topics-volume
+        mountPath: conf/topics.config.yaml
+        subPath: topics.config.yaml
+        readOnly: true
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    autoscaling: {}
+    resources: {}
+  # ----- policy -----
+  policy:
+    imageName: sense_policy
+    imageTag: latest
+    adminPort: 9093
+    publicPort: 8083
+    env:
+      - name: SENSE_CONFIG_FILES
+        value: "policy.config"
+    volumes:
+      - name: policy-volume
+        secret:
+          secretName: policy-config
+    mounts:
+      - name: policy-volume
+        mountPath: conf/policy.config.yaml
+        subPath: policy.config.yaml
+        readOnly: true
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    autoscaling: {}
+    resources: {}
+  # ----- role -----
+  role:
+    imageName: sense_role
+    imageTag: latest
+    adminPort: 9094
+    publicPort: 8084
+    env:
+      - name: SENSE_CONFIG_FILES
+        value: "role.config"
+    volumes:
+      - name: role-volume
+        secret:
+          secretName: role-config
+    mounts:
+      - name: role-volume
+        mountPath: conf/role.config.yaml
+        subPath: role.config.yaml
+        readOnly: true
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    autoscaling: {}
+    resources: {}
+  # ----- client -----
+  client:
+    imageName: sense_client
+    imageTag: latest
+    adminPort: 9095
+    publicPort: 8085
+    env:
+      - name: SENSE_CONFIG_FILES
+        value: "client.config"
+    volumes:
+      - name: client-volume
+        secret:
+          secretName: client-config
+    mounts:
+      - name: client-volume
+        mountPath: conf/client.config.yaml
+        subPath: client.config.yaml
+        readOnly: true
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    autoscaling: {}
+    resources: {}
+  # ----- activity -----
+  activity:
+    imageName: sense_activity
+    imageTag: latest
+    adminPort: 9097
+    publicPort: 8087
+    env:
+      - name: SENSE_CONFIG_FILES
+        value: "activity.config"
+    volumes:
+      - name: activity-volume
+        secret:
+          secretName: activity-config
+    mounts:
+      - name: activity-volume
+        mountPath: conf/activity.config.yaml
+        subPath: activity.config.yaml
+        readOnly: true
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    autoscaling: {}
+    resources: {}
+  # ----- subscription -----
+  subscription:
+    imageName: sense_subscription
+    imageTag: latest
+    adminPort: 9098
+    publicPort: 8088
+    env:
+      - name: SENSE_CONFIG_FILES
+        value: "subscription.config"
+    volumes:
+      - name: subscription-volume
+        secret:
+          secretName: subscription-config
+    mounts:
+      - name: subscription-volume
+        mountPath: conf/subscription.config.yaml
+        subPath: subscription.config.yaml
+        readOnly: true
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    autoscaling: {}
+    resources: {}
+  # ----- lookup -----
+  lookup:
+    imageName: sense_lookup
+    imageTag: latest
+    adminPort: 9999
+    publicPort: 8999
+    env:
+      - name: SENSE_CONFIG_FILES
+        value: "lookup.config"
+    volumes:
+      - name: lookup-volume
+        secret:
+          secretName: lookup-config
+    mounts:
+      - name: lookup-volume
+        mountPath: conf/lookup.config.yaml
+        subPath: lookup.config.yaml
+        readOnly: true
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    autoscaling: {}
+    resources: {}
+  # ----- message -----
+  message:
+    imageName: sense_message
+    imageTag: latest
+    adminPort: 9100
+    publicPort: 8100
+    env:
+      - name: SENSE_CONFIG_FILES
+        value: "message.config"
+    volumes:
+      - name: message-volume
+        secret:
+          secretName: message-config
+    mounts:
+      - name: message-volume
+        mountPath: conf/message.config.yaml
+        subPath: message.config.yaml
+        readOnly: true
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    autoscaling: {}
+    resources: {}
+  # ----- notification -----
+  notification:
+    imageName: sense_notification
+    imageTag: latest
+    adminPort: 9101
+    publicPort: 8101
+    env:
+      - name: SENSE_CONFIG_FILES
+        value: "notification.config"
+    volumes:
+      - name: notification-volume
+        secret:
+          secretName: notification-config
+    mounts:
+      - name: notification-volume
+        mountPath: conf/notification.config.yaml
+        subPath: notification.config.yaml
+        readOnly: true
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    autoscaling: {}
+    resources: {}
+  # ----- adaptor -----
+  adaptor:
+    imageName: sense_adaptor
+    imageTag: latest
+    adminPort: 9190
+    publicPort: 8180
+    env:
+      - name: SENSE_CONFIG_FILES
+        value: "adaptor.config"
+    volumes:
+      - name: adaptor-volume
+        secret:
+          secretName: adaptor-config
+    mounts:
+      - name: adaptor-volume
+        mountPath: conf/adaptor.config.yaml
+        subPath: adaptor.config.yaml
+        readOnly: true
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    autoscaling: {}
+    resources: {}
+  # ----- appsettings -----
+  appsettings:
+    imageName: sense_appsettings
+    imageTag: latest
+    adminPort: 9192
+    publicPort: 8182
+    env:
+      - name: SENSE_CONFIG_FILES
+        value: "appsettings.config"
+    volumes:
+      - name: appsettings-volume
+        secret:
+          secretName: appsettings-config
+    mounts:
+      - name: appsettings-volume
+        mountPath: conf/appsettings.config.yaml
+        subPath: appsettings.config.yaml
+        readOnly: true
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    autoscaling: {}
+    resources: {}
+
+cronJob:
+  enabled: true
+  jobs:
+    sense-cron-jobs-daily:
+      name: sense-cron-jobs-daily
+      imageName: sense_cron_jobs
+      schedule: "0 16 * * *"
+      concurrencyPolicy: Forbid
+      containerName: cron-jobs-daily-midnight-sgt
+      containerArgs: []
+      resources:
+        requests:
+          memory: "25Mi"
+        limits:
+          memory: "50Mi"

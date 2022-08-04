@@ -1,0 +1,38 @@
+internal:
+  nlb:
+    default:
+      enabled: true
+
+controller:
+  ingressClassResource:
+    name: internal-nlb-default
+    enabled: true
+    default: false
+    controllerValue: "k8s.io/ingress-nginx"
+    parameters: {}
+  ingressClass: internal-nlb-default
+  electionID: internal-nlb-default
+  service:
+    enableHttp: false
+    enableHttps: false
+    annotations:
+      service.beta.kubernetes.io/aws-load-balancer-name: 'sdx-eks-dev-internal-nlb'
+      service.beta.kubernetes.io/aws-load-balancer-scheme: 'internal'
+      service.beta.kubernetes.io/aws-load-balancer-type: 'external'
+      service.beta.kubernetes.io/aws-load-balancer-backend-protocol: 'tcp'
+      service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: '60'
+      service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: 'true'
+      service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: 'instance'
+      service.beta.kubernetes.io/aws-load-balancer-subnets: 'subnet-0459927e5a9a8ba64,subnet-0e1e99fe7c3dbd3f9'
+      service.beta.kubernetes.io/aws-load-balancer-ssl-ports: '5682,5683'
+      service.beta.kubernetes.io/aws-load-balancer-ssl-cert: 'arn:aws:acm:ap-southeast-1:342446142760:certificate/15d21bbc-02a5-406a-a0f0-57d26462d448'
+      service.beta.kubernetes.io/aws-load-balancer-ssl-negotiation-policy: 'ELBSecurityPolicy-TLS13-1-2-2021-06'
+      service.beta.kubernetes.io/aws-load-balancer-alpn-policy: 'HTTP2Optional'
+
+
+tcp:
+  4848: sense/sense-backend:4848
+  4222: sense-bb/sense-nats:4222
+  5682: default/solace-dev-pubsubplus-dev:5672
+  5681: default/solace-dev-pubsubplus-dev:5671
+  5683: default/solace-dev-pubsubplus-dev:8080

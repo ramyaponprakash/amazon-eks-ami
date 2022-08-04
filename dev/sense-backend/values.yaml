@@ -1,0 +1,39 @@
+env: dev
+
+enabled: false
+
+image:
+  repository: 342446142760.dkr.ecr.ap-southeast-1.amazonaws.com
+
+replicas: 1
+
+autoscaling:
+  minReplicas: 1
+  maxReplicas: 1
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+# ----- micro-service configs -----
+deployments:
+  auth: {}
+  iam: {}
+  topics: {}
+  policy: {}
+  client: {}
+  activity: {}
+  subscription: {}
+  lookup:
+    enabled: true
+  message: {}
+  notification: {}
+  adaptor: {}
+  appsettings: {}
+
+
+cronJob:
+  enabled: true
+  jobs:
+    sense-cron-jobs-daily:
+      containerArgs:
+        - -env=dev
+        - -events=dev.event.yaml

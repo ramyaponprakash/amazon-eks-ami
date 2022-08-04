@@ -1,0 +1,116 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sense-backend-external
+  namespace: {{ .Values.namespace | default "sense" }}
+  annotations:
+    #nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+    #nginx.ingress.kubernetes.io/proxy-ssl-secret: {{ .Values.namespace | default "sense" }}/proxy-ca-secret
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    #nginx.ingress.kubernetes.io/secure-backends: "true"
+    #nginx.ingress.kubernetes.io/ssl-redirect: "false"
+  labels:
+    {{- include "common.labels" . | nindent 4 }}
+spec:
+  ingressClassName: {{ .Values.external.ingressClassName }}
+  rules:
+    - http:
+        paths:
+          - path: /api/(auth/?(.*)$)
+            pathType: Prefix
+            backend:
+              service:
+                name: auth
+                port:
+                  number: 8080
+          - path: /api/(iam/?(.*)$)
+            pathType: Prefix
+            backend:
+              service:
+                name: iam
+                port:
+                  number: 8081
+          - path: /api/(topics/?(.*)$)
+            pathType: Prefix
+            backend:
+              service:
+                name: topics
+                port:
+                  number: 8082
+          - path: /api/(policies/?(.*)$)
+            pathType: Prefix
+            backend:
+              service:
+                name: policy
+                port:
+                  number: 8083
+          - path: /api/(role/?(.*)$)
+            pathType: Prefix
+            backend:
+              service:
+                name: role
+                port:
+                  number: 8084
+          - path: /api/(clients/?(.*)$)
+            pathType: Prefix
+            backend:
+              service:
+                name: client
+                port:
+                  number: 8085
+          - path: /api/(activities/?(.*)$)
+            pathType: Prefix
+            backend:
+              service:
+                name: activity
+                port:
+                  number: 8087
+          - path: /api/(subscriptions/?(.*)$)
+            pathType: Prefix
+            backend:
+              service:
+                name: subscription
+                port:
+                  number: 8088
+          - path: /api/(lookup/?(.*)$)
+            pathType: Prefix
+            backend:
+              service:
+                name: lookup
+                port:
+                  number: 8999
+          - path: /api/(messages/?(.*)$)
+            pathType: Prefix
+            backend:
+              service:
+                name: message
+                port:
+                  number: 8100
+          - path: /api/(notification/?(.*)$)
+            pathType: Prefix
+            backend:
+              service:
+                name: notification
+                port:
+                  number: 8101
+          - path: /api/(adaptors/?(.*)$)
+            pathType: Prefix
+            backend:
+              service:
+                name: adaptor
+                port:
+                  number: 8180
+          - path: /api/(appsettings/?(.*)$)
+            pathType: Prefix
+            backend:
+              service:
+                name: appsettings
+                port:
+                  number: 8182
+          - path: /api/(metrics/?(.*)$)
+            pathType: Prefix
+            backend:
+              service:
+                name: metric
+                port:
+                  number: 8181

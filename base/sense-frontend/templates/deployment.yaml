@@ -1,0 +1,91 @@
+{{- range $k, $rangeItem := .Values.deployments }}
+  {{- with $ }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ default $k $rangeItem.name }}
+  namespace: {{ .Values.namespace | default "sense" }}
+  labels:
+    {{- include "common.labels" . | nindent 4 }}
+    app.kubernetes.io/app-name: {{ default $k $rangeItem.name }}
+spec:
+  replicas: {{ default $rangeItem.replicas .Values.replicas }}
+  selector:
+    matchLabels:
+      {{- include "common.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/app-name: {{ default $k $rangeItem.name }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "common.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/app-name: {{ default $k $rangeItem.name }}
+    spec:
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      securityContext:
+      {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ default $k $rangeItem.name }}
+          securityContext:
+          {{- toYaml .Values.containerSecurityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}/{{ default $rangeItem.imageName $rangeItem.name $k }}:{{ default .Values.image.tag $rangeItem.imageTag | default "latest" }}"
+          volumeMounts:
+          {{ with concat .Values.mounts $rangeItem.mounts }}
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
+          imagePullPolicy: {{ default "IfNotPresent" .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ default $rangeItem.publicPort $rangeItem.publicTargetPort  }}
+              name: public
+            {{- if $rangeItem.adminPort }}
+            - containerPort: {{ default $rangeItem.adminPort $rangeItem.adminTargetPort }}
+              name: admin
+            {{- end }}
+            {{- if or .Values.healthCheckPort $rangeItem.healthCheckPort }}
+            - containerPort: {{ default .Values.healthCheckPort $rangeItem.healthCheckPort }}
+              name: healthcheck
+          {{- end }}
+          env:
+            - name: SENSE_ENV
+              value: {{ .Values.env }}
+            - name: SENSE_MODULE
+              value: {{ default $k $rangeItem.name }}
+            {{- if $rangeItem.env }}
+            {{- range $rangeItem.env }}
+            - {{- toYaml . | nindent 12 }}
+              {{- end }}
+              {{- end }}
+          {{- if .Values.livenessProbe }}
+          livenessProbe:
+          {{- toYaml .Values.livenessProbe | nindent 12 }}
+          {{- end }}
+          {{- if .Values.readinessProbe }}
+          readinessProbe:
+          {{- toYaml .Values.readinessProbe | nindent 12 }}
+          {{- end }}
+          resources:
+          {{- with merge .Values.resources $rangeItem.resources }}
+          {{- toYaml . | nindent 12 }}
+      {{- end }}
+      volumes:
+      {{- with concat .Values.volumes $rangeItem.volumes }}
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      nodeSelector:
+      {{- with merge .Values.nodeSelector $rangeItem.nodeSelector }}
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      affinity:
+      {{- with merge .Values.affinity $rangeItem.affinity }}
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      tolerations:
+      {{- with concat .Values.tolerations $rangeItem.tolerations }}
+      {{- toYaml . | nindent 8 }}
+  {{- end }}
+---
+  {{- end }}
+  {{- end }}
