@@ -1,0 +1,9 @@
+env: dev
+
+nats:
+  serverCert:
+    name: nats-server-cert
+    secretName: nats-server-cert
+    commonName: nats.sense-dev.com
+    sans:
+      - nats.sense-bb.svc.cluster.local

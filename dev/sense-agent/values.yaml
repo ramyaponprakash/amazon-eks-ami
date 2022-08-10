@@ -1,0 +1,127 @@
+env: dev
+
+enabled: true
+
+hostname:
+  internal:
+  external:
+
+image:
+  repository: 342446142760.dkr.ecr.ap-southeast-1.amazonaws.com
+
+replicas: 1
+
+autoscaling:
+  minReplicas: 1
+  maxReplicas: 1
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+secrets:
+  commons: []
+  services: []
+#    - name: auth
+#      key: auth.config.yaml
+#      secretKey: dev/sdx/svc/auth
+
+certs: []
+
+commons:
+  envs: &commonEnvs
+    - name: CLIENT_CA_PATH
+      value: "/etc/sense/cert/backend/client/ca.crt"
+    - name: CLIENT_CERT_PATH
+      value: "/etc/sense/cert/backend/client/tls.crt"
+    - name: CLIENT_KEY_PATH
+      value: "/etc/sense/cert/backend/client/tls.key"
+  volumes: &commonVolumes
+    # --- configs and secrets
+    - name: dev-config
+      configMap:
+        name: dev-config
+    - name: init-map
+      secret:
+        secretName: init
+    - name: mongodb
+      secret:
+        secretName: mongodb
+    - name: redis
+      secret:
+        secretName: redis
+    - name: backend
+      secret:
+        secretName: backend
+    - name: rabbitmq
+      secret:
+        secretName: rabbitmq
+    - name: elasticsearch
+      secret:
+        secretName: elasticsearch
+    - name: nats
+      secret:
+        secretName: nats
+    # --- certificates
+    - name: backend-client-cert
+      secret:
+        secretName: backend-client-cert
+    - name: mongo-client-cert
+      secret:
+        secretName: mongo-client-cert
+    - name: nats-client-cert
+      secret:
+        secretName: nats-client-cert
+  mounts: &commonMounts
+    # --- configs and secrets
+    - name: dev-config
+      readOnly: true
+      mountPath: /etc/sense/conf/dev.config.yaml
+      subPath: dev.config.yaml
+    - name: init-map
+      readOnly: true
+      mountPath: /etc/sense/conf/init_config.yaml
+      subPath: init_config.yaml
+    - name: mongodb
+      readOnly: true
+      mountPath: /etc/sense/conf/mongodb_config.yaml
+      subPath: mongodb_config.yaml
+    - name: redis
+      readOnly: true
+      mountPath: /etc/sense/conf/redis_config.yaml
+      subPath: redis_config.yaml
+    - name: rabbitmq
+      readOnly: true
+      mountPath: /etc/sense/conf/rabbitmq_config.yaml
+      subPath: rabbitmq_config.yaml
+    - name: elasticsearch
+      readOnly: true
+      mountPath: /etc/sense/conf/elasticsearch_config.yaml
+      subPath: elasticsearch_config.yaml
+    - name: nats
+      readOnly: true
+      mountPath: /etc/sense/conf/nats_config.yaml
+      subPath: nats_config.yaml
+    # --- certificates
+    - name: backend-client-cert
+      readOnly: true
+      mountPath: /etc/sense/cert/backend/client/
+    - name: mongo-client-cert
+      readOnly: true
+      mountPath: /etc/sense/cert/mongo/
+    - name: nats-client-cert
+      readOnly: true
+      mountPath: /etc/sense/cert/nats/
+
+
+deployments:
+  sniff:
+    env: []
+    volumes: []
+    mounts: []
+  dbtopics:
+    env: []
+    volumes: []
+    mounts: []
+  elastic:
+    env: []
+    volumes: []
+    mounts: []

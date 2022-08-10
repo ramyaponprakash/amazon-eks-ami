@@ -10,6 +10,8 @@ environments:
       - namespace: "cluster-common"
 
 repositories:
+  - name: cluster-common
+    url: s3://sdx-eks-artifacts/{{ .Environment.Name }}/charts/cluster-common
   - name: external-dns
     url: https://kubernetes-sigs.github.io/external-dns/
   - name: external-secrets
@@ -27,16 +29,28 @@ releases:
   - name: cluster-common
     namespace: cluster-common
     createNamespace: true
-    chart: "."
-    version: 0.0.1
+    chart: cluster-common/cluster-common
+    version: 0.0.2
     missingFileHandler: Warn
+    disableValidationOnInstall: true # CRD
     values:
       - ./values.yaml
       - ../../{{ .Environment.Name }}/cluster-common/values.yaml
+    needs:
+      - external-secrets
+      - cert-manager-awspca
     hooks:
       - events: [ "presync" ]
         showlogs: true
         command: "./scripts/cluster-pre.sh"
+        args:
+          - "-c"
+          - "{{`{{ .Values.clusterName }}`}}"
+          - "-n"
+          - "{{`{{ .Values.namespace }}`}}"
+      - events: [ "presync" ]
+        showlogs: true
+        command: "./scripts/ebscsi-pre.sh"
         args:
           - "-c"
           - "{{`{{ .Values.clusterName }}`}}"
@@ -74,9 +88,28 @@ releases:
     chart: external-secrets/external-secrets
     version: 0.5.8
     missingFileHandler: Warn
+    disableValidationOnInstall: true # CRD
     values:
       - ./values.external-secrets.yaml
       - ../../{{ .Environment.Name }}/cluster-common/values.external-secrets.yaml.gotmpl
+    hooks:
+      - events: [ "presync" ]
+        showlogs: true
+        command: "./scripts/secretaccess-pre.sh"
+        args:
+          - "-a"
+          - "{{`{{ .Values.accountId }}`}}"
+          - "-e"
+          - "{{`{{ .Environment.Name }}`}}"
+          - "-c"
+          - "{{`{{ .Values.clusterName }}`}}"
+          - "-n"
+          - "{{`{{ .Values.namespace }}`}}"
+      - events: [ "postsync" ]
+        showlogs: true
+        command: "sleep"
+        args:
+          - "45"
 
   - name: cluster-autoscaler
     namespace: cluster-common
@@ -125,7 +158,6 @@ releases:
     disableValidationOnInstall: true # CRD
     values:
       - ./values.cert-manager.yaml
-      - ../../{{ .Environment.Name }}/cluster-common/values.cert-manager.yaml.gotmpl
 
   - name: cert-manager-awspca
     namespace: cluster-common
@@ -136,3 +168,18 @@ releases:
     disableValidationOnInstall: true # CRD
     needs:
       - cert-manager
+    values:
+      - ./values.cert-manager-acm.yaml
+    hooks:
+      - events: [ "presync" ]
+        showlogs: true
+        command: "./scripts/acmpca-pre.sh"
+        args:
+          - "-a"
+          - "{{`{{ .Values.accountId }}`}}"
+          - "-e"
+          - "{{`{{ .Environment.Name }}`}}"
+          - "-c"
+          - "{{`{{ .Values.clusterName }}`}}"
+          - "-n"
+          - "{{`{{ .Values.namespace }}`}}"

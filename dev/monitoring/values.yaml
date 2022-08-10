@@ -1,7 +1,7 @@
 env: dev
 
 jaegertracing:
-  enabled: false
+  enabled: true
 
 kube:
   hostname: k8.sense-dev.com
@@ -13,18 +13,3 @@ opensearch:
   ingressClassName: external-alb-default
   openToLocal: false
   vpcEndpoint: vpc-dev-sdx-es-kgfhpvtfio32mmlzxw22wbgi4i.ap-southeast-1.es.amazonaws.com
-
-
-image:
-  repository: 342446142760.dkr.ecr.ap-southeast-1.amazonaws.com/
-  tag: latest
-  pullPolicy: Always
-  fluentd:
-    name: sense_fluentd
-
-resources:
-  fluentd:
-    limits:
-      memory: 200Mi
-      cpu: 0.1
-

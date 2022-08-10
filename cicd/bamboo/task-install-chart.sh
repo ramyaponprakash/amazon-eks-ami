@@ -1,6 +1,7 @@
 #!/bin/bash
 
-CHART_NAME="sense-backend"
+CHART_NAME="${CHART_NAME}"
+IMAGE_TAG="${TAG}"
 
 # load env vars
 TEMP_FOLDER=$1
@@ -9,4 +10,4 @@ if [[ -z "${TEMP_FOLDER}" ]]; then
 fi
 . ${TEMP_FOLDER}/envvars
 
-./cicd/bamboo/base-publish-chart.sh $CHART_NAME $ENV $CLUSTER_NAME
+./cicd/bamboo/base-deploy-helmfile.sh "$CHART_NAME" "$ENV" "$CLUSTER_NAME" "$IMAGE_TAG"

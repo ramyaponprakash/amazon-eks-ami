@@ -9,3 +9,9 @@ awsAuth:
     roleArn:
   eksConsoleDashboard:
     roleArn:
+
+caArn:
+
+secretstore:
+  serviceAccount:
+    name: secrets-access-sa

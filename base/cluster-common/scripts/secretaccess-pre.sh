@@ -2,7 +2,7 @@
 
 AWS_ACCOUNT_ID="342446142760"
 CLUSTER_NAME=""
-NAMESPACE="ingress-controller"
+NAMESPACE="cluster-common"
 ENV=dev
 LOC="/tmp/"
 
@@ -20,32 +20,41 @@ done
 [[ -z "${CLUSTER_NAME}" ]] && echo "CLUSTER_NAME is required" && exit 1
 [[ -z "${NAMESPACE}" ]] && echo "NAMESPACE is required" && exit 1
 
-echo "Create aws load balance controller setups"
-# https://docs.aws.amazon.com/eks/latest/userguide/aws-load-balancer-controller.html
+echo "Create secret access setups"
 
-AWS_LB_CTR_APP_VERSION="v2.4.2"
+POLICY=$(cat <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [ {
+        "Effect": "Allow",
+        "Action": [
+            "secretsmanager:GetResourcePolicy",
+            "secretsmanager:GetSecretValue",
+            "secretsmanager:DescribeSecret",
+            "secretsmanager:ListSecretVersionIds"
+        ],
+        "Resource": ["arn:aws:secretsmanager:ap-southeast-1:$AWS_ACCOUNT_ID:secret:*"]
+    } ]
+}
+EOF
+)
 
-curl -s -L -o iam_policy.json "https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/$AWS_LB_CTR_APP_VERSION/docs/install/iam_policy.json"
-
-POLICY_NAME="AWSLoadBalancerControllerIAMPolicy-$CLUSTER_NAME"
+POLICY_NAME="AllowEKSSecretManagerAccess-$AWS_ACCOUNT_ID-$ENV"
 
 "${LOC}"aws iam create-policy \
   --policy-name "$POLICY_NAME" \
-  --policy-document file://iam_policy.json 2> /dev/null
-
-rm iam_policy.json
-
-ROLE_NAME="EKS-LBC-$(echo -n "$CLUSTER_NAME" | md5sum | awk '{ print $1 }')"
+  --policy-document "$POLICY" 2> /dev/null
 
 POLICY_ARN=$(aws iam list-policies --query "Policies[?PolicyName==\`$POLICY_NAME\`].Arn" --output text)
+
+ROLE_NAME="EKS-SEC-$(echo -n "$CLUSTER_NAME" | md5sum | awk '{ print $1 }')"
 
 "${LOC}"eksctl create iamserviceaccount \
   --cluster="$CLUSTER_NAME" \
   --namespace="$NAMESPACE" \
-  --name=aws-load-balancer-controller \
+  --name=secrets-access-sa \
   --override-existing-serviceaccounts \
   --role-name "$ROLE_NAME" \
   --attach-policy-arn "$POLICY_ARN" \
   --approve 2> /dev/null
 
-"${LOC}"kubectl apply -k "github.com/aws/eks-charts/stable/aws-load-balancer-controller/crds?ref=master"

@@ -18,6 +18,7 @@ ROLE=""
 BUILD_ENV="${bamboo_BUILD_ENV}" # "${bamboo.BUILD_ENV}"
 ADD_BRANCH_NAME="${ADD_BRANCH_NAME}" # "${bamboo.ADD_BRANCH_NAME}"
 BUILD_NUMBER="${bamboo_buildNumber}" # ${bamboo.buildNumber}
+BUILD_RESULT_KEY="${bamboo_buildResultKey}" # ${bamboo.buildResultKey}
 
 TEMP_FOLDER=$1
 if [[ -z "${TEMP_FOLDER}" ]]; then
@@ -71,5 +72,6 @@ export ADD_BRANCH_NAME=${ADD_BRANCH_NAME}
 export ENV=$ENV
 export BUILD_ENV=$BUILD_ENV
 export BUILD_NUMBER=$BUILD_NUMBER
+export BUILD_RESULT_KEY=$BUILD_RESULT_KEY
 EOF
 

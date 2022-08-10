@@ -1,0 +1,24 @@
+{{- range .Values.certs }}
+kind: Certificate
+apiVersion: cert-manager.io/v1
+metadata:
+  name: {{ .name }}
+  namespace: {{ $.Values.namespace | default "sense" }}
+spec:
+  commonName: {{ .commonName | quote }}
+  dnsNames: {{ .sans | toYaml | nindent 6 }}
+  duration: 8760h0m0s
+  issuerRef:
+    group: awspca.cert-manager.io
+    kind: AWSPCAClusterIssuer
+    name: cluster-root-ca
+  renewBefore: 360h0m0s
+  secretName: {{ .secretName }}
+  usages:
+    - server auth
+    - client auth
+  privateKey:
+    algorithm: "RSA"
+    size: 2048
+---
+{{- end }}

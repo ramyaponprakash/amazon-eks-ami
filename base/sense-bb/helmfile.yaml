@@ -1,0 +1,43 @@
+helmBinary: /tmp/helm
+
+environments:
+  dev:
+    values:
+      - ./values.yaml
+      - ../../dev/sense-bb/values.yaml
+      - clusterName: {{ requiredEnv "CLUSTER_NAME" }}
+      - accountId: {{ requiredEnv "AWS_ACC" }}
+      - namespace: "sense-bb"
+
+repositories:
+  - name: sense-bb
+    url: s3://sdx-eks-artifacts/{{ .Environment.Name }}/charts/sense-bb
+  - name: nats
+    url: https://nats-io.github.io/k8s/helm/charts/
+
+missingFileHandler: Error
+
+releases:
+  - name: sense-bb
+    namespace: sense-bb
+    createNamespace: true
+    chart: sense-bb/sense-bb
+    version: 0.0.1
+    missingFileHandler: Warn
+    values:
+      - ./values.yaml
+      - ../../{{ .Environment.Name }}/sense-bb/values.yaml
+      - ./values.nats.yaml
+      - ../../{{ .Environment.Name }}/sense-bb/values.nats.yaml
+
+  - name: nats
+    namespace: sense-bb
+    createNamespace: true
+    chart: nats/nats
+    version: 0.17.4
+    missingFileHandler: Warn
+    needs:
+      - sense-bb
+    values:
+      - ./values.nats.yaml
+      - ../../{{ .Environment.Name }}/sense-bb/values.nats.yaml

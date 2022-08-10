@@ -3,7 +3,6 @@ component: frontend
 namespace: sense
 
 replicas: 1
-healthCheckPort:
 
 hostname:
 moduleName: sense-frontend-auth
@@ -42,8 +41,12 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   targetMemoryUtilizationPercentage: 80
 
-livenessProbe: {}
-readinessProbe: {}
+healthcheck:
+  enabled:
+  port:
+  livenessProbe: {}
+  readinessProbe: {}
+
 nodeSelector: {}
 tolerations: []
 affinity: {}

@@ -1,4 +1,4 @@
-#helmBinary: /tmp/helm
+helmBinary: /tmp/helm
 
 environments:
   dev:
@@ -10,12 +10,16 @@ environments:
       - namespace: "monitoring"
 
 repositories:
+  - name: monitoring
+    url: s3://sdx-eks-artifacts/{{ .Environment.Name }}/charts/monitoring
   - name: kubernetes-dashboard
     url: https://kubernetes.github.io/dashboard/
   - name: metrics-server
     url: https://kubernetes-sigs.github.io/metrics-server/
   - name: jaegertracing
     url:  https://jaegertracing.github.io/helm-charts
+  - name: fluent
+    url: https://fluent.github.io/helm-charts
 
 missingFileHandler: Error
 
@@ -23,22 +27,12 @@ releases:
   - name: monitoring
     namespace: monitoring
     createNamespace: true
-    chart: "."
-    version: 0.0.1
+    chart: monitoring/monitoring
+    version: 0.0.2
     missingFileHandler: Warn
     values:
       - ./values.yaml
       - ../../{{ .Environment.Name }}/monitoring/values.yaml
-#    hooks:
-#      - events: [ "presync" ]
-#        showlogs: true
-#        command: "./scripts/cluster-pre.sh"
-#        args:
-#          - "-c"
-#          - "{{`{{ .Values.clusterName }}`}}"
-#          - "-n"
-#          - "{{`{{ .Values.namespace }}`}}"
-
 
   - name: kubernetes-dashboard
     namespace: monitoring
@@ -48,7 +42,7 @@ releases:
     missingFileHandler: Warn
     values:
       - ./values.kubernetes-dashboard.yaml
-      - ../../{{ .Environment.Name }}/cluster-common/values.kubernetes-dashboard.yaml
+      - ../../{{ .Environment.Name }}/monitoring/values.kubernetes-dashboard.yaml
 
   - name: metrics-server
     namespace: monitoring
@@ -63,10 +57,20 @@ releases:
   - name: jaegertracing
     namespace: monitoring
     createNamespace: true
-    chart: jaegertracing/jaegertracing
-    version: 3.8.2
+    chart: jaegertracing/jaeger
+    version: 0.58.0
     missingFileHandler: Warn
     condition: jaegertracing.enabled
     values:
       - ./values.jaegertracing.yaml
-      - ../../{{ .Environment.Name }}/cluster-common/values.jaegertracing.yaml
+      - ../../{{ .Environment.Name }}/monitoring/values.jaegertracing.yaml
+
+  - name: fleuntd
+    namespace: monitoring
+    createNamespace: true
+    chart: fluent/fluentd
+    version: 0.3.9
+    missingFileHandler: Warn
+    values:
+      - ./values.fluentd.yaml
+      - ../../{{ .Environment.Name }}/monitoring/values.fluentd.yaml

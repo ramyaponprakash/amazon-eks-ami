@@ -1,0 +1,10 @@
+namespace: sense-bb
+component: broker
+env:
+
+nats:
+  serverCert:
+    name:
+    secretName:
+    commonName:
+    sans: []

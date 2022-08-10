@@ -20,8 +20,7 @@ done
 [[ -z "${CLUSTER_NAME}" ]] && echo "CLUSTER_NAME is required" && exit 1
 [[ -z "${NAMESPACE}" ]] && echo "NAMESPACE is required" && exit 1
 
-echo "Create external dns setups"
-# https://github.com/kubernetes-sigs/external-dns/blob/master/docs/tutorials/aws.md
+echo "Create EBS CSI access setups"
 
 POLICY=$(cat <<EOF
 {
@@ -30,28 +29,34 @@ POLICY=$(cat <<EOF
     {
       "Effect": "Allow",
       "Action": [
-        "route53:ChangeResourceRecordSets"
+        "kms:CreateGrant",
+        "kms:ListGrants",
+        "kms:RevokeGrant"
       ],
-      "Resource": [
-        "arn:aws:route53:::hostedzone/*"
-      ]
+     "Resource": "*",
+      "Condition": {
+        "Bool": {
+          "kms:GrantIsForAWSResource": "true"
+        }
+      }
     },
     {
       "Effect": "Allow",
       "Action": [
-        "route53:ListHostedZones",
-        "route53:ListResourceRecordSets"
+        "kms:Encrypt",
+        "kms:Decrypt",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*",
+        "kms:DescribeKey"
       ],
-      "Resource": [
-        "*"
-      ]
+      "Resource": "*"
     }
   ]
 }
 EOF
 )
 
-POLICY_NAME="AllowExternalDNSUpdates"
+POLICY_NAME="KMS_On_EBS_Policy-$AWS_ACCOUNT_ID-$ENV"
 
 "${LOC}"aws iam create-policy \
   --policy-name "$POLICY_NAME" \
@@ -59,14 +64,17 @@ POLICY_NAME="AllowExternalDNSUpdates"
 
 POLICY_ARN=$(aws iam list-policies --query "Policies[?PolicyName==\`$POLICY_NAME\`].Arn" --output text)
 
-ROLE_NAME="EKS-DNS-$(echo -n "$CLUSTER_NAME" | md5sum | awk '{ print $1 }')"
+ROLE_NAME="EKS-EBSCSI-$(echo -n "$CLUSTER_NAME" | md5sum | awk '{ print $1 }')"
 
 "${LOC}"eksctl create iamserviceaccount \
+  --name ebs-csi-controller-sa \
+  --namespace kube-system \
   --cluster="$CLUSTER_NAME" \
-  --namespace="$NAMESPACE" \
-  --name=external-dns \
+  --attach-policy-arn arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy \
   --override-existing-serviceaccounts \
   --role-name "$ROLE_NAME" \
-  --attach-policy-arn "$POLICY_ARN" \
   --approve 2> /dev/null
 
+"${LOC}"aws iam attach-role-policy \
+  --policy-arn "$POLICY_ARN" \
+  --role-name "$ROLE_NAME" 2> /dev/null

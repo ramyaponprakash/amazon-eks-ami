@@ -19,11 +19,15 @@ spec:
     - type: Resource
       resource:
         name: cpu
-        targetAverageUtilization: {{ default .Values.autoscaling.targetCPUUtilizationPercentage $rangeItem.autoscaling.targetCPUUtilizationPercentage | default 80 }}
+        target:
+          type: Utilization
+          averageUtilization: {{ default .Values.autoscaling.targetCPUUtilizationPercentage $rangeItem.autoscaling.targetCPUUtilizationPercentage | default 80 }}
     - type: Resource
       resource:
         name: memory
-        targetAverageUtilization: {{ default .Values.autoscaling.targetMemoryUtilizationPercentage $rangeItem.autoscaling.targetMemoryUtilizationPercentage | default 80 }}
+        target:
+          type: Utilization
+          averageUtilization: {{ default .Values.autoscaling.targetMemoryUtilizationPercentage $rangeItem.autoscaling.targetMemoryUtilizationPercentage | default 80 }}
 ---  
 {{- end }}
 {{- end }}
