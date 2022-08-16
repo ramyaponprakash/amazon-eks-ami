@@ -23,7 +23,7 @@ resource "aws_eks_cluster" "sdx-eks-cluster" {
   role_arn                  = aws_iam_role.sdx-eks-cluster.arn
   vpc_config {
     security_group_ids      = [aws_security_group.sdx-eks-cluster.id]
-    subnet_ids              = var.eks_cluster_subnet_ids
+    subnet_ids              = var.subnet_ids
   }
 
   timeouts {

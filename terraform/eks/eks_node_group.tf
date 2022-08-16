@@ -9,7 +9,7 @@ resource "aws_eks_node_group" "sdx-eks-blue-node" {
   cluster_name    = var.cluster_name
   node_group_name = "sdx_eks_blue_nodegroup"
   node_role_arn   = aws_iam_role.sdx-eks-node.arn
-  subnet_ids      = var.eks_nodegroup_subnet_ids
+  subnet_ids      = var.subnet_ids
   instance_types  = [var.instance_type]
 
   scaling_config {

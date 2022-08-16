@@ -34,12 +34,7 @@ variable "sense_key" {
   type    = string
 }
 
-variable "eks_nodegroup_subnet_ids" {
-    description = "eks_nodegroup_subnet_ids"
-    type        = list
-}
-
-variable "eks_cluster_subnet_ids" {
+variable "subnet_ids" {
     description = "eks_cluster_subnet_ids"
     type        = list
 }

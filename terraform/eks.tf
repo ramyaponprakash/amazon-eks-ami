@@ -8,8 +8,7 @@ module "eks_cluster" {
   cluster_version               = var.cluster_version
   environment                   = var.environment
   instance_type                 = var.instance_type
-  eks_cluster_subnet_ids        = var.eks_cluster_subnet_ids
-  eks_nodegroup_subnet_ids      = var.eks_nodegroup_subnet_ids
+  subnet_ids                    = var.subnet_ids
   eks_cw_loggroup               = var.eks_cw_loggroup
 
 }
