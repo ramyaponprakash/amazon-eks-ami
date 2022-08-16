@@ -41,6 +41,10 @@ variable "instance_type" {
   type    = string
 }
 
+variable "instance_type_bastion" {
+  type    = string
+}
+
 variable "sense_key" {
   type    = string
 }
@@ -51,9 +55,27 @@ variable "subnet_ids" {
     type        = list
 }
 
+variable "subnet_id_bastion" {
+    description = "vpc-subnet-bastion"
+    type        = string
+}
+
 variable "eks_cw_loggroup" {
     description = "eks cloudwatch loggroup"
     type        = string
 }
 
+variable "ami" {
+  description = "aws ami "
+}
+
+variable "cidr_blocks_bastion_ssh" {
+  description = "A list of CIDR blocks to allow traffic"
+  type        = list
+}
+
+variable "prefix_list_ids_bastion_ssh" {
+  description = "A list of CIDR blocks to allow traffic from prefix_list_ids"
+  type        = list
+}
 
