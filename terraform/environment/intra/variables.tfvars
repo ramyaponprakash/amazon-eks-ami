@@ -1,5 +1,5 @@
 ###############################################
-#  Environment file for dev cluster creation
+#  Environment file for intra cluster creation
 #
 ################################################
 cluster_blue_name            = "sdx-intra-eks-blue-cluster"

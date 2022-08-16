@@ -1,5 +1,5 @@
 ###############################################
-#  Environment file for dev cluster creation
+#  Environment file for prd cluster creation
 #
 ################################################
 cluster_blue_name            = "sdx-prd-eks-blue-cluster"

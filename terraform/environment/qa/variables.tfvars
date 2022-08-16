@@ -1,5 +1,5 @@
 ###############################################
-#  Environment file for dev cluster creation
+#  Environment file for qa cluster creation
 #
 ################################################
 cluster_blue_name            = "sdx-qa-eks-blue-cluster"
