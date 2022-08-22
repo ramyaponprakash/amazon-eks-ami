@@ -3,6 +3,21 @@ variable "cluster_version" {
   type        = string
 }
 
+variable "kubectl_version" {
+  description = "Kubectl version to use for the EKS cluster."
+  type        = string
+}
+
+variable "helm_version" {
+  description = "helm version to use for the EKS cluster."
+  type        = string
+}
+
+variable "helmfile_version" {
+  description = "helmfile version to use for the EKS cluster."
+  type        = string
+}
+
 variable "cluster_create_timeout" {
   description = "Timeout value when creating the EKS cluster."
   type        = string

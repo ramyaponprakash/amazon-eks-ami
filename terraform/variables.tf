@@ -16,6 +16,21 @@ variable "cluster_version" {
   type        = string
 }
 
+variable "kubectl_version" {
+  description = "Kubectl version to use for the EKS cluster."
+  type        = string
+}
+
+variable "helm_version" {
+  description = "helm version to use for the EKS cluster."
+  type        = string
+}
+
+variable "helmfile_version" {
+  description = "helmfile version to use for the EKS cluster."
+  type        = string
+}
+
 variable "cluster_log_retention_in_days" {
   default     = 90
   description = "Number of days to retain log events. Default retention - 90 days."

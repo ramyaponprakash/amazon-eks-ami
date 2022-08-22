@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html
-KUBECTL_VER="1.22.6/2022-03-09"
+#KUBECTL_VER="1.22.6/2022-03-09"
 
 # https://github.com/helm/helm/releases
 # https://helm.sh/docs/topics/version_skew/
-HELM_VER="v3.9.2"
-HELMFILE_VER="0.145.2"
+#HELM_VER="v3.9.2"
+#HELMFILE_VER="0.145.2"
 
 install_command_if_not_exist() {
   if ! command -v $1 &> /dev/null
@@ -25,16 +25,16 @@ install_eksctl() {
 }
 
 install_kubectl() {
-  echo "Installing kubectl - version: ${KUBECTL_VER}"
-  curl -o kubectl "https://s3.us-west-2.amazonaws.com/amazon-eks/${KUBECTL_VER}/bin/linux/amd64/kubectl"
+  echo "Installing kubectl - version: ${kubectl_version}"
+  curl -o kubectl "https://s3.us-west-2.amazonaws.com/amazon-eks/${kubectl_version}/bin/linux/amd64/kubectl"
   chmod +x ./kubectl &&
   mv ./kubectl /usr/local/bin/kubectl
   kubectl version --short --client
 }
 
 install_helm() {
-  echo "Installing helm - version: ${HELM_VER}"
-  curl -o helm.tar.gz "https://get.helm.sh/helm-${HELM_VER}-linux-amd64.tar.gz"
+  echo "Installing helm - version: ${helm_version}"
+  curl -o helm.tar.gz "https://get.helm.sh/helm-${helm_version}-linux-amd64.tar.gz"
   tar -zxvf helm.tar.gz &&
   chmod +x ./linux-amd64/helm &&
   mv ./linux-amd64/helm /usr/local/bin/helm &&
@@ -43,8 +43,8 @@ install_helm() {
 
   echo "Installing helm plugins"
   helm plugin install https://github.com/hypnoglow/helm-s3.git
-  echo "Installing helmfile - version: ${HELMFILE_VER}"
-  curl -L -o helmfile.tar.gz "https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VER}/helmfile_${HELMFILE_VER}_linux_amd64.tar.gz"
+  echo "Installing helmfile - version: ${helmfile_version}"
+  curl -L -o helmfile.tar.gz "https://github.com/helmfile/helmfile/releases/download/v${helmfile_version}/helmfile_${helmfile_version}_linux_amd64.tar.gz"
   mkdir helmfile &&
   tar -zxvf helmfile.tar.gz -C helmfile &&
   chmod +x ./helmfile/helmfile &&

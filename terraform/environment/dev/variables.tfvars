@@ -17,6 +17,9 @@ eks_cw_loggroup              = "sdx-dev-eks-blue-cluster"
 ami                          = "ami-02ee763250491e04a"
 cidr_blocks_bastion_ssh      = ["172.31.16.0/24"]
 prefix_list_ids_bastion_ssh  = ["pl-0af10fe06357d6aff"]
+kubectl_version              =  "1.22.6/2022-03-09"
+helm_version                 = "v3.9.2"
+helmfile_version             = "0.145.2"
 
 
 

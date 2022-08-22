@@ -20,5 +20,8 @@ module "eks_cluster" {
   ami                           = var.ami
   cidr_blocks_bastion_ssh       = var.cidr_blocks_bastion_ssh
   prefix_list_ids_bastion_ssh   = var.prefix_list_ids_bastion_ssh
+  kubectl_version               = var.kubectl_version
+  helm_version                  = var.helm_version
+  helmfile_version              = var.helmfile_version
 
 }

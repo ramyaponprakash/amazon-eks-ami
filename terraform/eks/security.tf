@@ -35,7 +35,7 @@ resource "aws_security_group" "sdx-eks-cluster" {
 
 resource "aws_security_group" "sgrp-sdx-dev-ssh" {
     vpc_id      = var.sense_vpc
-    name        = "sgrp-sdx-${var.environment}-ssh"
+    name        = "sgrp-sdx-${var.environment}-eks-ssh"
     description = "bastion ssh"    
 
     ingress {
