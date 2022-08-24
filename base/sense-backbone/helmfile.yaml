@@ -1,43 +1,43 @@
-helmBinary: /tmp/helm
+#helmBinary: /tmp/helm
 
 environments:
   dev:
     values:
       - ./values.yaml
-      - ../../dev/sense-bb/values.yaml
+      - ../../dev/sense-backbone/values.yaml
       - clusterName: {{ requiredEnv "CLUSTER_NAME" }}
       - accountId: {{ requiredEnv "AWS_ACC" }}
-      - namespace: "sense-bb"
+      - namespace: "sense-backbone"
 
 repositories:
-  - name: sense-bb
-    url: s3://sdx-eks-artifacts/{{ .Environment.Name }}/charts/sense-bb
+  - name: sense-backbone
+    url: s3://sdx-eks-artifacts/{{ .Environment.Name }}/charts/sense-backbone
   - name: nats
     url: https://nats-io.github.io/k8s/helm/charts/
 
 missingFileHandler: Error
 
 releases:
-  - name: sense-bb
-    namespace: sense-bb
+  - name: sense-backbone
+    namespace: sense-backbone
     createNamespace: true
-    chart: sense-bb/sense-bb
+    chart: sense-backbone/sense-backbone
     version: 0.0.1
     missingFileHandler: Warn
     values:
       - ./values.yaml
-      - ../../{{ .Environment.Name }}/sense-bb/values.yaml
+      - ../../{{ .Environment.Name }}/sense-backbone/values.yaml
       - ./values.nats.yaml
-      - ../../{{ .Environment.Name }}/sense-bb/values.nats.yaml
+      - ../../{{ .Environment.Name }}/sense-backbone/values.nats.yaml
 
   - name: nats
-    namespace: sense-bb
+    namespace: sense-backbone
     createNamespace: true
     chart: nats/nats
     version: 0.17.4
     missingFileHandler: Warn
     needs:
-      - sense-bb
+      - sense-backbone
     values:
       - ./values.nats.yaml
-      - ../../{{ .Environment.Name }}/sense-bb/values.nats.yaml
+      - ../../{{ .Environment.Name }}/sense-backbone/values.nats.yaml

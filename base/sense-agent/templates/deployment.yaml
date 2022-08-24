@@ -52,8 +52,6 @@ spec:
             {{- end }}
             - name: SENSE_ENV
               value: {{ .Values.env }}
-            - name: SENSE_MODULE
-              value: {{ default $k $rangeItem.name }}
           {{- if .Values.healthcheck.enabled }}
           {{- if .Values.livenessProbe }}
           livenessProbe:

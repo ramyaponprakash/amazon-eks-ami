@@ -2,7 +2,7 @@ kind: Certificate
 apiVersion: cert-manager.io/v1
 metadata:
   name: {{ .Values.nats.serverCert.name }}
-  namespace: {{ .Values.namespace | default "sense-bb" }}
+  namespace: {{ .Values.namespace | default "sense-backbone" }}
 spec:
   commonName: {{ .Values.nats.serverCert.commonName }}
   dnsNames:  {{ .Values.nats.serverCert.sans | toYaml | nindent 6 }}

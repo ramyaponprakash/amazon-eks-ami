@@ -86,6 +86,7 @@ certs: []
 
 deployments:
   sniff:
+    enabled:
     imageName: sense_sniff_agent
     imageTag:
     ports: []
@@ -98,6 +99,7 @@ deployments:
     volumes: []
     mounts: []
   dbtopics:
+    enabled:
     imageName: sense_sniff_agent_dbtopics
     imageTag:
     ports: []
@@ -110,6 +112,7 @@ deployments:
     volumes: []
     mounts: []
   elastic:
+    enabled:
     imageName: sense_sniff_agent_elastic
     imageTag:
     ports: []

@@ -1,5 +1,5 @@
-namespace: sense-bb
-component: broker
+namespace: sense-backbone
+component: infra
 env:
 
 nats:

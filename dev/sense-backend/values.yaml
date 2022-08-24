@@ -101,7 +101,7 @@ certs:
     secretName: nats-client-cert
     commonName: appuser
     sans:
-      - nats.sense-bb.svc.cluster.local
+      - nats.sense-backbone.svc.cluster.local
 
 commons:
   envs: &commonEnvs

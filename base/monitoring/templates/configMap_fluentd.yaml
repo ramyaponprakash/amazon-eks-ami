@@ -1,0 +1,94 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fluentd-conf
+  namespace: {{ .Values.namespace | default "monitoring" }}
+data:
+  fluent.conf: |
+    <source>
+      @id fluentd-containers.log
+      @type tail
+      path /var/log/containers/*.log
+      pos_file /var/log/es-containers.log.pos
+      tag kubernetes.*
+      @label @mainstream
+      read_from_head true
+      <parse>
+        @type multi_format
+        <pattern>
+          format json
+        </pattern>
+        <pattern>
+          format regexp
+          expression /^(?<time>.+) (?<stream>stdout|stderr) [^ ]* (?<log>.*)$/
+          time_format %Y-%m-%dT%H:%M:%S.%N%:z
+        </pattern>
+      </parse>
+    </source>
+    <label @mainstream>
+      <filter kubernetes.var.log.containers.**sense**.log>
+        @id filter_kubernetes_metadata
+        @type kubernetes_metadata
+      </filter>
+      <filter kubernetes.var.log.containers.**sense**.log>
+      @id filter_parser
+      @type parser
+      key_name log
+      reserve_data true
+      emit_invalid_record_to_error false
+      <parse>
+        @type multi_format
+        <pattern>
+          format json
+          time_key time
+          time_format %Y-%m-%dT%H:%M:%S.%L%z
+        </pattern>
+        <pattern>
+          format none
+        </pattern>
+      </parse>
+      </filter>
+      <filter kubernetes.var.log.containers.**sense**.log>
+        @type elasticsearch_genid
+        hash_id_key hash_id
+      </filter>
+      <match kubernetes.var.log.containers.**sense**.log>
+        @id   output1
+        @type elasticsearch
+        type_name _doc
+        suppress_type_name true
+        hosts {{ .Values.opensearch.endpoint }}
+        logstash_format true
+        logstash_prefix fluentd-dev
+        logstash_prefix_separator _
+        logstash_dateformat %Y%m%d
+        time_key_format %Y-%m-%dT%H:%M:%S.%L%z
+        time_key time
+        include_timestamp true
+        id_key hash_id
+        remove_keys hash_id, log
+        request_timeout 15s
+        reload_connections false
+        reconnect_on_error true
+        reload_on_failure true
+        log_es_400_reason true
+        <buffer time,tag>
+          @type file
+          path /tmp/fluentd
+          timekey 30s
+          timekey_wait 5s
+          total_limit_size 512MB
+          chunk_limit_size 16MB
+          overflow_action drop_oldest_chunk
+          retry_timeout 1h
+          retry_max_interval 30s
+          retry_wait 10s
+        </buffer>
+      </match>
+    </label>
+    <label @FLUENT_LOG>
+      <match fluent.*>
+       @type stdout
+      </match>
+    </label>
+---

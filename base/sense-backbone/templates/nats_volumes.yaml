@@ -12,7 +12,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: {{ .Values.nats.jetstream.fileStorage.existingClaim | default "nats-js-disk" }}
-  namespace: {{ .Values.namespace | default "sense-bb" }}
+  namespace: {{ .Values.namespace | default "sense-backbone" }}
 spec:
   accessModes:
     - ReadWriteOnce

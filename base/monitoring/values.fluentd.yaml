@@ -5,6 +5,9 @@ image:
   pullPolicy: IfNotPresent
   tag:
 
+elasticsearch:
+  endpoint:
+
 service:
   ports:
    - name: "forwarder"
@@ -32,12 +35,19 @@ volumes:
   - name: varlibdockercontainers
     hostPath:
       path: /var/lib/docker/containers
+  - name: etcfluentd-config
+    configMap:
+      name: fluentd-conf
 
 volumeMounts:
   - name: varlog
     mountPath: /var/log
   - name: varlibdockercontainers
     mountPath: /var/lib/docker/containers
+    readOnly: true
+  - name: etcfluentd-config
+    mountPath: /fluentd/etc/fluent.conf
+    subPath: fluent.conf
     readOnly: true
 
 configMapConfigs: []

@@ -13,3 +13,4 @@ opensearch:
   ingressClassName: external-alb-default
   openToLocal: false
   vpcEndpoint: vpc-dev-sdx-es-kgfhpvtfio32mmlzxw22wbgi4i.ap-southeast-1.es.amazonaws.com
+  endpoint: https://vpc-dev-sdx-es-kgfhpvtfio32mmlzxw22wbgi4i.ap-southeast-1.es.amazonaws.com:443

@@ -1,6 +1,6 @@
 env: dev
 
-enabled: true
+enabled: false
 
 hostname:
   internal:
@@ -19,10 +19,10 @@ autoscaling:
 
 secrets:
   commons: []
-  services: []
-#    - name: auth
-#      key: auth.config.yaml
-#      secretKey: dev/sdx/svc/auth
+  services:
+    - name: agent-config
+      key: agent.config.yaml
+      secretKey: dev/sdx/agent/common
 
 certs: []
 
@@ -114,14 +114,93 @@ commons:
 
 deployments:
   sniff:
-    env: []
-    volumes: []
-    mounts: []
+    enabled: true
+    env:
+      - name: SENSE_CONFIG_FILES
+        value: "agent.config"
+      - name: SENSE_MODULE
+        value: "sniff_agent"
+      - name: SENSE_AGENT
+        value: "sniff"
+    volumes:
+      - name: agent-config
+        secret:
+          secretName: agent-config
+    mounts:
+      - name: agent-config
+        mountPath: conf/agent.config.yaml
+        subPath: agent.config.yaml
   dbtopics:
-    env: []
+    enabled: true
+    env:
+      - name: SENSE_CONFIG_FILES
+        value: "agent.config"
+      - name: SENSE_MODULE
+        value: "sniff_agent"
+      - name: SENSE_AGENT
+        value: "dbtopics"
+    volumes:
+      - name: agent-config
+        secret:
+          secretName: agent-config
+    mounts:
+      - name: agent-config
+        mountPath: conf/agent.config.yaml
+        subPath: agent.config.yaml
+  elastic:
+    enabled: true
+    env:
+      - name: SENSE_CONFIG_FILES
+        value: "agent.config"
+      - name: SENSE_MODULE
+        value: "sniff_agent"
+      - name: SENSE_AGENT
+        value: "elastic"
+    volumes:
+      - name: agent-config
+        secret:
+          secretName: agent-config
+    mounts:
+      - name: agent-config
+        mountPath: conf/agent.config.yaml
+        subPath: agent.config.yaml
+  bridge-agent-dev-nats-dev-rmq:
+    enabled: false
+    imageName: sense_bridge_agent
+    ports: []
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    autoscaling: {}
+    resources: {}
+    env:
+      - name: SENSE_ENV
+        value: dev
+      - name: BRIDGE_ENV
+        value: dev
+      - name: SENSE_MODULE
+        value: bridge_agent
+      - name: BRIDGE_CONFIG_PREFIX
+        value: nats-rmq
     volumes: []
     mounts: []
-  elastic:
-    env: []
+  bridge-agent-dev-rmq-qa-nats:
+    enabled: false
+    imageName: sense_bridge_agent
+    ports: []
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    autoscaling: {}
+    resources: {}
+    env:
+      - name: SENSE_ENV
+        value: dev
+      - name: BRIDGE_ENV
+        value: dev
+      - name: SENSE_MODULE
+        value: bridge_agent
+      - name: BRIDGE_CONFIG_PREFIX
+        value: rmq-nats
     volumes: []
     mounts: []
