@@ -355,6 +355,13 @@ deployments:
         value: "appsettings.config"
     volumes: []
     mounts: []
+  # ----- metric -----
+  metric:
+    env:
+      - name: SENSE_CONFIG_FILES
+        value: "metric.config"
+    volumes: []
+    mounts: []
 
 
 cronJob:
