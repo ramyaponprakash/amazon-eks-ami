@@ -2,7 +2,7 @@
 #  Environment file for qa cluster creation
 #
 ################################################
-cluster_blue_name            = "sdx-qa-eks-blue-cluster"
+#cluster_blue_name            = "sdx-qa-eks-blue-cluster"
 sense_vpc                    = "vpc-09a58d6d"
 aws_account                  = "342446142760"
 cluster_name                 = "sdx-qa-eks-blue-cluster"

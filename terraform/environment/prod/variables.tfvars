@@ -2,7 +2,7 @@
 #  Environment file for prd cluster creation
 #
 ################################################
-cluster_blue_name            = "sdx-prd-eks-blue-cluster"
+#cluster_blue_name            = "sdx-prd-eks-blue-cluster"
 sense_vpc                    = "vpc-09a58d6d"
 aws_account                  = "726262972162"
 cluster_name                 = "sdx-prd-eks-blue-cluster"

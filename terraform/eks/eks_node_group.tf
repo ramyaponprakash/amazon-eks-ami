@@ -23,11 +23,12 @@ resource "aws_eks_node_group" "sdx-eks-blue-node" {
   }
 
   labels   = {
-    Name         = "sdx_eks_worker_blue_nodegroup"
+    Name         = "sdx_eks_${var.environment}_worker_blue_nodegroup"
   }
 
   tags     = {
-    Name         = "sdx_eks_worker_blue_nodegroup"
+    Name         = "sdx_eks_${var.environment}_worker_blue_nodegroup"
+    Custodian-Scheduler-StopTime  = "off=();tz=sgt"
     Environment = var.environment
   }
   
