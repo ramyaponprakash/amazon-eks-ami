@@ -38,7 +38,7 @@ resource "aws_eks_cluster" "sdx-eks-cluster" {
   ]
 
    tags      = {
-    Name        = "sdx-eks-${var.environment-blue}-cluster"
+    Name        = "sdx-eks-${var.environment}-blue-cluster"
     Environment = var.environment
   }
 }
