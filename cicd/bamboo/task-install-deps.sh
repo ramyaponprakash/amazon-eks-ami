@@ -71,8 +71,12 @@ install_command_if_not_exist /tmp/eksctl install_eksctl
 echo "Installing helm plugins"
 /tmp/helm plugin remove s3 2>&1 > /dev/null
 /tmp/helm plugin remove diff 2>&1 > /dev/null
-/tmp/helm plugin install https://github.com/hypnoglow/helm-s3.git 2>&1 > /dev/null
+helm plugin remove s3 2>&1 > /dev/null
+helm plugin remove diff 2>&1 > /dev/null
+/tmp/helm plugin install https://github.com/hypnoglow/helm-s3.git --version 0.12.0 2>&1 > /dev/null
 /tmp/helm plugin install https://github.com/databus23/helm-diff 2>&1 > /dev/null
+helm plugin install https://github.com/hypnoglow/helm-s3.git --version 0.12.0 2>&1 > /dev/null
+helm plugin install https://github.com/databus23/helm-diff 2>&1 > /dev/null
 /tmp/helm plugin list
 
 echo "Installing dependencies - done!"

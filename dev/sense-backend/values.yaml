@@ -1,6 +1,7 @@
 env: dev
 
-enabled: false
+enabled: true
+
 hostname:
   internal: v2-internal.sense-dev.com
   external: v2.sense-dev.com
@@ -16,21 +17,351 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   targetMemoryUtilizationPercentage: 80
 
-# ----- micro-service configs -----
+secrets:
+  commons:
+    - name: init
+      key: init_config.yaml
+      secretKey: init_config_map
+    - name: mongodb
+      key: mongodb_config.yaml
+      secretKey: dev/sdx/mongodb/credentials
+    - name: redis
+      key: redis_config.yaml
+      secretKey: dev/sdx/redis/credentials
+    - name: backend
+      key: backend_config.yaml
+      secretKey: dev/sdx/backend/credentials
+    - name: rabbitmq
+      key: rabbitmq_config.yaml
+      secretKey: dev/sdx/rabbitmq/credentials
+    - name: elasticsearch
+      key: elasticsearch_config.yaml
+      secretKey: dev/sdx/elasticsearch/credentials
+    - name: nats
+      key: nats_config.yaml
+      secretKey: dev/sdx/nats/credentials
+    - name: common
+      key: global_common_config.yaml
+      secretKey: dev/sdx/svc/common
+  services:
+    - name: auth
+      key: auth.config.yaml
+      secretKey: dev/sdx/svc/auth
+    - name: iam
+      key: iam.config.yaml
+      secretKey: dev/sdx/svc/iam
+    - name: lookup
+      key: lookup.config.yaml
+      secretKey: dev/sdx/svc/lookup
+    - name: client
+      key: client.config.yaml
+      secretKey: dev/sdx/svc/client
+    - name: adaptor
+      key: adaptor.config.yaml
+      secretKey: dev/sdx/svc/adaptor
+    - name: notification
+      key: notification.config.yaml
+      secretKey: dev/sdx/svc/notification
+    - name: activity
+      key: activity.config.yaml
+      secretKey: dev/sdx/svc/activity
+    - name: topics
+      key: topics.config.yaml
+      secretKey: dev/sdx/svc/topics
+
+
+ingress:
+  certSecret: backend-client-cert
+
+certs:
+  - name: backend-server-cert
+    secretName: backend-server-cert
+    commonName: "*.sense.svc.cluster.local"
+    sans:
+      - "sense-dev.com"
+      - "*.sense-dev.com"
+      - "*.sense.svc.cluster"
+      - "*.sense.svc"
+      - "*.sense"
+  - name: backend-client-cert
+    secretName: backend-client-cert
+    commonName: "*.sense.svc.cluster.local"
+    sans:
+      - "sense-dev.com"
+      - "*.sense-dev.com"
+      - "*.sense.svc.cluster"
+      - "*.sense.svc"
+      - "*.sense"
+  - name: mongo-client-cert
+    secretName: mongo-client-cert
+    commonName: appuser
+    sans:
+      - mdb-rmq.sense-dev.com
+  - name: nats-client-cert
+    secretName: nats-client-cert
+    commonName: appuser
+    sans:
+      - nats.sense-backbone.svc.cluster.local
+
+commons:
+  envs: &commonEnvs
+    - name: CLIENT_CA_PATH
+      value: "/etc/sense/cert/backend/client/ca.crt"
+    - name: CLIENT_CERT_PATH
+      value: "/etc/sense/cert/backend/client/tls.crt"
+    - name: CLIENT_KEY_PATH
+      value: "/etc/sense/cert/backend/client/tls.key"
+  volumes: &commonVolumes
+    # --- configs and secrets
+    - name: dev-config
+      configMap:
+        name: dev-config
+    - name: init-map
+      secret:
+        secretName: init
+    - name: mongodb
+      secret:
+        secretName: mongodb
+    - name: redis
+      secret:
+        secretName: redis
+    - name: backend
+      secret:
+        secretName: backend
+    - name: rabbitmq
+      secret:
+        secretName: rabbitmq
+    - name: elasticsearch
+      secret:
+        secretName: elasticsearch
+    - name: nats
+      secret:
+        secretName: nats
+    - name: common
+      secret:
+        secretName: common
+    # --- certificates
+    - name: backend-server-cert
+      secret:
+        secretName: backend-server-cert
+    - name: backend-client-cert
+      secret:
+        secretName: backend-client-cert
+    - name: mongo-client-cert
+      secret:
+        secretName: mongo-client-cert
+    - name: nats-client-cert
+      secret:
+        secretName: nats-client-cert
+  mounts: &commonMounts
+    # --- configs and secrets
+    - name: dev-config
+      readOnly: true
+      mountPath: /etc/sense/conf/dev.config.yaml
+      subPath: dev.config.yaml
+    - name: init-map
+      readOnly: true
+      mountPath: /etc/sense/conf/init_config.yaml
+      subPath: init_config.yaml
+    - name: mongodb
+      readOnly: true
+      mountPath: /etc/sense/conf/mongodb_config.yaml
+      subPath: mongodb_config.yaml
+    - name: redis
+      readOnly: true
+      mountPath: /etc/sense/conf/redis_config.yaml
+      subPath: redis_config.yaml
+    - name: backend
+      readOnly: true
+      mountPath: /etc/sense/conf/backend_config.yaml
+      subPath:  backend_config.yaml
+    - name: rabbitmq
+      readOnly: true
+      mountPath: /etc/sense/conf/rabbitmq_config.yaml
+      subPath: rabbitmq_config.yaml
+    - name: elasticsearch
+      readOnly: true
+      mountPath: /etc/sense/conf/elasticsearch_config.yaml
+      subPath: elasticsearch_config.yaml
+    - name: nats
+      readOnly: true
+      mountPath: /etc/sense/conf/nats_config.yaml
+      subPath: nats_config.yaml
+    - name: common
+      readOnly: true
+      mountPath: /etc/sense/conf/global_common_config.yaml
+      subPath: global_common_config.yaml
+    # --- certificates
+    - name: backend-server-cert
+      readOnly: true
+      mountPath: /etc/sense/cert/backend/server/
+    - name: backend-client-cert
+      readOnly: true
+      mountPath: /etc/sense/cert/backend/client/
+    - name: mongo-client-cert
+      readOnly: true
+      mountPath: /etc/sense/cert/mongo/
+    - name: nats-client-cert
+      readOnly: true
+      mountPath: /etc/sense/cert/nats/
+
+
+# ----- micro-service -----
 deployments:
-  auth: {}
-  iam: {}
-  topics: {}
-  policy: {}
-  client: {}
-  activity: {}
-  subscription: {}
+  # ----- auth -----
+  auth:
+    env:
+      - name: SENSE_CONFIG_FILES
+        value: "auth.config"
+    volumes:
+      - name: auth-config
+        secret:
+          secretName: auth
+    mounts:
+      - name: auth-config
+        mountPath: /etc/sense/conf/auth.config.yaml
+        subPath: auth.config.yaml
+        readOnly: true
+  # ----- iam -----
+  iam:
+    env:
+      - name: SENSE_CONFIG_FILES
+        value: "iam.config"
+    volumes:
+      - name: iam-config
+        secret:
+          secretName: iam
+    mounts:
+      - name: iam-config
+        mountPath: /etc/sense/conf/iam.config.yaml
+        subPath: iam.config.yaml
+        readOnly: true
+  # ----- topics -----
+  topics:
+    env:
+      - name: SENSE_CONFIG_FILES
+        value: "topics.config"
+    volumes:
+      - name: topics-config
+        secret:
+          secretName: topics
+    mounts:
+      - name: topics-config
+        mountPath: /etc/sense/conf/topics.config.yaml
+        subPath: topics.config.yaml
+        readOnly: true
+  # ----- policy -----
+  policy:
+    env:
+      - name: SENSE_CONFIG_FILES
+        value: "policy.config"
+    volumes: []
+    mounts: []
+  # ----- role -----
+  role:
+    env:
+      - name: SENSE_CONFIG_FILES
+        value: "role.config"
+    volumes: []
+    mounts: []
+  # ----- client -----
+  client:
+    env:
+      - name: SENSE_CONFIG_FILES
+        value: "client.config"
+    volumes:
+      - name: client-config
+        secret:
+          secretName: client
+    mounts:
+      - name: client-config
+        mountPath: /etc/sense/conf/client.config.yaml
+        subPath: client.config.yaml
+        readOnly: true
+  # ----- activity -----
+  activity:
+    env:
+      - name: SENSE_CONFIG_FILES
+        value: "activity.config"
+    volumes:
+      - name: activity-config
+        secret:
+          secretName: activity
+    mounts:
+      - name: activity-config
+        mountPath: /etc/sense/conf/activity.config.yaml
+        subPath: activity.config.yaml
+        readOnly: true
+  # ----- subscription -----
+  subscription:
+    env:
+      - name: SENSE_CONFIG_FILES
+        value: "subscription.config"
+    volumes: []
+    mounts: []
+  # ----- lookup -----
   lookup:
-    enabled: true
-  message: {}
-  notification: {}
-  adaptor: {}
-  appsettings: {}
+    env:
+      - name: SENSE_CONFIG_FILES
+        value: "lookup.config"
+    volumes:
+      - name: lookup-config
+        secret:
+          secretName: lookup
+    mounts:
+      - name: lookup-config
+        mountPath: /etc/sense/conf/lookup.config.yaml
+        subPath: lookup.config.yaml
+        readOnly: true
+  # ----- message -----
+  message:
+    env:
+      - name: SENSE_CONFIG_FILES
+        value: "message.config"
+    volumes: []
+    mounts: []
+  # ----- notification -----
+  notification:
+    env:
+      - name: SENSE_CONFIG_FILES
+        value: "notification.config"
+    volumes:
+      - name: notification-config
+        secret:
+          secretName: notification
+    mounts:
+      - name: notification-config
+        mountPath: /etc/sense/conf/notification.config.yaml
+        subPath: notification.config.yaml
+        readOnly: true
+  # ----- adaptor -----
+  adaptor:
+    env:
+      - name: SENSE_CONFIG_FILES
+        value: "adaptor.config"
+    volumes:
+      - name: adaptor-config
+        secret:
+          secretName: adaptor
+    mounts:
+      - name: adaptor-config
+        mountPath: /etc/sense/conf/adaptor.config.yaml
+        subPath: adaptor.config.yaml
+        readOnly: true
+  # ----- appsettings -----
+  appsettings:
+    env:
+      - name: SENSE_CONFIG_FILES
+        value: "appsettings.config"
+    volumes: []
+    mounts: []
+  # ----- metric -----
+  metric:
+    env:
+      - name: SENSE_CONFIG_FILES
+        value: "metric.config"
+    volumes: []
+    mounts: []
 
 
 cronJob:

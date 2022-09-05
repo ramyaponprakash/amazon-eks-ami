@@ -32,7 +32,7 @@ controller:
 
 tcp:
   4848: sense/sense-backend:4848
-  4222: sense-bb/sense-nats:4222
+  4222: sense-backbone/sense-nats:4222
   5682: default/solace-dev-pubsubplus-dev:5672
   5681: default/solace-dev-pubsubplus-dev:5671
   5683: default/solace-dev-pubsubplus-dev:8080

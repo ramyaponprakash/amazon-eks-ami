@@ -15,3 +15,4 @@ opensearch:
   ingressClassName:
   openToLocal: false
   vpcEndpoint:
+  endpoint:

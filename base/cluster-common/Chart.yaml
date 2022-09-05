@@ -1,6 +1,6 @@
 apiVersion: v2
 name: cluster-common
 
-version: 0.0.1
+version: 0.0.2
 
 appVersion: 0.1.22 # following eks version

@@ -58,12 +58,15 @@ POLICY=$(cat <<EOF
 EOF
 )
 
+POLICY_NAME="AmazonEKSClusterAutoscalerPolicy-$CLUSTER_NAME"
+
 aws iam create-policy \
-    --policy-name AmazonEKSClusterAutoscalerPolicy-"$CLUSTER_NAME" \
+    --policy-name "$POLICY_NAME" \
     --policy-document "$POLICY" 2> /dev/null
 
+POLICY_ARN=$(aws iam list-policies --query "Policies[?PolicyName==\`$POLICY_NAME\`].Arn" --output text)
+
 ROLE_NAME="EKS-AS-$(echo -n "$CLUSTER_NAME" | md5sum | awk '{ print $1 }')"
-AUTOSCALER_POLICY_ARN="arn:aws:iam::$AWS_ACCOUNT_ID:policy/AmazonEKSClusterAutoscalerPolicy-$CLUSTER_NAME"
 
 "${LOC}"eksctl create iamserviceaccount \
   --region=ap-southeast-1 \
@@ -71,6 +74,6 @@ AUTOSCALER_POLICY_ARN="arn:aws:iam::$AWS_ACCOUNT_ID:policy/AmazonEKSClusterAutos
   --namespace="$NAMESPACE" \
   --name=cluster-autoscaler-aws-cluster-autoscaler \
   --role-name="$ROLE_NAME" \
-  --attach-policy-arn="$AUTOSCALER_POLICY_ARN" \
+  --attach-policy-arn="$POLICY_ARN" \
   --override-existing-serviceaccounts \
   --approve 2> /dev/null

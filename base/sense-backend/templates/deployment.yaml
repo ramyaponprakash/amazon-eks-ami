@@ -34,45 +34,45 @@ spec:
             {{- toYaml .Values.containerSecurityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}/{{ default $rangeItem.imageName $rangeItem.name $k | replace "-"  "_" }}:{{ default .Values.image.tag $rangeItem.imageTag | default "latest" }}"
           volumeMounts:
-          {{ with concat .Values.mounts $rangeItem.mounts }}
-          {{- toYaml . | nindent 12 }}
-          {{- end }}
+            {{- with concat .Values.commons.mounts $rangeItem.mounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
           imagePullPolicy: {{ default "IfNotPresent" .Values.image.pullPolicy }}
           ports:
-          - containerPort: {{ default $rangeItem.publicPort $rangeItem.publicTargetPort  }}
-            name: public
-          {{- if $rangeItem.adminPort }}
-          - containerPort: {{ default $rangeItem.adminPort $rangeItem.adminTargetPort }}
-            name: admin
-          {{- end }}
-          {{- if or .Values.healthCheckPort $rangeItem.healthCheckPort }}
-          - containerPort: {{ default .Values.healthCheckPort $rangeItem.healthCheckPort }}
-            name: healthcheck
-          {{- end }}
+            - containerPort: {{ default $rangeItem.publicPort $rangeItem.publicTargetPort  }}
+              name: public
+            {{- if $rangeItem.adminPort }}
+            - containerPort: {{ default $rangeItem.adminPort $rangeItem.adminTargetPort }}
+              name: admin
+            {{- end }}
+            {{- if .Values.healthcheck.enabled }}
+            - containerPort: {{ .Values.healthcheck.port }}
+              name: healthcheck
+            {{- end }}
           env:
-          - name: SENSE_ENV
-            value: {{ .Values.env }}
-          - name: SENSE_MODULE
-            value: {{ default $k $rangeItem.name }}
-          {{- if $rangeItem.env }}
-          {{- range $rangeItem.env }}
-          - {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- end }}
+            {{- with concat .Values.commons.envs $rangeItem.env }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+            - name: SENSE_ENV
+              value: {{ .Values.env }}
+            - name: SENSE_MODULE
+              value: {{ default $k $rangeItem.name }}
+          {{- if .Values.healthcheck.enabled }}
           {{- if .Values.livenessProbe }}
           livenessProbe:
-          {{- toYaml .Values.livenessProbe | nindent 12 }}
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
           {{- end }}
           {{- if .Values.readinessProbe }}
           readinessProbe:
-          {{- toYaml .Values.readinessProbe | nindent 12 }}
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          {{- end }}
           {{- end }}
           resources:
           {{- with merge .Values.resources $rangeItem.resources }}
           {{- toYaml . | nindent 12 }}
           {{- end }}
       volumes:
-      {{- with concat .Values.volumes $rangeItem.volumes }}
+      {{- with concat .Values.commons.volumes $rangeItem.volumes }}
       {{- toYaml . | nindent 8 }}
       {{- end }}
       nodeSelector:

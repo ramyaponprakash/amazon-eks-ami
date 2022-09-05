@@ -27,13 +27,17 @@ AWS_LB_CTR_APP_VERSION="v2.4.2"
 
 curl -s -L -o iam_policy.json "https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/$AWS_LB_CTR_APP_VERSION/docs/install/iam_policy.json"
 
+POLICY_NAME="AWSLoadBalancerControllerIAMPolicy-$CLUSTER_NAME"
+
 "${LOC}"aws iam create-policy \
-  --policy-name AWSLoadBalancerControllerIAMPolicy \
+  --policy-name "$POLICY_NAME" \
   --policy-document file://iam_policy.json 2> /dev/null
 
 rm iam_policy.json
 
 ROLE_NAME="EKS-LBC-$(echo -n "$CLUSTER_NAME" | md5sum | awk '{ print $1 }')"
+
+POLICY_ARN=$(aws iam list-policies --query "Policies[?PolicyName==\`$POLICY_NAME\`].Arn" --output text)
 
 "${LOC}"eksctl create iamserviceaccount \
   --cluster="$CLUSTER_NAME" \
@@ -41,7 +45,7 @@ ROLE_NAME="EKS-LBC-$(echo -n "$CLUSTER_NAME" | md5sum | awk '{ print $1 }')"
   --name=aws-load-balancer-controller \
   --override-existing-serviceaccounts \
   --role-name "$ROLE_NAME" \
-  --attach-policy-arn "arn:aws:iam::$AWS_ACCOUNT_ID:policy/AWSLoadBalancerControllerIAMPolicy" \
+  --attach-policy-arn "$POLICY_ARN" \
   --approve 2> /dev/null
 
 "${LOC}"kubectl apply -k "github.com/aws/eks-charts/stable/aws-load-balancer-controller/crds?ref=master"

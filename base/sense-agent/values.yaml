@@ -1,0 +1,126 @@
+env:
+component: agent
+namespace: sense
+
+enabled: true
+
+hostname:
+  internal:
+  external:
+
+replicas: 1
+
+image:
+  repository:
+  tag: latest
+  pullPolicy: IfNotPresent
+
+podAnnotations: {}
+
+podSecurityContext: {}
+
+containerSecurityContext: {}
+#  readOnlyRootFilesystem: true
+#  allowPrivilegeEscalation: false
+#  privileged: false
+#  runAsNonRoot: true
+#  runAsUser: 10001 # appuser
+#  capabilities:
+#    drop:
+#      - ALL
+
+resources:
+  requests:
+    memory: "64Mi"
+    cpu: "0.1"
+  limits:
+    memory: "256Mi"
+    cpu: "0.2"
+
+internal:
+  ingressClassName: internal-nlb-default
+external:
+  ingressClassName: external-alb-default
+
+autoscaling:
+  minReplicas: 1
+  maxReplicas: 1
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+healthcheck:
+  enabled: false
+  port: 7171
+  livenessProbe:
+    httpGet:
+      path: /diagnostics/healthcheck
+      port: healthcheck
+    failureThreshold: 3
+    periodSeconds: 30
+  readinessProbe:
+    httpGet:
+      path: /diagnostics/healthcheck
+      port: healthcheck
+    failureThreshold: 3
+    periodSeconds: 30
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+commons:
+  ports: []
+  envs: []
+  mounts: []
+  volumes: []
+
+serviceAccount:
+  name: sense-agent
+
+secrets:
+  commons: []
+  services: []
+
+
+certs: []
+
+deployments:
+  sniff:
+    enabled:
+    imageName: sense_sniff_agent
+    imageTag:
+    ports: []
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    autoscaling: {}
+    resources: {}
+    env: []
+    volumes: []
+    mounts: []
+  dbtopics:
+    enabled:
+    imageName: sense_sniff_agent_dbtopics
+    imageTag:
+    ports: []
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    autoscaling: {}
+    resources: {}
+    env: []
+    volumes: []
+    mounts: []
+  elastic:
+    enabled:
+    imageName: sense_sniff_agent_elastic
+    imageTag:
+    ports: []
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    autoscaling: {}
+    resources: {}
+    env: []
+    volumes: []
+    mounts: []

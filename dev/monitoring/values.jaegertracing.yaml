@@ -1,5 +1,6 @@
 provisionDataStore:
   cassandra: false
+
 storage:
   type: elasticsearch
   elasticsearch:
@@ -9,6 +10,7 @@ storage:
     user:
     usePassword: false
     indexPrefix: tracing-dev
+
 collector:
   service:
     zipkin:
@@ -17,6 +19,7 @@ collector:
     limits:
       memory: 128Mi
       cpu: 0.1
+
 query:
   basePath: /jaeger
   resources:

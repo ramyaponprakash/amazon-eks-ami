@@ -1,0 +1,13 @@
+installCRDs: true
+
+prometheus:
+  enabled: false
+
+serviceAccount:
+  create: false
+  name: cert-manager-awspca-aws-privateca-issuer
+
+approverRole:
+  enabled: true
+  serviceAccountName: cert-manager
+  namespace: cluster-common

@@ -1,0 +1,24 @@
+{{- if .Values.nats.jetstream.enabled }}
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nats-ebs-sc
+provisioner: ebs.csi.aws.com
+volumeBindingMode: WaitForFirstConsumer
+reclaimPolicy: Retain
+allowVolumeExpansion: true
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ .Values.nats.jetstream.fileStorage.existingClaim | default "nats-js-disk" }}
+  namespace: {{ .Values.namespace | default "sense-backbone" }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: nats-ebs-sc
+  resources:
+    requests:
+      storage: {{ .Values.nats.jetstream.fileStorage.bufferClaimSize | default "1Gi" }}
+---
+{{- end }}

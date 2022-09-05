@@ -1,0 +1,7 @@
+apiVersion: awspca.cert-manager.io/v1beta1
+kind: AWSPCAClusterIssuer
+metadata:
+  name: cluster-root-ca
+spec:
+  arn: {{ .Values.caArn }}
+  region: ap-southeast-1

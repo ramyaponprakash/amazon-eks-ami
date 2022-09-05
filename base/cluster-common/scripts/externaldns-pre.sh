@@ -51,11 +51,13 @@ POLICY=$(cat <<EOF
 EOF
 )
 
-"${LOC}"aws iam create-policy \
-  --policy-name AllowExternalDNSUpdates \
-  --policy-document file://iam_policy.json 2> /dev/null
+POLICY_NAME="AllowExternalDNSUpdates"
 
-POLICY_ARN=$(aws iam list-policies --query 'Policies[?PolicyName==`AllowExternalDNSUpdates`].Arn' --output text)
+"${LOC}"aws iam create-policy \
+  --policy-name "$POLICY_NAME" \
+  --policy-document "$POLICY" 2> /dev/null
+
+POLICY_ARN=$(aws iam list-policies --query "Policies[?PolicyName==\`$POLICY_NAME\`].Arn" --output text)
 
 ROLE_NAME="EKS-DNS-$(echo -n "$CLUSTER_NAME" | md5sum | awk '{ print $1 }')"
 

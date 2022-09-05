@@ -44,8 +44,8 @@ spec:
             - containerPort: {{ default $rangeItem.adminPort $rangeItem.adminTargetPort }}
               name: admin
             {{- end }}
-            {{- if or .Values.healthCheckPort $rangeItem.healthCheckPort }}
-            - containerPort: {{ default .Values.healthCheckPort $rangeItem.healthCheckPort }}
+            {{- if .Values.healthcheck.enabled }}
+            - containerPort: {{ .Values.healthcheck.port }}
               name: healthcheck
           {{- end }}
           env:

@@ -1,0 +1,10 @@
+namespace: sense-backbone
+component: infra
+env:
+
+nats:
+  serverCert:
+    name:
+    secretName:
+    commonName:
+    sans: []

@@ -1,0 +1,21 @@
+kind: Certificate
+apiVersion: cert-manager.io/v1
+metadata:
+  name: {{ .Values.nats.serverCert.name }}
+  namespace: {{ .Values.namespace | default "sense-backbone" }}
+spec:
+  commonName: {{ .Values.nats.serverCert.commonName }}
+  dnsNames:  {{ .Values.nats.serverCert.sans | toYaml | nindent 6 }}
+  duration: 8760h0m0s
+  issuerRef:
+    group: awspca.cert-manager.io
+    kind: AWSPCAClusterIssuer
+    name: cluster-root-ca
+  renewBefore: 360h0m0s
+  secretName: {{ .Values.nats.serverCert.secretName }}
+  usages:
+    - server auth
+    - client auth
+  privateKey:
+    algorithm: "RSA"
+    size: 2048

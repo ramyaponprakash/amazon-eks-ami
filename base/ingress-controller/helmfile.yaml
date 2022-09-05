@@ -10,6 +10,8 @@ environments:
       - namespace: "ingress-controller"
 
 repositories:
+  - name: ingress-controller
+    url: s3://sdx-eks-artifacts/{{ .Environment.Name }}/charts/ingress-controller
   - name: aws-load-balancer-controller
     url: https://aws.github.io/eks-charts
   - name: ingress-nginx
@@ -85,7 +87,7 @@ releases:
   - name: ingress-controller
     namespace: ingress-controller
     createNamespace: true
-    chart: "."
+    chart: ingress-controller/ingress-controller
     version: 0.0.1
     missingFileHandler: Warn
     values:
