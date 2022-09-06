@@ -4,7 +4,7 @@
 #############################
 
 resource "aws_iam_role" "sdx-eks-cluster" {
-  name = "sdx-eks-cluster"
+  name = "role-${var.cluster_name}-cluster"
 
   assume_role_policy = <<POLICY
 {
@@ -46,7 +46,7 @@ resource "aws_iam_role_policy_attachment" "sdx-cluster-AmazonEKSServicePolicy" {
 #
 
 resource "aws_iam_role" "sdx-eks-node" {
-  name = "sdx-eks-node"
+  name = "role-${var.cluster_name}-node"
 
   assume_role_policy = <<POLICY
 {
