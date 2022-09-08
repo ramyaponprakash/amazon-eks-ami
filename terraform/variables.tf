@@ -1,14 +1,13 @@
 variable "sense_vpc" {
-    description = "vpc"
+  description = "vpc"
 }
 
 variable "aws_account" {
-    description = "AWS account number"
+  description = "AWS account number"
 }
 
 variable "cluster_name" {
-    description = "Cluster name"
-  
+  description = "Cluster name"
 }
 
 variable "cluster_version" {
@@ -42,42 +41,47 @@ variable "environment" {
 }
 
 variable "instance_type" {
-  type    = string
+  type = string
 }
 
 variable "instance_type_bastion" {
-  type    = string
+  type = string
 }
 
 variable "sense_key" {
-  type    = string
+  type = string
 }
 
 variable "subnet_ids" {
-    description = "eks_cluster_subnet_ids"
-    type        = list
+  description = "eks_cluster_subnet_ids"
+  type        = list(any)
 }
 
 variable "subnet_id_bastion" {
-    description = "vpc-subnet-bastion"
-    type        = string
+  description = "vpc-subnet-bastion"
+  type        = string
 }
 
 variable "eks_cw_loggroup" {
-    description = "eks cloudwatch loggroup"
-    type        = string
+  description = "eks cloudwatch loggroup"
+  type        = string
 }
 
-variable "ami" {
-  description = "aws ami "
+variable "bastion_ami" {
+  description = "bastion host ami"
 }
 
 variable "cidr_blocks_bastion_ssh" {
   description = "A list of CIDR blocks to allow traffic"
-  type        = list
+  type        = list(any)
 }
 
 variable "prefix_list_ids_bastion_ssh" {
   description = "A list of CIDR blocks to allow traffic from prefix_list_ids"
-  type        = list
+  type        = list(any)
+}
+
+variable "cidr_blocks_additional_secgrp" {
+  description = "A list of vpc CIDR blocks to allow traffic for additional security group"
+  type        = list(any)
 }

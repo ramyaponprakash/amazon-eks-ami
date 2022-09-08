@@ -1,13 +1,11 @@
-
 #
 # EKS Worker Nodes Resources
 #  * EKS Node Group to launch worker nodes
 #
 
-
-resource "aws_eks_node_group" "sdx-eks-blue-node" {
+resource "aws_eks_node_group" "sdx-eks-default-nodegroup" {
   cluster_name    = var.cluster_name
-  node_group_name = "sdx_eks_blue_nodegroup"
+  node_group_name = "${var.cluster_name}-default-nodegroup"
   node_role_arn   = aws_iam_role.sdx-eks-node.arn
   subnet_ids      = var.subnet_ids
   instance_types  = [var.instance_type]
@@ -19,19 +17,22 @@ resource "aws_eks_node_group" "sdx-eks-blue-node" {
   }
 
   remote_access {
-    ec2_ssh_key   = var.sense_key
+    ec2_ssh_key = var.sense_key
   }
 
-  labels   = {
-    Name         = "sdx_eks_${var.environment}_worker_blue_nodegroup"
+  # k8 label for node
+  labels = {
+    Type     = "default"
+    Instance = var.instance_type
   }
 
-  tags     = {
-    Name         = "sdx_eks_${var.environment}_worker_blue_nodegroup"
-    Custodian-Scheduler-StopTime  = "off=();tz=sgt"
-    Environment = var.environment
+  # aws tag
+  tags = {
+    Name                         = "${var.cluster_name}-default-nodegroup"
+    Custodian-Scheduler-StopTime = "off=();tz=sgt"
+    Environment                  = var.environment
   }
-  
+
   depends_on = [
     aws_iam_role_policy_attachment.sdx-node-AmazonEKSWorkerNodePolicy,
     aws_iam_role_policy_attachment.sdx-node-AmazonEKS_CNI_Policy,
