@@ -13,5 +13,19 @@ awsAuth:
 caArn:
 
 secretstore:
+  enabled: true
   serviceAccount:
     name: secrets-access-sa
+
+# For conditional release per env
+cert-manager:
+  enabled: true
+
+cluster-autoscaler:
+  enabled: true
+
+external-dns:
+  enabled: true
+
+external-secrets:
+  enabled: true

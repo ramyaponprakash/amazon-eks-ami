@@ -72,5 +72,7 @@ export BRANCH_NAME=${BRANCH_NAME}
 export ADD_BRANCH_NAME=${ADD_BRANCH_NAME}
 export ENV=$ENV
 export BUILD_ENV=$BUILD_ENV
+
+export HELM_BINARY=/tmp/helm
 EOF
 

@@ -3,6 +3,7 @@ component: infra
 env:
 
 nats:
+  enabled: true
   serverCert:
     name:
     secretName:

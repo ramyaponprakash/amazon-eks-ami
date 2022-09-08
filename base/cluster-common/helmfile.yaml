@@ -1,4 +1,4 @@
-helmBinary: /tmp/helm
+helmBinary: {{ requiredEnv "HELM_BINARY" }}
 
 environments:
   dev:
@@ -63,6 +63,7 @@ releases:
     chart: external-dns/external-dns
     version: 1.10.1
     missingFileHandler: Warn
+    condition: external-dns.enabled
     needs:
       - cluster-common
     values:
@@ -88,6 +89,7 @@ releases:
     chart: external-secrets/external-secrets
     version: 0.5.8
     missingFileHandler: Warn
+    condition: external-secrets.enabled
     disableValidationOnInstall: true # CRD
     values:
       - ./values.external-secrets.yaml
@@ -117,6 +119,7 @@ releases:
     chart: cluster-autoscaler/cluster-autoscaler
     version: 9.19.2
     missingFileHandler: Warn
+    condition: cluster-autoscaler.enabled
     disableValidationOnInstall: true # CRD
     needs:
       - cluster-common
@@ -155,6 +158,7 @@ releases:
     chart: cert-manager/cert-manager
     version: 1.9.1
     missingFileHandler: Warn
+    condition: cert-manager.enabled
     disableValidationOnInstall: true # CRD
     values:
       - ./values.cert-manager.yaml
@@ -165,6 +169,7 @@ releases:
     chart: cert-manager-awspca/aws-privateca-issuer
     version: 1.2.0
     missingFileHandler: Warn
+    condition: cert-manager.enabled
     disableValidationOnInstall: true # CRD
     needs:
       - cert-manager
