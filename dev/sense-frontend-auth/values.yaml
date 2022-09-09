@@ -1,6 +1,7 @@
 env: dev
 
-hostname: v2.sense-dev.com
+hostname: sense-dev.com
+#hostname: v2.sense-dev.com
 
 image:
   repository: 342446142760.dkr.ecr.ap-southeast-1.amazonaws.com

@@ -29,11 +29,13 @@ helmfile -e dev -f ./base/cluster-common/helmfile.yaml template > preview.yaml
 helmfile -e dev -f ./base/sense-backend/helmfile.yaml write-values
 ```
 
-## To deploy application charts
+## Deploying application charts
 
 Use application pipelines to create release after build.
 
-## Test terraform plan in local
+charts will be stored in [s3 bucket](https://s3.console.aws.amazon.com/s3/buckets/sdx-eks-artifacts?region=ap-southeast-1&tab=objects)
+
+## Testing terraform plan in local
 
 ```shell
 terraform plan -var-file="./environment/dev/variables.tfvars" -target=module.eks_cluster

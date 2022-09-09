@@ -15,7 +15,7 @@ releases:
     namespace: sense
     createNamespace: true
     chart: sense-frontend-portal/sense-frontend-portal
-    version: 0.0.1
+    version: 0.0.2
     missingFileHandler: Warn
     values:
       - ./values.yaml

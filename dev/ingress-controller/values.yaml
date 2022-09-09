@@ -3,14 +3,15 @@ env: dev
 vpcId: vpc-09a58d6d
 accountId: 342446142760
 
+# chart installing conditions for multi-envs
 external-alb-default:
-  enabled: true
+  enabled: true # enabled, portal/API access without FW
 
 external-nlb-default:
-  enabled: true
+  enabled: false # disabled, external NLB until we have any TCP servers to test
 
 internal-alb-default:
-  enabled: false
+  enabled: false # QA cross zone API access
 
 internal-nlb-default:
-  enabled: true
+  enabled: true # QA cross zone NATS access
