@@ -24,7 +24,7 @@ external:
     default:
       enabled:
 
-# for release
+# For conditional release per env
 external-alb-default:
   enabled:
 

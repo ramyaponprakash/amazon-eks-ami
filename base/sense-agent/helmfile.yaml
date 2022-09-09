@@ -1,4 +1,4 @@
-helmBinary: /tmp/helm
+helmBinary: {{ requiredEnv "HELM_BINARY" }}
 
 environments:
   dev:

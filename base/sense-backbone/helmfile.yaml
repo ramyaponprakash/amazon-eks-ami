@@ -1,4 +1,4 @@
-#helmBinary: /tmp/helm
+helmBinary: {{ requiredEnv "HELM_BINARY" }}
 
 environments:
   dev:
@@ -36,6 +36,7 @@ releases:
     chart: nats/nats
     version: 0.17.4
     missingFileHandler: Warn
+    condition: nats.enabled
     needs:
       - sense-backbone
     values:

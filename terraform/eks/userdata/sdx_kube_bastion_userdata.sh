@@ -42,7 +42,8 @@ install_helm() {
   helm version
 
   echo "Installing helm plugins"
-  helm plugin install https://github.com/hypnoglow/helm-s3.git
+  helm plugin install https://github.com/hypnoglow/helm-s3.git --version 0.14.0
+  helm plugin install https://github.com/databus23/helm-diff
   echo "Installing helmfile - version: ${helmfile_version}"
   curl -L -o helmfile.tar.gz "https://github.com/helmfile/helmfile/releases/download/v${helmfile_version}/helmfile_${helmfile_version}_linux_amd64.tar.gz"
   mkdir helmfile &&
@@ -68,8 +69,15 @@ install_awscli() {
   aws --version
 }
 
+# Allow Bamboo SSH task to pass build variables
+enabled_bamboo_envvars() {
+  sed -zi '/AcceptEnv bamboo_*/!s/$/\nAcceptEnv bamboo_*/' /etc/ssh/sshd_config
+  systemctl restart ssh
+}
+
 install_helpers
 install_command_if_not_exist aws install_awscli
 install_eksctl
 install_kubectl
 install_helm
+enabled_bamboo_envvars
