@@ -1,12 +1,9 @@
-external:
-  nlb:
-    default:
-      enabled: true
-
+# https://github.com/kubernetes/ingress-nginx/blob/main/charts/ingress-nginx/values.yaml
+# Nginx ingress chart values
 controller:
   ingressClassResource:
     name: external-nlb-default
-    enabled: true
+    enabled: false
     default: false
     controllerValue: "k8s.io/ingress-nginx"
     parameters: {}
@@ -28,10 +25,15 @@ controller:
       service.beta.kubernetes.io/aws-load-balancer-ssl-cert: 'arn:aws:acm:ap-southeast-1:342446142760:certificate/15d21bbc-02a5-406a-a0f0-57d26462d448'
       service.beta.kubernetes.io/aws-load-balancer-ssl-negotiation-policy: 'ELBSecurityPolicy-TLS13-1-2-2021-06'
       service.beta.kubernetes.io/aws-load-balancer-alpn-policy: 'HTTP2Optional'
+    loadBalancerSourceRanges: #  external-nlb, no way to use the managed prefix
+      - 8.29.0.0/16 # WARP
+      - 13.212.44.0/24 # SOE VPN
+      - 61.16.70.114/32 # Hive-DEN
 
+# Values for own templates
+external:
+  nlb:
+    default:
+      enabled: false
 
-tcp:
-  4222: sense-backbone/sense-nats:4222
-  5682: default/solace-dev-pubsubplus-dev:5672
-  5681: default/solace-dev-pubsubplus-dev:5671
-  5683: default/solace-dev-pubsubplus-dev:8080
+tcp: {}

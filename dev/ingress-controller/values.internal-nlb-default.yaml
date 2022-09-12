@@ -1,8 +1,5 @@
-internal:
-  nlb:
-    default:
-      enabled: true
-
+# https://github.com/kubernetes/ingress-nginx/blob/main/charts/ingress-nginx/values.yaml
+# Nginx ingress chart values
 controller:
   ingressClassResource:
     name: internal-nlb-default
@@ -13,8 +10,8 @@ controller:
   ingressClass: internal-nlb-default
   electionID: internal-nlb-default
   service:
-    enableHttp: false
-    enableHttps: false
+    enableHttp: true
+    enableHttps: true
     annotations:
       service.beta.kubernetes.io/aws-load-balancer-name: 'sdx-eks-dev-internal-nlb'
       service.beta.kubernetes.io/aws-load-balancer-scheme: 'internal'
@@ -24,15 +21,20 @@ controller:
       service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: 'true'
       service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: 'instance'
       service.beta.kubernetes.io/aws-load-balancer-subnets: 'subnet-0459927e5a9a8ba64,subnet-0e1e99fe7c3dbd3f9'
-      service.beta.kubernetes.io/aws-load-balancer-ssl-ports: '5682,5683'
-      service.beta.kubernetes.io/aws-load-balancer-ssl-cert: 'arn:aws:acm:ap-southeast-1:342446142760:certificate/15d21bbc-02a5-406a-a0f0-57d26462d448'
+      service.beta.kubernetes.io/aws-load-balancer-ssl-ports: '443'
+      service.beta.kubernetes.io/aws-load-balancer-ssl-cert: 'arn:aws:acm:ap-southeast-1:342446142760:certificate/2e4cbfc6-b06c-4018-b9c6-2d16a299af2d'
       service.beta.kubernetes.io/aws-load-balancer-ssl-negotiation-policy: 'ELBSecurityPolicy-TLS13-1-2-2021-06'
       service.beta.kubernetes.io/aws-load-balancer-alpn-policy: 'HTTP2Optional'
+    loadBalancerSourceRanges: # internal-nlb
+      - 172.31.0.0/16 # dev default
+      - 173.1.0.0/19 # qa 1
+      - 173.2.0.0/19 # qa 2
 
+# Values for own templates
+internal:
+  nlb:
+    default:
+      enabled: true
 
 tcp:
-  4848: sense/sense-backend:4848
-  4222: sense-backbone/sense-nats:4222
-  5682: default/solace-dev-pubsubplus-dev:5672
-  5681: default/solace-dev-pubsubplus-dev:5671
-  5683: default/solace-dev-pubsubplus-dev:8080
+  4222: sense-backbone/nats:4222
