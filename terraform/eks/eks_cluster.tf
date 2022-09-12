@@ -43,5 +43,31 @@ resource "aws_eks_cluster" "sdx-eks-cluster" {
   }
 }
 
+resource "aws_eks_addon" "sdx-eks-cluster-kube-proxy-add-on" {
+ 
+  cluster_name      = aws_eks_cluster.sdx-eks-cluster.name
+  addon_name        = "kube-proxy"
+  resolve_conflicts = "OVERWRITE"
+  addon_version     = var.kube_proxy_version
+}
+
+resource "aws_eks_addon" "sdx-eks-cluster-vpc-cni-add-on" {
+ 
+  cluster_name      = aws_eks_cluster.sdx-eks-cluster.name
+  addon_name        = "vpc-cni"
+  resolve_conflicts = "OVERWRITE"
+  addon_version     = var.vpc_cni_version 
+}
+
+resource "aws_eks_addon" "sdx-eks-cluster-coredns-add-on" {
+ 
+  cluster_name      = aws_eks_cluster.sdx-eks-cluster.name
+  addon_name        = "coredns"
+  resolve_conflicts = "OVERWRITE"
+  addon_version     = var.coredns_version
+}
+
+
+
 
 

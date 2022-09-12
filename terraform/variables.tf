@@ -30,6 +30,21 @@ variable "helmfile_version" {
   type        = string
 }
 
+variable "kube_proxy_version" {
+  description = "helmfile version to use for the EKS cluster."
+  type        = string
+}
+
+variable "vpc_cni_version" {
+  description = "helmfile version to use for the EKS cluster."
+  type        = string
+}
+
+variable "coredns_version" {
+  description = "helmfile version to use for the EKS cluster."
+  type        = string
+}
+
 variable "cluster_log_retention_in_days" {
   default     = 90
   description = "Number of days to retain log events. Default retention - 90 days."

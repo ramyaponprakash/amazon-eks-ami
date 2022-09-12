@@ -18,6 +18,21 @@ variable "helmfile_version" {
   type        = string
 }
 
+variable "kube_proxy_version" {
+  description = "helmfile version to use for the EKS cluster."
+  type        = string
+}
+
+variable "vpc_cni_version" {
+  description = "helmfile version to use for the EKS cluster."
+  type        = string
+}
+
+variable "coredns_version" {
+  description = "helmfile version to use for the EKS cluster."
+  type        = string
+}
+
 variable "cluster_create_timeout" {
   description = "Timeout value when creating the EKS cluster."
   type        = string

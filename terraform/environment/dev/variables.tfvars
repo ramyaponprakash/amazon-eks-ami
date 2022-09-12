@@ -19,6 +19,9 @@ prefix_list_ids_bastion_ssh   = ["pl-0af10fe06357d6aff"]
 kubectl_version               = "1.22.6/2022-03-09"
 helm_version                  = "v3.9.2"
 helmfile_version              = "0.145.2"
+kube_proxy_version            = "v1.22.11-eksbuild.2"
+vpc_cni_version               = "v1.10.1-eksbuild.1"
+coredns_version               = "v1.11.3-eksbuild.1"
 cidr_blocks_additional_secgrp = ["172.31.0.0/16"]
 
 

@@ -23,5 +23,9 @@ module "eks_cluster" {
   kubectl_version               = var.kubectl_version
   helm_version                  = var.helm_version
   helmfile_version              = var.helmfile_version
+  kube_proxy_version            = var.kube_proxy_version
+  vpc_cni_version               = var.vpc_cni_version
+  coredns_version               = var.coredns_version
+
   cidr_blocks_additional_secgrp = var.cidr_blocks_additional_secgrp
 }
