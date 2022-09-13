@@ -90,6 +90,16 @@ variable "subnet_id_bastion" {
   type        = string
 }
 
+variable "endpoint_private_access" {
+  description = "endpoint_private_access"
+  
+}
+
+variable "endpoint_public_access" {
+  description = "endpoint_public_access"
+ 
+}
+
 variable "eks_cw_loggroup" {
   description = "eks cloudwatch loggroup"
   type        = string

@@ -16,6 +16,8 @@ module "eks_cluster" {
   instance_type_bastion         = var.instance_type_bastion
   subnet_ids                    = var.subnet_ids
   subnet_id_bastion             = var.subnet_id_bastion
+  endpoint_private_access       = var.endpoint_private_access
+  endpoint_public_access        = var.endpoint_public_access
   eks_cw_loggroup               = var.eks_cw_loggroup
   bastion_ami                   = var.bastion_ami
   cidr_blocks_bastion_ssh       = var.cidr_blocks_bastion_ssh
