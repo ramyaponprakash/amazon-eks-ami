@@ -1,5 +1,4 @@
 # https://github.com/kubernetes/ingress-nginx/blob/main/charts/ingress-nginx/values.yaml
-# Nginx ingress chart values
 controller:
   ingressClassResource:
     name: internal-alb-default
@@ -17,14 +16,13 @@ controller:
       http: http
       https: http
 
-# Values for own templates
 internal:
   alb:
     default:
-      enabled: true
+      enabled: false
       hosts:
-         - internal.sense-dev.com
-#         - v2-internal.sense-dev.com
+        # - sense-dev.com
+        - internal.sense-dev.com
       ingressClassName: internal-alb-default
       annotations:
         # https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.2/guide/ingress/annotations/
@@ -37,6 +35,6 @@ internal:
         alb.ingress.kubernetes.io/ssl-policy: 'ELBSecurityPolicy-FS-1-2-Res-2020-10'
         alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
         alb.ingress.kubernetes.io/ip-address-type: 'ipv4'
-        alb.ingress.kubernetes.io/certificate-arn: 'arn:aws:acm:ap-southeast-1:342446142760:certificate/2e4cbfc6-b06c-4018-b9c6-2d16a299af2d'
+        alb.ingress.kubernetes.io/certificate-arn: 'arn:aws:acm:ap-southeast-1:342446142760:certificate/71d7503d-0a94-4ca5-a631-79a7710564fb'
         alb.ingress.kubernetes.io/healthcheck-path: '/healthz'
         alb.ingress.kubernetes.io/success-codes: "200,404"

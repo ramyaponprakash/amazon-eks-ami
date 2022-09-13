@@ -25,7 +25,7 @@ cluster-autoscaler:
   enabled: true
 
 external-dns:
-  enabled: false
+  enabled: true
 
 external-secrets:
   enabled: true

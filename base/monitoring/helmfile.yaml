@@ -28,7 +28,7 @@ releases:
     namespace: monitoring
     createNamespace: true
     chart: monitoring/monitoring
-    version: 0.0.3
+    version: 0.0.2
     missingFileHandler: Warn
     values:
       - ./values.yaml
