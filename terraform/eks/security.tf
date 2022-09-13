@@ -54,6 +54,15 @@ resource "aws_security_group" "sgrp-sdx-eks-ssh" {
     prefix_list_ids = var.prefix_list_ids_bastion_ssh
     description     = "from sdx team"
   }
+
+ingress {
+    protocol        = "tcp"
+    from_port       = 22
+    to_port         = 22
+    prefix_list_ids = ["pl-0b206207dd31eb6e6"]
+    description     = "from ship"
+  }
+
   egress {
     from_port   = 0
     to_port     = 0

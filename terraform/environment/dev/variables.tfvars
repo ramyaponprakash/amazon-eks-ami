@@ -11,6 +11,8 @@ instance_type                 = "t3.medium"
 instance_type_bastion         = "t2.medium"
 sense_key                     = "snsp-poc"
 subnet_ids                    = ["subnet-0459927e5a9a8ba64", "subnet-0e1e99fe7c3dbd3f9"]
+endpoint_private_access       = true
+endpoint_public_access        = false
 subnet_id_bastion             = "subnet-0eaa789d06887eda5"
 eks_cw_loggroup               = "sdx-dev-eks-blue-cluster"
 bastion_ami                   = "ami-02ee763250491e04a"
@@ -21,7 +23,7 @@ helm_version                  = "v3.9.2"
 helmfile_version              = "0.145.2"
 kube_proxy_version            = "v1.22.11-eksbuild.2"
 vpc_cni_version               = "v1.10.1-eksbuild.1"
-coredns_version               = "v1.11.3-eksbuild.1"
+coredns_version               = "v1.8.7-eksbuild.1"
 cidr_blocks_additional_secgrp = ["172.31.0.0/16"]
 
 

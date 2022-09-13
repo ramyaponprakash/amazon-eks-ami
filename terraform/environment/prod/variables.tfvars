@@ -5,7 +5,7 @@
 sense_vpc                   = "vpc-09a58d6d"
 aws_account                 = "726262972162"
 cluster_name                = "sdx-prd-eks-blue-cluster"
-cluster_version             = 1.23
+cluster_version             = 1.22
 environment                 = "prd"
 instance_type               = "t3.medium"
 instance_type_bastion       = "t2.medium"
