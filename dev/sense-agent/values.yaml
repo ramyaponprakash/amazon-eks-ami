@@ -113,7 +113,7 @@ commons:
 
 
 deployments:
-  sniff:
+  agent-sniff:
     enabled: true
     env:
       - name: SENSE_CONFIG_FILES
@@ -130,7 +130,7 @@ deployments:
       - name: agent-config
         mountPath: conf/agent.config.yaml
         subPath: agent.config.yaml
-  dbtopics:
+  agent-dbtopics:
     enabled: true
     env:
       - name: SENSE_CONFIG_FILES
@@ -147,7 +147,7 @@ deployments:
       - name: agent-config
         mountPath: conf/agent.config.yaml
         subPath: agent.config.yaml
-  elastic:
+  agent-elastic:
     enabled: true
     env:
       - name: SENSE_CONFIG_FILES
@@ -165,7 +165,7 @@ deployments:
         mountPath: conf/agent.config.yaml
         subPath: agent.config.yaml
   bridge-agent-dev-nats-dev-rmq:
-    enabled: false
+    enabled: true
     imageName: sense_bridge_agent
     ports: []
     nodeSelector: {}
@@ -185,7 +185,7 @@ deployments:
     volumes: []
     mounts: []
   bridge-agent-dev-rmq-qa-nats:
-    enabled: false
+    enabled: true
     imageName: sense_bridge_agent
     ports: []
     nodeSelector: {}

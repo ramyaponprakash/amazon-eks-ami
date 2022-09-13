@@ -3,8 +3,10 @@ env: dev
 enabled: true
 
 hostname:
-  internal: v2-internal.sense-dev.com
-  external: v2.sense-dev.com
+  internal: internal.sense-dev.com
+  external: sense-dev.com
+#  internal: v2-internal.sense-dev.com
+#  external: v2.sense-dev.com
 
 image:
   repository: 342446142760.dkr.ecr.ap-southeast-1.amazonaws.com

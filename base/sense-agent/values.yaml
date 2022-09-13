@@ -85,7 +85,7 @@ secrets:
 certs: []
 
 deployments:
-  sniff:
+  agent-sniff:
     enabled:
     imageName: sense_sniff_agent
     imageTag:
@@ -98,7 +98,7 @@ deployments:
     env: []
     volumes: []
     mounts: []
-  dbtopics:
+  agent-dbtopics:
     enabled:
     imageName: sense_sniff_agent_dbtopics
     imageTag:
@@ -111,7 +111,7 @@ deployments:
     env: []
     volumes: []
     mounts: []
-  elastic:
+  agent-elastic:
     enabled:
     imageName: sense_sniff_agent_elastic
     imageTag:

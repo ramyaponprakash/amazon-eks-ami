@@ -23,13 +23,3 @@ spec:
                 name: kubernetes-dashboard
                 port:
                   number: 443
-          - path: /metric(/|$)(.*)
-            pathType: Prefix
-            backend:
-              service:
-                name: dashboard-metrics-scraper
-                port:
-                  number: 443
-
-
-
