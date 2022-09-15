@@ -5,7 +5,7 @@ CLUSTER_NAME=""
 NAMESPACE="cluster-common"
 RESOURCE_ID="*"
 ENV=dev
-LOC="/tmp/"
+LOC=""
 
 while getopts a:e:c:n:l flag
 do

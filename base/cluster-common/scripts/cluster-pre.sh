@@ -2,7 +2,7 @@
 
 CLUSTER_NAME=""
 NAMESPACE="cluster-common"
-LOC="/tmp/"
+LOC=""
 
 while getopts c:n:l flag
 do

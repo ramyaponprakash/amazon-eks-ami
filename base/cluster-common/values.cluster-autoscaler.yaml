@@ -5,6 +5,12 @@ awsRegion: ap-southeast-1
 
 replicaCount: 1
 
+rbac:
+  create: true
+  serviceAccount:
+    create: false
+    name: cluster-autoscaler-aws-cluster-autoscaler
+
 extraArgs:
   skip-nodes-with-system-pods: false
   balance-similar-node-groups: true
