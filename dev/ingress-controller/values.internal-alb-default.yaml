@@ -28,7 +28,7 @@ internal:
       ingressClassName: internal-alb-default
       annotations:
         # https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.2/guide/ingress/annotations/
-        alb.ingress.kubernetes.io/load-balancer-name: 'sdx-eks-dev-internal-alb'
+        alb.ingress.kubernetes.io/load-balancer-name: 'sdx-eks-dev-internal-alb-blue'
         alb.ingress.kubernetes.io/scheme: 'internal'
         alb.ingress.kubernetes.io/target-type: 'ip'
         alb.ingress.kubernetes.io/subnets: 'subnet-0eaa789d06887eda5,subnet-03603dbfb617e41c4'
