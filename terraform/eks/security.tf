@@ -21,6 +21,14 @@ resource "aws_security_group" "sdx-eks-cluster-additional-secgrup" {
     to_port     = 443
     cidr_blocks = var.cidr_blocks_additional_secgrp
   }
+  ingress {
+    protocol    = "tcp"
+    from_port   = 0
+    to_port     = 65535
+    security_groups = ["sg-061c88af4bff8e77b"]
+  }
+
+
   egress {
     from_port   = 0
     to_port     = 0
@@ -41,11 +49,11 @@ resource "aws_security_group" "sgrp-sdx-eks-ssh" {
   description = "bastion ssh"
 
   ingress {
-    protocol    = "tcp"
-    from_port   = 22
-    to_port     = 22
-    cidr_blocks = var.cidr_blocks_bastion_ssh
-    description = "from Nessus"
+    protocol        = "tcp"
+    from_port       = 22
+    to_port         = 22
+    cidr_blocks     = var.cidr_blocks_bastion_ssh
+    description     = "from Nessus"
   }
   ingress {
     protocol        = "tcp"
@@ -64,10 +72,10 @@ ingress {
   }
 
   egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port       = 0
+    to_port         = 0
+    protocol        = "-1"
+    cidr_blocks     = ["0.0.0.0/0"]
   }
   tags = {
     Name                         = "sgrp-sdx-${var.environment}-ssh"

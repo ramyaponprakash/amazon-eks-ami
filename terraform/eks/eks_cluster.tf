@@ -22,8 +22,10 @@ resource "aws_eks_cluster" "sdx-eks-cluster" {
   role_arn                  = aws_iam_role.sdx-eks-cluster.arn
 
   vpc_config {
-    security_group_ids = [aws_security_group.sdx-eks-cluster-additional-secgrup.id]
-    subnet_ids         = var.subnet_ids
+    security_group_ids            = [aws_security_group.sdx-eks-cluster-additional-secgrup.id]
+    subnet_ids                    = var.subnet_ids
+    endpoint_private_access       = var.endpoint_private_access
+    endpoint_public_access        = var.endpoint_public_access
   }
 
   timeouts {
@@ -39,6 +41,7 @@ resource "aws_eks_cluster" "sdx-eks-cluster" {
 
   tags = {
     Name        = var.cluster_name
+    Custodian-Scheduler-StopTime = "off=();tz=sgt"
     Environment = var.environment
   }
 }
