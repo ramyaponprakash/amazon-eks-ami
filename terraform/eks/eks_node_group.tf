@@ -29,6 +29,7 @@ resource "aws_eks_node_group" "sdx-eks-default-nodegroup" {
   # aws tag
   tags = {
     Name                         = "${var.cluster_name}-default-nodegroup"
+    Custodian-Scheduler-StopTime = "off=();tz=sgt"
     Environment                  = var.environment
   }
 
