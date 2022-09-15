@@ -92,12 +92,14 @@ variable "subnet_id_bastion" {
 
 variable "endpoint_private_access" {
   description = "endpoint_private_access"
-  
+  type        = bool
+  default     = true
 }
 
 variable "endpoint_public_access" {
   description = "endpoint_public_access"
- 
+  type        = bool
+  default     = false
 }
 
 variable "eks_cw_loggroup" {
