@@ -8,20 +8,21 @@ data "template_file" "sdx_kube_bastion_userdata" {
 }
 
 resource "aws_instance" "sdx_kube_bastion" {
-  count                  = 1
-  ami                    = var.bastion_ami
-  instance_type          = var.instance_type
-  key_name               = var.sense_key
-  subnet_id              = var.subnet_id_bastion
-  vpc_security_group_ids = [aws_security_group.sgrp-sdx-eks-ssh.id]
-  user_data              = data.template_file.sdx_kube_bastion_userdata.rendered
+  count                       = 1
+  ami                         = var.bastion_ami
+  instance_type               = var.instance_type
+  key_name                    = var.sense_key
+  subnet_id                   = var.subnet_id_bastion
+  vpc_security_group_ids      = [aws_security_group.sgrp-sdx-eks-ssh.id]
+  user_data                   = data.template_file.sdx_kube_bastion_userdata.rendered
+  associate_public_ip_address = true
   root_block_device {
     volume_type = "standard"
     volume_size = 30
   }
-  lifecycle {
+  /*lifecycle {
     ignore_changes = all
-  }
+  }*/
   tags = {
     Name                         = "sdx-${var.environment}-kube-bastion"
     Custodian-Scheduler-StopTime = "off=();tz=sgt"
