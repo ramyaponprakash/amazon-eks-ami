@@ -25,13 +25,12 @@ resource "aws_eks_node_group" "sdx-eks-default-nodegroup" {
     Type     = "default"
     Instance = var.instance_type
   }
-
+  
   # aws tag not working with current provider
   # https://github.com/terraform-aws-modules/terraform-aws-eks/issues/1886#issuecomment-1043153661
   tags = {
-    Name                         = "${var.cluster_name}-default-nodegroup"
-    Custodian-Scheduler-StopTime = "off=();tz=sgt"
-    Environment                  = var.environment
+    Name        = "${var.cluster_name}-default-nodegroup"
+    Environment = var.environment
   }
 
   depends_on = [
@@ -42,7 +41,7 @@ resource "aws_eks_node_group" "sdx-eks-default-nodegroup" {
 }
 
 # Once aws_eks_node_group create managed ASG, will tag to the existing ASG to be propagate to worker nodes on launch
-/*resource "aws_autoscaling_group_tag" "nodegroup-tag-name" {
+resource "aws_autoscaling_group_tag" "nodegroup-tag-name" {
   for_each = toset(
     [for asg in flatten(
       [for resources in aws_eks_node_group.sdx-eks-default-nodegroup.resources : resources.autoscaling_groups]
@@ -54,8 +53,12 @@ resource "aws_eks_node_group" "sdx-eks-default-nodegroup" {
   tag {
     key                 = "Name"
     value               = "${var.cluster_name}-default-nodegroup"
-    propagate_at_launch = true # Whether to propagate the tags to instances launched by the ASG.
+    propagate_at_launch = true
   }
+
+  depends_on = [
+    aws_eks_node_group.sdx-eks-default-nodegroup
+  ]
 }
 
 resource "aws_autoscaling_group_tag" "nodegroup-tag-env" {
@@ -70,8 +73,12 @@ resource "aws_autoscaling_group_tag" "nodegroup-tag-env" {
   tag {
     key                 = "Environment"
     value               = var.environment
-    propagate_at_launch = true # Whether to propagate the tags to instances launched by the ASG.
+    propagate_at_launch = true
   }
+
+  depends_on = [
+    aws_eks_node_group.sdx-eks-default-nodegroup
+  ]
 }
 
 resource "aws_autoscaling_group_tag" "nodegroup-tag-custodian" {
@@ -88,4 +95,8 @@ resource "aws_autoscaling_group_tag" "nodegroup-tag-custodian" {
     value               = "off=();tz=sgt"
     propagate_at_launch = true # Whether to propagate the tags to instances launched by the ASG.
   }
-}*/
+
+  depends_on = [
+    aws_eks_node_group.sdx-eks-default-nodegroup
+  ]
+}
