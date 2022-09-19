@@ -25,10 +25,11 @@ resource "aws_eks_node_group" "sdx-eks-default-nodegroup" {
     Type     = "default"
     Instance = var.instance_type
   }
-  
-  # aws tag not working with current provider
-  # https://github.com/terraform-aws-modules/terraform-aws-eks/issues/1886#issuecomment-1043153661
+
+  # nodegroup tag will not propagate to ASG or worker node
+  # DO NOT INCLUDE Custodian tag
   tags = {
+    Type        = "nodegroup"
     Name        = "${var.cluster_name}-default-nodegroup"
     Environment = var.environment
   }
@@ -52,7 +53,7 @@ resource "aws_autoscaling_group_tag" "nodegroup-tag-name" {
 
   tag {
     key                 = "Name"
-    value               = "${var.cluster_name}-default-nodegroup"
+    value               = "eks-${var.cluster_name}-default-nodegroup-worker-node"
     propagate_at_launch = true
   }
 
@@ -93,7 +94,7 @@ resource "aws_autoscaling_group_tag" "nodegroup-tag-custodian" {
   tag {
     key                 = "Custodian-Scheduler-StopTime"
     value               = "off=();tz=sgt"
-    propagate_at_launch = true # Whether to propagate the tags to instances launched by the ASG.
+    propagate_at_launch = true
   }
 
   depends_on = [
