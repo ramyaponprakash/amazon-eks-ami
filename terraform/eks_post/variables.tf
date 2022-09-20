@@ -8,5 +8,5 @@ variable "environment" {
 
 variable "default_nodegroup_asg" {
   description = "default_nodegroup_asg"
-  type        = list(string)
+  type        = set(string)
 }

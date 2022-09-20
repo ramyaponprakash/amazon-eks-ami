@@ -12,7 +12,7 @@ resource "aws_eks_node_group" "sdx-eks-default-nodegroup" {
 
   scaling_config {
     desired_size = 4
-    max_size     = 5
+    max_size     = 7
     min_size     = 3
   }
 
@@ -25,8 +25,11 @@ resource "aws_eks_node_group" "sdx-eks-default-nodegroup" {
     Type     = "default"
     Instance = var.instance_type
   }
+
   lifecycle {
-    ignore_changes = all
+    ignore_changes = [
+      scaling_config.0.desired_size
+    ]
   }
 
   # nodegroup tag will not propagate to ASG or worker node
