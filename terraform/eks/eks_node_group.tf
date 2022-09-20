@@ -45,7 +45,7 @@ resource "aws_eks_node_group" "sdx-eks-default-nodegroup" {
 }
 
 # Once aws_eks_node_group create managed ASG, will tag to the existing ASG to be propagate to worker nodes on launch
-resource "aws_autoscaling_group_tag" "nodegroup-tag-name" {
+/*resource "aws_autoscaling_group_tag" "nodegroup-tag-name" {
   for_each = toset(
     [for asg in flatten(
       [for resources in aws_eks_node_group.sdx-eks-default-nodegroup.resources : resources.autoscaling_groups]
@@ -103,4 +103,4 @@ resource "aws_autoscaling_group_tag" "nodegroup-tag-custodian" {
   depends_on = [
     aws_eks_node_group.sdx-eks-default-nodegroup
   ]
-}
+}*/
