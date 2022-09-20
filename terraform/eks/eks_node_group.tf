@@ -25,6 +25,9 @@ resource "aws_eks_node_group" "sdx-eks-default-nodegroup" {
     Type     = "default"
     Instance = var.instance_type
   }
+  lifecycle {
+    ignore_changes = all
+  }
 
   # nodegroup tag will not propagate to ASG or worker node
   # DO NOT INCLUDE Custodian tag
