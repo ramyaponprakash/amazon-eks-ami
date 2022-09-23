@@ -79,6 +79,25 @@ variable "sense_key" {
   type = string
 }
 
+variable "ng_desired_size" {
+  description = "nodegroup_desired_size"
+  default   = "4"
+}
+
+variable "ng_max_size" {
+  description = "nodegroup_max_size"
+  default = "7"
+
+}
+
+variable "ng_min_size" {
+  description = "nodegroup_min_size"
+  default = "3"
+}
+
+variable "region" {
+  description = "The AWS region to create resources in."
+}
 
 variable "subnet_ids" {
   description = "eks_cluster_subnet_ids"

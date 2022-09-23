@@ -11,9 +11,9 @@ resource "aws_eks_node_group" "sdx-eks-default-nodegroup" {
   instance_types  = [var.instance_type]
 
   scaling_config {
-    desired_size = 4
-    max_size     = 7
-    min_size     = 3
+    desired_size = var.ng_desired_size
+    max_size     = var.ng_max_size
+    min_size     = var.ng_min_size
   }
 
   remote_access {

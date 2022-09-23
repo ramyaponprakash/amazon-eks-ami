@@ -8,6 +8,7 @@
 #HELM_VER="v3.9.2"
 #HELMFILE_VER="0.145.2"
 
+
 install_command_if_not_exist() {
   if ! command -v $1 &> /dev/null
   then
@@ -22,6 +23,9 @@ install_eksctl() {
   chmod +x ./eksctl
   mv ./eksctl /usr/local/bin/eksctl
   eksctl version
+  aws eks --region ap-southeast-1 update-kubeconfig --name ${cluster_name}
+  eksctl utils associate-iam-oidc-provider --region=ap-southeast-1 --cluster=${cluster_name} --approve
+
 }
 
 install_kubectl() {
@@ -44,6 +48,7 @@ install_helm() {
   echo "Installing helm plugins"
   helm plugin install https://github.com/hypnoglow/helm-s3.git --version 0.14.0
   helm plugin install https://github.com/databus23/helm-diff
+  mv /.local /root
   echo "Installing helmfile - version: ${helmfile_version}"
   curl -L -o helmfile.tar.gz "https://github.com/helmfile/helmfile/releases/download/v${helmfile_version}/helmfile_${helmfile_version}_linux_amd64.tar.gz"
   mkdir helmfile &&
@@ -67,6 +72,14 @@ install_awscli() {
   ./aws/install
   rm -rf aws awscliv2.zip
   aws --version
+  aws configure set default.region ap-southeast-1
+  export aws_secret_key=`aws secretsmanager get-secret-value --secret-id dev/aws_cli_keys --region ${region} | jq --raw-output '.SecretString' | jq -r .AWS_SECRET_KEY`
+  export aws_access_key=`aws secretsmanager get-secret-value --secret-id dev/aws_cli_keys --region ${region} | jq --raw-output '.SecretString' | jq -r .AWS_ACCESS_KEY`
+  cat << EndOfConfig > /root/.aws/credentials
+  [default]
+        aws_secret_access_key = $aws_secret_key
+        aws_access_key_id     = $aws_access_key
+EndOfConfig
 }
 
 # Allow Bamboo SSH task to pass build variables

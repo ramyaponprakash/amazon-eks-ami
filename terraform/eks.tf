@@ -9,6 +9,7 @@ module "eks_cluster" {
   sense_vpc                     = var.sense_vpc
   aws_account                   = var.aws_account
   sense_key                     = var.sense_key
+  region                        = var.region
   cluster_log_retention_in_days = var.cluster_log_retention_in_days
   cluster_version               = var.cluster_version
   environment                   = var.environment
@@ -28,6 +29,5 @@ module "eks_cluster" {
   kube_proxy_version            = var.kube_proxy_version
   vpc_cni_version               = var.vpc_cni_version
   coredns_version               = var.coredns_version
-
   cidr_blocks_additional_secgrp = var.cidr_blocks_additional_secgrp
 }

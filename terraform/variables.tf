@@ -67,6 +67,20 @@ variable "sense_key" {
   type = string
 }
 
+
+
+variable "region" {
+  description = "The AWS region to create resources in."
+}
+
+
+variable "vpc_bastion_security_group" {
+  description = "bastion_security_ids"
+  type        = list(any)
+}
+
+
+
 variable "subnet_ids" {
   description = "eks_cluster_subnet_ids"
   type        = list(any)
