@@ -4,6 +4,8 @@ data "template_file" "sdx_kube_bastion_userdata" {
     kubectl_version  = var.kubectl_version
     helm_version     = var.helm_version
     helmfile_version = var.helmfile_version
+    cluster_name     = var.cluster_name
+    region           = var.region
   }
 }
 
@@ -12,8 +14,9 @@ resource "aws_instance" "sdx_kube_bastion" {
   ami                         = var.bastion_ami
   instance_type               = var.instance_type
   key_name                    = var.sense_key
+  iam_instance_profile        = "ec2-eks-role"
   subnet_id                   = var.subnet_id_bastion
-  vpc_security_group_ids      = [aws_security_group.sgrp-sdx-eks-ssh.id]
+  vpc_security_group_ids      = var.vpc_bastion_security_group
   user_data                   = data.template_file.sdx_kube_bastion_userdata.rendered
   associate_public_ip_address = true
   root_block_device {

@@ -6,10 +6,12 @@ sense_vpc                     = "vpc-09a58d6d"
 aws_account                   = "342446142760"
 cluster_name                  = "sdx-dev-eks-blue-cluster"
 cluster_version               = 1.22
+region                        = "ap-southeast-1"
 environment                   = "dev"
 instance_type                 = "t3.medium"
 instance_type_bastion         = "t2.medium"
 sense_key                     = "snsp-poc"
+vpc_bastion_security_group    = ["sg-097e5f2eaa6488c15"]
 subnet_ids                    = ["subnet-0459927e5a9a8ba64", "subnet-0e1e99fe7c3dbd3f9"]
 endpoint_private_access       = true
 endpoint_public_access        = false
@@ -25,5 +27,3 @@ kube_proxy_version            = "v1.22.11-eksbuild.2"
 vpc_cni_version               = "v1.10.1-eksbuild.1"
 coredns_version               = "v1.8.7-eksbuild.1"
 cidr_blocks_additional_secgrp = ["172.31.0.0/16"]
-
-
