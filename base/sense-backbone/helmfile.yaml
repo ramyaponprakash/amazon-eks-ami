@@ -11,7 +11,7 @@ environments:
 
 repositories:
   - name: sense-backbone
-    url: s3://sdx-eks-artifacts/{{ .Environment.Name }}/charts/sense-backbone
+    url: s3://sdx-eks-artifacts/charts/sense-backbone
   - name: nats
     url: https://nats-io.github.io/k8s/helm/charts/
 
@@ -22,7 +22,7 @@ releases:
     namespace: sense-backbone
     createNamespace: true
     chart: sense-backbone/sense-backbone
-    version: 0.0.1
+    version: 0.0.2
     missingFileHandler: Warn
     values:
       - ./values.yaml

@@ -11,7 +11,7 @@ environments:
 
 repositories:
   - name: monitoring
-    url: s3://sdx-eks-artifacts/{{ .Environment.Name }}/charts/monitoring
+    url: s3://sdx-eks-artifacts/charts/monitoring
   - name: kubernetes-dashboard
     url: https://kubernetes.github.io/dashboard/
   - name: metrics-server
@@ -28,7 +28,7 @@ releases:
     namespace: monitoring
     createNamespace: true
     chart: monitoring/monitoring
-    version: 0.0.3
+    version: 0.0.4
     missingFileHandler: Warn
     values:
       - ./values.yaml

@@ -8,14 +8,15 @@ CLUSTER_NAME=$3
 [[ -z "${CLUSTER_NAME}" ]] && echo "CLUSTER_NAME is required" && exit 1
 
 LOC="/tmp/"
-BUCKET="s3://sdx-eks-artifacts/$ENV/charts/$CHART_NAME/"
+BUCKET="s3://sdx-eks-artifacts/charts/$CHART_NAME/"
 BUCKET_NAME="sdx-eks-artifacts"
 DEST_PATH="./tmp/chart/$CHART_NAME"
 
 echo "publish $CHART_NAME to $BUCKET"
 
-"${LOC}"aws s3api head-object --bucket "$BUCKET_NAME" --key "$CHART_NAME"/index.yaml > /dev/null 2>&1 || INDEX_NOT_EXIST=true
+"${LOC}"aws s3api head-object --bucket "$BUCKET_NAME" --key "charts/$CHART_NAME/index.yaml" > /dev/null 2>&1 || INDEX_NOT_EXIST=true
 if [ $INDEX_NOT_EXIST ]; then
+  echo "init index.yaml in s3"
   "${LOC}"helm s3 init "$BUCKET"
 else
   echo "index.yaml exist, skip helm s3 init"

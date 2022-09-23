@@ -33,9 +33,9 @@ spec:
           {{- toYaml .Values.containerSecurityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}/{{ default $rangeItem.imageName $rangeItem.name $k }}:{{ default .Values.image.tag $rangeItem.imageTag | default "latest" }}"
           volumeMounts:
-          {{ with concat .Values.mounts $rangeItem.mounts }}
-          {{- toYaml . | nindent 12 }}
-          {{- end }}
+            {{- with concat .Values.commons.mounts $rangeItem.mounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
           imagePullPolicy: {{ default "IfNotPresent" .Values.image.pullPolicy }}
           ports:
             - containerPort: {{ default $rangeItem.publicPort $rangeItem.publicTargetPort  }}
@@ -71,7 +71,7 @@ spec:
           {{- toYaml . | nindent 12 }}
       {{- end }}
       volumes:
-      {{- with concat .Values.volumes $rangeItem.volumes }}
+      {{- with concat .Values.commons.volumes $rangeItem.volumes }}
       {{- toYaml . | nindent 8 }}
       {{- end }}
       nodeSelector:

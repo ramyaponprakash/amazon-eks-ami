@@ -1,0 +1,11 @@
+html:
+  index: |
+    <!DOCTYPE html>
+    <html>
+    	<head>
+    		<meta http-equiv="refresh" content="0;url=/adex/home"/>
+    			<title>ADEX</title>
+    	</head>
+    	<body>
+    	</body>
+    </html>

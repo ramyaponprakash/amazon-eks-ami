@@ -14,6 +14,29 @@ autoscaling:
 
 ingressClassName: external-alb-default
 
-deployments:
-  frontend-auth: {}
+commons:
+  envs:
+    - name: MODULE
+      value: "adex"
+  volumes:
+    - name: frontend-nginx-config
+      configMap:
+        name: frontend-nginx-config
+    - name: auth-nginx-config
+      configMap:
+        name: auth-nginx-config
+  mounts:
+    - name: frontend-nginx-config
+      readOnly: true
+      mountPath: /etc/nginx/nginx.conf
+      subPath: nginx.conf
+    - name: auth-nginx-config
+      readOnly: true
+      mountPath: /etc/nginx/default.d/nginx-auth.conf
+      subPath: nginx-auth.conf
 
+deployments:
+  frontend-auth:
+    env: []
+    volumes: []
+    mounts: []

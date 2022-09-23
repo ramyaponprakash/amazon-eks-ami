@@ -1,0 +1,54 @@
+configmap:
+  common: |-
+    dev.config.yaml: |-
+        apis:
+          policies:
+            host: policy.sense.svc.cluster.local
+          roles:
+            host: role.sense.svc.cluster.local
+          lookup:
+            host: lookup.sense.svc.cluster.local
+          auth:
+            host: auth.sense.svc.cluster.local
+          users:
+            host: iam.sense.svc.cluster.local
+          client:
+            host: client.sense.svc.cluster.local
+          topics:
+            host: topics.sense.svc.cluster.local
+          subscription:
+            host: subscription.sense.svc.cluster.local
+          adaptor:
+            host: adaptor.sense.svc.cluster.local
+          webhook:
+            host: webhook.sense.svc.cluster.local
+          activity:
+            host: activity.sense.svc.cluster.local
+          metric:
+            host: metric.sense.svc.cluster.local
+        etcd:
+          enabled: false
+        k8s:
+          healthcheck:
+            port: 7171
+            enabled: true
+          configs:
+            enabled: true
+        certs:
+          backend:
+            server:
+              caPath: /etc/sense/cert/backend/server/ca.crt
+              certPath: /etc/sense/cert/backend/server/tls.crt
+              keyPath: /etc/sense/cert/backend/server/tls.key
+            client:
+              caPath: /etc/sense/cert/backend/client/ca.crt
+              certPath: /etc/sense/cert/backend/client/tls.crt
+              keyPath: /etc/sense/cert/backend/client/tls.key
+          nats:
+            caPath: /etc/sense/cert/nats/ca.crt
+            certPath: /etc/sense/cert/nats/tls.crt
+            keyPath: /etc/sense/cert/nats/tls.key
+          mongo:
+            caPath: /etc/sense/cert/mongo/ca.crt
+            certPath: /etc/sense/cert/mongo/tls.crt
+            keyPath: /etc/sense/cert/mongo/tls.key

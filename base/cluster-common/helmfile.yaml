@@ -11,7 +11,7 @@ environments:
 
 repositories:
   - name: cluster-common
-    url: s3://sdx-eks-artifacts/{{ .Environment.Name }}/charts/cluster-common
+    url: s3://sdx-eks-artifacts/charts/cluster-common
   - name: external-dns
     url: https://kubernetes-sigs.github.io/external-dns/
   - name: external-secrets
@@ -30,7 +30,7 @@ releases:
     namespace: cluster-common
     createNamespace: true
     chart: cluster-common/cluster-common
-    version: 0.0.2
+    version: 0.0.3
     missingFileHandler: Warn
     disableValidationOnInstall: true # CRD
     values:

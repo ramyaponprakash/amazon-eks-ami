@@ -6,7 +6,7 @@ environments:
 
 repositories:
   - name: sense-agent
-    url: s3://sdx-eks-artifacts/{{ .Environment.Name }}/charts/sense-agent
+    url: s3://sdx-eks-artifacts/charts/sense-agent
 
 missingFileHandler: Error
 
@@ -15,7 +15,7 @@ releases:
     namespace: sense
     createNamespace: true
     chart: sense-agent/sense-agent
-    version: 0.0.1
+    version: 0.0.2
     missingFileHandler: Warn
     values:
       - ./values.yaml

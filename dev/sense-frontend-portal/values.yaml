@@ -14,6 +14,29 @@ autoscaling:
 
 ingressClassName: external-alb-default
 
-deployments:
-  frontend-portal: {}
+commons:
+  envs:
+    - name: MODULE
+      value: "adex"
+  volumes:
+    - name: frontend-nginx-config
+      configMap:
+        name: frontend-nginx-config
+    - name: portal-nginx-config
+      configMap:
+        name: portal-nginx-config
+  mounts:
+    - name: frontend-nginx-config
+      readOnly: true
+      mountPath: /etc/nginx/nginx.conf
+      subPath: nginx.conf
+    - name: portal-nginx-config
+      readOnly: true
+      mountPath: /etc/nginx/default.d/nginx-adex.conf
+      subPath: nginx-adex.conf
 
+deployments:
+  frontend-portal:
+    env: []
+    volumes: []
+    mounts: []

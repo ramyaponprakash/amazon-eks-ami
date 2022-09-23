@@ -117,7 +117,7 @@ commons:
     # --- configs and secrets
     - name: dev-config
       configMap:
-        name: dev-config
+        name: common-config
     - name: init-map
       secret:
         secretName: init

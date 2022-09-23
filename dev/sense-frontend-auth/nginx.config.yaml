@@ -1,0 +1,5 @@
+nginx:
+  module: |
+    location /auth/ {
+        try_files $uri $uri/ /auth/index.html =404;
+    }
