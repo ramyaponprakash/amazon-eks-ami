@@ -115,7 +115,7 @@ commons:
       value: "/etc/sense/cert/backend/client/tls.key"
   volumes: &commonVolumes
     # --- configs and secrets
-    - name: dev-config
+    - name: common-config
       configMap:
         name: common-config
     - name: init-map
@@ -142,6 +142,9 @@ commons:
     - name: common
       secret:
         secretName: common
+    - name: doc-ca
+      secret:
+        secretName: doc-ca
     # --- certificates
     - name: backend-server-cert
       secret:
@@ -157,7 +160,7 @@ commons:
         secretName: nats-client-cert
   mounts: &commonMounts
     # --- configs and secrets
-    - name: dev-config
+    - name: common-config
       readOnly: true
       mountPath: /etc/sense/conf/dev.config.yaml
       subPath: dev.config.yaml
@@ -169,6 +172,9 @@ commons:
       readOnly: true
       mountPath: /etc/sense/conf/mongodb_config.yaml
       subPath: mongodb_config.yaml
+    - name: doc-ca
+      readOnly: true
+      mountPath: /etc/sense/cert/mongo/
     - name: redis
       readOnly: true
       mountPath: /etc/sense/conf/redis_config.yaml
