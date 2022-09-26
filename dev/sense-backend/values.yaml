@@ -27,6 +27,9 @@ secrets:
     - name: mongodb
       key: mongodb_config.yaml
       secretKey: dev/sdx/mongodb/credentials
+    - name: doc-ca
+      key: ca.pem
+      secretKey: dev/sdx/mongodb/ca
     - name: redis
       key: redis_config.yaml
       secretKey: dev/sdx/redis/credentials
@@ -174,7 +177,8 @@ commons:
       subPath: mongodb_config.yaml
     - name: doc-ca
       readOnly: true
-      mountPath: /etc/sense/cert/mongo/
+      mountPath: /etc/sense/cert/mongo/ca.pem
+      subPath: ca.pem
     - name: redis
       readOnly: true
       mountPath: /etc/sense/conf/redis_config.yaml
