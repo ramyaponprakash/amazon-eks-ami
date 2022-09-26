@@ -2,7 +2,7 @@
 #  Environment file for prd cluster creation
 #
 ################################################
-sense_vpc                   = "vpc-09a58d6d"
+cluster_vpc                 = "vpc-09a58d6d"
 aws_account                 = "726262972162"
 cluster_name                = "sdx-prd-eks-blue-cluster"
 cluster_version             = 1.22

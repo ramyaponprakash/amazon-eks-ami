@@ -1,18 +1,25 @@
-variable "sense_vpc" {
+variable "cluster_vpc" {
   description = "vpc"
+  type        = string
 }
 
 variable "aws_account" {
   description = "AWS account number"
+  type        = string
 }
 
 variable "cluster_name" {
   description = "Cluster name"
+  type        = string
 }
 
 variable "cluster_version" {
   description = "Kubernetes version to use for the EKS cluster."
   type        = string
+}
+
+variable "cluster_kms_key_arn" {
+  type = string
 }
 
 variable "kubectl_version" {
@@ -67,19 +74,15 @@ variable "sense_key" {
   type = string
 }
 
-
-
 variable "region" {
   description = "The AWS region to create resources in."
+  type        = string
 }
-
 
 variable "vpc_bastion_security_group" {
   description = "bastion_security_ids"
   type        = list(any)
 }
-
-
 
 variable "subnet_ids" {
   description = "eks_cluster_subnet_ids"
@@ -108,8 +111,13 @@ variable "eks_cw_loggroup" {
   type        = string
 }
 
+variable "cluster_log_kms_key_id" {
+  type = string
+}
+
 variable "bastion_ami" {
   description = "bastion host ami"
+  type        = string
 }
 
 variable "cidr_blocks_bastion_ssh" {

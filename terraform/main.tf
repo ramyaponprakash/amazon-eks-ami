@@ -3,10 +3,16 @@ provider "aws" {
 }
 
 terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 4.0"
+    }
+  }
   backend "s3" {
-    bucket = "sense-eks-infra-tf-state"
-    key    = "sense/terraform/tfstate"
-    region = "ap-southeast-1"
+    bucket  = "sense-eks-infra-tf-state"
+    key     = "sense/terraform/tfstate"
+    region  = "ap-southeast-1"
     encrypt = true
   }
 }

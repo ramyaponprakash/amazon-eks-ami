@@ -7,7 +7,7 @@ resource "aws_cloudwatch_log_group" "sdx-eks-loggroup" {
   count             = 1
   name              = "/aws/eks/${var.cluster_name}/cluster"
   retention_in_days = var.cluster_log_retention_in_days
-  #kms_key_id       = var.cluster_log_kms_key_id
+  kms_key_id        = var.cluster_log_kms_key_id
   tags = {
     Name        = var.eks_cw_loggroup
     Environment = var.environment
@@ -26,6 +26,13 @@ resource "aws_eks_cluster" "sdx-eks-cluster" {
     subnet_ids              = var.subnet_ids
     endpoint_private_access = var.endpoint_private_access
     endpoint_public_access  = var.endpoint_public_access
+  }
+
+  encryption_config {
+    provider {
+      key_arn = var.cluster_kms_key_arn
+    }
+    resources = ["secrets"]
   }
 
   timeouts {
