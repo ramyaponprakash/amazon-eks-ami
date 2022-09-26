@@ -3,6 +3,10 @@ variable "cluster_version" {
   type        = string
 }
 
+variable "cluster_kms_key_arn" {
+  type = string
+}
+
 variable "kubectl_version" {
   description = "Kubectl version to use for the EKS cluster."
   type        = string
@@ -45,22 +49,29 @@ variable "cluster_delete_timeout" {
   default     = "15m"
 }
 
-variable "sense_vpc" {
+variable "cluster_vpc" {
   description = "vpc"
+  type        = string
 }
 
 variable "aws_account" {
   description = "AWS account"
+  type        = string
 }
 
 variable "cluster_name" {
   description = "Cluster name"
+  type        = string
 }
 
 variable "cluster_log_retention_in_days" {
   default     = 90
   description = "Number of days to retain log events. Default retention - 90 days."
   type        = string
+}
+
+variable "cluster_log_kms_key_id" {
+  type = string
 }
 
 variable "environment" {
@@ -81,22 +92,25 @@ variable "sense_key" {
 
 variable "ng_desired_size" {
   description = "nodegroup_desired_size"
-  default   = "4"
+  default     = 4
+  type        = number
 }
 
 variable "ng_max_size" {
   description = "nodegroup_max_size"
-  default = "7"
-
+  default     = 7
+  type        = number
 }
 
 variable "ng_min_size" {
   description = "nodegroup_min_size"
-  default = "3"
+  default     = 3
+  type        = number
 }
 
 variable "region" {
   description = "The AWS region to create resources in."
+  type        = string
 }
 
 variable "subnet_ids" {

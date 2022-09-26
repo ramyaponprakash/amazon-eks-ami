@@ -2,10 +2,11 @@
 #  Environment file for dev cluster creation
 #
 ################################################
-sense_vpc                     = "vpc-09a58d6d"
+cluster_vpc                   = "vpc-09a58d6d"
 aws_account                   = "342446142760"
 cluster_name                  = "sdx-dev-eks-blue-cluster"
 cluster_version               = 1.22
+cluster_kms_key_arn           = "arn:aws:kms:ap-southeast-1:342446142760:key/c706f705-9a56-44f7-9db8-47364dfa93a6"
 region                        = "ap-southeast-1"
 environment                   = "dev"
 instance_type                 = "t3.medium"
@@ -16,6 +17,7 @@ subnet_ids                    = ["subnet-0459927e5a9a8ba64", "subnet-0e1e99fe7c3
 endpoint_private_access       = true
 endpoint_public_access        = false
 subnet_id_bastion             = "subnet-0eaa789d06887eda5"
+cluster_log_kms_key_id        = "c706f705-9a56-44f7-9db8-47364dfa93a6"
 eks_cw_loggroup               = "sdx-dev-eks-blue-cluster"
 bastion_ami                   = "ami-02ee763250491e04a"
 cidr_blocks_bastion_ssh       = ["172.31.16.0/24"]

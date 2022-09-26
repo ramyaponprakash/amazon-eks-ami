@@ -2,10 +2,11 @@
 #  Environment file for qa cluster creation
 #
 ################################################
-sense_vpc                     = "vpc-003eb242be457b803"
+cluster_vpc                   = "vpc-003eb242be457b803"
 aws_account                   = "342446142760"
 cluster_name                  = "sdx-qa-eks-blue-cluster"
 cluster_version               = 1.22
+cluster_kms_key_arn           = "arn:aws:kms:ap-southeast-1:342446142760:key/c706f705-9a56-44f7-9db8-47364dfa93a6"
 environment                   = "qa"
 region                        = "ap-southeast-1"
 instance_type                 = "t3.medium"
@@ -17,6 +18,7 @@ endpoint_private_access       = true
 endpoint_public_access        = false
 subnet_id_bastion             = "subnet-049e25873d77ab992" # 3a, public rt
 eks_cw_loggroup               = "sdx-qa-eks-blue-cluster"
+cluster_log_kms_key_id        = "c706f705-9a56-44f7-9db8-47364dfa93a6"
 bastion_ami                   = "ami-02ee763250491e04a"
 cidr_blocks_bastion_ssh       = ["173.2.1.128/25"] # 3a cidr, public rt
 prefix_list_ids_bastion_ssh   = ["pl-0af10fe06357d6aff"]

@@ -6,11 +6,13 @@
 module "eks_cluster" {
   source                        = "./eks"
   cluster_name                  = var.cluster_name
-  sense_vpc                     = var.sense_vpc
+  cluster_vpc                   = var.cluster_vpc
+  cluster_kms_key_arn           = var.cluster_kms_key_arn
   aws_account                   = var.aws_account
   sense_key                     = var.sense_key
   region                        = var.region
   cluster_log_retention_in_days = var.cluster_log_retention_in_days
+  cluster_log_kms_key_id        = var.cluster_log_kms_key_id
   cluster_version               = var.cluster_version
   environment                   = var.environment
   instance_type                 = var.instance_type
