@@ -4,7 +4,7 @@ AWS_ACCOUNT_ID="342446142760"
 CLUSTER_NAME=""
 NAMESPACE="cluster-common"
 ENV=dev
-LOC="/tmp/"
+LOC=""
 
 while getopts a:e:c:n:l flag
 do

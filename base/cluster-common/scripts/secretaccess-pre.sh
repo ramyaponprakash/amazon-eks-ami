@@ -4,7 +4,7 @@ AWS_ACCOUNT_ID="342446142760"
 CLUSTER_NAME=""
 NAMESPACE="cluster-common"
 ENV=dev
-LOC="/tmp/"
+LOC=""
 
 while getopts a:e:c:n:l flag
 do
@@ -19,6 +19,8 @@ done
 
 [[ -z "${CLUSTER_NAME}" ]] && echo "CLUSTER_NAME is required" && exit 1
 [[ -z "${NAMESPACE}" ]] && echo "NAMESPACE is required" && exit 1
+
+eksctl utils associate-iam-oidc-provider --region=ap-southeast-1 --cluster=${CLUSTER_NAME} --approve 2> /dev/null
 
 echo "Create secret access setups"
 

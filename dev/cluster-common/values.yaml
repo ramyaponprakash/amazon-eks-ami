@@ -6,7 +6,8 @@ accountId: 342446142760
 
 awsAuth:
   boostrap:
-    roleArn: arn:aws:iam::342446142760:role/terraform-eks-sdx-node
+    roleArn: arn:aws:iam::342446142760:role/role-sdx-dev-eks-blue-cluster-node
+#    roleArn: arn:aws:iam::342446142760:role/terraform-eks-sdx-node
   pipeline:
     roleArn: arn:aws:iam::342446142760:role/forBamboo
   eksConsoleDashboard:

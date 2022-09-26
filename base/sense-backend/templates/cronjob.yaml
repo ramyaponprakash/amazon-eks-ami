@@ -17,7 +17,8 @@ spec:
         spec:
           containers:
             - name: {{ $rangeItem.containerName }}
-              image: "{{ .Values.image.repository }}/{{ $rangeItem.imageName }}:{{ .Values.image.tag | default "latest" }}"
+              image: "{{ .Values.image.repository }}/{{ $rangeItem.imageName }}:latest" # latest tag for sdx-job for now
+              # image: "{{ .Values.image.repository }}/{{ $rangeItem.imageName }}:{{ .Values.image.tag | default "latest" }}"
               resources:
                 {{- toYaml $rangeItem.resources | nindent 16 }}
               args:

@@ -13,5 +13,6 @@ echo "Set assumed role access for kubectl $AWS_DEFAULT_REGION - $ROLE_ARN - $CLU
 aws --version
 aws sts get-caller-identity
 aws eks --region "$AWS_DEFAULT_REGION" update-kubeconfig --name "$CLUSTER_NAME" --role-arn "$ROLE_ARN"
+kubectl config --kubeconfig=/root/.kube/config use-context arn:aws:eks:ap-southeast-1:342446142760:cluster/"$CLUSTER_NAME"
 kubectl get namespace
 echo "Set assumed role access for kubectl - done!"
