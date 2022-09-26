@@ -57,7 +57,8 @@ nginx:
             include /etc/nginx/default.d/*.conf;
 
             location / {
-                return 301 https://$host/adex/home;
+                #return 301 https://$host/adex/home;
+                try_files $uri $uri/ /adex/index.html =404;
             }
 
             add_header X-XSS-Protection "1; mode=block";
