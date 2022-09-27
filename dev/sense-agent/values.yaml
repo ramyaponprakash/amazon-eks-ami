@@ -36,9 +36,9 @@ commons:
       value: "/etc/sense/cert/backend/client/tls.key"
   volumes: &commonVolumes
     # --- configs and secrets
-    - name: dev-config
+    - name: common-config
       configMap:
-        name: dev-config
+        name: common-config
     - name: init-map
       secret:
         secretName: init
@@ -72,7 +72,7 @@ commons:
         secretName: nats-client-cert
   mounts: &commonMounts
     # --- configs and secrets
-    - name: dev-config
+    - name: common-config
       readOnly: true
       mountPath: /etc/sense/conf/dev.config.yaml
       subPath: dev.config.yaml
