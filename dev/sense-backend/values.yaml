@@ -27,7 +27,7 @@ secrets:
     - name: mongodb
       key: mongodb_config.yaml
       secretKey: dev/sdx/mongodb/credentials
-    - name: doc-ca
+    - name: documentdb-ca
       key: ca.pem
       secretKey: dev/sdx/mongodb/ca
     - name: redis
@@ -145,9 +145,9 @@ commons:
     - name: common
       secret:
         secretName: common
-    - name: doc-ca
+    - name: documentdb-ca
       secret:
-        secretName: doc-ca
+        secretName: documentdb-ca
     # --- certificates
     - name: backend-server-cert
       secret:
@@ -175,10 +175,6 @@ commons:
       readOnly: true
       mountPath: /etc/sense/conf/mongodb_config.yaml
       subPath: mongodb_config.yaml
-    - name: doc-ca
-      readOnly: true
-      mountPath: /etc/sense/cert/mongo/ca.pem
-      subPath: ca.pem
     - name: redis
       readOnly: true
       mountPath: /etc/sense/conf/redis_config.yaml
@@ -210,13 +206,16 @@ commons:
     - name: backend-client-cert
       readOnly: true
       mountPath: /etc/sense/cert/backend/client/
-    - name: mongo-client-cert
-      readOnly: true
-      mountPath: /etc/sense/cert/mongo/
     - name: nats-client-cert
       readOnly: true
       mountPath: /etc/sense/cert/nats/
-
+    - name: mongo-client-cert
+      readOnly: true
+      mountPath: /etc/sense/cert/mongo/
+    - name: documentdb-ca
+      readOnly: true
+      mountPath: /etc/sense/cert/documentdb/ca.pem
+      subPath: ca.pem
 
 # ----- micro-service -----
 deployments:
