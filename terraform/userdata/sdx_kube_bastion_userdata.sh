@@ -59,7 +59,12 @@ install_helm() {
 }
 
 install_helpers() {
+  apt-get update -y
+  RANDOM_START=$(( ( RANDOM % 30 )  + 1 ))
+  sleep $RANDOM_START
   apt-get install -y jq
+  #snap install jq
+  sleep 120
   wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
   chmod a+x /usr/local/bin/yq
   yq --version
