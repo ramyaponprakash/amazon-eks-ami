@@ -49,6 +49,6 @@ configmap:
             certPath: /etc/sense/cert/nats/tls.crt
             keyPath: /etc/sense/cert/nats/tls.key
           mongo:
-            caPath: /etc/sense/cert/mongo/ca.crt
-            certPath: /etc/sense/cert/mongo/tls.crt
-            keyPath: /etc/sense/cert/mongo/tls.key
+            caPath: /etc/sense/cert/documentdb/ca.pem # DocumentDB
+            #certPath: /etc/sense/cert/mongo/tls.crt
+            #keyPath: /etc/sense/cert/mongo/tls.key
