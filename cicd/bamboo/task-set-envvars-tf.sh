@@ -20,18 +20,21 @@ if [[ -z "${TEMP_FOLDER}" ]]; then
 fi
 mkdir -p $TEMP_FOLDER
 
-if [[ "${ENV}" == "prod" ]]; then
-    THIS_AWS_ACC=$PRD_AWS_ACC
-    ROLE=u-ship
-elif [[ "${ENV}" == "intra" ]]; then
-    THIS_AWS_ACC=$PRD_AWS_ACC
-    ROLE=u-ship
-else
-    THIS_AWS_ACC=$DEV_AWS_ACC
-    ROLE=forBamboo
+ROLE_ARN="${bamboo_ROLE_ARN}"
+if [[ -z "${ROLE_ARN}" ]]; then
+  if [[ "${ENV}" == "prod" ]]; then
+      THIS_AWS_ACC=$PRD_AWS_ACC
+      ROLE=u-ship
+  elif [[ "${ENV}" == "intra" ]]; then
+      THIS_AWS_ACC=$PRD_AWS_ACC
+      ROLE=u-ship
+  else
+      THIS_AWS_ACC=$DEV_AWS_ACC
+      ROLE=forBamboo
+  fi
+  ROLE_ARN="arn:aws:iam::${THIS_AWS_ACC}:role/${ROLE}"
 fi
 
-ROLE_ARN="arn:aws:iam::${THIS_AWS_ACC}:role/${ROLE}"
 temp_role=$(aws sts assume-role \
     --duration-seconds 3600 \
     --role-arn "${ROLE_ARN}" \
