@@ -60,6 +60,9 @@ commons:
     - name: nats
       secret:
         secretName: nats
+    - name: documentdb-ca
+      secret:
+        secretName: documentdb-ca
     # --- certificates
     - name: backend-client-cert
       secret:
@@ -104,13 +107,16 @@ commons:
     - name: backend-client-cert
       readOnly: true
       mountPath: /etc/sense/cert/backend/client/
-    - name: mongo-client-cert
-      readOnly: true
-      mountPath: /etc/sense/cert/mongo/
     - name: nats-client-cert
       readOnly: true
       mountPath: /etc/sense/cert/nats/
-
+    - name: mongo-client-cert
+      readOnly: true
+      mountPath: /etc/sense/cert/mongo/
+    - name: documentdb-ca
+      readOnly: true
+      mountPath: /etc/sense/cert/documentdb/ca.pem
+      subPath: ca.pem
 
 deployments:
   agent-sniff:
