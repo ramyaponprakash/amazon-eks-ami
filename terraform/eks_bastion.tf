@@ -25,6 +25,7 @@ resource "aws_instance" "sdx_kube_bastion" {
     encrypted   = true
   }
   metadata_options {
+    http_endpoint = "enabled"
     http_tokens = "required"
   }
   /*lifecycle {
