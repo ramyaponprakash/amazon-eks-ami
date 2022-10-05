@@ -5,7 +5,7 @@
 cluster_vpc                   = "vpc-003eb242be457b803"
 aws_account                   = "342446142760"
 cluster_name                  = "sdx-qa-eks-blue-cluster"
-cluster_version               = 1.22
+cluster_version               = 1.23
 cluster_kms_key_arn           = "arn:aws:kms:ap-southeast-1:342446142760:key/c706f705-9a56-44f7-9db8-47364dfa93a6"
 environment                   = "qa"
 region                        = "ap-southeast-1"
