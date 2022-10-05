@@ -5,3 +5,5 @@
 *.tmproj
 .vscode/
 tmp
+**/.terraform
+**/.terraform.lock.hcl

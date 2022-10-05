@@ -26,7 +26,7 @@ resource "aws_instance" "sdx_kube_bastion" {
   }
   metadata_options {
     http_endpoint = "enabled"
-    http_tokens = "required"
+    http_tokens   = "required"
   }
   /*lifecycle {
     ignore_changes = all

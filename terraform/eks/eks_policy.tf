@@ -69,17 +69,25 @@ resource "aws_iam_role" "sdx-eks-node" {
 POLICY
 }
 
-resource "aws_iam_role_policy_attachment" "sdx-node-AmazonEKSWorkerNodePolicy" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+#resource "aws_iam_role_policy_attachment" "sdx-node-AmazonEKSWorkerNodePolicy" {
+#  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+#  role       = aws_iam_role.sdx-eks-node.name
+#}
+#
+#resource "aws_iam_role_policy_attachment" "sdx-node-AmazonEKS_CNI_Policy" {
+#  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+#  role       = aws_iam_role.sdx-eks-node.name
+#}
+#
+#resource "aws_iam_role_policy_attachment" "sdx-node-AmazonEC2ContainerRegistryReadOnly" {
+#  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+#  role       = aws_iam_role.sdx-eks-node.name
+#}
+
+resource "aws_iam_role_policy_attachment" "sdx-node-u-eks" {
+  policy_arn = "arn:aws:iam::aws:policy/u-eks"
   role       = aws_iam_role.sdx-eks-node.name
 }
 
-resource "aws_iam_role_policy_attachment" "sdx-node-AmazonEKS_CNI_Policy" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
-  role       = aws_iam_role.sdx-eks-node.name
-}
 
-resource "aws_iam_role_policy_attachment" "sdx-node-AmazonEC2ContainerRegistryReadOnly" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
-  role       = aws_iam_role.sdx-eks-node.name
-}
+
