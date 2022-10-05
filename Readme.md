@@ -1,8 +1,25 @@
 # SENSE helm charts
 
-## To setup EKS cluster
+## Setup EKS cluster for new environment
 
-Bamboo: [sdx-eks-infra-deployment](https://bamboo.ship.gov.sg/browse/SEN-SDXEKSINFRA)
+Define new env variables under `/terraform/environment`.
+
+Bamboo CI: [sdx-eks-infra-deployment](https://bamboo.ship.gov.sg/browse/SEN-SDXEKSINFRA)
+
+Create release from CI build result, proceed CD.
+
+Bamboo CD: [sdx-eks-infra-deployment](https://bamboo.ship.gov.sg/deploy/viewDeploymentProjectEnvironments.action?id=71761929)
+
+## Cluster upgrade guide
+
+1. update variable `cluster_version` to desired eks version
+2. update variable `kube_proxy_version`, `vpc_cni_version`, `coredns_version` by following AWS docs
+   1. kube_proxy - https://docs.aws.amazon.com/eks/latest/userguide/managing-kube-proxy.html
+   2. CoreDNS - https://docs.aws.amazon.com/eks/latest/userguide/managing-coredns.html
+   3. vpc_cni - https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html
+   4. (TBC) ebs add-on
+3. (TBC) update node group AMI
+4. Run CI/CD to deploy changes
 
 ## To install cluster level charts and publish application charts
 
