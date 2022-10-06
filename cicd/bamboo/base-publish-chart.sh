@@ -1,11 +1,7 @@
 #!/bin/bash
 
 CHART_NAME=$1
-ENV=$2
-CLUSTER_NAME=$3
 [[ -z "${CHART_NAME}" ]] && echo "CHART_NAME is required" && exit 1
-[[ -z "${ENV}" ]] && echo "ENV is required" && exit 1
-[[ -z "${CLUSTER_NAME}" ]] && echo "CLUSTER_NAME is required" && exit 1
 
 LOC="/tmp/"
 BUCKET="s3://sdx-eks-artifacts/charts/$CHART_NAME/"
@@ -33,6 +29,4 @@ for file in "$DEST_PATH"/*; do
  "${LOC}"helm s3 push "$DEST_PATH/$FILE_NAME" "$CHART_NAME" --force || exit 1
 done
 
-rm -rf ./tmp/chart/"$CLUSTER_NAME"
-
-echo "publish $CHART_NAME in $CLUSTER_NAME - done!"
+echo "publish $CHART_NAME - done!"
