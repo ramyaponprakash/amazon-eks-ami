@@ -69,21 +69,25 @@ resource "aws_iam_role" "sdx-eks-node" {
 POLICY
 }
 
-#resource "aws_iam_role_policy_attachment" "sdx-node-AmazonEKSWorkerNodePolicy" {
-#  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
-#  role       = aws_iam_role.sdx-eks-node.name
-#}
-#
-#resource "aws_iam_role_policy_attachment" "sdx-node-AmazonEKS_CNI_Policy" {
-#  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
-#  role       = aws_iam_role.sdx-eks-node.name
-#}
-#
-#resource "aws_iam_role_policy_attachment" "sdx-node-AmazonEC2ContainerRegistryReadOnly" {
-#  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
-#  role       = aws_iam_role.sdx-eks-node.name
-#}
+# Policy allows Amazon EKS worker nodes to connect to Amazon EKS Clusters
+resource "aws_iam_role_policy_attachment" "sdx-node-AmazonEKSWorkerNodePolicy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+  role       = aws_iam_role.sdx-eks-node.name
+}
 
+# Amazon VPC CNI Plugin (amazon-vpc-cni-k8s) the permissions it requires to
+# modify the IP address configuration on your EKS worker nodes
+resource "aws_iam_role_policy_attachment" "sdx-node-AmazonEKS_CNI_Policy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+  role       = aws_iam_role.sdx-eks-node.name
+}
+
+resource "aws_iam_role_policy_attachment" "sdx-node-AmazonEC2ContainerRegistryReadOnly" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+  role       = aws_iam_role.sdx-eks-node.name
+}
+
+# This policy will hold additional policies
 resource "aws_iam_role_policy_attachment" "sdx-node-u-eks" {
   policy_arn = "arn:aws:iam::aws:policy/u-eks"
   role       = aws_iam_role.sdx-eks-node.name

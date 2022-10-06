@@ -19,6 +19,7 @@ Bamboo CD: [sdx-eks-infra-deployment](https://bamboo.ship.gov.sg/deploy/viewDepl
    3. vpc_cni - https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html
    4. (TBC) ebs add-on
 3. (TBC) update node group AMI
+   1. AMI change log - https://github.com/awslabs/amazon-eks-ami/blob/master/CHANGELOG.md
 4. Run CI/CD to deploy changes
 
 ## To install cluster level charts and publish application charts
