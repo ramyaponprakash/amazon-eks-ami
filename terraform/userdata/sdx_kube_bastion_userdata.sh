@@ -93,9 +93,22 @@ enabled_bamboo_envvars() {
   systemctl restart ssh
 }
 
+install_mongo() {
+  wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -
+  echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/4.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.4.list
+  sudo apt-get update
+  wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.0g-2ubuntu4_amd64.deb
+  sudo dpkg -i ./libssl1.1_1.1.0g-2ubuntu4_amd64.deb
+  rm -i libssl1.1_1.1.0g-2ubuntu4_amd64.deb
+  sudo apt-get install -y mongodb-org
+  sudo systemctl start mongod
+  wget https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem
+}
+
 install_helpers
 install_command_if_not_exist aws install_awscli
 install_eksctl
 install_kubectl
 install_helm
 enabled_bamboo_envvars
+install_mongo
