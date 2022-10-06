@@ -22,7 +22,7 @@ Bamboo CD: [sdx-eks-infra-deployment](https://bamboo.ship.gov.sg/deploy/viewDepl
    1. AMI change log - https://github.com/awslabs/amazon-eks-ami/blob/master/CHANGELOG.md
 4. Run CI/CD to deploy changes
 
-## To install cluster level charts and publish application charts
+## Installing cluster level charts and publish application charts
 
 Bamboo CI: [sdx-eks-charts](https://bamboo.ship.gov.sg/browse/SEN-SENEKS)
 

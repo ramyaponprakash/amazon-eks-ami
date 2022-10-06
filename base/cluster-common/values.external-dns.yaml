@@ -1,6 +1,0 @@
-serviceAccount:
-  create: false
-
-policy: upsert-only
-
-interval: 1m

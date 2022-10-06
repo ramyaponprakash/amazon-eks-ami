@@ -4,10 +4,8 @@ environments:
   dev:
     values:
       - ./values.yaml
+      - ../../dev/global.yaml.gotmpl
       - ../../dev/sense-backbone/values.yaml
-      - clusterName: {{ requiredEnv "CLUSTER_NAME" }}
-      - accountId: {{ requiredEnv "AWS_ACC" }}
-      - namespace: "sense-backbone"
 
 repositories:
   - name: sense-backbone
@@ -22,11 +20,13 @@ releases:
     namespace: sense-backbone
     createNamespace: true
     chart: sense-backbone/sense-backbone
-    version: 0.0.2
+    version: {{ .Values.chartVer | quote }}
     missingFileHandler: Warn
     values:
       - ./values.yaml
+      - ./values.yaml.gotmpl
       - ../../{{ .Environment.Name }}/sense-backbone/values.yaml
+      - ../../{{ .Environment.Name }}/sense-backbone/values.yaml.gotmpl
       - ./values.nats.yaml
       - ../../{{ .Environment.Name }}/sense-backbone/values.nats.yaml
 

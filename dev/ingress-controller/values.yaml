@@ -1,7 +1,5 @@
-env: dev
-
-vpcId: vpc-09a58d6d
-accountId: 342446142760
+namespace: ingress-controller
+chartVer: 0.0.4
 
 # chart installing conditions for multi-envs
 external-alb-default:

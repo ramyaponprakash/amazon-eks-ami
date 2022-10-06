@@ -1,0 +1,14 @@
+namespace: {{ .Values.namespace }}
+env: {{ .Values.env }}
+vpcId: {{ .Values.vpcId }}
+accountId: {{ .Values.accountId }}
+
+awsAuth:
+  boostrap:
+    roleArn: arn:aws:iam::{{ .Values.accountId }}:role/role-{{ .Values.clusterName }}-node
+  pipeline:
+    roleArn: arn:aws:iam::{{ .Values.accountId }}:role/forBamboo
+  eksConsoleDashboard:
+    roleArn: arn:aws:iam::{{ .Values.accountId }}:role/{{ .Values.dashboardRole }}
+
+caArn: {{ .Values.caArn }}

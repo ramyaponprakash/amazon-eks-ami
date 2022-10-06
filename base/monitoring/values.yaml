@@ -1,6 +1,4 @@
-namespace: monitoring
 component: monitoring
-env:
 
 jaegertracing:
   enabled: false

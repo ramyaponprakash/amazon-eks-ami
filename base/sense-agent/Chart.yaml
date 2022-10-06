@@ -1,6 +1,4 @@
 apiVersion: v2
 name: sense-agent
 
-version: 0.0.2
-
-appVersion: 0.1.22 # following eks version
+version: 0.0.3

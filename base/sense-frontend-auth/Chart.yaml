@@ -2,5 +2,3 @@ apiVersion: v2
 name: sense-frontend-auth
 
 version: 0.0.4
-
-appVersion: 0.1.22 # following eks version

@@ -1,6 +1,4 @@
-namespace: sense-backbone
 component: infra
-env:
 
 nats:
   enabled: true

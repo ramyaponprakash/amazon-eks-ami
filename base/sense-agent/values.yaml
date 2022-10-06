@@ -1,6 +1,4 @@
-env:
 component: agent
-namespace: sense
 
 enabled: true
 

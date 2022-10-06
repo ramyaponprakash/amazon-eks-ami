@@ -1,4 +1,6 @@
 env: dev
+namespace: sense-backbone
+chartVer: 0.0.3
 
 nats:
   serverCert:

@@ -4,16 +4,12 @@ environments:
   dev:
     values:
       - ./values.yaml
+      - ../../dev/global.yaml.gotmpl
       - ../../dev/cluster-common/values.yaml
-      - clusterName: {{ requiredEnv "CLUSTER_NAME" }}
-      - accountId: {{ requiredEnv "AWS_ACC" }}
-      - namespace: "cluster-common"
 
 repositories:
   - name: cluster-common
     url: s3://sdx-eks-artifacts/charts/cluster-common
-  - name: external-dns
-    url: https://kubernetes-sigs.github.io/external-dns/
   - name: external-secrets
     url: https://charts.external-secrets.io
   - name: cluster-autoscaler
@@ -30,12 +26,14 @@ releases:
     namespace: cluster-common
     createNamespace: true
     chart: cluster-common/cluster-common
-    version: 0.0.3
+    version: {{ .Values.chartVer | quote }}
     missingFileHandler: Warn
     disableValidationOnInstall: true # CRD
     values:
       - ./values.yaml
+      - ./values.yaml.gotmpl
       - ../../{{ .Environment.Name }}/cluster-common/values.yaml
+      - ../../{{ .Environment.Name }}/cluster-common/values.yaml.gotmpl
     needs:
       - external-secrets
       - cert-manager-awspca
@@ -57,32 +55,6 @@ releases:
           - "-n"
           - "{{`{{ .Values.namespace }}`}}"
 
-  - name: external-dns
-    namespace: cluster-common
-    createNamespace: true
-    chart: external-dns/external-dns
-    version: 1.10.1
-    missingFileHandler: Warn
-    condition: external-dns.enabled
-    needs:
-      - cluster-common
-    values:
-      - ./values.external-dns.yaml
-      - ../../{{ .Environment.Name }}/cluster-common/values.external-dns.yaml
-    hooks:
-      - events: [ "presync" ]
-        showlogs: true
-        command: "./scripts/externaldns-pre.sh"
-        args:
-          - "-a"
-          - "{{`{{ .Values.accountId }}`}}"
-          - "-e"
-          - "{{`{{ .Environment.Name }}`}}"
-          - "-c"
-          - "{{`{{ .Values.clusterName }}`}}"
-          - "-n"
-          - "{{`{{ .Values.namespace }}`}}"
-
   - name: external-secrets
     namespace: cluster-common
     createNamespace: true
@@ -93,6 +65,8 @@ releases:
     disableValidationOnInstall: true # CRD
     values:
       - ./values.external-secrets.yaml
+      - ./values.external-secrets.yaml.gotmpl
+      - ../../{{ .Environment.Name }}/cluster-common/values.external-secrets.yaml
       - ../../{{ .Environment.Name }}/cluster-common/values.external-secrets.yaml.gotmpl
     hooks:
       - events: [ "presync" ]
@@ -125,6 +99,8 @@ releases:
       - cluster-common
     values:
       - ./values.cluster-autoscaler.yaml
+      - ./values.cluster-autoscaler.yaml.gotmpl
+      - ../../{{ .Environment.Name }}/cluster-common/values.cluster-autoscaler.yaml
       - ../../{{ .Environment.Name }}/cluster-common/values.cluster-autoscaler.yaml.gotmpl
     hooks:
       - events: ["presync"]
@@ -162,6 +138,9 @@ releases:
     disableValidationOnInstall: true # CRD
     values:
       - ./values.cert-manager.yaml
+      - ./values.cert-manager.yaml.gotmpl
+      - ../../{{ .Environment.Name }}/cluster-common/values.cert-manager.yaml
+      - ../../{{ .Environment.Name }}/cluster-common/values.cert-manager.yaml.gotmpl
 
   - name: cert-manager-awspca
     namespace: cluster-common
@@ -175,6 +154,9 @@ releases:
       - cert-manager
     values:
       - ./values.cert-manager-acm.yaml
+      - ./values.cert-manager-acm.yaml.gotmpl
+      - ../../{{ .Environment.Name }}/cluster-common/values.cert-manager-acm.yaml
+      - ../../{{ .Environment.Name }}/cluster-common/values.cert-manager-acm.yaml.gotmpl
     hooks:
       - events: [ "presync" ]
         showlogs: true

@@ -1,16 +1,2 @@
-env: dev
-
-clusterName: ${CLUSTER_NAME} #NOTE: not working by helm, need to sed
-vpcId: vpc-09a58d6d
-accountId: 342446142760
-
-awsAuth:
-  boostrap:
-    roleArn: arn:aws:iam::342446142760:role/role-sdx-dev-eks-blue-cluster-node
-#    roleArn: arn:aws:iam::342446142760:role/terraform-eks-sdx-node
-  pipeline:
-    roleArn: arn:aws:iam::342446142760:role/forBamboo
-  eksConsoleDashboard:
-    roleArn: arn:aws:iam::342446142760:role/admin-role
-
-caArn: arn:aws:acm-pca:ap-southeast-1:342446142760:certificate-authority/1cddf79c-0f23-4325-981a-23a823c75cb8
+namespace: cluster-common
+chartVer: 0.0.4

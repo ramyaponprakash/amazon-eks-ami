@@ -1,6 +1,4 @@
-env:
 component: frontend
-namespace: sense
 
 replicas: 1
 

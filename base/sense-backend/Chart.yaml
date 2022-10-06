@@ -2,5 +2,3 @@ apiVersion: v2
 name: sense-backend
 
 version: 0.0.7
-
-appVersion: 0.1.22 # following eks version

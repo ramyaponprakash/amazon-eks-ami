@@ -1,4 +1,6 @@
 env: dev
+namespace: sense
+chartVer: 0.0.4
 
 hostname: sense-dev.com
 #hostname: v2.sense-dev.com

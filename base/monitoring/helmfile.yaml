@@ -4,10 +4,8 @@ environments:
   dev:
     values:
       - ./values.yaml
+      - ../../dev/global.yaml.gotmpl
       - ../../dev/monitoring/values.yaml
-      - clusterName: {{ requiredEnv "CLUSTER_NAME" }}
-      - accountId: {{ requiredEnv "AWS_ACC" }}
-      - namespace: "monitoring"
 
 repositories:
   - name: monitoring
@@ -28,11 +26,13 @@ releases:
     namespace: monitoring
     createNamespace: true
     chart: monitoring/monitoring
-    version: 0.0.4
+    version: {{ .Values.chartVer | quote }}
     missingFileHandler: Warn
     values:
       - ./values.yaml
+      - ./values.yaml.gotmpl
       - ../../{{ .Environment.Name }}/monitoring/values.yaml
+      - ../../{{ .Environment.Name }}/monitoring/values.yaml.gotmpl
 
   - name: kubernetes-dashboard
     namespace: monitoring

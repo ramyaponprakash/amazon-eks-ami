@@ -8,7 +8,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
   name: external-alb-default-connect-nginx-ingress
-  namespace: {{- .Values.namespace | quote }}
+  namespace: {{ .Values.namespace | quote }}
 spec:
   # NOTE: 'alb' class will create/manage alb by AWS Load Balancer Controller
   #        and routes all traffic to ingress-nginx external-alb-default class

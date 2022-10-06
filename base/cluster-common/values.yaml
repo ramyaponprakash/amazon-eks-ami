@@ -1,16 +1,4 @@
-namespace: cluster-common
 component: common
-env:
-
-awsAuth:
-  boostrap:
-    roleArn:
-  pipeline:
-    roleArn:
-  eksConsoleDashboard:
-    roleArn:
-
-caArn:
 
 secretstore:
   enabled: true
@@ -23,9 +11,6 @@ cert-manager:
 
 cluster-autoscaler:
   enabled: true
-
-external-dns:
-  enabled: false
 
 external-secrets:
   enabled: true

@@ -1,4 +1,5 @@
-env: dev
+namespace: monitoring
+chartVer: 0.0.4
 
 jaegertracing:
   enabled: true
