@@ -41,9 +41,9 @@ resource "aws_eks_node_group" "sdx-eks-default-nodegroup" {
   }
 
   depends_on = [
-    #aws_iam_role_policy_attachment.sdx-node-AmazonEKSWorkerNodePolicy,
-    #aws_iam_role_policy_attachment.sdx-node-AmazonEKS_CNI_Policy,
-    #aws_iam_role_policy_attachment.sdx-node-AmazonEC2ContainerRegistryReadOnly,
+    aws_iam_role_policy_attachment.sdx-node-AmazonEKSWorkerNodePolicy,
+    aws_iam_role_policy_attachment.sdx-node-AmazonEKS_CNI_Policy,
+    aws_iam_role_policy_attachment.sdx-node-AmazonEC2ContainerRegistryReadOnly,
     aws_iam_role_policy_attachment.sdx-node-u-eks,
   ]
 }
