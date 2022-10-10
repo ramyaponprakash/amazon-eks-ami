@@ -93,9 +93,18 @@ enabled_bamboo_envvars() {
   systemctl restart ssh
 }
 
+install_mongosh() {
+  wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | apt-key add -
+  echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+  apt-get update
+  apt-get install -y mongodb-mongosh
+  wget https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem
+}
+
 install_helpers
 install_command_if_not_exist aws install_awscli
 install_eksctl
 install_kubectl
 install_helm
 enabled_bamboo_envvars
+install_mongosh
