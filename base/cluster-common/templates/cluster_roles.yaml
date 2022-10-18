@@ -54,7 +54,7 @@ rules:
       - ""
     resources:
       - namespaces
-      - serviceaccount
+      - serviceaccounts
     verbs:
       - "*"
 ---
