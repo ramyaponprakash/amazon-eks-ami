@@ -9,7 +9,7 @@ awsAuth:
   pipeline:
     roleArn: arn:aws:iam::{{ .Values.accountId }}:role/forBamboo
   installer:
-    roleArn: arn:aws:iam::{{ .Values.accountId }}:role/eks
+    roleArn: arn:aws:iam::{{ .Values.accountId }}:{{ .Values.bastionRole }}
   eksConsoleDashboard:
     roleArn: arn:aws:iam::{{ .Values.accountId }}:role/{{ .Values.dashboardRole }}
 
