@@ -3,14 +3,12 @@
 AWS_ACCOUNT_ID="342446142760"
 CLUSTER_NAME=""
 NAMESPACE="cluster-common"
-ENV=dev
 LOC=""
 
 while getopts a:e:c:n:l flag
 do
     case "${flag}" in
         a) AWS_ACCOUNT_ID=${OPTARG};;
-        e) ENV=${OPTARG};;
         c) CLUSTER_NAME=${OPTARG};;
         n) NAMESPACE=${OPTARG};;
         l) LOC=${OPTARG};;
