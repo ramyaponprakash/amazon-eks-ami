@@ -13,14 +13,14 @@ controller:
     enableHttp: false
     enableHttps: false
     annotations:
-      service.beta.kubernetes.io/aws-load-balancer-name: 'sdx-eks-dev-external-nlb-blue'
+      service.beta.kubernetes.io/aws-load-balancer-name: 'sdx-eks-qa-external-nlb-blue'
       service.beta.kubernetes.io/aws-load-balancer-scheme: 'internet-facing'
       service.beta.kubernetes.io/aws-load-balancer-type: 'external'
       service.beta.kubernetes.io/aws-load-balancer-backend-protocol: 'tcp'
       service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: '60'
       service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: 'true'
       service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: 'instance'
-      service.beta.kubernetes.io/aws-load-balancer-subnets: 'subnet-0eaa789d06887eda5,subnet-03603dbfb617e41c4'
+      service.beta.kubernetes.io/aws-load-balancer-subnets: 'subnet-049e25873d77ab992,subnet-0b9a1df4b5bc2fd33'
       service.beta.kubernetes.io/aws-load-balancer-ssl-ports: '5682,5683'
       service.beta.kubernetes.io/aws-load-balancer-ssl-cert: 'arn:aws:acm:ap-southeast-1:342446142760:certificate/15d21bbc-02a5-406a-a0f0-57d26462d448'
       service.beta.kubernetes.io/aws-load-balancer-ssl-negotiation-policy: 'ELBSecurityPolicy-TLS13-1-2-2021-06'
