@@ -1,0 +1,2 @@
+ingressClassName: external-alb-default
+hostname: qa-k8.sense-dev.com
