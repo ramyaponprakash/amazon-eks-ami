@@ -15,6 +15,7 @@ spec:
     matchLabels:
       {{- include "common.selectorLabels" . | nindent 6 }}
       app.kubernetes.io/app-name: {{ default $k $rangeItem.name }}
+      app.kubernetes.io/tag-version: {{ default .Values.image.tag $rangeItem.imageTag }}
   template:
     metadata:
     {{- with .Values.podAnnotations }}
@@ -87,6 +88,18 @@ spec:
       {{- with concat .Values.tolerations $rangeItem.tolerations }}
       {{- toYaml . | nindent 8 }}
       {{- end }}
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app.kubernetes.io/app-name
+                      operator: In
+                      values:
+                        - {{ default $k $rangeItem.name }}
+                topologyKey: topology.kubernetes.io/zone
+              weight: 100
 ---
 {{- end }}
 {{- end }}
