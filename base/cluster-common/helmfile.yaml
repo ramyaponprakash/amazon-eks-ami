@@ -9,8 +9,8 @@ environments:
   qa:
     values:
       - ./values.yaml
-      - ../../dev/global.yaml.gotmpl
-      - ../../dev/cluster-common/values.yaml
+      - ../../qa/global.yaml.gotmpl
+      - ../../qa/cluster-common/values.yaml
 
 repositories:
   - name: cluster-common
