@@ -23,16 +23,16 @@ internal:
     default:
       enabled: true
       hosts:
-         - internal.sense-dev.com
+         - qa-internal.sense-dev.com
 #         - v2-internal.sense-dev.com
       ingressClassName: internal-alb-default
       annotations:
         # https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.2/guide/ingress/annotations/
-        alb.ingress.kubernetes.io/load-balancer-name: 'sdx-eks-dev-internal-alb-blue'
+        alb.ingress.kubernetes.io/load-balancer-name: 'sdx-eks-qa-internal-alb-blue'
         alb.ingress.kubernetes.io/scheme: 'internal'
         alb.ingress.kubernetes.io/target-type: 'ip'
-        alb.ingress.kubernetes.io/subnets: 'subnet-0eaa789d06887eda5,subnet-03603dbfb617e41c4'
-        alb.ingress.kubernetes.io/security-groups: 'sg-0c7762cc8c8b33e46'
+        alb.ingress.kubernetes.io/subnets: 'subnet-035ddd7b744cd4a59,subnet-056a36371f1158557'
+        alb.ingress.kubernetes.io/security-groups: 'sg-04112c3880d58b9e6,sg-0cf6be47a1128371a'
         alb.ingress.kubernetes.io/waf-acl-id: 'b1f2eab1-0ac4-4a3f-92ac-69dba6192387'
         alb.ingress.kubernetes.io/ssl-policy: 'ELBSecurityPolicy-FS-1-2-Res-2020-10'
         alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
