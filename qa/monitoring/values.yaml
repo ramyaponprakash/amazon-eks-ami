@@ -5,13 +5,13 @@ jaegertracing:
   enabled: true
 
 kube:
-  hostname: k8.sense-dev.com
+  hostname: qa-k8.sense-dev.com
   ingressClassName: external-alb-default
 
 opensearch:
   enabled: true
-  hostname: opensearch.sense-dev.com
+  hostname: qa-opensearch.sense-dev.com
   ingressClassName: external-alb-default
   openToLocal: false
-  vpcEndpoint: vpc-dev-sdx-es-kgfhpvtfio32mmlzxw22wbgi4i.ap-southeast-1.es.amazonaws.com
-  endpoint: https://vpc-dev-sdx-es-kgfhpvtfio32mmlzxw22wbgi4i.ap-southeast-1.es.amazonaws.com:443
+  vpcEndpoint: vpc-qa-sdx-es-nmfy2skqvy27bdipvtlqspa4cy.ap-southeast-1.es.amazonaws.com
+  endpoint: https://vpc-qa-sdx-es-nmfy2skqvy27bdipvtlqspa4cy.ap-southeast-1.es.amazonaws.com:443
