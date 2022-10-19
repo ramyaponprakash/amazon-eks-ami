@@ -1,0 +1,39 @@
+# https://github.com/kubernetes/ingress-nginx/blob/main/charts/ingress-nginx/values.yaml
+# Nginx ingress chart values
+controller:
+  ingressClassResource:
+    name: external-nlb-default
+    enabled: false # enable this when we want to expose TCP servers
+    default: false
+    controllerValue: "k8s.io/ingress-nginx"
+    parameters: {}
+  ingressClass: external-nlb-default
+  electionID: external-nlb-default
+  service:
+    enableHttp: false
+    enableHttps: false
+    annotations:
+      service.beta.kubernetes.io/aws-load-balancer-name: 'sdx-eks-dev-external-nlb-blue'
+      service.beta.kubernetes.io/aws-load-balancer-scheme: 'internet-facing'
+      service.beta.kubernetes.io/aws-load-balancer-type: 'external'
+      service.beta.kubernetes.io/aws-load-balancer-backend-protocol: 'tcp'
+      service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: '60'
+      service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: 'true'
+      service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: 'instance'
+      service.beta.kubernetes.io/aws-load-balancer-subnets: 'subnet-0eaa789d06887eda5,subnet-03603dbfb617e41c4'
+      service.beta.kubernetes.io/aws-load-balancer-ssl-ports: '5682,5683'
+      service.beta.kubernetes.io/aws-load-balancer-ssl-cert: 'arn:aws:acm:ap-southeast-1:342446142760:certificate/15d21bbc-02a5-406a-a0f0-57d26462d448'
+      service.beta.kubernetes.io/aws-load-balancer-ssl-negotiation-policy: 'ELBSecurityPolicy-TLS13-1-2-2021-06'
+      service.beta.kubernetes.io/aws-load-balancer-alpn-policy: 'HTTP2Optional'
+    loadBalancerSourceRanges: #  external-nlb, no way to use the managed prefix
+      - 8.29.0.0/16 # WARP
+      - 13.212.44.0/24 # SOE VPN
+      - 61.16.70.114/32 # Hive-DEN
+
+# Values for own templates
+external:
+  nlb:
+    default:
+      enabled: false
+
+tcp: {}

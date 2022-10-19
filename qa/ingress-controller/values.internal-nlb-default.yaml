@@ -1,0 +1,44 @@
+# https://github.com/kubernetes/ingress-nginx/blob/main/charts/ingress-nginx/values.yaml
+# Nginx ingress chart values
+controller:
+  ingressClassResource:
+    name: internal-nlb-default
+    enabled: true
+    default: false
+    controllerValue: "k8s.io/ingress-nginx"
+    parameters: {}
+  ingressClass: internal-nlb-default
+  electionID: internal-nlb-default
+  service:
+    enableHttp: true
+    enableHttps: true # internal NLB but open http,https for QA cross-zone feature
+    appProtocol: true
+    targetPorts:
+      http: http
+      https: http # TLS terminates at NLB
+    annotations:
+      service.beta.kubernetes.io/aws-load-balancer-name: 'sdx-eks-dev-internal-nlb-blue'
+      service.beta.kubernetes.io/aws-load-balancer-scheme: 'internal'
+      service.beta.kubernetes.io/aws-load-balancer-type: 'external'
+      service.beta.kubernetes.io/aws-load-balancer-backend-protocol: 'tcp'
+      service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: '60'
+      service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: 'true'
+      service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: 'instance'
+      service.beta.kubernetes.io/aws-load-balancer-subnets: 'subnet-0459927e5a9a8ba64,subnet-0e1e99fe7c3dbd3f9'
+      service.beta.kubernetes.io/aws-load-balancer-ssl-ports: '443'
+      service.beta.kubernetes.io/aws-load-balancer-ssl-cert: 'arn:aws:acm:ap-southeast-1:342446142760:certificate/2e4cbfc6-b06c-4018-b9c6-2d16a299af2d'
+      service.beta.kubernetes.io/aws-load-balancer-ssl-negotiation-policy: 'ELBSecurityPolicy-TLS13-1-2-2021-06'
+      service.beta.kubernetes.io/aws-load-balancer-alpn-policy: 'HTTP2Optional'
+    loadBalancerSourceRanges: # internal-nlb
+      - 172.31.0.0/16 # dev default
+      - 173.1.0.0/19 # qa 1
+      - 173.2.0.0/19 # qa 2
+
+# Values for own templates
+internal:
+  nlb:
+    default:
+      enabled: true
+
+tcp:
+  4222: sense-backbone/nats:4222
