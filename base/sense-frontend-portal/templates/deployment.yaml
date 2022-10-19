@@ -85,6 +85,18 @@ spec:
       tolerations:
       {{- with concat .Values.tolerations $rangeItem.tolerations }}
       {{- toYaml . | nindent 8 }}
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app.kubernetes.io/app-name
+                      operator: In
+                      values:
+                        - {{ default $k $rangeItem.name }}
+                topologyKey: topology.kubernetes.io/zone
+              weight: 100
   {{- end }}
 ---
   {{- end }}
