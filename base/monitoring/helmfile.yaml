@@ -6,6 +6,11 @@ environments:
       - ./values.yaml
       - ../../dev/global.yaml.gotmpl
       - ../../dev/monitoring/values.yaml
+  qa:
+    values:
+      - ./values.yaml
+      - ../../qa/global.yaml.gotmpl
+      - ../../qa/cluster-common/values.yaml
 
 repositories:
   - name: monitoring
