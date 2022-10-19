@@ -35,5 +35,6 @@ resource "aws_instance" "sdx_kube_bastion" {
     Name                         = "sdx-${var.environment}-kube-bastion"
     Custodian-Scheduler-StopTime = "off=();tz=sgt"
     Environment                  = var.environment
+    malware-scan                 = "true"
   }
 }
