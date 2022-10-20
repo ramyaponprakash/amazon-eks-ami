@@ -53,7 +53,7 @@ nginx:
         # for more information.
         include /etc/nginx/conf.d/*.conf;
         server_tokens off;
-        more_set_headers "Server: ";
+        #more_set_headers "Server: ";
 
         server {
           listen      8081 default_server;
