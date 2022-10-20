@@ -85,6 +85,7 @@ releases:
     condition: external-alb-default.enabled
     missingFileHandler: Warn
     values:
+      - ./values.external-alb-default.yaml
       - ../../{{ .Environment.Name }}/ingress-controller/values.external-alb-default.yaml
 
   - name: external-nlb-default
@@ -95,6 +96,7 @@ releases:
     condition: external-nlb-default.enabled
     missingFileHandler: Warn
     values:
+      - ./values.external-nlb-default.yaml
       - ../../{{ .Environment.Name }}/ingress-controller/values.external-nlb-default.yaml
 
   - name: internal-alb-default
@@ -105,6 +107,7 @@ releases:
     condition: internal-alb-default.enabled
     missingFileHandler: Warn
     values:
+      - ./values.internal-alb-default.yaml
       - ../../{{ .Environment.Name }}/ingress-controller/values.internal-alb-default.yaml
 
   - name: internal-nlb-default
@@ -115,4 +118,5 @@ releases:
     condition: internal-nlb-default.enabled
     missingFileHandler: Warn
     values:
+      - ./values.internal-nlb-default.yaml
       - ../../{{ .Environment.Name }}/ingress-controller/values.internal-nlb-default.yaml
