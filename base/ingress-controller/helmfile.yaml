@@ -92,6 +92,8 @@ releases:
     values:
       - ./values.external-alb-default.yaml
       - ../../{{ .Environment.Name }}/ingress-controller/values.external-alb-default.yaml
+    needs:
+      - aws-load-balancer-controller
 
   - name: external-nlb-default
     namespace: ingress-controller
@@ -103,6 +105,8 @@ releases:
     values:
       - ./values.external-nlb-default.yaml
       - ../../{{ .Environment.Name }}/ingress-controller/values.external-nlb-default.yaml
+    needs:
+      - aws-load-balancer-controller
 
   - name: internal-alb-default
     namespace: ingress-controller
@@ -114,6 +118,8 @@ releases:
     values:
       - ./values.internal-alb-default.yaml
       - ../../{{ .Environment.Name }}/ingress-controller/values.internal-alb-default.yaml
+    needs:
+      - aws-load-balancer-controller
 
   - name: internal-nlb-default
     namespace: ingress-controller
@@ -125,3 +131,5 @@ releases:
     values:
       - ./values.internal-nlb-default.yaml
       - ../../{{ .Environment.Name }}/ingress-controller/values.internal-nlb-default.yaml
+    needs:
+      - aws-load-balancer-controller
