@@ -4,10 +4,13 @@ environments:
   dev:
     values:
       - ./values.yaml
-      - ../../{{ .Environment.Name }}/sense-frontend-portal/values.yaml
-      - env: "dev"
-      - namespace: "sense"
-      - chartVer: 0.0.4
+      - ../../dev/global.yaml.gotmpl
+      - ../../dev/sense-frontend-portal/values.yaml
+  qa:
+    values:
+      - ./values.yaml
+      - ../../qa/global.yaml.gotmpl
+      - ../../qa/sense-frontend-portal/values.yaml
 
 repositories:
   - name: sense-frontend-portal

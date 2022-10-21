@@ -6,7 +6,7 @@ repos:
       args:
         - "--module"
         - "--config=.tflint.hcl"
-    - id: terraform-validate
+    #- id: terraform-validate
     - id: terraform-fmt
 - repo: https://github.com/antonbabenko/pre-commit-terraform
   rev: v1.75.0 # Get from: https://github.com/antonbabenko/pre-commit-terraform/releases
