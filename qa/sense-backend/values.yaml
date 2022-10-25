@@ -1,14 +1,14 @@
-env: dev
+env: qa
 namespace: sense
 chartVer: 0.0.11
 
 enabled: true
 
 hostname:
-  internal: internal.sense-dev.com
-  external: sense-dev.com
-#  internal: v2-internal.sense-dev.com
-#  external: v2.sense-dev.com
+  internal: qa2-internal.sense-dev.com
+  external: qa2.sense-dev.com
+#  internal: qa-internal.sense-dev.com
+#  external: qa.sense-dev.com
 
 image:
   repository: 342446142760.dkr.ecr.ap-southeast-1.amazonaws.com
@@ -28,53 +28,57 @@ secrets:
       secretKey: init_config_map
     - name: mongodb
       key: mongodb_config.yaml
-      secretKey: dev/sdx/mongodb/credentials
+      secretKey: qa/sdx/docdb/credentials
+#      secretKey: qa/sdx/mongodb/credentials
     - name: documentdb-ca
       key: ca.pem
-      secretKey: dev/sdx/mongodb/ca
+      secretKey: common/sdx/mongodb/ca
     - name: redis
       key: redis_config.yaml
-      secretKey: dev/sdx/redis/credentials
+      secretKey: qa/sdx/redis/credentials
     - name: backend
       key: backend_config.yaml
-      secretKey: dev/sdx/backend/credentials
+      secretKey: qa/sdx/backend/credentials
     - name: rabbitmq
       key: rabbitmq_config.yaml
-      secretKey: dev/sdx/rabbitmq/credentials
+      secretKey: qa/sdx/rabbitMQ/credentials
+#      secretKey: qa/sdx/rabbitmq/credentials
     - name: elasticsearch
       key: elasticsearch_config.yaml
-      secretKey: dev/sdx/elasticsearch/credentials
+      secretKey: qa/sdx/elasticsearch/credentials
     - name: nats
       key: nats_config.yaml
-      secretKey: dev/sdx/nats/credentials
-    - name: common
-      key: global_common_config.yaml
-      secretKey: dev/sdx/svc/common
+      secretKey: dev/sdx/nats/credentials # to use k8 FQDN
+#      secretKey: qa/sdx/nats/credentials
+# not using secret's common for now due to collision with old QA env
+#    - name: common
+#      key: global_common_config.yaml
+#      secretKey: qa/sdx/svc/common
   services:
     - name: auth
       key: auth.config.yaml
-      secretKey: dev/sdx/svc/auth
+      secretKey: qa/sdx/svc/auth
     - name: iam
       key: iam.config.yaml
-      secretKey: dev/sdx/svc/iam
+      secretKey: qa/sdx/svc/iam
     - name: lookup
       key: lookup.config.yaml
-      secretKey: dev/sdx/svc/lookup
+      secretKey: qa/sdx/svc/lookup
     - name: client
       key: client.config.yaml
-      secretKey: dev/sdx/svc/client
-    - name: adaptor
-      key: adaptor.config.yaml
-      secretKey: dev/sdx/svc/adaptor
+      secretKey: qa/sdx/svc/client
+#    - name: adaptor
+#      key: adaptor.config.yaml
+#      secretKey: qa/sdx/svc/adaptor
     - name: notification
       key: notification.config.yaml
-      secretKey: dev/sdx/svc/notification
-    - name: activity
-      key: activity.config.yaml
-      secretKey: dev/sdx/svc/activity
-    - name: topics
-      key: topics.config.yaml
-      secretKey: dev/sdx/svc/topics
+      secretKey: qa/sdx/svc/notification
+#    - name: activity
+#      key: activity.config.yaml
+#      secretKey: qa/sdx/svc/activity
+#    - name: topics
+#      key: topics.config.yaml
+#      secretKey: qa/sdx/svc/topics
 
 
 ingress:
@@ -85,7 +89,8 @@ certs:
     secretName: backend-server-cert
     commonName: "*.sense.svc.cluster.local"
     sans:
-      - "sense-dev.com"
+      - "qa.sense-dev.com"
+      - "qa2.sense-dev.com"
       - "*.sense-dev.com"
       - "*.sense.svc.cluster"
       - "*.sense.svc"
@@ -94,7 +99,8 @@ certs:
     secretName: backend-client-cert
     commonName: "*.sense.svc.cluster.local"
     sans:
-      - "sense-dev.com"
+      - "qa.sense-dev.com"
+      - "qa2.sense-dev.com"
       - "*.sense-dev.com"
       - "*.sense.svc.cluster"
       - "*.sense.svc"
@@ -144,9 +150,10 @@ commons:
     - name: nats
       secret:
         secretName: nats
-    - name: common
-      secret:
-        secretName: common
+# not using secret's common for now due to collision with old QA env
+#    - name: common
+#      secret:
+#        secretName: common
     - name: documentdb-ca
       secret:
         secretName: documentdb-ca
@@ -167,8 +174,8 @@ commons:
     # --- configs and secrets
     - name: common-config
       readOnly: true
-      mountPath: /etc/sense/conf/dev.config.yaml
-      subPath: dev.config.yaml
+      mountPath: /etc/sense/conf/qa-eks.config.yaml
+      subPath: qa-eks.config.yaml
     - name: init-map
       readOnly: true
       mountPath: /etc/sense/conf/init_config.yaml
@@ -197,10 +204,10 @@ commons:
       readOnly: true
       mountPath: /etc/sense/conf/nats_config.yaml
       subPath: nats_config.yaml
-    - name: common
-      readOnly: true
-      mountPath: /etc/sense/conf/global_common_config.yaml
-      subPath: global_common_config.yaml
+#    - name: common
+#      readOnly: true
+#      mountPath: /etc/sense/conf/global_common_config.yaml
+#      subPath: global_common_config.yaml
     # --- certificates
     - name: backend-server-cert
       readOnly: true
@@ -254,15 +261,15 @@ deployments:
     env:
       - name: SENSE_CONFIG_FILES
         value: "topics.config"
-    volumes:
-      - name: topics-config
-        secret:
-          secretName: topics
-    mounts:
-      - name: topics-config
-        mountPath: /etc/sense/conf/topics.config.yaml
-        subPath: topics.config.yaml
-        readOnly: true
+#    volumes:
+#      - name: topics-config
+#        secret:
+#          secretName: topics
+#    mounts:
+#      - name: topics-config
+#        mountPath: /etc/sense/conf/topics.config.yaml
+#        subPath: topics.config.yaml
+#        readOnly: true
   # ----- policy -----
   policy:
     env:
@@ -296,15 +303,15 @@ deployments:
     env:
       - name: SENSE_CONFIG_FILES
         value: "activity.config"
-    volumes:
-      - name: activity-config
-        secret:
-          secretName: activity
-    mounts:
-      - name: activity-config
-        mountPath: /etc/sense/conf/activity.config.yaml
-        subPath: activity.config.yaml
-        readOnly: true
+#    volumes:
+#      - name: activity-config
+#        secret:
+#          secretName: activity
+#    mounts:
+#      - name: activity-config
+#        mountPath: /etc/sense/conf/activity.config.yaml
+#        subPath: activity.config.yaml
+#        readOnly: true
   # ----- subscription -----
   subscription:
     env:
@@ -352,15 +359,15 @@ deployments:
     env:
       - name: SENSE_CONFIG_FILES
         value: "adaptor.config"
-    volumes:
-      - name: adaptor-config
-        secret:
-          secretName: adaptor
-    mounts:
-      - name: adaptor-config
-        mountPath: /etc/sense/conf/adaptor.config.yaml
-        subPath: adaptor.config.yaml
-        readOnly: true
+#    volumes:
+#      - name: adaptor-config
+#        secret:
+#          secretName: adaptor
+#    mounts:
+#      - name: adaptor-config
+#        mountPath: /etc/sense/conf/adaptor.config.yaml
+#        subPath: adaptor.config.yaml
+#        readOnly: true
   # ----- appsettings -----
   appsettings:
     env:
@@ -378,9 +385,9 @@ deployments:
 
 
 cronJob:
-  enabled: true
+  enabled: false
   jobs:
     sense-cron-jobs-daily:
       containerArgs:
-        - -env=dev
-        - -events=dev.event.yaml
+        - -env=qa
+        - -events=dev.event.yaml # TODO: change later

@@ -6,6 +6,11 @@ environments:
       - ./values.yaml
       - ../../dev/global.yaml.gotmpl
       - ../../dev/sense-backend/values.yaml
+  qa:
+    values:
+      - ./values.yaml
+      - ../../qa/global.yaml.gotmpl
+      - ../../qa/sense-backend/values.yaml
 
 repositories:
   - name: sense-backend
