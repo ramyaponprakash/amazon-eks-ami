@@ -24,7 +24,7 @@ spec:
                   number: 443
           {{- if .Values.opensearch.openToLocal }}
           # opens this for local development with dev ES
-          - path: /opensearch/?(.*)$
+          - path: /?(.*)$
             pathType: Prefix
             backend:
               service:
