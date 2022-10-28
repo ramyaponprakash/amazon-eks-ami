@@ -1,0 +1,54 @@
+# https://github.com/kubernetes/ingress-nginx/blob/main/charts/ingress-nginx/values.yaml
+# Nginx ingress chart values
+controller:
+  ingressClassResource:
+    name: external-alb-default
+    enabled: true
+    default: false
+    controllerValue: "k8s.io/ingress-nginx"
+    parameters: {}
+  ingressClass: external-alb-default
+  electionID: external-alb-default
+  publishService:
+    enabled: false
+  service:
+    type: NodePort
+    targetPorts:
+      http: http
+      https: http
+
+# Values for own templates
+external:
+  alb:
+    default:
+      enabled: true
+      hosts:
+        - qa2.sense-dev.com
+      #  - qa.sense-dev.com
+        - qa-k8.sense-dev.com
+        - qa-opensearch.sense-dev.com
+      ingressClassName: external-alb-default
+      annotations:
+        # https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.2/guide/ingress/annotations/
+        alb.ingress.kubernetes.io/load-balancer-name: 'sdx-eks-qa-external-alb-blue'
+        alb.ingress.kubernetes.io/scheme: 'internet-facing'
+        alb.ingress.kubernetes.io/target-type: 'ip'
+        alb.ingress.kubernetes.io/subnets: 'subnet-049e25873d77ab992,subnet-0b9a1df4b5bc2fd33'
+        alb.ingress.kubernetes.io/security-groups: 'sg-04112c3880d58b9e6,sg-0cf6be47a1128371a'
+        alb.ingress.kubernetes.io/waf-acl-id: 'b1f2eab1-0ac4-4a3f-92ac-69dba6192387'
+        alb.ingress.kubernetes.io/ssl-policy: 'ELBSecurityPolicy-FS-1-2-Res-2020-10'
+        alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+        alb.ingress.kubernetes.io/ip-address-type: 'ipv4'
+        alb.ingress.kubernetes.io/certificate-arn: 'arn:aws:acm:ap-southeast-1:342446142760:certificate/71d7503d-0a94-4ca5-a631-79a7710564fb'
+        alb.ingress.kubernetes.io/healthcheck-path: '/healthz'
+        alb.ingress.kubernetes.io/success-codes: "200,404"
+        alb.ingress.kubernetes.io/ssl-redirect: '443'
+        alb.ingress.kubernetes.io/actions.ssl-redirect: |-
+          {
+            "Type": "redirect",
+            "RedirectConfig": {
+              "Protocol": "HTTPS",
+              "Port": "443",
+              "StatusCode": "HTTP_301"
+            }
+          }

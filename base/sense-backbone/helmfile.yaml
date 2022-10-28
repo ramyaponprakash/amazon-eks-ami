@@ -6,6 +6,11 @@ environments:
       - ./values.yaml
       - ../../dev/global.yaml.gotmpl
       - ../../dev/sense-backbone/values.yaml
+  qa:
+    values:
+      - ./values.yaml
+      - ../../qa/global.yaml.gotmpl
+      - ../../qa/sense-backbone/values.yaml
 
 repositories:
   - name: sense-backbone

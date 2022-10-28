@@ -1,0 +1,17 @@
+namespace: monitoring
+chartVer: 0.0.4
+
+jaegertracing:
+  enabled: true
+
+kube:
+  hostname: qa-k8.sense-dev.com
+  ingressClassName: external-alb-default
+
+opensearch:
+  enabled: true
+  hostname: qa-opensearch.sense-dev.com
+  ingressClassName: external-alb-default
+  openToLocal: false
+  vpcEndpoint: vpc-qa-sdx-es-nmfy2skqvy27bdipvtlqspa4cy.ap-southeast-1.es.amazonaws.com
+  endpoint: https://vpc-qa-sdx-es-nmfy2skqvy27bdipvtlqspa4cy.ap-southeast-1.es.amazonaws.com:443

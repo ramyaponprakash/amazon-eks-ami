@@ -1,9 +1,9 @@
-env: dev
+env: qa
 namespace: sense
 chartVer: 0.0.6
 
-hostname: sense-dev.com
-#hostname: v2.sense-dev.com
+hostname: qa2.sense-dev.com
+#hostname: qa.sense-dev.com
 
 image:
   repository: 342446142760.dkr.ecr.ap-southeast-1.amazonaws.com
@@ -24,21 +24,21 @@ commons:
     - name: frontend-nginx-config
       configMap:
         name: frontend-nginx-config
-    - name: auth-nginx-config
+    - name: portal-nginx-config
       configMap:
-        name: auth-nginx-config
+        name: portal-nginx-config
   mounts:
     - name: frontend-nginx-config
       readOnly: true
       mountPath: /etc/nginx/nginx.conf
       subPath: nginx.conf
-    - name: auth-nginx-config
+    - name: portal-nginx-config
       readOnly: true
-      mountPath: /etc/nginx/default.d/nginx-auth.conf
-      subPath: nginx-auth.conf
+      mountPath: /etc/nginx/default.d/nginx-adex.conf
+      subPath: nginx-adex.conf
 
 deployments:
-  frontend-auth:
+  frontend-portal:
     env: []
     volumes: []
     mounts: []

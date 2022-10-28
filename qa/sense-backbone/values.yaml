@@ -1,0 +1,11 @@
+env: qa
+namespace: sense-backbone
+chartVer: 0.0.3
+
+nats:
+  serverCert:
+    name: nats-server-cert
+    secretName: nats-server-cert
+    commonName: nats-qa.sense-dev.com
+    sans:
+      - nats.sense-backbone.svc.cluster.local

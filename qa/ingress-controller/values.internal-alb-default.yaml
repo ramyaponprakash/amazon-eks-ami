@@ -1,0 +1,42 @@
+# https://github.com/kubernetes/ingress-nginx/blob/main/charts/ingress-nginx/values.yaml
+# Nginx ingress chart values
+controller:
+  ingressClassResource:
+    name: internal-alb-default
+    enabled: true
+    default: false
+    controllerValue: "k8s.io/ingress-nginx"
+    parameters: {}
+  ingressClass: internal-alb-default
+  electionID: internal-alb-default
+  publishService:
+    enabled: false
+  service:
+    type: NodePort
+    targetPorts:
+      http: http
+      https: http
+
+# Values for own templates
+internal:
+  alb:
+    default:
+      enabled: true
+      hosts:
+         - qa-internal.sense-dev.com
+#         - v2-internal.sense-dev.com
+      ingressClassName: internal-alb-default
+      annotations:
+        # https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.2/guide/ingress/annotations/
+        alb.ingress.kubernetes.io/load-balancer-name: 'sdx-eks-qa-internal-alb-blue'
+        alb.ingress.kubernetes.io/scheme: 'internal'
+        alb.ingress.kubernetes.io/target-type: 'ip'
+        alb.ingress.kubernetes.io/subnets: 'subnet-035ddd7b744cd4a59,subnet-056a36371f1158557'
+        alb.ingress.kubernetes.io/security-groups: 'sg-04112c3880d58b9e6,sg-0cf6be47a1128371a'
+        alb.ingress.kubernetes.io/waf-acl-id: 'b1f2eab1-0ac4-4a3f-92ac-69dba6192387'
+        alb.ingress.kubernetes.io/ssl-policy: 'ELBSecurityPolicy-FS-1-2-Res-2020-10'
+        alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+        alb.ingress.kubernetes.io/ip-address-type: 'ipv4'
+        alb.ingress.kubernetes.io/certificate-arn: 'arn:aws:acm:ap-southeast-1:342446142760:certificate/2e4cbfc6-b06c-4018-b9c6-2d16a299af2d'
+        alb.ingress.kubernetes.io/healthcheck-path: '/healthz'
+        alb.ingress.kubernetes.io/success-codes: "200,404"

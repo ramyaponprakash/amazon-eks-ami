@@ -1,0 +1,15 @@
+#kind: Deployment
+
+#replicaCount: 1
+
+image:
+  repository: 342446142760.dkr.ecr.ap-southeast-1.amazonaws.com/sense_fluentd
+  pullPolicy: IfNotPresent
+  tag: latest
+
+autoscaling:
+  enabled: false
+
+# temp, no metric port for sense image
+livenessProbe:
+readinessProbe:

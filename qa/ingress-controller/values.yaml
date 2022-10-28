@@ -12,4 +12,4 @@ internal-alb-default:
   enabled: false
 
 internal-nlb-default:
-  enabled: true # QA cross zone API, NATS access
+  enabled: true # DEV cross zone API, NATS access
