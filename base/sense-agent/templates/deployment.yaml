@@ -35,7 +35,7 @@ spec:
             {{- toYaml .Values.containerSecurityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}/{{ default $rangeItem.imageName $rangeItem.name $k | replace "-"  "_" }}:{{ default .Values.image.tag $rangeItem.imageTag | default "latest" }}"
           volumeMounts:
-            {{- with concat .Values.commons.mounts $rangeItem.mounts }}
+            {{- with concat .Values.base.mounts .Values.commons.mounts $rangeItem.mounts }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
           imagePullPolicy: {{ default "IfNotPresent" .Values.image.pullPolicy }}
@@ -48,7 +48,7 @@ spec:
               name: healthcheck
             {{- end }}
           env:
-            {{- with concat .Values.commons.envs $rangeItem.env }}
+            {{- with concat .Values.base.envs .Values.commons.envs $rangeItem.env }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
             - name: SENSE_ENV
@@ -68,7 +68,7 @@ spec:
           {{- toYaml . | nindent 12 }}
       {{- end }}
       volumes:
-      {{- with concat .Values.commons.volumes $rangeItem.volumes }}
+      {{- with concat .Values.base.volumes .Values.commons.volumes $rangeItem.volumes }}
       {{- toYaml . | nindent 8 }}
       {{- end }}
       nodeSelector:

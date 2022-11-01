@@ -1,6 +1,19 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  name: default-config
+  namespace: {{ .Values.namespace | default "sense" }}
+data:
+  default.config.yaml: |
+    etcd:
+      enabled: false
+    k8s:
+      configs:
+        enabled: true
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
   name: common-config
   namespace: {{ .Values.namespace | default "sense" }}
 data:
