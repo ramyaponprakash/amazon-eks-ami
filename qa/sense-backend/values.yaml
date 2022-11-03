@@ -1,6 +1,6 @@
 env: qa
 namespace: sense
-chartVer: 0.0.11
+chartVer: 0.0.12
 
 enabled: true
 

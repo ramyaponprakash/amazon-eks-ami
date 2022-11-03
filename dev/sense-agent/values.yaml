@@ -1,6 +1,6 @@
 env: dev
 namespace: sense
-chartVer: 0.0.3
+chartVer: 0.0.4
 
 enabled: false
 
