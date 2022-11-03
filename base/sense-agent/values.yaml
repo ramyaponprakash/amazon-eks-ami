@@ -66,6 +66,19 @@ nodeSelector: {}
 tolerations: []
 affinity: {}
 
+# base configuration will be applied to all env
+base:
+  envs: []
+  volumes:
+    - name: default-config
+      configMap:
+        name: default-config
+  mounts:
+    - name: default-config
+      readOnly: true
+      mountPath: /etc/sense/conf/default.config.yaml
+      subPath: default.config.yaml
+
 commons:
   ports: []
   envs: []
