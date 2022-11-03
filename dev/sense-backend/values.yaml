@@ -356,3 +356,8 @@ cronJob:
       containerArgs:
         - -env=dev
         - -events=dev.event.yaml
+    sense-cron-jobs-every-30mins:
+      containerArgs:
+        - -env=dev
+        - -name=revoke_certificates
+        - -type=revoke_certificates

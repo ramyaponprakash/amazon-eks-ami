@@ -310,3 +310,15 @@ cronJob:
           memory: "25Mi"
         limits:
           memory: "50Mi"
+    sense-cron-jobs-every-30mins:
+      name: sense-cron-jobs-every-30mins
+      imageName: sense_cron_jobs
+      schedule: "*/30 * * * *"
+      concurrencyPolicy: Forbid
+      containerName: cron-jobs-every-30mins
+      containerArgs: []
+      resources:
+        requests:
+          memory: "25Mi"
+        limits:
+          memory: "50Mi"
