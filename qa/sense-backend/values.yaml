@@ -230,9 +230,7 @@ commons:
 deployments:
   # ----- auth -----
   auth:
-    env:
-      - name: SENSE_CONFIG_FILES
-        value: "auth.config"
+    env: []
     volumes:
       - name: auth-config
         secret:
@@ -244,9 +242,7 @@ deployments:
         readOnly: true
   # ----- iam -----
   iam:
-    env:
-      - name: SENSE_CONFIG_FILES
-        value: "iam.config"
+    env: []
     volumes:
       - name: iam-config
         secret:
@@ -258,9 +254,7 @@ deployments:
         readOnly: true
   # ----- topics -----
   topics:
-    env:
-      - name: SENSE_CONFIG_FILES
-        value: "topics.config"
+    env: []
 #    volumes:
 #      - name: topics-config
 #        secret:
@@ -272,23 +266,17 @@ deployments:
 #        readOnly: true
   # ----- policy -----
   policy:
-    env:
-      - name: SENSE_CONFIG_FILES
-        value: "policy.config"
+    env: []
     volumes: []
     mounts: []
   # ----- role -----
   role:
-    env:
-      - name: SENSE_CONFIG_FILES
-        value: "role.config"
+    env: []
     volumes: []
     mounts: []
   # ----- client -----
   client:
-    env:
-      - name: SENSE_CONFIG_FILES
-        value: "client.config"
+    env: []
     volumes:
       - name: client-config
         secret:
@@ -300,9 +288,7 @@ deployments:
         readOnly: true
   # ----- activity -----
   activity:
-    env:
-      - name: SENSE_CONFIG_FILES
-        value: "activity.config"
+    env: []
 #    volumes:
 #      - name: activity-config
 #        secret:
@@ -314,16 +300,12 @@ deployments:
 #        readOnly: true
   # ----- subscription -----
   subscription:
-    env:
-      - name: SENSE_CONFIG_FILES
-        value: "subscription.config"
+    env: []
     volumes: []
     mounts: []
   # ----- lookup -----
   lookup:
-    env:
-      - name: SENSE_CONFIG_FILES
-        value: "lookup.config"
+    env: []
     volumes:
       - name: lookup-config
         secret:
@@ -335,16 +317,12 @@ deployments:
         readOnly: true
   # ----- message -----
   message:
-    env:
-      - name: SENSE_CONFIG_FILES
-        value: "message.config"
+    env: []
     volumes: []
     mounts: []
   # ----- notification -----
   notification:
-    env:
-      - name: SENSE_CONFIG_FILES
-        value: "notification.config"
+    env: []
     volumes:
       - name: notification-config
         secret:
@@ -356,9 +334,7 @@ deployments:
         readOnly: true
   # ----- adaptor -----
   adaptor:
-    env:
-      - name: SENSE_CONFIG_FILES
-        value: "adaptor.config"
+    env: []
 #    volumes:
 #      - name: adaptor-config
 #        secret:
@@ -370,16 +346,12 @@ deployments:
 #        readOnly: true
   # ----- appsettings -----
   appsettings:
-    env:
-      - name: SENSE_CONFIG_FILES
-        value: "appsettings.config"
+    env: []
     volumes: []
     mounts: []
   # ----- metric -----
   metric:
-    env:
-      - name: SENSE_CONFIG_FILES
-        value: "metric.config"
+    env: []
     volumes: []
     mounts: []
 

@@ -125,7 +125,7 @@ deployments:
     enabled: true
     env:
       - name: SENSE_CONFIG_FILES
-        value: "agent.config"
+        value: "default.config agent.config"
       - name: SENSE_MODULE
         value: "sniff_agent"
       - name: SENSE_AGENT
@@ -142,7 +142,7 @@ deployments:
     enabled: true
     env:
       - name: SENSE_CONFIG_FILES
-        value: "agent.config"
+        value: "default.config agent.config"
       - name: SENSE_MODULE
         value: "sniff_agent"
       - name: SENSE_AGENT
@@ -159,7 +159,7 @@ deployments:
     enabled: true
     env:
       - name: SENSE_CONFIG_FILES
-        value: "agent.config"
+        value: "default.config agent.config"
       - name: SENSE_MODULE
         value: "sniff_agent"
       - name: SENSE_AGENT
