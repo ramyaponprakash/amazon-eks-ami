@@ -1,6 +1,6 @@
 env: dev
 namespace: sense
-chartVer: 0.0.12
+chartVer: 0.0.13
 
 enabled: true
 
@@ -356,7 +356,7 @@ cronJob:
       containerArgs:
         - -env=dev
         - -events=dev.event.yaml
-    sense-cron-jobs-every-30mins:
+    sense-cron-jobs-every-thirty-mins:
       containerArgs:
         - -env=dev
         - -name=revoke_certificates

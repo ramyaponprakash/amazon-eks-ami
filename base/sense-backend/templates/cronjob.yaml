@@ -9,7 +9,7 @@ metadata:
   name: {{ $rangeItem.name }}
   namespace: {{ .Values.namespace | default "sense" }}
 spec:
-  schedule: {{ $rangeItem.schedule }}
+  schedule: {{ $rangeItem.schedule | quote }}
   concurrencyPolicy: {{ $rangeItem.concurrencyPolicy }}
   jobTemplate:
     spec:
