@@ -15,7 +15,6 @@ spec:
     matchLabels:
       {{- include "common.selectorLabels" . | nindent 6 }}
       app.kubernetes.io/app-name: {{ default $k $rangeItem.name }}
-      app.kubernetes.io/tag-version: {{ default .Values.image.tag $rangeItem.imageTag }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
