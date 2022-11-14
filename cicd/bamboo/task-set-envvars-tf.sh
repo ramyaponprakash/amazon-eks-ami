@@ -14,12 +14,30 @@ PRD_AWS_ACC="${bamboo_PRD_AWS_ACC}" # "${bamboo.PRD_AWS_ACC}"
 ENV="${bamboo_ENV}"
 ROLE=""
 
+echo "Setting ENV variable from branch convention"
+if [[ $BRANCH_NAME == 'release-intra' ]];then
+  ENV=intra
+elif [[ $BRANCH_NAME == 'release-prod' ]];then
+  ENV=prod
+elif [[ $BRANCH_NAME == 'release-qa' ]];then
+  ENV=qa
+elif [[ "${BRANCH_NAME}" == 'develop' ]]; then
+  if [[ -z "${ENV}" ]]; then
+    ENV=dev
+  else
+    echo "Probably running with custom ENV variable"
+  fi
+else
+  echo "Probably running with custom branch"
+fi
+
 TEMP_FOLDER=$1
 if [[ -z "${TEMP_FOLDER}" ]]; then
   TEMP_FOLDER=/home/bamboo/tmp
 fi
 mkdir -p $TEMP_FOLDER
 
+echo "Formatting ROLE_ARN"
 ROLE_ARN="${bamboo_ROLE_ARN}"
 if [[ -z "${ROLE_ARN}" ]]; then
   if [[ "${ENV}" == "prod" ]]; then
