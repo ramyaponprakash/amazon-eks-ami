@@ -4,7 +4,7 @@ metadata:
   name: default-config
   namespace: {{ .Values.namespace | default "sense" }}
 data:
-  default.config.yaml: |
+  default.config.yaml: |-
     etcd:
       enabled: false
     k8s:

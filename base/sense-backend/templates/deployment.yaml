@@ -65,13 +65,13 @@ spec:
             - name: SENSE_MODULE
               value: {{ default $k $rangeItem.name }}
           {{- if .Values.healthcheck.enabled }}
-          {{- if .Values.livenessProbe }}
+          {{- if .Values.healthcheck.livenessProbe }}
           livenessProbe:
-            {{- toYaml .Values.livenessProbe | nindent 12 }}
+            {{- toYaml .Values.healthcheck.livenessProbe | nindent 12 }}
           {{- end }}
-          {{- if .Values.readinessProbe }}
+          {{- if .Values.healthcheck.readinessProbe }}
           readinessProbe:
-            {{- toYaml .Values.readinessProbe | nindent 12 }}
+            {{- toYaml .Values.healthcheck.readinessProbe | nindent 12 }}
           {{- end }}
           {{- end }}
           resources:

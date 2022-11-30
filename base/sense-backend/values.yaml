@@ -50,9 +50,10 @@ healthcheck:
   enabled: true
   port: 7171
   livenessProbe:
-    httpGet:
-      path: /diagnostics/healthcheck
-      port: healthcheck
+    exec:
+      command:
+        - "/go/bin/service"
+        - "-ping=true"
     failureThreshold: 3
     periodSeconds: 30
   readinessProbe:
