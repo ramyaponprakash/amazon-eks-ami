@@ -15,3 +15,6 @@ opensearch:
   openToLocal: false
   vpcEndpoint: vpc-qa-sdx-es-nmfy2skqvy27bdipvtlqspa4cy.ap-southeast-1.es.amazonaws.com
   endpoint: https://vpc-qa-sdx-es-nmfy2skqvy27bdipvtlqspa4cy.ap-southeast-1.es.amazonaws.com:443
+
+logstash:
+  prefix: fluentd-qa
