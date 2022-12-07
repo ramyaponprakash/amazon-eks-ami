@@ -1,5 +1,5 @@
 namespace: monitoring
-chartVer: 0.0.5
+chartVer: 0.0.6
 
 jaegertracing:
   enabled: true
