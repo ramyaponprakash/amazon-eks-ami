@@ -4,8 +4,9 @@
 
 image:
   repository: 342446142760.dkr.ecr.ap-southeast-1.amazonaws.com/sense_fluentd
-  pullPolicy: IfNotPresent
-  tag: latest
+  #pullPolicy: IfNotPresent
+  pullPolicy: Always
+  tag: qa-latest
 
 autoscaling:
   enabled: false

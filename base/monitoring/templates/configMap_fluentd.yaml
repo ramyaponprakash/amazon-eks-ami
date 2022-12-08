@@ -59,7 +59,7 @@ data:
         suppress_type_name true
         hosts {{ .Values.opensearch.endpoint }}
         logstash_format true
-        logstash_prefix fluentd-dev
+        logstash_prefix {{ .Values.logstash.prefix }}
         logstash_prefix_separator _
         logstash_dateformat %Y%m%d
         time_key_format %Y-%m-%dT%H:%M:%S.%L%z
