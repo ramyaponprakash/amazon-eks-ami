@@ -135,3 +135,16 @@ deployments:
     env: []
     volumes: []
     mounts: []
+  agent-kinesis:
+    enabled:
+    imageName: sense_sniff_agent_kinesis
+    imageTag:
+    ports: []
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    autoscaling: {}
+    resources: {}
+    env: []
+    volumes: []
+    mounts: []

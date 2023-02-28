@@ -172,6 +172,23 @@ deployments:
       - name: agent-config
         mountPath: conf/agent.config.yaml
         subPath: agent.config.yaml
+  agent-kinesis:
+    enabled: true
+    env:
+      - name: SENSE_CONFIG_FILES
+        value: "default.config agent.config"
+      - name: SENSE_MODULE
+        value: "sniff_agent"
+      - name: SENSE_AGENT
+        value: "kinesis"
+    volumes:
+      - name: agent-config
+        secret:
+          secretName: agent-config
+    mounts:
+      - name: agent-config
+        mountPath: conf/agent.config.yaml
+        subPath: agent.config.yaml
   bridge-agent-dev-nats-dev-rmq:
     enabled: true
     imageName: sense_bridge_agent
