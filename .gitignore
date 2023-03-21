@@ -5,6 +5,8 @@
 *.tmproj
 .vscode/
 tmp
+temp
 **/.terraform
 **/.terraform.lock.hcl
 **/*.tfstate
+**/*.tfstate.*
