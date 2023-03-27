@@ -16,7 +16,7 @@
 ### Module
 - Remote-state
   - [ ] (optional) S3
-  - [ ] Code Dynamo table for global lock
+  - [ ] Code Dynamo table for global lock, need to check we can use s3 object lock as-is
 - Network
   - [ ] Test optional vpc creation
   - [ ] Review any missing parts
@@ -36,6 +36,7 @@
   - [ ] Code/Modify Custodian tag to ASG, ensure propagation
 - general
   - [ ] decide what to `prevent_destroy`
+  - [ ] adding Tag managed-by=Terraform
 
 ---
 ### CICD
@@ -104,6 +105,4 @@ eks-adex
 
 ----
 
-1. git clone [repo]
-2. git fetch
-3. git checkout feature/solace
+NOTE: module need to run within private subnet instance if we disable the public endpoint of EKS cluster.

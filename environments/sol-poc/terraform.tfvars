@@ -61,10 +61,9 @@ vpc_private_elb_subnets = [
 
 bastion = {
   enable              = true
-  cluster_name        = "alex-test-cluster"
-  vpc_id              = "vpc-09a58d6d"
-  subnet_ids          = ["subnet-03603dbfb617e41c4"]
-  iam_role            = "ec2-eks-role"
-  ssh_cidr_blocks     = ["172.8.0.0/24"]
+  vpc_id              = ""
+  subnet_ids          = []
+  iam_role            = "u-ec2read"
+  ssh_cidr_blocks     = []
   ssh_prefix_list_ids = ["pl-0af10fe06357d6aff"]
 }

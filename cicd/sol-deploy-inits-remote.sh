@@ -9,11 +9,11 @@ if [[ $K8S_VERSION == "" ]]; then
 fi
 
 # TODO: remove this
-# CLUSTER_NAME=solace-poc-cluster
-# AWS_ACCOUNT_ID=342446142760
+ CLUSTER_NAME=solace-poc-cluster
+ AWS_ACCOUNT_ID=342446142760
 
 AUTOSCALER_VERSION="v${K8S_VERSION}.0"
-ALBC_VERSION="v2.4.1"
+ALBC_VERSION="v2.4.1-nlb"
 
 aws eks update-kubeconfig --region ap-southeast-1 --name $CLUSTER_NAME
 
