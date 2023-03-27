@@ -44,6 +44,7 @@
 - [ ] Bamboo access
   - may need manual creation of pub bastion for init setups
 - [ ] can we upload some files from Solace cloud console to S3?
+  - pull image secret: gcr-reg-secret
 
 #### Flow
 
@@ -74,8 +75,17 @@ CD
 ### Documentation
 
 - [ ] terraform doc for each module
-- [ ] update Readme.md for repo explaination
+- [ ] update Readme.md for repo explanation
 - [ ] doc Solace installation steps
+  - validation step requires to modify content
+    - values.yaml -> update k8s.storageClass as 'gp3'
+    - values.yaml -> update datacenter.verifyingSsl as false
+    - values.yaml -> delete datacenter.httpsProxy
+  - values.yaml may need to update its content per env
+    - example
+      - values.yaml -> update k8s.storageClass as 'gp3'
+      - values.yaml -> update datacenter.verifyingSsl as false
+      - values.yaml -> modify datacenter.httpsProxy
 - [ ] link repo to Confluent
 
 
