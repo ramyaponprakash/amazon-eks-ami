@@ -1,8 +1,8 @@
-cluster_name             = "adex-prd-solace-eks-cluster"
-vpc_name                 = "adex-prd-solace"
+cluster_name = "adex-prd-solace-eks-cluster"
+vpc_name     = "adex-prd-solace"
 
 eks_customer_cmk_key_arn = "arn:aws:kms:ap-southeast-1:704140326871:key/544321c8-ceb8-4edd-9c47-d6a813715acf"
-eks_admin_role_arns      = [
+eks_admin_role_arns = [
   "arn:aws:iam::704140326871:role/u-admin",
   "arn:aws:iam::704140326871:role/u-eksadmin",
   "arn:aws:iam::704140326871:role/u-ec2read"
