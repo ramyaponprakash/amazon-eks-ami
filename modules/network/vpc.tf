@@ -5,8 +5,8 @@ data "aws_availability_zones" "available" {
 }
 
 module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "3.2.0"
+  source                = "terraform-aws-modules/vpc/aws"
+  version               = "3.2.0"
 
   name                  = "${var.cluster_name}-vpc"
   create_vpc            = var.network.create_vpc
@@ -16,9 +16,9 @@ module "vpc" {
 
   # One NAT Gateway per availability zone
   # NAT Gateways is created outside
-  enable_nat_gateway   = false
-  single_nat_gateway   = false
-  enable_dns_hostnames = true
+  enable_nat_gateway    = false
+  single_nat_gateway    = false
+  enable_dns_hostnames  = true
 
   tags = {
     // NOTE: https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html

@@ -1,5 +1,5 @@
 resource "aws_nat_gateway" "ngw" {
-  count = length(var.vpc_nat_gw_eip_allocation_ids)
+  count         = length(var.vpc_nat_gw_eip_allocation_ids)
 
   allocation_id = var.vpc_nat_gw_eip_allocation_ids[count.index]
   subnet_id     = aws_subnet.public_subnets[count.index].id
@@ -11,6 +11,5 @@ resource "aws_nat_gateway" "ngw" {
 
 data "aws_eip" "nat_gw_public_ips" {
   count = length(var.vpc_nat_gw_eip_allocation_ids)
-
-  id = var.vpc_nat_gw_eip_allocation_ids[count.index]
+  id    = var.vpc_nat_gw_eip_allocation_ids[count.index]
 }

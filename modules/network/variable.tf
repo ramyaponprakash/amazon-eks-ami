@@ -1,7 +1,7 @@
 variable "network" {
   type = object({
-    enable     = optional(bool, false)
-    create_vpc = optional(bool, true)
+    enable     = optional(bool, true)
+    create_vpc = optional(bool, false)
   })
   description = "Base config to enable/disable module. create_vpc=false will skip vpc creation."
 }
@@ -28,7 +28,7 @@ variable "vpc_id" {
 
 variable "vpc_cidr" {
   type    = string
-  default = "10.0.0.0/16"
+  default = ""
 }
 
 variable "vpc_secondary_cidr_blocks" {
