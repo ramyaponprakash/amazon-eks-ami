@@ -16,6 +16,26 @@ variable "vpc_id" {
   default = ""
 }
 
+variable "vpc_eip" {
+  type = object({
+    enable_eip = optional(bool, true)
+    count      = number
+  })
+}
+
+variable "vpc_nat_gateway" {
+  type = object({
+    enable = optional(bool, true)
+  })
+}
+
+variable "vpc_igw" {
+  type = object({
+    enable_igw = optional(bool, true)
+    count      = number
+  })
+}
+
 variable "eks_customer_cmk_key_arn" {
   type    = string
   default = ""
@@ -36,7 +56,7 @@ variable "eks_cluster_endpoint_public" {
   default = false
 }
 
-variable "eks_network" {
+variable "network" {
   type = object({
     enable     = optional(bool, false)
     create_vpc = optional(bool, true)
