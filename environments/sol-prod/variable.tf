@@ -43,6 +43,43 @@ variable "eks_network" {
   })
 }
 
+variable "eks_eip" {
+  type = object({
+    enable = optional(bool, false)
+    count  = optional(number, 1)
+  })
+}
+
+variable "eks_nat_gateway" {
+  type = object({
+    enable                        = optional(bool, false)
+    vpc_nat_gw_eip_allocation_ids = optional(list(string))
+  })
+}
+
+
+variable "eks_igw" {
+  type = object({
+    enable = optional(bool, false)
+    count  = optional(number, 1)
+  })
+}
+
+variable "vpc_nat_gw_ids" {
+  type    = list(string)
+  default = []
+}
+
+variable "vpc_igw_ids" {
+  type    = list(string)
+  default = []
+}
+
+variable "vpc_nat_gw_eip_allocation_ids" {
+  type    = list(string)
+  default = []
+}
+
 variable "vpc_cidr" {
   type    = string
   default = "100.112.110.0/24"
@@ -79,11 +116,6 @@ variable "vpc_private_elb_subnets" {
     cidr       = string
     enable_elb = number
   }))
-  default = []
-}
-
-variable "vpc_nat_gw_eip_allocation_ids" {
-  type    = list(string)
   default = []
 }
 

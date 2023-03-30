@@ -6,6 +6,27 @@ variable "network" {
   description = "Base config to enable/disable module. create_vpc=false will skip vpc creation."
 }
 
+variable "eks_eip" {
+  type = object({
+    enable_eip = optional(bool, true)
+    count      = number
+  })
+}
+
+variable "eks_nat_gateway" {
+  type = object({
+    enable = optional(bool, true)
+  })
+}
+
+variable "eks_igw" {
+  type = object({
+    enable_igw = optional(bool, true)
+    count      = number
+  })
+}
+
+
 variable "region" {
   type    = string
   default = "ap-southeast-1"
@@ -95,6 +116,15 @@ variable "vpc_private_elb_subnets" {
 variable "vpc_nat_gw_eip_allocation_ids" {
   type    = list(string)
   default = []
+}
+
+variable "vpc_nat_gw_ids" {
+  type    = list(string)
+  default = []
+}
+
+variable "vpc_igw_ids" {
+
 }
 
 variable "az_map" {

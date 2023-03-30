@@ -14,8 +14,26 @@ eks_admin_role_arns = [
 eks_network = {
   enable = true
 }
-vpc_cidr                      = "100.112.110.0/24"
-vpc_nat_gw_eip_allocation_ids = ["eipalloc-0b598904c389de794"]
+
+eks_eip = {
+  enable = false
+}
+
+eks_nat_gateway = {
+  enable                        = false
+  vpc_nat_gw_eip_allocation_ids = ["eipalloc-034fbe49c22174c58", "eipalloc-0d47e96e0b789e780"]
+}
+
+eks_igw = {
+  enable = false
+}
+
+vpc_nat_gw_ids = ["nat-041c6ab43bae993d4", "nat-0c9658ee7bcaa76a5"]
+
+vpc_igw_ids = ["igw-05de26569418b687e"]
+
+vpc_cidr = "100.112.110.0/24"
+
 vpc_private_subnets = [
   {
     cidr       = "100.112.110.64/27"

@@ -1,5 +1,7 @@
-resource "aws_eip" "adex_prd_solace_eip" {
+resource "aws_eip" "solace_eip" {
+  count = var.eks_eip.enable_eip ? var.eks_eip.count : 0
+  vpc   = true
   tags = {
-    Name = "adex-prd-solace-eip"
+    Name = "${var.vpc_name}-eip"
   }
 }

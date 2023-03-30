@@ -39,6 +39,11 @@ module "eks_network" {
   source = "../../modules/network"
 
   network                       = var.eks_network
+  eks_eip                       = var.eks_eip
+  eks_nat_gateway               = var.eks_nat_gateway
+  eks_igw                       = var.eks_igw
+  vpc_nat_gw_ids                = var.vpc_nat_gw_ids
+  vpc_igw_ids                   = var.vpc_igw_ids
   region                        = var.region
   cluster_name                  = var.cluster_name
   vpc_name                      = var.vpc_name
@@ -100,4 +105,3 @@ module "eks-solace" {
     module.eks,
   ]
 }
-
