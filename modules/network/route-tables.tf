@@ -4,7 +4,7 @@ resource "aws_route_table" "public" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = var.eks_igw.enable_igw ? aws_internet_gateway.igw[count.index].id : var.vpc_igw_ids[count.index]
+    gateway_id = var.vpc_igw.enable_igw ? aws_internet_gateway.igw[count.index].id : var.vpc_igw_ids[count.index]
   }
 
   tags = {
@@ -26,7 +26,7 @@ resource "aws_route_table" "private" {
 
   route {
     cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = var.eks_nat_gateway.enable ? aws_nat_gateway.ngw[count.index % length(aws_nat_gateway.ngw)].id : var.vpc_nat_gw_ids[count.index]
+    nat_gateway_id = var.vpc_nat_gateway.enable ? aws_nat_gateway.ngw[count.index % length(aws_nat_gateway.ngw)].id : var.vpc_nat_gw_ids[count.index]
   }
 
   tags = {
