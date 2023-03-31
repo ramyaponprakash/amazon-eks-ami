@@ -1,7 +1,7 @@
 resource "aws_nat_gateway" "ngw" {
 
-  count         = var.eks_nat_gateway.enable ? (var.eks_eip.enable_eip ? length(aws_eip.solace_eip) : length(var.eks_nat_gateway.vpc_nat_gw_eip_allocation_ids)) : 0
-  allocation_id = var.eks_eip.enable_eip ? aws_eip.solace_eip[count.index].association_id : var.eks_nat_gateway.vpc_nat_gw_eip_allocation_ids[count.index]
+  count         = var.vpc_nat_gateway.enable ? (var.vpc_eip.enable_eip ? length(aws_eip.solace_eip) : length(var.vpc_nat_gateway.vpc_nat_gw_eip_allocation_ids)) : 0
+  allocation_id = var.vpc_eip.enable_eip ? aws_eip.solace_eip[count.index].association_id : var.vpc_nat_gateway.vpc_nat_gw_eip_allocation_ids[count.index]
   subnet_id     = aws_subnet.public_subnets[count.index].id
 
   tags = {

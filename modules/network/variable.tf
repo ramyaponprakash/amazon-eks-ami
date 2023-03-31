@@ -6,20 +6,20 @@ variable "network" {
   description = "Base config to enable/disable module. create_vpc=false will skip vpc creation."
 }
 
-variable "eks_eip" {
+variable "vpc_eip" {
   type = object({
     enable_eip = optional(bool, true)
     count      = number
   })
 }
 
-variable "eks_nat_gateway" {
+variable "vpc_nat_gateway" {
   type = object({
     enable = optional(bool, true)
   })
 }
 
-variable "eks_igw" {
+variable "vpc_igw" {
   type = object({
     enable_igw = optional(bool, false)
     count      = number

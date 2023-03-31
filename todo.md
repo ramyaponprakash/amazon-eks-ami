@@ -9,19 +9,18 @@
 
 ### Prerequisite
 - [x] VPCs provisioning 
-- [ ] (decide) route table, nat, igw provisioning
-- [ ] (decide) subnets, subnet assosications provisioning
+- [x] (decide) route table, nat, igw provisioning
+- [x] (decide) subnets, subnet associations provisioning
 - [ ] (decide) initial bastion options
 
 ### Module
 - Remote-state
-  - [ ] (optional) S3
+  - [x] ~~(optional) S3~~ we will have manual s3 as confirmed
   - [ ] Code Dynamo table for global lock, need to check we can use s3 object lock as-is
 - Network
   - [ ] Test optional vpc creation
-  - [ ] Review any missing parts
-  - [ ] (optional) Code EIP conditional creation
-  - [ ] Need to add VPC peering
+  - [x] [SENSE-5970](https://gdsjira.ship.gov.sg/browse/SENSE-5970) (optional) Code EIP conditional creation
+  - [ ] (optional, manual ok) Need to add VPC peering (only possible for dev/qa)
 - Bastion
   - [ ] Test optional creation
 - EKS
@@ -35,29 +34,17 @@
 - EKS-Sol
   - [ ] Code/Modify Custodian tag to ASG, ensure propagation
 - general
-  - [ ] decide what to `prevent_destroy`
-  - [ ] adding Tag managed-by=Terraform
+  - [ ] decide what to `prevent_destroy` or other lifecycle
+  - [ ] adding Tag managed-by=Terraform as global tag
 
 ---
 ### CICD
 
+- [ ] decided to use existing EKS CI but adding envs to CD - [SENSE-5955](https://gdsjira.ship.gov.sg/browse/SENSE-5955)
 - [ ] Bamboo access
   - may need manual creation of pub bastion for init setups
 - [ ] can we upload some files from Solace cloud console to S3?
   - pull image secret: gcr-reg-secret
-
-#### Flow
-
-CI 
-- tf output, repo as artifact
-
-CD
-1. exec cicd/terraform-init.sh
-2. may need init pub bastion for CD 
-3. scp artifact to bastion 
-4. ssh bastion (or turnel)
-5. cd to env folder(by CD variable) -> terraform apply
-6. (conditional) manual update CD variable to use module Bastion to replace No.2 
 
 ---
 ### Dependencies
@@ -69,6 +56,7 @@ CD
   - we will need private bastion (or alt deploy?)
 - Sol-intra may need private bastion
   - [ ] prod bastion can access to new bastion in Sol-intra?
+- [ ] how we want to use Squid proxy?
 
 ----
 
@@ -88,31 +76,5 @@ CD
       - values.yaml -> modify datacenter.httpsProxy
 - [ ] link repo to Confluent
 
-
-
-------------
-remote-state
-network
-bastion
-eks
-eks-solace
-
------------
-remote-state
-network
-bastion
-eks
-eks-solace
-eks-adex
-
----
-remote-state
-network
-bastion
-eks
-eks-adex
-
-
-----
 
 NOTE: module need to run within private subnet instance if we disable the public endpoint of EKS cluster.

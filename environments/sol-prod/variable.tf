@@ -36,21 +36,21 @@ variable "eks_cluster_endpoint_public" {
   default = false
 }
 
-variable "eks_network" {
+variable "network" {
   type = object({
     enable     = optional(bool, false)
     create_vpc = optional(bool, false)
   })
 }
 
-variable "eks_eip" {
+variable "vpc_eip" {
   type = object({
     enable = optional(bool, false)
     count  = optional(number, 1)
   })
 }
 
-variable "eks_nat_gateway" {
+variable "vpc_nat_gateway" {
   type = object({
     enable                        = optional(bool, false)
     vpc_nat_gw_eip_allocation_ids = optional(list(string))
@@ -58,7 +58,7 @@ variable "eks_nat_gateway" {
 }
 
 
-variable "eks_igw" {
+variable "vpc_igw" {
   type = object({
     enable = optional(bool, false)
     count  = optional(number, 0)

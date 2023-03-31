@@ -11,7 +11,7 @@ resource "aws_eks_node_group" "eks_default_nodegroup" {
   subnet_ids    = var.eks_private_subnet_ids
 
   cluster_name    = var.cluster_name
-  node_group_name = "default-node-group"
+  node_group_name = "${var.cluster_name}-default-node-group"
   instance_types  = ["t3.medium"]
 
   lifecycle {
@@ -44,6 +44,14 @@ resource "null_resource" "default_node_group_asg_tags" {
     "ResourceType" : "auto-scaling-group",
     "Key" : "Custodian-Scheduler-StopTime",
     "Value" : "off=();tz=sgt",
+    "PropagateAtLaunch" : true
+    })}'
+
+    aws autoscaling create-or-update-tags --region ${data.aws_arn.default_node_group.region} --tags '${jsonencode({
+    "ResourceId" : data.aws_autoscaling_group.default_node_group.name
+    "ResourceType" : "auto-scaling-group",
+    "Key" : "Name",
+    "Value" : aws_eks_node_group.eks_default_nodegroup.node_group_name,
     "PropagateAtLaunch" : true
 })}'
 EOF

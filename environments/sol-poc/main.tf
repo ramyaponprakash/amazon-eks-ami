@@ -35,14 +35,17 @@ module "remote_state" {
 }
 
 module "eks_network" {
-  count  = var.eks_network.enable ? 1 : 0
+  count  = var.network.enable ? 1 : 0
   source = "../../modules/network"
 
-  network                       = var.eks_network
+  network                       = var.network
   region                        = var.region
   cluster_name                  = var.cluster_name
   vpc_name                      = var.vpc_name
   vpc_cidr                      = var.vpc_cidr
+  vpc_eip                       = var.vpc_eip
+  vpc_nat_gateway               = var.vpc_nat_gateway
+  vpc_igw                       = var.vpc_igw
   vpc_secondary_cidr_blocks     = var.vpc_secondary_cidr_blocks
   vpc_id                        = var.vpc_id
   vpc_nat_gw_eip_allocation_ids = var.vpc_nat_gw_eip_allocation_ids
@@ -57,11 +60,11 @@ module "bastion" {
 
   region       = var.region
   cluster_name = var.cluster_name
-  vpc_id       = var.eks_network.enable ? module.eks_network[0].vpc_id : var.vpc_id
+  vpc_id       = var.network.enable ? module.eks_network[0].vpc_id : var.vpc_id
 
   bastion = merge(var.bastion, {
-    subnet_ids      = var.eks_network.enable ? (var.bastion.public_access ? module.eks_network[0].public_subnet_ids : module.eks_network[0].private_subnet_ids) : var.bastion.subnet_ids
-    ssh_cidr_blocks = var.eks_network.enable ? [var.vpc_cidr] : var.bastion.ssh_cidr_blocks
+    subnet_ids      = var.network.enable ? (var.bastion.public_access ? module.eks_network[0].public_subnet_ids : module.eks_network[0].private_subnet_ids) : var.bastion.subnet_ids
+    ssh_cidr_blocks = var.network.enable ? [var.vpc_cidr] : var.bastion.ssh_cidr_blocks
   })
 
   depends_on = [module.eks_network[0]]
@@ -72,9 +75,9 @@ module "eks" {
 
   region       = var.region
   cluster_name = var.cluster_name
-  vpc_id       = var.eks_network.enable ? module.eks_network[0].vpc_id : var.bastion.vpc_id
+  vpc_id       = var.network.enable ? module.eks_network[0].vpc_id : var.bastion.vpc_id
 
-  eks_private_subnet_ids    = var.eks_network.enable ? module.eks_network[0].private_subnet_ids : var.eks_private_subnet_ids
+  eks_private_subnet_ids    = var.network.enable ? module.eks_network[0].private_subnet_ids : var.eks_private_subnet_ids
   bastion_security_group_id = var.bastion.enable ? module.bastion[0].bastion_sg_id : var.bastion_security_group_id
   eks_customer_cmk_key_arn  = var.eks_customer_cmk_key_arn
   eks_admin_role_arns       = var.eks_admin_role_arns
@@ -92,7 +95,7 @@ module "eks-solace" {
   source = "../../modules/eks-solace"
 
   cluster_name           = var.cluster_name
-  eks_private_subnet_ids = var.eks_network.enable ? module.eks_network[0].private_subnet_ids : var.eks_private_subnet_ids
+  eks_private_subnet_ids = var.network.enable ? module.eks_network[0].private_subnet_ids : var.eks_private_subnet_ids
   eks_node_role_arn      = module.eks.eks_node_role_arn
   eks_node_role_name     = module.eks.eks_node_role_name
 

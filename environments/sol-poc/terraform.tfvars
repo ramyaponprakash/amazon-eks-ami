@@ -14,8 +14,25 @@ eks_cluster_endpoint_public = true
 eks_network = {
   enable = true
 }
-vpc_cidr                      = "172.8.0.0/24"
-vpc_nat_gw_eip_allocation_ids = ["eipalloc-019b75060b41e3a68"]
+
+vpc_eip = {
+  enable = false
+}
+
+vpc_nat_gateway = {
+  enable                        = false
+  vpc_nat_gw_eip_allocation_ids = ["eipalloc-019b75060b41e3a68"]
+}
+
+vpc_igw = {
+  enable = false
+}
+
+vpc_nat_gw_ids = ["nat-041c6ab43bae993d4", "nat-0c9658ee7bcaa76a5"]
+
+vpc_igw_ids = ["igw-05de26569418b687e"]
+
+vpc_cidr = "172.8.0.0/24"
 vpc_private_subnets = [
   {
     cidr       = "172.8.0.0/26"
