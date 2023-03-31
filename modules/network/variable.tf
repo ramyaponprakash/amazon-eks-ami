@@ -21,7 +21,7 @@ variable "eks_nat_gateway" {
 
 variable "eks_igw" {
   type = object({
-    enable_igw = optional(bool, true)
+    enable_igw = optional(bool, false)
     count      = number
   })
 }

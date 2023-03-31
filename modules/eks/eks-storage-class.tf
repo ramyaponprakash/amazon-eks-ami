@@ -30,7 +30,8 @@ resource "kubernetes_storage_class" "gp2" {
   volume_binding_mode    = "WaitForFirstConsumer"
 
   depends_on = [
-    kubernetes_annotations.remove_default_storage_class
+    kubernetes_annotations.remove_default_storage_class,
+    aws_eks_cluster.eks_cluster
   ]
 }
 
@@ -48,4 +49,8 @@ resource "kubernetes_storage_class" "gp3" {
   }
   allow_volume_expansion = true
   volume_binding_mode    = "WaitForFirstConsumer"
+
+  depends_on = [
+    aws_eks_cluster.eks_cluster
+  ]
 }

@@ -9,7 +9,7 @@ eks_admin_role_arns = [
 ]
 
 // TODO: remove this after demo
-//eks_cluster_endpoint_public = true
+eks_cluster_endpoint_public = true
 
 eks_network = {
   enable = true
@@ -49,14 +49,14 @@ vpc_private_subnets = [
   }
 ]
 vpc_public_subnets = [
-  {
+  /*{
     cidr       = "100.112.110.0/28"
     enable_elb = 1
   },
   {
     cidr       = "100.112.110.16/28"
     enable_elb = 1
-  },
+  },*/
   {
     cidr       = "100.112.110.32/28"
     enable_elb = 0 // Don't attach the ELB to the monitor AZ

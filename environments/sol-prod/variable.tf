@@ -61,7 +61,7 @@ variable "eks_nat_gateway" {
 variable "eks_igw" {
   type = object({
     enable = optional(bool, false)
-    count  = optional(number, 1)
+    count  = optional(number, 0)
   })
 }
 
