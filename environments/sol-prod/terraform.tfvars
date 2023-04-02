@@ -11,20 +11,20 @@ eks_admin_role_arns = [
 // TODO: remove this after demo
 eks_cluster_endpoint_public = true
 
-eks_network = {
+network = {
   enable = true
 }
 
-eks_eip = {
+vpc_eip = {
   enable = false
 }
 
-eks_nat_gateway = {
+vpc_nat_gateway = {
   enable                        = false
   vpc_nat_gw_eip_allocation_ids = ["eipalloc-034fbe49c22174c58", "eipalloc-0d47e96e0b789e780"]
 }
 
-eks_igw = {
+vpc_igw = {
   enable = false
 }
 
