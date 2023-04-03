@@ -54,28 +54,44 @@ resource "null_resource" "prod1k-asg-tags" {
   provisioner "local-exec" {
     command = <<EOF
 
-    aws autoscaling create-or-update-tags --region ${data.aws_arn.prod1k[count.index].region} --tags '${jsonencode([for i in var.asg_messaging_tags : {
-    "ResourceId" : data.aws_autoscaling_group.prod1k[count.index].name
+    aws autoscaling create-or-update-tags --region ${data.aws_arn.prod1k.region} --tags '${jsonencode({
+    "ResourceId" : data.aws_autoscaling_group.prod1k.name
     "ResourceType" : "auto-scaling-group",
-    "Key" : "k8s.io/cluster-autoscaler/node-template/${i.type}/${i.key}",
-    "Value" : i.value,
+    "Key" : "Custodian-Scheduler-StopTime",
+    "Value" : "off=();tz=sgt",
     "PropagateAtLaunch" : true
-    }])}'
+    })}'
+
+    aws autoscaling create-or-update-tags --region ${data.aws_arn.prod1k.region} --tags '${jsonencode({
+    "ResourceId" : data.aws_autoscaling_group.prod1k.name
+    "ResourceType" : "auto-scaling-group",
+    "Key" : "Name",
+    "Value" : aws_eks_node_group.prod1k.node_group_name,
+    "PropagateAtLaunch" : true
+    })}'
+
+    aws autoscaling create-or-update-tags --region ${data.aws_arn.prod1k[count.index].region} --tags '${jsonencode([for i in var.asg_messaging_tags : {
+      "ResourceId" : data.aws_autoscaling_group.prod1k[count.index].name
+      "ResourceType" : "auto-scaling-group",
+      "Key" : "k8s.io/cluster-autoscaler/node-template/${i.type}/${i.key}",
+      "Value" : i.value,
+      "PropagateAtLaunch" : true
+      }])}'
 
     aws autoscaling create-or-update-tags --region ${data.aws_arn.prod1k[count.index].region} --tags '${jsonencode([for k, v in var.labels_taints_prod1k.labels : {
-    "ResourceId" : data.aws_autoscaling_group.prod1k[count.index].name
-    "ResourceType" : "auto-scaling-group",
-    "Key" : "k8s.io/cluster-autoscaler/node-template/label/${k}",
-    "Value" : v,
-    "PropagateAtLaunch" : true
-    }])}'
+      "ResourceId" : data.aws_autoscaling_group.prod1k[count.index].name
+      "ResourceType" : "auto-scaling-group",
+      "Key" : "k8s.io/cluster-autoscaler/node-template/label/${k}",
+      "Value" : v,
+      "PropagateAtLaunch" : true
+      }])}'
 
     aws autoscaling create-or-update-tags --region ${data.aws_arn.prod1k[count.index].region} --tags '${jsonencode([for i in var.labels_taints_prod1k.taints : {
-    "ResourceId" : data.aws_autoscaling_group.prod1k[count.index].name
-    "ResourceType" : "auto-scaling-group",
-    "Key" : "k8s.io/cluster-autoscaler/node-template/taint/${i.key}",
-    "Value" : "${i.value}:${replace(title(replace(lower(i.effect), "_", " ")), " ", "")}",
-    "PropagateAtLaunch" : true
+      "ResourceId" : data.aws_autoscaling_group.prod1k[count.index].name
+      "ResourceType" : "auto-scaling-group",
+      "Key" : "k8s.io/cluster-autoscaler/node-template/taint/${i.key}",
+      "Value" : "${i.value}:${replace(title(replace(lower(i.effect), "_", " ")), " ", "")}",
+      "PropagateAtLaunch" : true
 }])}'
     EOF
 }
