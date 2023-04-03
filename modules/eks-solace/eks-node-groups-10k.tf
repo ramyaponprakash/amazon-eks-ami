@@ -1,3 +1,5 @@
+# NOTE: placeholder for next license
+
 #resource "aws_eks_node_group" "prod10k" {
 #  count = var.node_groups_count_messaging
 #
