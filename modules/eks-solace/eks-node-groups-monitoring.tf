@@ -6,7 +6,7 @@ resource "aws_eks_node_group" "monitoring" {
   }
 
   node_role_arn = var.eks_node_role_arn
-  subnet_ids    = [var.eks_private_subnet_ids[count.index]]
+  subnet_ids    = [var.eks_private_subnet_ids[length(var.eks_private_subnet_ids) - 1]]
 
   cluster_name           = var.cluster_name
   node_group_name_prefix = "${var.cluster_name}-monitoring-"
