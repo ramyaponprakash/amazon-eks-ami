@@ -54,19 +54,19 @@ resource "null_resource" "prod1k-asg-tags" {
   provisioner "local-exec" {
     command = <<EOF
 
-    aws autoscaling create-or-update-tags --region ${data.aws_arn.prod1k.region} --tags '${jsonencode({
-    "ResourceId" : data.aws_autoscaling_group.prod1k.name
+    aws autoscaling create-or-update-tags --region ${data.aws_arn.prod1k[count.index].region} --tags '${jsonencode({
+    "ResourceId" : data.aws_autoscaling_group.prod1k[count.index].name
     "ResourceType" : "auto-scaling-group",
     "Key" : "Custodian-Scheduler-StopTime",
     "Value" : "off=();tz=sgt",
     "PropagateAtLaunch" : true
     })}'
 
-    aws autoscaling create-or-update-tags --region ${data.aws_arn.prod1k.region} --tags '${jsonencode({
-    "ResourceId" : data.aws_autoscaling_group.prod1k.name
+    aws autoscaling create-or-update-tags --region ${data.aws_arn.prod1k[count.index].region} --tags '${jsonencode({
+    "ResourceId" : data.aws_autoscaling_group.prod1k[count.index].name
     "ResourceType" : "auto-scaling-group",
     "Key" : "Name",
-    "Value" : aws_eks_node_group.prod1k.node_group_name,
+    "Value" : aws_eks_node_group.prod1k[count.index].node_group_name,
     "PropagateAtLaunch" : true
     })}'
 
