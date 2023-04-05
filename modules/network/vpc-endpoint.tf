@@ -120,12 +120,7 @@ resource "aws_vpc_endpoint" "s3" {
   service_name      = "com.amazonaws.${var.region}.s3"
   vpc_endpoint_type = "Gateway"
 
-  security_group_ids = [
-    aws_security_group.vpc_endpoint.id,
-  ]
-
-  subnet_ids          = length(var.vpc_endpoint_subnets) > 0 ? var.vpc_endpoint_subnets : aws_subnet.private_subnets.*.id
-  private_dns_enabled = true
+  route_table_ids = aws_route_table.private.*.id
 
   tags = {
     Name = "${var.vpc_name}-ep-s3"
