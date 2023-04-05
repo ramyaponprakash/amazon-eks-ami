@@ -13,3 +13,7 @@ output "private_subnet_ids" {
 output "private_elb_subnet_ids" {
   value = [for sn in aws_subnet.private_elb_subnets : sn.id]
 }
+
+output "vpc_endpoint_secgrp" {
+  value = aws_security_group.vpc_endpoint
+}

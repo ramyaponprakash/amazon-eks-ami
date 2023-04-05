@@ -139,7 +139,8 @@ variable "vpc_nat_gw_ids" {
 }
 
 variable "vpc_igw_ids" {
-
+  type    = list(string)
+  default = []
 }
 
 variable "az_map" {

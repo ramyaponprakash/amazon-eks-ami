@@ -1,4 +1,4 @@
-resource "aws_eip" "solace_eip" {
+resource "aws_eip" "vpc_eip" {
   count = var.vpc_eip.enable_eip ? var.vpc_eip.count : 0
   vpc   = true
   tags = {

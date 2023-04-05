@@ -10,10 +10,6 @@ module "aws-lb-controller_assumable_role_admin" {
   provider_url                  = replace(aws_eks_cluster.eks_cluster.identity[0].oidc[0].issuer, "https://", "")
   role_policy_arns              = [aws_iam_policy.aws-lb-controller-policy-nlb-ip.arn]
   oidc_fully_qualified_subjects = ["system:serviceaccount:kube-system:aws-load-balancer-controller"]
-
-  depends_on = [
-    aws_eks_cluster.eks_cluster,
-  ]
 }
 
 // https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.4/deploy/installation/#deployment-considerations

@@ -13,6 +13,7 @@ resource "aws_security_group" "eks_cluster-cluster" {
 }
 
 resource "aws_security_group_rule" "eks_cluster-cluster-bastion" {
+  count                    = var.bastion_security_group_id != "" ? 1 : 0
   description              = "Allow bastion to communicate with the cluster API Server"
   from_port                = 443
   protocol                 = "tcp"

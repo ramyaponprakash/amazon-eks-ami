@@ -7,10 +7,6 @@ module "cluster-autoscaler_assumable_role_admin" {
   provider_url                  = replace(aws_eks_cluster.eks_cluster.identity[0].oidc[0].issuer, "https://", "")
   role_policy_arns              = [aws_iam_policy.autoscaling.arn]
   oidc_fully_qualified_subjects = ["system:serviceaccount:kube-system:cluster-autoscaler"]
-
-  depends_on = [
-    aws_eks_cluster.eks_cluster,
-  ]
 }
 
 // https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler
