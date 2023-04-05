@@ -118,14 +118,14 @@ resource "aws_vpc_endpoint" "s3" {
   count             = var.vpc_enable_private ? 1 : 0
   vpc_id            = var.network.create_vpc ? module.vpc.vpc_id : var.vpc_id
   service_name      = "com.amazonaws.${var.region}.s3"
-  vpc_endpoint_type = "Interface"
+  vpc_endpoint_type = "Gateway"
 
   security_group_ids = [
     aws_security_group.vpc_endpoint.id,
   ]
 
-  subnet_ids = length(var.vpc_endpoint_subnets) > 0 ? var.vpc_endpoint_subnets : aws_subnet.private_subnets.*.id
-  #  private_dns_enabled = true
+  subnet_ids          = length(var.vpc_endpoint_subnets) > 0 ? var.vpc_endpoint_subnets : aws_subnet.private_subnets.*.id
+  private_dns_enabled = true
 
   tags = {
     Name = "${var.vpc_name}-ep-s3"

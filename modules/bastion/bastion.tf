@@ -66,7 +66,7 @@ resource "aws_instance" "ubuntu_bastion" {
 }
 
 # Ensures that terraform waits until bastion host is up and running before leaving.
-resource "null_resource" "wait_for_bastion" {
+/*resource "null_resource" "wait_for_bastion" {
   provisioner "remote-exec" {
     connection {
       host        = var.bastion.public_access ? var.bastion.attach_eip ? aws_eip.ubuntu_bastion_eip[0].public_ip : aws_instance.ubuntu_bastion[0].public_dns : aws_instance.ubuntu_bastion[0].private_dns
@@ -84,7 +84,7 @@ resource "null_resource" "wait_for_bastion" {
   depends_on = [
     aws_instance.ubuntu_bastion[0]
   ]
-}
+}*/
 
 resource "aws_security_group" "bastion_security_group" {
   name   = "bastion_${var.cluster_name}_security_group"
