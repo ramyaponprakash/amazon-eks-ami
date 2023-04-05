@@ -9,7 +9,7 @@ resource "aws_eks_node_group" "monitoring" {
   subnet_ids    = [var.eks_private_subnet_ids[length(var.eks_private_subnet_ids) - 1]]
 
   cluster_name           = var.cluster_name
-  node_group_name_prefix = "${var.cluster_name}-monitoring-"
+  node_group_name_prefix = "${var.cluster_name}-moni-"
   instance_types         = [var.node_groups_monitoring_instance_type]
 
   labels = var.labels_taints_monitoring.labels
