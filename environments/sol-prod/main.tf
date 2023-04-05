@@ -39,6 +39,9 @@ module "eks_network" {
   source = "../../modules/network"
 
   network                       = var.network
+  vpc_enable_private            = var.vpc_enable_private
+  vpc_endpoint_allowed_cidrs    = var.vpc_endpoint_allowed_cidrs
+  vpc_endpoint_subnets          = var.vpc_endpoint_subnets
   vpc_eip                       = var.vpc_eip
   vpc_nat_gateway               = var.vpc_nat_gateway
   vpc_igw                       = var.vpc_igw
@@ -105,3 +108,25 @@ module "eks-solace" {
     module.eks,
   ]
 }
+
+/*module "squid" {
+  source = "../../modules/squid"
+
+  network                       = var.network
+  vpc_eip                       = var.vpc_eip
+  vpc_nat_gateway               = var.vpc_nat_gateway
+  vpc_igw                       = var.vpc_igw
+  vpc_nat_gw_ids                = var.vpc_nat_gw_ids
+  vpc_igw_ids                   = var.vpc_igw_ids
+  region                        = var.region
+  cluster_name                  = var.cluster_name
+  vpc_name                      = var.vpc_name
+  vpc_cidr                      = var.vpc_cidr
+  vpc_secondary_cidr_blocks     = var.vpc_secondary_cidr_blocks
+  vpc_id                        = var.vpc_id
+  vpc_nat_gw_eip_allocation_ids = var.vpc_nat_gw_eip_allocation_ids
+  vpc_public_subnets            = var.vpc_public_subnets
+  vpc_private_subnets           = var.vpc_private_subnets
+  vpc_private_elb_subnets       = var.vpc_private_elb_subnets
+}*/
+

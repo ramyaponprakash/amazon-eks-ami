@@ -50,6 +50,23 @@ variable "vpc_eip" {
   })
 }
 
+variable "vpc_endpoint_allowed_cidrs" {
+  type    = list(string)
+  default = []
+}
+
+variable "vpc_endpoint_subnets" {
+  type    = list(string)
+  default = []
+}
+
+
+variable "vpc_enable_private" {
+  type    = bool
+  default = false
+}
+
+
 variable "vpc_nat_gateway" {
   type = object({
     enable                        = optional(bool, false)

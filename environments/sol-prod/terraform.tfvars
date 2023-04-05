@@ -15,6 +15,9 @@ network = {
   enable = true
 }
 
+vpc_enable_private         = true
+vpc_endpoint_allowed_cidrs = ["100.112.110.0/24"]
+
 vpc_eip = {
   enable = false
 }
@@ -31,20 +34,21 @@ vpc_igw = {
 vpc_nat_gw_ids = ["nat-041c6ab43bae993d4", "nat-0c9658ee7bcaa76a5"]
 
 vpc_igw_ids = ["igw-05de26569418b687e"]
+//vpc_igw_ids = []
 
 vpc_cidr = "100.112.110.0/24"
 
 vpc_private_subnets = [
   {
-    cidr       = "100.112.110.64/27"
+    cidr       = "100.112.110.64/26"
     enable_elb = 1
   },
   {
-    cidr       = "100.112.110.96/27"
+    cidr       = "100.112.110.128/26"
     enable_elb = 1
   },
   {
-    cidr       = "100.112.110.48/28"
+    cidr       = "100.112.110.192/26"
     enable_elb = 0 // Don't attach the ELB to the monitor AZ
   }
 ]
@@ -56,14 +60,14 @@ vpc_public_subnets = [
   {
     cidr       = "100.112.110.16/28"
     enable_elb = 1
-  },*/
+  },
   {
     cidr       = "100.112.110.32/28"
     enable_elb = 0 // Don't attach the ELB to the monitor AZ
-  }
+  }*/
 ]
 vpc_private_elb_subnets = [
-  {
+  /*{
     cidr       = "100.112.110.128/28"
     enable_elb = 1
   },
@@ -74,11 +78,12 @@ vpc_private_elb_subnets = [
   {
     cidr       = "100.112.110.160/28"
     enable_elb = 1
-  }
+  }*/
 ]
 
 bastion = {
   enable              = true
+  public_access       = false
   vpc_id              = ""
   subnet_ids          = []
   iam_role            = "u-ec2read"
