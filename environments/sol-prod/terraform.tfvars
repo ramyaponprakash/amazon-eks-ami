@@ -8,8 +8,7 @@ eks_admin_role_arns = [
   "arn:aws:iam::704140326871:role/u-ec2read"
 ]
 
-// TODO: remove this after demo
-eks_cluster_endpoint_public = true
+eks_cluster_endpoint_public = false
 
 network = {
   enable = true
