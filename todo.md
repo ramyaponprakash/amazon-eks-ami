@@ -11,31 +11,40 @@
 - [x] VPCs provisioning 
 - [x] (decide) route table, nat, igw provisioning
 - [x] (decide) subnets, subnet associations provisioning
-- [ ] (decide) initial bastion options
+- [x] (decide) initial bastion options
 
 ### Module
 - Remote-state
   - [x] ~~(optional) S3~~ we will have manual s3 as confirmed
   - [ ] Code Dynamo table for global lock, need to check we can use s3 object lock as-is
 - Network
-  - [ ] Test optional vpc creation
+  - [x] Test optional vpc creation
   - [x] [SENSE-5970](https://gdsjira.ship.gov.sg/browse/SENSE-5970) (optional) Code EIP conditional creation
-  - [ ] (optional, manual ok) Need to add VPC peering (only possible for dev/qa)
+  - [ ] (manual ok) Need to add VPC peering (only possible for dev/qa)
+  - [x] [SENSE-5994](https://gdsjira.ship.gov.sg/browse/SENSE-5994) Need VPC Endpoint?
+    - [x] 1 VPC Endpoint per AZ (1 private subnet) 
+    - [x] Secgroup for VPC Endpoints
+  - [ ] [SENSE-6007](https://gdsjira.ship.gov.sg/browse/SENSE-6007) Need to register Peer into route table
 - Bastion
-  - [ ] Test optional creation
+  - [x] Test optional creation
+  - [ ] [SENSE-5987](https://gdsjira.ship.gov.sg/browse/SENSE-5987) Userdata for permanent HTTP_PROXY env vars
+  - [ ] [SENSE-5993](https://gdsjira.ship.gov.sg/browse/SENSE-5993) Security group update to accept ssh from,
+    - peered VPC CIDR
+    - (need to discuss) bamboo whitelist access
 - EKS
-  - [ ] Test with existing VPC
-  - [ ] Test with existing Bastion
+  - [x] Test with existing VPC
+  - [x] Test with existing Bastion
   - [ ] Code Enable secret encryption
   - [ ] Code add-ons
   - [ ] Code control-plane logging
-  - [ ] Code node secgrp to include prefix and cidr
-  - [ ] Code/Modify Custodian tag to ASG, ensure propagation, need rolling node?
+  - [ ] [SENSE-5963](https://gdsjira.ship.gov.sg/browse/SENSE-5963) Code node secgrp to include prefix and cidr
+  - [x] [SENSE-5985](https://gdsjira.ship.gov.sg/browse/SENSE-5985) Code/Modify Custodian tag to ASG, ensure propagation, need rolling node?
+  - [ ] (optional) Add post-fix for iam/policy creation
 - EKS-Sol
-  - [ ] Code/Modify Custodian tag to ASG, ensure propagation
+  - [x] [SENSE-5985](https://gdsjira.ship.gov.sg/browse/SENSE-5985) Code/Modify Custodian tag to ASG, ensure propagation
 - general
   - [ ] decide what to `prevent_destroy` or other lifecycle
-  - [ ] adding Tag managed-by=Terraform as global tag
+  - [x] adding Tag managed-by=Terraform as global tag
 
 ---
 ### CICD
@@ -56,7 +65,7 @@
   - we will need private bastion (or alt deploy?)
 - Sol-intra may need private bastion
   - [ ] prod bastion can access to new bastion in Sol-intra?
-- [ ] how we want to use Squid proxy?
+- [x] how we want to use Squid proxy?
 
 ----
 
