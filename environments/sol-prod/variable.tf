@@ -16,6 +16,16 @@ variable "vpc_id" {
   default = "vpc-0f40f6277c878bbab"
 }
 
+variable "ami_squid" {
+  type    = string
+  default = ""
+}
+
+variable "squid_key_name" {
+  type    = string
+  default = ""
+}
+
 variable "eks_customer_cmk_key_arn" {
   type    = string
   default = ""
@@ -97,10 +107,16 @@ variable "vpc_nat_gw_eip_allocation_ids" {
   default = []
 }
 
-variable "vpc_cidr" {
+variable "vpc_cidr_pri" {
   type    = string
   default = "100.112.110.0/24"
 }
+
+variable "vpc_cidr_sec" {
+  type    = string
+  default = "100.80.27.128/26"
+}
+
 
 variable "vpc_secondary_cidr_blocks" {
   type    = list(string)
@@ -121,6 +137,14 @@ variable "vpc_public_subnets" {
 }
 
 variable "vpc_private_subnets" {
+  type = list(object({
+    cidr       = string
+    enable_elb = number
+  }))
+  default = []
+}
+
+variable "vpc_private_sec_subnets" {
   type = list(object({
     cidr       = string
     enable_elb = number
@@ -155,5 +179,16 @@ variable "bastion" {
     iam_role             = string
     ssh_cidr_blocks      = optional(list(string))
     ssh_prefix_list_ids  = optional(list(string))
+  })
+}
+
+variable "squid" {
+  type = object({
+    instance_type  = optional(string, "t3.medium")
+    subnet_ids     = list(string)
+    iam_role       = string
+    ami_squid      = string
+    squid_key_name = string
+    kms_key_id     = string
   })
 }

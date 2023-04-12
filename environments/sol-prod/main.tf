@@ -50,12 +50,14 @@ module "eks_network" {
   region                        = var.region
   cluster_name                  = var.cluster_name
   vpc_name                      = var.vpc_name
-  vpc_cidr                      = var.vpc_cidr
+  vpc_cidr_pri                  = var.vpc_cidr_pri
+  vpc_cidr_sec                  = var.vpc_cidr_sec
   vpc_secondary_cidr_blocks     = var.vpc_secondary_cidr_blocks
   vpc_id                        = var.vpc_id
   vpc_nat_gw_eip_allocation_ids = var.vpc_nat_gw_eip_allocation_ids
   vpc_public_subnets            = var.vpc_public_subnets
   vpc_private_subnets           = var.vpc_private_subnets
+  vpc_private_sec_subnets       = var.vpc_private_sec_subnets
   vpc_private_elb_subnets       = var.vpc_private_elb_subnets
 }
 
@@ -69,7 +71,7 @@ module "bastion" {
 
   bastion = merge(var.bastion, {
     subnet_ids      = var.network.enable ? (var.bastion.public_access ? module.eks_network[0].public_subnet_ids : module.eks_network[0].private_subnet_ids) : var.bastion.subnet_ids
-    ssh_cidr_blocks = var.network.enable ? [var.vpc_cidr] : var.bastion.ssh_cidr_blocks
+    ssh_cidr_blocks = var.network.enable ? [var.vpc_cidr_sec] : var.bastion.ssh_cidr_blocks
   })
 
   depends_on = [module.eks_network[0]]
@@ -109,24 +111,16 @@ module "eks-solace" {
   ]
 }
 
-/*module "squid" {
+module "squid" {
   source = "../../modules/squid"
 
-  network                       = var.network
-  vpc_eip                       = var.vpc_eip
-  vpc_nat_gateway               = var.vpc_nat_gateway
-  vpc_igw                       = var.vpc_igw
-  vpc_nat_gw_ids                = var.vpc_nat_gw_ids
-  vpc_igw_ids                   = var.vpc_igw_ids
-  region                        = var.region
-  cluster_name                  = var.cluster_name
-  vpc_name                      = var.vpc_name
-  vpc_cidr                      = var.vpc_cidr
-  vpc_secondary_cidr_blocks     = var.vpc_secondary_cidr_blocks
-  vpc_id                        = var.vpc_id
-  vpc_nat_gw_eip_allocation_ids = var.vpc_nat_gw_eip_allocation_ids
-  vpc_public_subnets            = var.vpc_public_subnets
-  vpc_private_subnets           = var.vpc_private_subnets
-  vpc_private_elb_subnets       = var.vpc_private_elb_subnets
-}*/
+  region   = var.region
+  vpc_name = var.vpc_name
+  vpc_id   = var.vpc_id
+  squid = merge(var.squid, {
+    subnet_ids = var.vpc_private_sec_subnets
+  })
+}
+
+
 

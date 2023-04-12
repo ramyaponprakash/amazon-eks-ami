@@ -5,10 +5,11 @@ eks_customer_cmk_key_arn = "arn:aws:kms:ap-southeast-1:704140326871:key/544321c8
 eks_admin_role_arns = [
   "arn:aws:iam::704140326871:role/u-admin",
   "arn:aws:iam::704140326871:role/u-eksadmin",
-  "arn:aws:iam::704140326871:role/u-ec2read"
+  "arn:aws:iam::704140326871:role/adex-eksadmin"
 ]
 
-eks_cluster_endpoint_public = false
+// TODO: remove this after demo
+eks_cluster_endpoint_public = true
 
 network = {
   enable = true
@@ -35,22 +36,39 @@ vpc_nat_gw_ids = ["nat-041c6ab43bae993d4", "nat-0c9658ee7bcaa76a5"]
 vpc_igw_ids = ["igw-05de26569418b687e"]
 //vpc_igw_ids = []
 
-vpc_cidr = "100.112.110.0/24"
+vpc_cidr_pri = "100.112.110.0/24"
+vpc_cidr_sec = "100.80.27.128/26"
 
 vpc_private_subnets = [
+  {
+    cidr       = "100.112.110.0/26"
+    enable_elb = 1
+  },
   {
     cidr       = "100.112.110.64/26"
     enable_elb = 1
   },
   {
-    cidr       = "100.112.110.128/26"
-    enable_elb = 1
-  },
-  {
-    cidr       = "100.112.110.192/26"
+    cidr       = "100.112.110.128/25"
     enable_elb = 0 // Don't attach the ELB to the monitor AZ
   }
 ]
+
+vpc_private_sec_subnets = [
+  {
+    cidr       = "100.80.29.224/28"
+    enable_elb = 1
+  },
+  {
+    cidr       = "100.80.29.240/28"
+    enable_elb = 1
+  },
+  {
+    cidr       = "100.80.29.192/27"
+    enable_elb = 0 // Don't attach the ELB to the monitor AZ
+  }
+]
+
 vpc_public_subnets = [
   /*{
     cidr       = "100.112.110.0/28"
@@ -85,7 +103,16 @@ bastion = {
   public_access       = false
   vpc_id              = ""
   subnet_ids          = []
-  iam_role            = "u-ec2read"
+  iam_role            = "adex-eksadmin"
   ssh_cidr_blocks     = []
   ssh_prefix_list_ids = ["pl-04d17737125dbdb0f"]
+}
+
+squid = {
+  vpc_id         = ""
+  subnet_ids     = []
+  iam_role       = "ec2ssm"
+  ami_squid      = "ami-0de895c4f04dd3bbc"
+  squid_key_name = "adex-squid-solx"
+  kms_key_id     = "arn:aws:kms:ap-southeast-1:704140326871:key/0e7a17d3-f755-49f4-958b-c8e3976f4d4f"
 }
