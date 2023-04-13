@@ -118,6 +118,7 @@ bastion = {
 squid = {
   vpc_id         = ""
   subnet_ids     = []
+  subnet_gw_ids  = []
   iam_role       = "ec2ssm"
   ami_squid      = "ami-0b6b2786d08d30845"
   squid_key_name = "adex-squid-solx"

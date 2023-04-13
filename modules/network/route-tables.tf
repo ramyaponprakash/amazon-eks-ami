@@ -25,7 +25,7 @@ resource "aws_route_table" "private" {
   vpc_id = var.network.create_vpc ? module.vpc.vpc_id : var.vpc_id
 
   tags = {
-    Name = "${var.vpc_name}-rt-private-${var.az_map[count.index]}"
+    Name = "${var.vpc_name}-rt-private-${var.az_map[count.index % length(data.aws_availability_zones.available.zone_ids)]}"
   }
 }
 
