@@ -71,7 +71,18 @@ variable "vpc_endpoint_subnets" {
 }
 
 
+variable "vpc_sec_subnet_ids" {
+  type    = list(string)
+  default = []
+}
+
+
 variable "vpc_enable_private" {
+  type    = bool
+  default = false
+}
+
+variable "vpc_sec_enable_cidr" {
   type    = bool
   default = false
 }

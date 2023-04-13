@@ -28,7 +28,7 @@ resource "aws_subnet" "private_subnets" {
 }
 
 resource "aws_subnet" "private_sec_subnets" {
-  count                   = length(var.vpc_private_sec_subnets)
+  count                   = var.vpc_sec_enable_cidr ? length(var.vpc_private_sec_subnets) : 0
   vpc_id                  = var.network.create_vpc ? module.vpc.vpc_id : var.vpc_id
   cidr_block              = var.vpc_private_sec_subnets[count.index].cidr
   availability_zone       = data.aws_availability_zones.available.names[count.index]

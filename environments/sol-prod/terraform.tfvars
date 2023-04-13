@@ -54,17 +54,20 @@ vpc_private_subnets = [
   }
 ]
 
+vpc_sec_enable_cidr = false
+vpc_sec_subnet_ids  = ["subnet-04ef45b8c54500dd2", "subnet-0b1a0b403d9f7219e"]
+
 vpc_private_sec_subnets = [
   {
-    cidr       = "100.80.29.224/28"
+    cidr       = "100.80.27.128/28"
     enable_elb = 1
   },
   {
-    cidr       = "100.80.29.240/28"
+    cidr       = "100.80.27.144/28"
     enable_elb = 1
   },
   {
-    cidr       = "100.80.29.192/27"
+    cidr       = "100.80.27.160/27"
     enable_elb = 0 // Don't attach the ELB to the monitor AZ
   }
 ]
@@ -112,7 +115,7 @@ squid = {
   vpc_id         = ""
   subnet_ids     = []
   iam_role       = "ec2ssm"
-  ami_squid      = "ami-0de895c4f04dd3bbc"
+  ami_squid      = "ami-0b6b2786d08d30845"
   squid_key_name = "adex-squid-solx"
   kms_key_id     = "arn:aws:kms:ap-southeast-1:704140326871:key/0e7a17d3-f755-49f4-958b-c8e3976f4d4f"
 }

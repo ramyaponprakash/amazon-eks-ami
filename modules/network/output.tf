@@ -10,6 +10,10 @@ output "private_subnet_ids" {
   value = [for sn in aws_subnet.private_subnets : sn.id]
 }
 
+output "private_subnet_sec_ids" {
+  value = [for sn in aws_subnet.private_sec_subnets : sn.id]
+}
+
 output "private_elb_subnet_ids" {
   value = [for sn in aws_subnet.private_elb_subnets : sn.id]
 }

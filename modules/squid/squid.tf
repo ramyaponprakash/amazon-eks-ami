@@ -7,7 +7,7 @@ data "template_file" "squid_userdata" {
 }
 
 resource "aws_launch_template" "squid_launch_template" {
-  name          = "${var.vpc_name}-launch-template"
+  name          = "${var.vpc_name}-squid-launch-template"
   description   = "${var.vpc_name}-squid-launch-template"
   image_id      = var.squid.ami_squid
   instance_type = var.squid.instance_type
@@ -44,7 +44,7 @@ resource "aws_launch_template" "squid_launch_template" {
     resource_type = "instance"
     tags = {
       Name    = "${var.vpc_name}-squid-launch-template"
-      Remarks = "Ubuntu - CIS version 2.1.0.22"
+      Remarks = "CTS - RHEL image "
     }
   }
 }
@@ -55,7 +55,7 @@ resource "aws_autoscaling_group" "squid_asg" {
   desired_capacity    = 1
   min_size            = 1
   max_size            = 1
-  vpc_zone_identifier = [var.squid.subnet_ids[0].cidr]
+  vpc_zone_identifier = [var.squid.subnet_ids[0]]
   #target_group_arns   = [aws_lb_target_group.sense_nlb_target_group.arn, aws_lb_target_group.sense_nlb_target_group_8883.arn, aws_lb_target_group.sense_nlb_target_group_5672.arn, aws_lb_target_group.sense_nlb_target_group_5671.arn, aws_lb_target_group.sense_nlb_target_group_15672.arn, aws_lb_target_group.sense_nlb_target_group_15675.arn, ]
   health_check_type = "EC2"
   #health_check_grace_period = 300 # default is 300 seconds

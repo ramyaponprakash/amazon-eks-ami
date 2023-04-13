@@ -70,7 +70,7 @@ module "bastion" {
   vpc_id       = var.network.enable ? module.eks_network[0].vpc_id : var.vpc_id
 
   bastion = merge(var.bastion, {
-    subnet_ids      = var.network.enable ? (var.bastion.public_access ? module.eks_network[0].public_subnet_ids : module.eks_network[0].private_subnet_ids) : var.bastion.subnet_ids
+    subnet_ids      = var.vpc_sec_enable_cidr ? module.eks_network[0].private_subnet_sec_ids : var.vpc_sec_subnet_ids
     ssh_cidr_blocks = var.network.enable ? [var.vpc_cidr_sec] : var.bastion.ssh_cidr_blocks
   })
 
@@ -118,7 +118,7 @@ module "squid" {
   vpc_name = var.vpc_name
   vpc_id   = var.vpc_id
   squid = merge(var.squid, {
-    subnet_ids = var.vpc_private_sec_subnets
+    subnet_ids = var.vpc_sec_enable_cidr ? module.eks_network[0].private_subnet_sec_ids : var.vpc_sec_subnet_ids
   })
 }
 

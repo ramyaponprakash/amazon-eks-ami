@@ -28,6 +28,11 @@ variable "vpc_enable_private" {
   default = false
 }
 
+variable "vpc_sec_enable_cidr" {
+  type    = bool
+  default = false
+}
+
 variable "vpc_nat_gateway" {
   type = object({
     enable = optional(bool, true)
