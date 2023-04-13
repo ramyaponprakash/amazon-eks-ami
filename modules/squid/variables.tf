@@ -27,6 +27,7 @@ variable "squid" {
     enable         = optional(bool, true)
     instance_type  = optional(string, "t3.medium")
     subnet_ids     = list(string)
+    subnet_gw_ids  = list(string)
     ami_squid      = string
     squid_key_name = string
     iam_role       = string

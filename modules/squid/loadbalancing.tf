@@ -2,7 +2,7 @@ resource "aws_lb" "squid_nlb" {
 
   name                             = "${var.vpc_name}-squid-nlb"
   internal                         = true
-  subnets                          = [var.squid.subnet_ids[0], var.squid.subnet_ids[1]]
+  subnets                          = [var.squid.subnet_gw_ids[0], var.squid.subnet_gw_ids[1]]
   load_balancer_type               = "network"
   enable_deletion_protection       = true
   enable_cross_zone_load_balancing = "true"

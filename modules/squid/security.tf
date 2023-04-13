@@ -39,28 +39,6 @@ resource "aws_security_group" "squidproxy" {
     cidr_blocks = ["172.22.227.0/24"]
     description = "from nips"
   }
-  ingress {
-    from_port       = 3128
-    to_port         = 3128
-    protocol        = "tcp"
-    security_groups = ["sg-02ad67e3edf285f26"]
-    description     = "from panorama"
-  }
-  ingress {
-    from_port       = 3128
-    to_port         = 3128
-    protocol        = "tcp"
-    security_groups = ["sg-0ebf3f7e4a659286c"]
-    description     = "from nips fw"
-  }
-  ingress {
-    from_port       = 4118
-    to_port         = 4118
-    protocol        = "tcp"
-    security_groups = ["sg-0e0678ca7fc5a3f73"]
-    description     = "from dsm"
-  }
-
 
   egress {
     from_port   = 0
