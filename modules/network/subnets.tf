@@ -21,7 +21,7 @@ resource "aws_subnet" "private_subnets" {
   map_public_ip_on_launch = false
 
   tags = {
-    Name                                        = "${var.vpc_name}-private-pri-sn-${var.az_map[count.index % length(data.aws_availability_zones.available.zone_ids)]}"
+    Name                                        = "${var.vpc_name}-private-pri-sn-${count.index + 1}-${var.az_map[count.index % length(data.aws_availability_zones.available.zone_ids)]}"
     "kubernetes.io/cluster/${var.cluster_name}" = "shared"
     "kubernetes.io/role/internal-elb"           = var.vpc_private_subnets[count.index % length(data.aws_availability_zones.available.zone_ids)].enable_elb
   }
