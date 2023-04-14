@@ -23,7 +23,7 @@ resource "aws_launch_template" "squid_launch_template" {
   block_device_mappings {
     device_name = "/dev/xvdcz"
     ebs {
-      volume_size           = 20
+      volume_size           = 25
       delete_on_termination = true
       volume_type           = "gp2"
       encrypted             = "true"
@@ -94,10 +94,8 @@ resource "aws_autoscaling_group" "squid_asg" {
 }
 
 
-/*resource "aws_volume_attachment" "squidproxy_cts_volume_att" {
-  depends_on  = [aws_instance.sdx_prd_squidproxy_cts]
-  device_name = "/dev/sdf"
-  instance_id = aws_instance.sdx_prd_squidproxy_cts.id
-  volume_id   = "vol-070b0fbf6d1199113"
-  #force_detach = var.ebs_force_detach
-}*/
+
+resource "aws_autoscaling_attachment" "sdx_intra_prd_nlb_jaeger_att" {
+  alb_target_group_arn   = aws_lb_target_group.squid_target_group_3128.arn
+  autoscaling_group_name = aws_autoscaling_group.squid_asg.id
+}

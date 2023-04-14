@@ -40,3 +40,16 @@ resource "aws_lb_target_group" "squid_target_group_3128" {
     interval            = 10
   }
 }
+
+#Route53 - This will map the internal LB to user friendly DNS for squid solx
+
+resource "aws_route53_record" "route53" {
+  zone_id = var.squid.zone_id
+  name    = var.squid.record_name
+  type    = "A"
+  alias {
+    name                   = aws_lb.squid_nlb.dns_name
+    zone_id                = var.squid.zone_id
+    evaluate_target_health = true
+  }
+}
