@@ -28,6 +28,11 @@ variable "vpc_enable_private" {
   default = false
 }
 
+variable "vpc_sec_enable_cidr" {
+  type    = bool
+  default = false
+}
+
 variable "vpc_nat_gateway" {
   type = object({
     enable = optional(bool, true)
@@ -62,7 +67,12 @@ variable "vpc_id" {
   description = "If network.create_vpc=false, it must be provided"
 }
 
-variable "vpc_cidr" {
+variable "vpc_cidr_pri" {
+  type    = string
+  default = ""
+}
+
+variable "vpc_cidr_sec" {
   type    = string
   default = ""
 }
@@ -85,15 +95,15 @@ variable "vpc_public_subnets" {
   }))
   default = [
     {
-      cidr       = "10.0.10.0/24"
+      cidr       = "100.112.110.0/26"
       enable_elb = 1
     },
     {
-      cidr       = "10.0.11.0/24"
+      cidr       = "100.112.110.64/26"
       enable_elb = 1
     },
     {
-      cidr       = "10.0.12.0/24"
+      cidr       = "100.112.110.128/25"
       enable_elb = 0 // Don't attach the ELB to the monitor AZ
     }
   ]
@@ -116,6 +126,27 @@ variable "vpc_private_subnets" {
     {
       cidr       = "10.0.2.0/24"
       enable_elb = 0 // Don't attach the ELB
+    }
+  ]
+}
+
+variable "vpc_private_sec_subnets" {
+  type = list(object({
+    cidr       = string
+    enable_elb = number
+  }))
+  default = [
+    {
+      cidr       = "100.80.29.192/27"
+      enable_elb = 1
+    },
+    {
+      cidr       = "100.80.29.224/28"
+      enable_elb = 1
+    },
+    {
+      cidr       = "100.80.29.240/28"
+      enable_elb = 0 // Don't attach the ELB to the monitor AZ
     }
   ]
 }

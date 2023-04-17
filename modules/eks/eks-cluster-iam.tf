@@ -1,7 +1,7 @@
 // // https://docs.aws.amazon.com/eks/latest/userguide/service_IAM_role.html#create-service-role
 
 resource "aws_iam_role" "eks_cluster" {
-  name = "eks-${var.cluster_name}-cluster"
+  name = "${var.cluster_name}-cluster"
 
   assume_role_policy = <<POLICY
 {

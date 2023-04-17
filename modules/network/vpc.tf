@@ -10,7 +10,7 @@ module "vpc" {
 
   name                  = "${var.cluster_name}-vpc"
   create_vpc            = var.network.create_vpc
-  cidr                  = var.vpc_cidr
+  cidr                  = var.vpc_cidr_pri
   secondary_cidr_blocks = var.vpc_secondary_cidr_blocks
   azs                   = data.aws_availability_zones.available.names
 
