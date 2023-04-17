@@ -8,7 +8,7 @@ resource "aws_route_table" "public" {
   }
 
   tags = {
-    Name = "${var.vpc_name}-rt-public-${var.az_map[count.index]}"
+    Name = "${var.vpc_name}-rt-public-${var.az_map[count.index % 3]}"
   }
 }
 
@@ -24,6 +24,14 @@ resource "aws_route_table" "private" {
   count  = length(aws_subnet.private_subnets)
   vpc_id = var.network.create_vpc ? module.vpc.vpc_id : var.vpc_id
 
+  dynamic "route" {
+    for_each = var.network.peers
+    content {
+      cidr_block                = route.value.destination
+      vpc_peering_connection_id = route.value.target
+    }
+  }
+
   tags = {
     Name = "${var.vpc_name}-rt-private-${var.az_map[count.index % length(data.aws_availability_zones.available.zone_ids)]}"
   }
@@ -38,8 +46,6 @@ resource "aws_route" "private_route_nat" {
   depends_on             = [aws_route_table.private]
 }
 
-// TODO: (optional) Add peering route via Variable and another resource "aws_route"
-
 resource "aws_route_table_association" "private" {
   count          = length(aws_subnet.private_subnets)
   subnet_id      = aws_subnet.private_subnets[count.index].id
@@ -52,7 +58,7 @@ resource "aws_route_table" "private_nlb" {
   vpc_id = var.network.create_vpc ? module.vpc.vpc_id : var.vpc_id
 
   tags = {
-    Name = "${var.vpc_name}-rt-private-nlb-${var.az_map[count.index]}"
+    Name = "${var.vpc_name}-rt-private-nlb-${var.az_map[count.index % 3]}"
   }
 }
 

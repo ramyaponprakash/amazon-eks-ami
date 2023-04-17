@@ -20,11 +20,11 @@
 - Network
   - [x] Test optional vpc creation
   - [x] [SENSE-5970](https://gdsjira.ship.gov.sg/browse/SENSE-5970) (optional) Code EIP conditional creation
-  - [ ] (manual ok) Need to add VPC peering (only possible for dev/qa)
+  - [x] (manual ok) Need to add VPC peering (only possible for dev/qa)
   - [x] [SENSE-5994](https://gdsjira.ship.gov.sg/browse/SENSE-5994) Need VPC Endpoint?
     - [x] 1 VPC Endpoint per AZ (1 private subnet) 
     - [x] Secgroup for VPC Endpoints
-  - [ ] [SENSE-6007](https://gdsjira.ship.gov.sg/browse/SENSE-6007) Need to register Peer into route table
+  - [x] [SENSE-6007](https://gdsjira.ship.gov.sg/browse/SENSE-6007) Need to register Peer into route table
 - Bastion
   - [x] Test optional creation
   - [ ] [SENSE-5987](https://gdsjira.ship.gov.sg/browse/SENSE-5987) Userdata for permanent HTTP_PROXY env vars
@@ -34,16 +34,16 @@
 - EKS
   - [x] Test with existing VPC
   - [x] Test with existing Bastion
-  - [ ] Code Enable secret encryption
+  - [x] Code Enable secret encryption
   - [ ] Code add-ons
   - [ ] Code control-plane logging
-  - [ ] [SENSE-5963](https://gdsjira.ship.gov.sg/browse/SENSE-5963) Code node secgrp to include prefix and cidr
+  - [x] [SENSE-5963](https://gdsjira.ship.gov.sg/browse/SENSE-5963) Code node secgrp to include prefix and cidr
   - [x] [SENSE-5985](https://gdsjira.ship.gov.sg/browse/SENSE-5985) Code/Modify Custodian tag to ASG, ensure propagation, need rolling node?
   - [ ] (optional) Add post-fix for iam/policy creation
 - EKS-Sol
   - [x] [SENSE-5985](https://gdsjira.ship.gov.sg/browse/SENSE-5985) Code/Modify Custodian tag to ASG, ensure propagation
 - general
-  - [ ] decide what to `prevent_destroy` or other lifecycle
+  - [x] decide what to `prevent_destroy` or other lifecycle
   - [x] adding Tag managed-by=Terraform as global tag
 
 ---

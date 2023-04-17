@@ -24,7 +24,3 @@ helm upgrade --install cluster-autoscaler ../charts/cluster-autoscaler --namespa
 # Deploy the Load Balancer Controller
 helm upgrade --install lb-ctrl ../charts/aws-load-balancer-controller --namespace kube-system ${IMAGE_REPO_LB_CTRL} --set clusterName=$DATACENTER_NAME --set serviceAccount.name=aws-load-balancer-controller \
   --set serviceAccount.annotations."eks\.amazonaws\.com/role-arn"="arn:${AWS_PARTITION}:iam::${AWS_ACCOUNT_ID}:role/${DATACENTER_NAME}-aws-lb-controller" --set enableNLBRestrictedSGRules=true
-
-# this decreases the number of IPs reserved for each worker node
-kubectl set env ds aws-node -n kube-system WARM_IP_TARGET=1
-kubectl set env ds aws-node -n kube-system WARM_ENI_TARGET=0

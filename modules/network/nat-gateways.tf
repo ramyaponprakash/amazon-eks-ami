@@ -4,7 +4,7 @@ resource "aws_nat_gateway" "ngw" {
   subnet_id     = aws_subnet.public_subnets[count.index].id
 
   tags = {
-    Name = "${var.vpc_name}-ngw-${var.az_map[count.index]}"
+    Name = "${var.vpc_name}-ngw-${var.az_map[count.index % 3]}"
   }
 }
 
