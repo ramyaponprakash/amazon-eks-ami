@@ -129,8 +129,8 @@ squid = {
 
 squid_secgrp_ingress_cidr = [
   {
-    cidrs = [var.vpc_cidr_pri, var.vpc_cidr_sec]
-    #    cidrs       = ["100.112.110.0/24", "100.80.27.128/26"]
+
+    cidrs       = ["100.112.110.0/24", "100.80.27.128/26"]
     port        = 3128
     description = "from SOLX vpc"
   },
