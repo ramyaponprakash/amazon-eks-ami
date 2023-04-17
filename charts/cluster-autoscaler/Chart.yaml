@@ -1,0 +1,9 @@
+apiVersion: v2
+appVersion: 0.1.0
+description: Helm chart for EKS Cluster Autoscaler
+keywords:
+  - solace
+  - cluster-autoscaler
+name: cluster-autoscaler
+version: 1.0.0
+appVersion: v1.21.0
