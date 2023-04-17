@@ -34,8 +34,3 @@ resource "aws_iam_role_policy_attachment" "eks_cluster-AmazonEKS_CNI_Policy" {
   policy_arn = "arn:${data.aws_partition.this.partition}:iam::aws:policy/AmazonEKS_CNI_Policy"
   role       = aws_iam_role.eks_cluster-node.name
 }
-
-resource "aws_iam_instance_profile" "eks_cluster-node" {
-  name = "${var.cluster_name}-profile"
-  role = aws_iam_role.eks_cluster-node.name
-}

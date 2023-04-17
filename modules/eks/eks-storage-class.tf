@@ -31,7 +31,6 @@ resource "kubernetes_storage_class" "gp2" {
 
   depends_on = [
     kubernetes_annotations.remove_default_storage_class,
-    aws_eks_cluster.eks_cluster
   ]
 }
 
@@ -45,12 +44,8 @@ resource "kubernetes_storage_class" "gp3" {
     type      = "gp3"
     fsType    = "xfs"
     encrypted = "true"
-    kmsKeyId  = var.eks_customer_cmk_key_arn != "" ? var.eks_customer_cmk_key_arn : null
+    kmsKeyId  = var.eks_customer_cmk_key_arn
   }
   allow_volume_expansion = true
   volume_binding_mode    = "WaitForFirstConsumer"
-
-  depends_on = [
-    aws_eks_cluster.eks_cluster
-  ]
 }

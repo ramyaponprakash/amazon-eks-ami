@@ -13,5 +13,5 @@ output "bastion_generated_ssh_private_key" {
 }
 
 output "vpc_id" {
-  value = var.eks_network.enable ? module.eks_network[0].vpc_id : ""
+  value = var.network.enable ? module.eks_network[0].vpc_id : ""
 }

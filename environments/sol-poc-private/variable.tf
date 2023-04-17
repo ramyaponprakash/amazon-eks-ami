@@ -13,27 +13,7 @@ variable "vpc_name" {
 
 variable "vpc_id" {
   type    = string
-  default = ""
-}
-
-variable "vpc_eip" {
-  type = object({
-    enable_eip = optional(bool, true)
-    count      = number
-  })
-}
-
-variable "vpc_nat_gateway" {
-  type = object({
-    enable = optional(bool, true)
-  })
-}
-
-variable "vpc_igw" {
-  type = object({
-    enable_igw = optional(bool, true)
-    count      = number
-  })
+  default = "vpc-0f40f6277c878bbab"
 }
 
 variable "eks_customer_cmk_key_arn" {
@@ -59,13 +39,71 @@ variable "eks_cluster_endpoint_public" {
 variable "network" {
   type = object({
     enable     = optional(bool, false)
-    create_vpc = optional(bool, true)
+    create_vpc = optional(bool, false)
+    peers = list(object({
+      destination = string
+      target      = string
+    }))
   })
+}
+
+variable "vpc_eip" {
+  type = object({
+    enable = optional(bool, false)
+    count  = optional(number, 1)
+  })
+}
+
+variable "vpc_endpoint_allowed_cidrs" {
+  type    = list(string)
+  default = []
+}
+
+variable "vpc_endpoint_subnets" {
+  type    = list(string)
+  default = []
+}
+
+
+variable "vpc_enable_private" {
+  type    = bool
+  default = false
+}
+
+
+variable "vpc_nat_gateway" {
+  type = object({
+    enable                        = optional(bool, false)
+    vpc_nat_gw_eip_allocation_ids = optional(list(string))
+  })
+}
+
+
+variable "vpc_igw" {
+  type = object({
+    enable = optional(bool, false)
+    count  = optional(number, 0)
+  })
+}
+
+variable "vpc_nat_gw_ids" {
+  type    = list(string)
+  default = []
+}
+
+variable "vpc_igw_ids" {
+  type    = list(string)
+  default = []
+}
+
+variable "vpc_nat_gw_eip_allocation_ids" {
+  type    = list(string)
+  default = []
 }
 
 variable "vpc_cidr" {
   type    = string
-  default = "10.0.0.0/16"
+  default = "100.112.110.0/24"
 }
 
 variable "vpc_secondary_cidr_blocks" {
@@ -102,11 +140,6 @@ variable "vpc_private_elb_subnets" {
   default = []
 }
 
-variable "vpc_nat_gw_eip_allocation_ids" {
-  type    = list(string)
-  default = []
-}
-
 variable "bastion_security_group_id" {
   type    = string
   default = ""
@@ -127,4 +160,16 @@ variable "bastion" {
     ssh_cidr_blocks      = optional(list(string))
     ssh_prefix_list_ids  = optional(list(string))
   })
+}
+
+variable "eks_http_proxy" {
+  type = string
+}
+
+variable "eks_api_endpoint_access_cidrs" {
+  type = list(object({
+    from = string
+    port = string
+  }))
+  default = []
 }

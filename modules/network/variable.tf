@@ -2,6 +2,10 @@ variable "network" {
   type = object({
     enable     = optional(bool, true)
     create_vpc = optional(bool, false)
+    peers = list(object({
+      destination = string
+      target      = string
+    }))
   })
   description = "Base config to enable/disable module. create_vpc=false will skip vpc creation."
 }

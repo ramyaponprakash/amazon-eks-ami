@@ -131,23 +131,23 @@ resource "aws_vpc_endpoint" "s3" {
   }
 }
 
-#resource "aws_vpc_endpoint" "elasticloadbalancing" {
-#  count             = var.vpc_enable_private ? 1 : 0
-#  vpc_id            = var.network.create_vpc ? module.vpc.vpc_id : var.vpc_id
-#  service_name      = "com.amazonaws.${var.region}.elasticloadbalancing"
-#  vpc_endpoint_type = "Interface"
-#
-#  security_group_ids = [
-#    aws_security_group.vpc_endpoint.id,
-#  ]
-#
-#  subnet_ids          = length(var.vpc_endpoint_subnets) > 0 ? var.vpc_endpoint_subnets : aws_subnet.private_subnets.*.id
-#  private_dns_enabled = true
-#
-#  tags = {
-#    Name = "${var.vpc_name}-ep-elasticloadbalancing"
-#  }
-#}
+resource "aws_vpc_endpoint" "elasticloadbalancing" {
+  count             = var.vpc_enable_private ? 1 : 0
+  vpc_id            = var.network.create_vpc ? module.vpc.vpc_id : var.vpc_id
+  service_name      = "com.amazonaws.${var.region}.elasticloadbalancing"
+  vpc_endpoint_type = "Interface"
+
+  security_group_ids = [
+    aws_security_group.vpc_endpoint.id,
+  ]
+
+  subnet_ids          = length(var.vpc_endpoint_subnets) > 0 ? var.vpc_endpoint_subnets : aws_subnet.private_subnets.*.id
+  private_dns_enabled = true
+
+  tags = {
+    Name = "${var.vpc_name}-ep-elasticloadbalancing"
+  }
+}
 
 resource "aws_vpc_endpoint" "autoscaling" {
   count             = var.vpc_enable_private ? 1 : 0
@@ -168,3 +168,22 @@ resource "aws_vpc_endpoint" "autoscaling" {
     Name = "${var.vpc_name}-ep-autoscaling"
   }
 }
+
+# For OIDC
+#resource "aws_vpc_endpoint" "eks" {
+#  count             = var.vpc_enable_private ? 1 : 0
+#  vpc_id            = var.network.create_vpc ? module.vpc.vpc_id : var.vpc_id
+#  service_name      = "com.amazonaws.${var.region}.eks"
+#  vpc_endpoint_type = "Interface"
+#
+#  security_group_ids = [
+#    aws_security_group.vpc_endpoint.id,
+#  ]
+#
+#  subnet_ids          = length(var.vpc_endpoint_subnets) > 0 ? var.vpc_endpoint_subnets : aws_subnet.private_subnets.*.id
+#  private_dns_enabled = true
+#
+#  tags = {
+#    Name = "${var.vpc_name}-ep-eks"
+#  }
+#}

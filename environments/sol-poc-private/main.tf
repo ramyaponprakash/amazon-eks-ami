@@ -4,6 +4,10 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 4.0"
     }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "~> 2.19.0"
+    }
   }
 }
 
@@ -30,22 +34,23 @@ data "aws_eks_cluster_auth" "cluster" {
   name = module.eks.cluster_id
 }
 
-module "remote_state" {
-  source = "../../modules/remote-state"
-}
-
 module "eks_network" {
   count  = var.network.enable ? 1 : 0
   source = "../../modules/network"
 
   network                       = var.network
+  vpc_enable_private            = var.vpc_enable_private
+  vpc_endpoint_allowed_cidrs    = var.vpc_endpoint_allowed_cidrs
+  vpc_endpoint_subnets          = var.vpc_endpoint_subnets
+  vpc_eip                       = var.vpc_eip
+  vpc_nat_gateway               = var.vpc_nat_gateway
+  vpc_igw                       = var.vpc_igw
+  vpc_nat_gw_ids                = var.vpc_nat_gw_ids
+  vpc_igw_ids                   = var.vpc_igw_ids
   region                        = var.region
   cluster_name                  = var.cluster_name
   vpc_name                      = var.vpc_name
   vpc_cidr                      = var.vpc_cidr
-  vpc_eip                       = var.vpc_eip
-  vpc_nat_gateway               = var.vpc_nat_gateway
-  vpc_igw                       = var.vpc_igw
   vpc_secondary_cidr_blocks     = var.vpc_secondary_cidr_blocks
   vpc_id                        = var.vpc_id
   vpc_nat_gw_eip_allocation_ids = var.vpc_nat_gw_eip_allocation_ids
@@ -64,43 +69,38 @@ module "bastion" {
 
   bastion = merge(var.bastion, {
     subnet_ids      = var.network.enable ? (var.bastion.public_access ? module.eks_network[0].public_subnet_ids : module.eks_network[0].private_subnet_ids) : var.bastion.subnet_ids
-    ssh_cidr_blocks = var.network.enable ? [var.vpc_cidr] : var.bastion.ssh_cidr_blocks
+    ssh_cidr_blocks = var.network.enable ? concat([var.vpc_cidr], var.bastion.ssh_cidr_blocks) : var.bastion.ssh_cidr_blocks
   })
-
-  depends_on = [module.eks_network[0]]
 }
 
 module "eks" {
   source = "../../modules/eks"
 
-  region       = var.region
-  cluster_name = var.cluster_name
-  vpc_id       = var.network.enable ? module.eks_network[0].vpc_id : var.bastion.vpc_id
-
-  eks_private_subnet_ids    = var.network.enable ? module.eks_network[0].private_subnet_ids : var.eks_private_subnet_ids
-  bastion_security_group_id = var.bastion.enable ? module.bastion[0].bastion_sg_id : var.bastion_security_group_id
-  eks_customer_cmk_key_arn  = var.eks_customer_cmk_key_arn
-  eks_admin_role_arns       = var.eks_admin_role_arns
-
-  // NOTE: no need pub endpoint, just demo purpose
-  eks_cluster_endpoint_public = var.eks_cluster_endpoint_public
-
-  depends_on = [
-    module.eks_network[0],
-    module.bastion[0]
-  ]
+  region                        = var.region
+  cluster_name                  = var.cluster_name
+  vpc_id                        = var.network.enable ? module.eks_network[0].vpc_id : var.bastion.vpc_id
+  eks_private_subnet_ids        = var.network.enable ? module.eks_network[0].private_subnet_ids : var.eks_private_subnet_ids
+  bastion_security_group_id     = var.bastion.enable ? module.bastion[0].bastion_sg_id : var.bastion_security_group_id
+  eks_customer_cmk_key_arn      = var.eks_customer_cmk_key_arn
+  eks_admin_role_arns           = var.eks_admin_role_arns
+  eks_http_proxy                = var.eks_http_proxy
+  eks_api_endpoint_access_cidrs = var.eks_api_endpoint_access_cidrs
 }
 
 module "eks-solace" {
   source = "../../modules/eks-solace"
 
   cluster_name           = var.cluster_name
+  vpc_id                 = var.network.enable ? module.eks_network[0].vpc_id : var.bastion.vpc_id
+  eks_cluster_name       = module.eks.cluster_name
   eks_private_subnet_ids = var.network.enable ? module.eks_network[0].private_subnet_ids : var.eks_private_subnet_ids
   eks_node_role_arn      = module.eks.eks_node_role_arn
   eks_node_role_name     = module.eks.eks_node_role_name
+  eks_http_proxy         = var.eks_http_proxy
 
   depends_on = [
     module.eks,
   ]
 }
+
 

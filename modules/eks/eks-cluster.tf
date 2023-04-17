@@ -11,6 +11,18 @@ resource "aws_eks_cluster" "eks_cluster" {
     endpoint_public_access  = var.eks_cluster_endpoint_public
   }
 
+  kubernetes_network_config {
+    service_ipv4_cidr = "10.100.0.0/16"
+    ip_family         = "ipv4"
+  }
+
+  encryption_config {
+    provider {
+      key_arn = var.eks_customer_cmk_key_arn
+    }
+    resources = ["secrets"]
+  }
+
   depends_on = [
     aws_iam_role_policy_attachment.eks_cluster-AmazonEKSClusterPolicy,
     aws_iam_role_policy_attachment.eks_cluster-AmazonEKSServicePolicy,
@@ -23,69 +35,4 @@ resource "aws_eks_cluster" "eks_cluster" {
   lifecycle {
     ignore_changes = [version]
   }
-}
-
-locals {
-  kubeconfig = <<KUBECONFIG
-apiVersion: v1
-clusters:
-- cluster:
-    server: ${aws_eks_cluster.eks_cluster.endpoint}
-    certificate-authority-data: ${aws_eks_cluster.eks_cluster.certificate_authority[0].data}
-  name: kubernetes
-contexts:
-- context:
-    cluster: kubernetes
-    user: aws
-  name: aws
-current-context: aws
-kind: Config
-preferences: {}
-users:
-- name: aws
-  user:
-    exec:
-      apiVersion: client.authentication.k8s.io/v1
-      args:
-      - --region
-      - ${var.region}
-      - eks
-      - get-token
-      - --cluster-name
-      - ${var.cluster_name}
-      command: aws
-      interactiveMode: IfAvailable
-KUBECONFIG
-
-  ssh_kubeconfig = <<KUBECONFIG
-apiVersion: v1
-clusters:
-- cluster:
-    server: https://127.0.0.1:1212
-    insecure-skip-tls-verify: true
-  name: kubernetes
-contexts:
-- context:
-    cluster: kubernetes
-    user: aws
-  name: aws
-current-context: aws
-kind: Config
-preferences: {}
-users:
-- name: aws
-  user:
-    exec:
-      apiVersion: client.authentication.k8s.io/v1
-      args:
-      - --region
-      - ${var.region}
-      - eks
-      - get-token
-      - --cluster-name
-      - ${var.cluster_name}
-      command: aws
-      interactiveMode: IfAvailable
-KUBECONFIG
-
 }

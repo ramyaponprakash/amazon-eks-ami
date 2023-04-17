@@ -5,10 +5,9 @@ resource "aws_eks_addon" "csi_driver" {
   service_account_role_arn = "arn:aws:iam::${data.aws_caller_identity.this.account_id}:role/${var.cluster_name}-csi"
 
   depends_on = [
-    aws_eks_cluster.eks_cluster,
     module.aws-csi_assumable_role_admin,
     aws_iam_policy.aws-policy-csi,
-    aws_eks_node_group.eks_default_nodegroup
+    aws_eks_node_group.default_nodegroup
   ]
 }
 

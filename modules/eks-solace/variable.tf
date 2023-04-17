@@ -182,3 +182,26 @@ variable "labels_taints_prod100k" {
     ]
   }
 }
+
+variable "vpc_id" {
+  type = string
+}
+
+variable "eks_cluster_name" {
+  type = string
+}
+
+variable "eks_http_proxy" {
+  type = string
+}
+
+variable "eks_private_ep_no_proxy" {
+  type    = string
+  default = "s3.amazonaws.com,.s3.ap-southeast-1.amazonaws.com,sts.ap-southeast-1.amazonaws.com,ec2.ap-southeast-1.amazonaws.com,.dkr.ecr.ap-southeast-1.amazonaws.com,api.ecr.ap-southeast-1.amazonaws.com,autoscaling.ap-southeast-1.amazonaws.com,logs.ap-southeast-1.amazonaws.com,eks.ap-southeast-1.amazonaws.com,elasticloadbalancing.ap-southeast-1.amazonaws.com"
+}
+
+variable "eks_additional_no_proxy" {
+  type        = string
+  description = "must start with starting comma"
+  default     = ""
+}

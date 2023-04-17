@@ -28,8 +28,7 @@ variable "eks_private_subnet_ids" {
 }
 
 variable "eks_customer_cmk_key_arn" {
-  type    = string
-  default = ""
+  type = string
 }
 
 variable "eks_node_group_iam_role_arns" {
@@ -50,4 +49,27 @@ variable "eks_cluster_endpoint_public" {
 variable "eks_cluster_endpoint_private" {
   type    = bool
   default = true
+}
+
+variable "eks_http_proxy" {
+  type = string
+}
+
+variable "eks_private_ep_no_proxy" {
+  type    = string
+  default = "s3.amazonaws.com,.s3.ap-southeast-1.amazonaws.com,sts.ap-southeast-1.amazonaws.com,ec2.ap-southeast-1.amazonaws.com,.dkr.ecr.ap-southeast-1.amazonaws.com,api.ecr.ap-southeast-1.amazonaws.com,autoscaling.ap-southeast-1.amazonaws.com,logs.ap-southeast-1.amazonaws.com,eks.ap-southeast-1.amazonaws.com,elasticloadbalancing.ap-southeast-1.amazonaws.com"
+}
+
+variable "eks_additional_no_proxy" {
+  type        = string
+  description = "must start with starting comma"
+  default     = ""
+}
+
+variable "eks_api_endpoint_access_cidrs" {
+  type = list(object({
+    from = string
+    port = string
+  }))
+  default = []
 }
