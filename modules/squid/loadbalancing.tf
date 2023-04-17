@@ -49,7 +49,7 @@ resource "aws_route53_record" "route53" {
   type    = "A"
   alias {
     name                   = aws_lb.squid_nlb.dns_name
-    zone_id                = var.squid.zone_id
+    zone_id                = aws_lb.squid_nlb.zone_id
     evaluate_target_health = true
   }
 }
