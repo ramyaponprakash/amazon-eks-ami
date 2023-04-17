@@ -29,10 +29,12 @@ helm upgrade --install --debug cluster-autoscaler autoscaler/cluster-autoscaler 
 if ! kubectl get secret -n kube-system gcr-reg-secret > /dev/null; then
   echo "error: registry secret 'gcr-reg-secret' must exist in kube-system namespace" && exit 1
 fi
-IMAGE_REPO_LB_CTRL="--set image.repository=gcr.io/gcp-maas-prod/aws-load-balancer-controller --set imagePullSecrets[0].name=gcr-reg-secret "
-
 # Deploy the Load Balancer Controller
 helm repo add eks https://aws.github.io/eks-charts
-helm upgrade --install lb-ctrl eks/aws-load-balancer-controller --namespace kube-system "$IMAGE_REPO_LB_CTRL" --set clusterName=$CLUSTER_NAME --set serviceAccount.name=aws-load-balancer-controller \
-  --set serviceAccount.annotations."eks\.amazonaws\.com/role-arn"="arn:aws:iam::$AWS_ACCOUNT_ID:role/$CLUSTER_NAME-aws-lb-controller" --set enableNLBRestrictedSGRules=true \
+helm upgrade --install lb-ctrl eks/aws-load-balancer-controller --namespace kube-system --set clusterName=$CLUSTER_NAME \
+  --set image.repository=gcr.io/gcp-maas-prod/aws-load-balancer-controller \
+  --set imagePullSecrets[0].name=gcr-reg-secret \
+  --set serviceAccount.name=aws-load-balancer-controller \
+  --set serviceAccount.annotations."eks\.amazonaws\.com/role-arn"="arn:aws:iam::$AWS_ACCOUNT_ID:role/$CLUSTER_NAME-aws-lb-controller" \
+  --set enableNLBRestrictedSGRules=true \
   --set image.tag=$ALBC_VERSION

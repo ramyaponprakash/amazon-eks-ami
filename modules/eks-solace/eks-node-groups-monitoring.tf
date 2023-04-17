@@ -10,9 +10,13 @@ resource "aws_eks_node_group" "monitoring" {
 
   cluster_name           = var.cluster_name
   node_group_name_prefix = "${var.cluster_name}-moni-"
-  instance_types         = [var.node_groups_monitoring_instance_type]
 
   labels = var.labels_taints_monitoring.labels
+
+  launch_template {
+    id      = aws_launch_template.monitoring.id
+    version = aws_launch_template.monitoring.default_version
+  }
 
   dynamic "taint" {
     for_each = var.labels_taints_monitoring.taints
@@ -24,8 +28,8 @@ resource "aws_eks_node_group" "monitoring" {
   }
 
   lifecycle {
-    ignore_changes  = [scaling_config[0].desired_size]
-    prevent_destroy = true
+    ignore_changes        = [scaling_config[0].desired_size]
+    create_before_destroy = true
   }
 }
 
