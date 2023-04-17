@@ -14,7 +14,7 @@ resource "aws_launch_template" "squid_launch_template" {
   iam_instance_profile {
     name = var.squid.iam_role
   }
-  vpc_security_group_ids = [aws_security_group.squidproxy.id, aws_security_group.ssh_squidproxy.id]
+  vpc_security_group_ids = [aws_security_group.squidproxy.id]
   key_name               = var.squid.squid_key_name
   user_data              = base64encode(data.template_file.squid_userdata.rendered)
   ebs_optimized          = true

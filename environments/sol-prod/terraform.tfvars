@@ -126,3 +126,31 @@ squid = {
   squid_key_name = "adex-squid-solx"
   kms_key_id     = "arn:aws:kms:ap-southeast-1:704140326871:key/0e7a17d3-f755-49f4-958b-c8e3976f4d4f"
 }
+
+squid_secgrp_ingress_cidr = [
+  {
+    cidrs = [var.vpc_cidr_pri, var.vpc_cidr_sec]
+    #    cidrs       = ["100.112.110.0/24", "100.80.27.128/26"]
+    port        = 3128
+    description = "from SOLX vpc"
+  },
+  {
+    cidrs       = ["10.189.118.0/25"]
+    port        = 3128
+    description = "from peer vpc cidr (SOLI)"
+  },
+  {
+    cidrs       = ["100.112.110.0/24", "100.80.27.128/26"]
+    port        = 22
+    description = "from SOLX vpc"
+  },
+]
+
+squid_secgrp_ingress_secgrp = [
+  {
+    secgrp_ids  = ["sg-0dd3d667f43ec5703"]
+    port        = 22
+    description = "from mgmt"
+  },
+]
+
