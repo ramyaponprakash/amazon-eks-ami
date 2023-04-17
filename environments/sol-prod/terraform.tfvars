@@ -50,11 +50,11 @@ vpc_private_subnets = [
   },
   {
     cidr       = "100.112.110.128/26"
-    enable_elb = 1
+    enable_elb = 0 // Don't attach the ELB to the monitor AZ
   },
   {
     cidr       = "100.112.110.192/26"
-    enable_elb = 0 // Don't attach the ELB to the monitor AZ
+    enable_elb = 1
   }
 ]
 
