@@ -3,7 +3,7 @@
 CLUSTER_NAME=$1
 
 if [[ -z "${CLUSTER_NAME}" ]]; then
-  echo "CLUSTER_NAME requires" && exit 1
+  echo "CLUSTER_NAME required" && exit 1
 fi
 
 aws eks --region ap-southeast-1 update-kubeconfig --name $CLUSTER_NAME
@@ -20,7 +20,6 @@ kubectl patch -n kube-system -p '{ "spec": {"template":{ "spec": { "containers":
 kubectl patch -n kube-system -p '{ "spec": {"template":{ "spec": { "containers": [ { "name": "kube-proxy", "envFrom": [ { "configMapRef": {"name": "proxy-environment-variables"} } ] } ] } } } }' daemonset kube-proxy
 kubectl patch -n kube-system -p '{ "spec": {"template":{ "spec": { "containers": [ { "name": "coredns", "envFrom": [ { "configMapRef": {"name": "proxy-environment-variables"} } ] } ] } } } }' deployment coredns
 
-# After chart
+# Applying proxy config after chart installation
 kubectl patch -n kube-system -p '{ "spec": {"template":{ "spec": { "containers": [ { "name": "aws-cluster-autoscaler", "envFrom": [ { "configMapRef": {"name": "proxy-environment-variables"} } ] } ] } } } }' deployment cluster-autoscaler-aws-cluster-autoscaler
-
-# TODO: aws loadbalancer controller test
+kubectl patch -n kube-system -p '{ "spec": {"template":{ "spec": { "containers": [ { "name": "aws-load-balancer-controller", "envFrom": [ { "configMapRef": {"name": "proxy-environment-variables"} } ] } ] } } } }' deployment lb-ctrl-aws-load-balancer-controller

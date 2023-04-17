@@ -2,7 +2,8 @@
 
 CLUSTER_NAME=$1
 AWS_ACCOUNT_ID=$2
-K8S_VERSION=$3
+VPC_ID=$3
+K8S_VERSION=$4
 
 if [[ $K8S_VERSION == "" ]]; then
   K8S_VERSION="1.23"
@@ -32,6 +33,8 @@ fi
 # Deploy the Load Balancer Controller
 helm repo add eks https://aws.github.io/eks-charts
 helm upgrade --install lb-ctrl eks/aws-load-balancer-controller --namespace kube-system --set clusterName=$CLUSTER_NAME \
+  --set vpcId=$VPC_ID \
+  --set region=ap-southeast-1 \
   --set image.repository=gcr.io/gcp-maas-prod/aws-load-balancer-controller \
   --set imagePullSecrets[0].name=gcr-reg-secret \
   --set serviceAccount.name=aws-load-balancer-controller \

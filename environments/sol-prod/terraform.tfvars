@@ -15,7 +15,7 @@ eks_api_endpoint_access_cidrs = [
   { from : "172.22.223.0/25", port : "443", description : "SDX_PRD CIDR 1" },
   { from : "172.16.110.0/24", port : "443", description : "SDX_PRD CIDR 2" },
   { from : "100.112.110.0/24", port : "443", description : "Self CIDR 1" },
-  { from : "100.80.27.128/26", port : "443", description : "Self CIDR 1" },
+  { from : "100.80.27.128/26", port : "443", description : "Self CIDR 2" },
 ]
 
 network = {

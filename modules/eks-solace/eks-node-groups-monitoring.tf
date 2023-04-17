@@ -50,7 +50,7 @@ resource "aws_launch_template" "monitoring" {
       API_SERVER_URL = data.aws_eks_cluster.eks_cluster.endpoint
       HTTP_PROXY     = var.eks_http_proxy
       NO_PROXY_HOST  = "${join(",", data.aws_vpc.vpc.cidr_block_associations[*].cidr_block)},localhost,127.0.0.1,169.254.169.254,.internal,.eks.amazonaws.com,${var.eks_private_ep_no_proxy}${var.eks_additional_no_proxy}"
-      NO_PROXY_POD   = "${join(",", data.aws_vpc.vpc.cidr_block_associations[*].cidr_block)},${data.aws_eks_cluster.eks_cluster.kubernetes_network_config[0].service_ipv4_cidr},localhost,127.0.0.1,169.254.169.254,.local,.internal,.eks.amazonaws.com,${var.eks_private_ep_no_proxy}${var.eks_additional_no_proxy}"
+      NO_PROXY_POD   = "${join(",", data.aws_vpc.vpc.cidr_block_associations[*].cidr_block)},${data.aws_eks_cluster.eks_cluster.kubernetes_network_config[0].service_ipv4_cidr},localhost,127.0.0.1,169.254.169.254,.local,.svc,.internal,.eks.amazonaws.com,${var.eks_private_ep_no_proxy}${var.eks_additional_no_proxy}"
       MAX_POD        = "17"
     }
   ))
