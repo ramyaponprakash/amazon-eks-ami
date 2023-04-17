@@ -12,8 +12,7 @@ variable "vpc_name" {
 }
 
 variable "vpc_id" {
-  type    = string
-  default = "vpc-0f40f6277c878bbab"
+  type = string
 }
 
 variable "ami_squid" {
@@ -50,6 +49,14 @@ variable "network" {
   type = object({
     enable     = optional(bool, false)
     create_vpc = optional(bool, false)
+    peers = list(object({
+      destination = string
+      target      = string
+    }))
+    tgw = list(object({
+      destination = string
+      target      = string
+    }))
   })
 }
 
@@ -119,13 +126,12 @@ variable "vpc_nat_gw_eip_allocation_ids" {
 }
 
 variable "vpc_cidr_pri" {
-  type    = string
-  default = "100.112.110.0/24"
+  type = string
 }
 
 variable "vpc_cidr_sec" {
   type    = string
-  default = "100.80.27.128/26"
+  default = ""
 }
 
 
@@ -169,11 +175,6 @@ variable "vpc_private_elb_subnets" {
     enable_elb = number
   }))
   default = []
-}
-
-variable "bastion_security_group_id" {
-  type    = string
-  default = ""
 }
 
 variable "bastion" {
@@ -247,4 +248,18 @@ variable "squid_secgrp_ingress_secgrp" {
       description = "from mgmt"
     },
   ]
+}
+
+
+variable "eks_http_proxy" {
+  type = string
+}
+
+variable "eks_api_endpoint_access_cidrs" {
+  type = list(object({
+    from        = string
+    port        = string
+    description = string
+  }))
+  default = []
 }

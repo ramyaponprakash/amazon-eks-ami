@@ -6,6 +6,10 @@ variable "network" {
       destination = string
       target      = string
     }))
+    tgw = list(object({
+      destination = string
+      target      = string
+    }))
   })
   description = "Base config to enable/disable module. create_vpc=false will skip vpc creation."
 }
@@ -72,8 +76,7 @@ variable "vpc_id" {
 }
 
 variable "vpc_cidr_pri" {
-  type    = string
-  default = ""
+  type = string
 }
 
 variable "vpc_cidr_sec" {

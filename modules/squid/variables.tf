@@ -9,8 +9,7 @@ variable "vpc_name" {
 }
 
 variable "vpc_cidr_pri" {
-  type    = string
-  default = ""
+  type = string
 }
 
 variable "vpc_cidr_sec" {

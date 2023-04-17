@@ -4,6 +4,10 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 4.0"
     }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "~> 2.19.0"
+    }
   }
 }
 
@@ -81,31 +85,25 @@ module "bastion" {
 module "eks" {
   source = "../../modules/eks"
 
-  region       = var.region
-  cluster_name = var.cluster_name
-  vpc_id       = var.network.enable ? module.eks_network[0].vpc_id : var.bastion.vpc_id
-
-  eks_private_subnet_ids    = var.network.enable ? module.eks_network[0].private_subnet_ids : var.eks_private_subnet_ids
-  bastion_security_group_id = var.bastion.enable ? module.bastion[0].bastion_sg_id : var.bastion_security_group_id
-  eks_customer_cmk_key_arn  = var.eks_customer_cmk_key_arn
-  eks_admin_role_arns       = var.eks_admin_role_arns
-
-  // NOTE: no need pub endpoint, just demo purpose
-  eks_cluster_endpoint_public = var.eks_cluster_endpoint_public
-
-  depends_on = [
-    module.eks_network[0],
-    module.bastion[0]
-  ]
+  region                        = var.region
+  cluster_name                  = var.cluster_name
+  vpc_id                        = var.network.enable ? module.eks_network[0].vpc_id : var.vpc_id
+  eks_private_subnet_ids        = var.network.enable ? module.eks_network[0].private_subnet_ids : var.eks_private_subnet_ids
+  eks_customer_cmk_key_arn      = var.eks_customer_cmk_key_arn
+  eks_admin_role_arns           = var.eks_admin_role_arns
+  eks_http_proxy                = var.eks_http_proxy
+  eks_api_endpoint_access_cidrs = var.eks_api_endpoint_access_cidrs
 }
 
 module "eks-solace" {
   source = "../../modules/eks-solace"
 
   cluster_name           = var.cluster_name
+  vpc_id                 = var.network.enable ? module.eks_network[0].vpc_id : var.vpc_id
   eks_private_subnet_ids = var.network.enable ? module.eks_network[0].private_subnet_ids : var.eks_private_subnet_ids
   eks_node_role_arn      = module.eks.eks_node_role_arn
   eks_node_role_name     = module.eks.eks_node_role_name
+  eks_http_proxy         = var.eks_http_proxy
 
   depends_on = [
     module.eks,

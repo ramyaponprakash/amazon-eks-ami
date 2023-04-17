@@ -12,20 +12,10 @@ resource "aws_security_group" "eks_cluster-cluster" {
   }
 }
 
-resource "aws_security_group_rule" "eks_cluster-cluster-bastion" {
-  description              = "Allow bastion to communicate with the cluster API Server"
-  from_port                = 443
-  protocol                 = "tcp"
-  security_group_id        = aws_security_group.eks_cluster-cluster.id
-  source_security_group_id = var.bastion_security_group_id
-  to_port                  = 443
-  type                     = "ingress"
-}
-
-resource "aws_security_group_rule" "eks_cluster-cluster-peer-ingress" {
+resource "aws_security_group_rule" "eks_cluster-cluster-ingress" {
   for_each          = { for index, obj in var.eks_api_endpoint_access_cidrs : obj.from => obj }
   type              = "ingress"
-  description       = "Allow peer bridge to communicate with the cluster API Server"
+  description       = each.value.description
   security_group_id = aws_security_group.eks_cluster-cluster.id
   cidr_blocks       = [each.value.from]
   protocol          = "tcp"

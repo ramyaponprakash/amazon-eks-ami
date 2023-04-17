@@ -50,7 +50,8 @@ module "eks_network" {
   region                        = var.region
   cluster_name                  = var.cluster_name
   vpc_name                      = var.vpc_name
-  vpc_cidr                      = var.vpc_cidr
+  vpc_cidr_pri                  = var.vpc_cidr_pri
+  vpc_cidr_sec                  = var.vpc_cidr_sec
   vpc_secondary_cidr_blocks     = var.vpc_secondary_cidr_blocks
   vpc_id                        = var.vpc_id
   vpc_nat_gw_eip_allocation_ids = var.vpc_nat_gw_eip_allocation_ids
@@ -69,7 +70,7 @@ module "bastion" {
 
   bastion = merge(var.bastion, {
     subnet_ids      = var.network.enable ? (var.bastion.public_access ? module.eks_network[0].public_subnet_ids : module.eks_network[0].private_subnet_ids) : var.bastion.subnet_ids
-    ssh_cidr_blocks = var.network.enable ? concat([var.vpc_cidr], var.bastion.ssh_cidr_blocks) : var.bastion.ssh_cidr_blocks
+    ssh_cidr_blocks = var.network.enable ? concat([var.vpc_cidr_pri], var.bastion.ssh_cidr_blocks) : var.bastion.ssh_cidr_blocks
   })
 }
 
@@ -78,9 +79,8 @@ module "eks" {
 
   region                        = var.region
   cluster_name                  = var.cluster_name
-  vpc_id                        = var.network.enable ? module.eks_network[0].vpc_id : var.bastion.vpc_id
+  vpc_id                        = var.network.enable ? module.eks_network[0].vpc_id : var.vpc_id
   eks_private_subnet_ids        = var.network.enable ? module.eks_network[0].private_subnet_ids : var.eks_private_subnet_ids
-  bastion_security_group_id     = var.bastion.enable ? module.bastion[0].bastion_sg_id : var.bastion_security_group_id
   eks_customer_cmk_key_arn      = var.eks_customer_cmk_key_arn
   eks_admin_role_arns           = var.eks_admin_role_arns
   eks_http_proxy                = var.eks_http_proxy
@@ -92,7 +92,6 @@ module "eks-solace" {
 
   cluster_name           = var.cluster_name
   vpc_id                 = var.network.enable ? module.eks_network[0].vpc_id : var.bastion.vpc_id
-  eks_cluster_name       = module.eks.cluster_name
   eks_private_subnet_ids = var.network.enable ? module.eks_network[0].private_subnet_ids : var.eks_private_subnet_ids
   eks_node_role_arn      = module.eks.eks_node_role_arn
   eks_node_role_name     = module.eks.eks_node_role_name

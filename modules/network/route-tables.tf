@@ -32,6 +32,14 @@ resource "aws_route_table" "private" {
     }
   }
 
+  dynamic "route" {
+    for_each = var.network.tgw
+    content {
+      cidr_block         = route.value.destination
+      transit_gateway_id = route.value.target
+    }
+  }
+
   tags = {
     Name = "${var.vpc_name}-rt-private-${var.az_map[count.index % length(data.aws_availability_zones.available.zone_ids)]}"
   }

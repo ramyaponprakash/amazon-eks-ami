@@ -13,7 +13,16 @@ variable "vpc_name" {
 
 variable "vpc_id" {
   type    = string
-  default = "vpc-0f40f6277c878bbab"
+  default = ""
+}
+
+variable "vpc_cidr_pri" {
+  type = string
+}
+
+variable "vpc_cidr_sec" {
+  type    = string
+  default = ""
 }
 
 variable "eks_customer_cmk_key_arn" {
@@ -44,6 +53,10 @@ variable "network" {
       destination = string
       target      = string
     }))
+    tgw = list(object({
+      destination = string
+      target      = string
+    }))
   })
 }
 
@@ -61,6 +74,24 @@ variable "vpc_endpoint_allowed_cidrs" {
 
 variable "vpc_endpoint_subnets" {
   type    = list(string)
+  default = []
+}
+
+variable "vpc_sec_enable_cidr" {
+  type    = bool
+  default = false
+}
+
+variable "vpc_sec_subnet_ids" {
+  type    = list(string)
+  default = []
+}
+
+variable "vpc_private_sec_subnets" {
+  type = list(object({
+    cidr       = string
+    enable_elb = number
+  }))
   default = []
 }
 
@@ -101,10 +132,6 @@ variable "vpc_nat_gw_eip_allocation_ids" {
   default = []
 }
 
-variable "vpc_cidr" {
-  type    = string
-  default = "100.112.110.0/24"
-}
 
 variable "vpc_secondary_cidr_blocks" {
   type    = list(string)
@@ -140,11 +167,6 @@ variable "vpc_private_elb_subnets" {
   default = []
 }
 
-variable "bastion_security_group_id" {
-  type    = string
-  default = ""
-}
-
 variable "bastion" {
   type = object({
     enable               = optional(bool, true)
@@ -168,8 +190,9 @@ variable "eks_http_proxy" {
 
 variable "eks_api_endpoint_access_cidrs" {
   type = list(object({
-    from = string
-    port = string
+    from        = string
+    port        = string
+    description = string
   }))
   default = []
 }
