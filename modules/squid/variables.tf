@@ -8,6 +8,16 @@ variable "vpc_name" {
   type = string
 }
 
+variable "vpc_cidr_pri" {
+  type    = string
+  default = ""
+}
+
+variable "vpc_cidr_sec" {
+  type    = string
+  default = ""
+}
+
 variable "vpc_id" {
   type        = string
   default     = ""

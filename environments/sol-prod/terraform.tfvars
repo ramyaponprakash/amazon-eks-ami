@@ -9,7 +9,7 @@ eks_admin_role_arns = [
 ]
 
 // TODO: remove this after demo
-eks_cluster_endpoint_public = true
+eks_cluster_endpoint_public = false
 
 network = {
   enable = true

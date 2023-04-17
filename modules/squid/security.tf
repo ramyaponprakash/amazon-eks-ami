@@ -7,7 +7,7 @@ resource "aws_security_group" "squidproxy" {
     from_port   = 3128
     to_port     = 3128
     protocol    = "tcp"
-    cidr_blocks = ["100.112.110.0/24", "100.80.27.128/26"]
+    cidr_blocks = [var.vpc_cidr_pri, var.vpc_cidr_pri]
     description = "from solx"
   }
 
