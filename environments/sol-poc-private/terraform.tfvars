@@ -66,6 +66,9 @@ vpc_private_subnets = [
 ]
 vpc_public_subnets      = []
 vpc_private_elb_subnets = []
+vpc_private_sec_subnets = []
+vpc_sec_enable_cidr     = false
+vpc_sec_subnet_ids      = []
 
 bastion = {
   enable              = true
