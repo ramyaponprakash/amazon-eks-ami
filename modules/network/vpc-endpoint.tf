@@ -38,7 +38,7 @@ resource "aws_vpc_endpoint" "ec2" {
     aws_security_group.vpc_endpoint.id,
   ]
 
-  subnet_ids          = length(var.vpc_endpoint_subnets) > 0 ? var.vpc_endpoint_subnets : aws_subnet.private_subnets.*.id
+  subnet_ids          = length(var.vpc_endpoint_subnets) > 0 ? slice(var.vpc_endpoint_subnets, 0, 3) : slice(aws_subnet.private_subnets.*.id, 0, 3)
   private_dns_enabled = true
 
   tags = {
@@ -56,7 +56,7 @@ resource "aws_vpc_endpoint" "logs" {
     aws_security_group.vpc_endpoint.id,
   ]
 
-  subnet_ids          = length(var.vpc_endpoint_subnets) > 0 ? var.vpc_endpoint_subnets : aws_subnet.private_subnets.*.id
+  subnet_ids          = length(var.vpc_endpoint_subnets) > 0 ? slice(var.vpc_endpoint_subnets, 0, 3) : slice(aws_subnet.private_subnets.*.id, 0, 3)
   private_dns_enabled = true
 
   tags = {
@@ -74,7 +74,7 @@ resource "aws_vpc_endpoint" "ecr_api" {
     aws_security_group.vpc_endpoint.id,
   ]
 
-  subnet_ids          = length(var.vpc_endpoint_subnets) > 0 ? var.vpc_endpoint_subnets : aws_subnet.private_subnets.*.id
+  subnet_ids          = length(var.vpc_endpoint_subnets) > 0 ? slice(var.vpc_endpoint_subnets, 0, 3) : slice(aws_subnet.private_subnets.*.id, 0, 3)
   private_dns_enabled = true
 
   tags = {
@@ -92,7 +92,7 @@ resource "aws_vpc_endpoint" "ecr_dkr" {
     aws_security_group.vpc_endpoint.id,
   ]
 
-  subnet_ids          = length(var.vpc_endpoint_subnets) > 0 ? var.vpc_endpoint_subnets : aws_subnet.private_subnets.*.id
+  subnet_ids          = length(var.vpc_endpoint_subnets) > 0 ? slice(var.vpc_endpoint_subnets, 0, 3) : slice(aws_subnet.private_subnets.*.id, 0, 3)
   private_dns_enabled = true
 
   tags = {
@@ -110,7 +110,7 @@ resource "aws_vpc_endpoint" "sts" {
     aws_security_group.vpc_endpoint.id,
   ]
 
-  subnet_ids          = length(var.vpc_endpoint_subnets) > 0 ? var.vpc_endpoint_subnets : aws_subnet.private_subnets.*.id
+  subnet_ids          = length(var.vpc_endpoint_subnets) > 0 ? slice(var.vpc_endpoint_subnets, 0, 3) : slice(aws_subnet.private_subnets.*.id, 0, 3)
   private_dns_enabled = true
 
   tags = {
@@ -141,7 +141,7 @@ resource "aws_vpc_endpoint" "elasticloadbalancing" {
     aws_security_group.vpc_endpoint.id,
   ]
 
-  subnet_ids          = length(var.vpc_endpoint_subnets) > 0 ? var.vpc_endpoint_subnets : aws_subnet.private_subnets.*.id
+  subnet_ids          = length(var.vpc_endpoint_subnets) > 0 ? slice(var.vpc_endpoint_subnets, 0, 3) : slice(aws_subnet.private_subnets.*.id, 0, 3)
   private_dns_enabled = true
 
   tags = {
@@ -159,9 +159,7 @@ resource "aws_vpc_endpoint" "autoscaling" {
     aws_security_group.vpc_endpoint.id,
   ]
 
-  subnet_ids = length(var.vpc_endpoint_subnets) > 0 ? var.vpc_endpoint_subnets : aws_subnet.private_subnets.*.id
-
-
+  subnet_ids          = length(var.vpc_endpoint_subnets) > 0 ? slice(var.vpc_endpoint_subnets, 0, 3) : slice(aws_subnet.private_subnets.*.id, 0, 3)
   private_dns_enabled = true
 
   tags = {
@@ -180,7 +178,7 @@ resource "aws_vpc_endpoint" "autoscaling" {
 #    aws_security_group.vpc_endpoint.id,
 #  ]
 #
-#  subnet_ids          = length(var.vpc_endpoint_subnets) > 0 ? var.vpc_endpoint_subnets : aws_subnet.private_subnets.*.id
+#    subnet_ids          = length(var.vpc_endpoint_subnets) > 0 ? slice(var.vpc_endpoint_subnets, 0, 3) : slice(aws_subnet.private_subnets.*.id, 0, 3)
 #  private_dns_enabled = true
 #
 #  tags = {
