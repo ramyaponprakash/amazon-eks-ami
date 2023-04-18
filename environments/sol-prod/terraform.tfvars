@@ -36,18 +36,18 @@ network = {
   ]
   # https://docs.solace.com/Cloud/Deployment-Considerations/connectivity-model-k8s.htm
   tgw = [
-    #    {
-    #      destination : "13.236.32.115/32",
-    #      target : "tgw-0b0fdbd326689589d" // TODO
-    #    },
-    #    {
-    #      destination : "3.106.10.188/32", // TODO
-    #      target : "tgw-0b0fdbd326689589d"
-    #    },
-    #    {
-    #      destination : "3.105.186.75/32", // TODO
-    #      target : "tgw-0b0fdbd326689589d"
-    #    }
+    {
+      destination : "13.236.32.115/32",
+      target : "tgw-0c173b5b87a3ad575" // adex-solace
+    },
+    {
+      destination : "3.106.10.188/32",
+      target : "tgw-0c173b5b87a3ad575" // adex-solace
+    },
+    {
+      destination : "3.105.186.75/32",
+      target : "tgw-0c173b5b87a3ad575" // adex-solace
+    }
   ]
 }
 
