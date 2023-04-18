@@ -36,13 +36,13 @@ resource "aws_security_group_rule" "eks_cluster-node-ingress-cluster" {
   type                     = "ingress"
 }
 
-// This is to allow access from the bastion host
-resource "aws_security_group_rule" "eks_cluster-node-bastion" {
-  description              = "Allow ssh access from the bastion host"
-  from_port                = 22
-  to_port                  = 22
+resource "aws_security_group_rule" "eks_cluster-node-ingress-lbc" {
+  description              = "Allow access from control plane to webhook port of AWS load balancer controller"
+  type                     = "ingress"
   protocol                 = "tcp"
   security_group_id        = aws_security_group.eks_cluster-node.id
-  source_security_group_id = var.bastion_security_group_id
-  type                     = "ingress"
+  source_security_group_id = aws_security_group.eks_cluster-cluster.id
+  from_port                = 9443
+  to_port                  = 9443
 }
+

@@ -10,8 +10,9 @@ eks_admin_role_arns = [
 eks_http_proxy              = "http://squid.adex-qa.com:3128"
 eks_cluster_endpoint_public = false
 eks_api_endpoint_access_cidrs = [
-  { from : "173.1.0.0/19", port : "443" },
-  { from : "173.2.0.0/19", port : "443" }
+  { from : "173.1.0.0/19", port : "443", description : "QA CIDR 1" },
+  { from : "173.2.0.0/19", port : "443", description : "QA CIDR 2" },
+  { from : "172.9.0.0/24", port : "443", description : "VPC self" },
 ]
 
 network = {
@@ -25,6 +26,21 @@ network = {
     {
       destination : "173.2.0.0/19",
       target : "pcx-00713693324ba3178"
+    }
+  ]
+  # https://docs.solace.com/Cloud/Deployment-Considerations/connectivity-model-k8s.htm
+  tgw = [
+    {
+      destination : "13.236.32.115/32",
+      target : "tgw-0b0fdbd326689589d" // TODO
+    },
+    {
+      destination : "3.106.10.188/32", // TODO
+      target : "tgw-0b0fdbd326689589d"
+    },
+    {
+      destination : "3.105.186.75/32", // TODO
+      target : "tgw-0b0fdbd326689589d"
     }
   ]
 }
@@ -49,7 +65,8 @@ vpc_nat_gw_ids = []
 
 vpc_igw_ids = []
 
-vpc_cidr = "172.9.0.0/24"
+vpc_cidr_pri = "172.9.0.0/24"
+#vpc_cidr_sec = ""
 vpc_private_subnets = [
   {
     cidr       = "172.9.0.0/26"

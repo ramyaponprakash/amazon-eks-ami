@@ -13,7 +13,7 @@ resource "kubernetes_annotations" "remove_default_storage_class" {
 
 resource "kubernetes_storage_class" "gp2" {
   metadata {
-    name = "gp2-default"
+    name = "gp3-default"
     annotations = {
       "storageclass.kubernetes.io/is-default-class" = "true"
     }
@@ -24,7 +24,7 @@ resource "kubernetes_storage_class" "gp2" {
     type      = "gp3"
     fsType    = "xfs"
     encrypted = "true"
-    kmsKeyId  = var.eks_customer_cmk_key_arn != "" ? var.eks_customer_cmk_key_arn : null
+    kmsKeyId  = var.eks_customer_cmk_key_arn
   }
   allow_volume_expansion = true
   volume_binding_mode    = "WaitForFirstConsumer"

@@ -1,5 +1,6 @@
 cluster_name = "adex-prd-solace-eks-cluster"
 vpc_name     = "adex-prd-solace"
+vpc_id       = "vpc-0f40f6277c878bbab"
 
 eks_customer_cmk_key_arn = "arn:aws:kms:ap-southeast-1:704140326871:key/544321c8-ceb8-4edd-9c47-d6a813715acf"
 eks_admin_role_arns = [
@@ -11,8 +12,10 @@ eks_admin_role_arns = [
 eks_http_proxy              = "http://squid-solx.adex.com:3128"
 eks_cluster_endpoint_public = false
 eks_api_endpoint_access_cidrs = [
-  { from : "172.22.223.0/25", port : "443" }, // SDX_PRD 1
-  { from : "172.16.110.0/24", port : "443" }  // SDX_PRD 2
+  { from : "172.22.223.0/25", port : "443", description : "SDX_PRD CIDR 1" },
+  { from : "172.16.110.0/24", port : "443", description : "SDX_PRD CIDR 2" },
+  { from : "100.112.110.0/24", port : "443", description : "Self CIDR 1" },
+  { from : "100.80.27.128/26", port : "443", description : "Self CIDR 2" },
 ]
 
 network = {
@@ -30,6 +33,21 @@ network = {
       destination : "10.189.118.0/25", // SOLI cidr
       target : "pcx-0183e747499457bef"
     }
+  ]
+  # https://docs.solace.com/Cloud/Deployment-Considerations/connectivity-model-k8s.htm
+  tgw = [
+    #    {
+    #      destination : "13.236.32.115/32",
+    #      target : "tgw-0b0fdbd326689589d" // TODO
+    #    },
+    #    {
+    #      destination : "3.106.10.188/32", // TODO
+    #      target : "tgw-0b0fdbd326689589d"
+    #    },
+    #    {
+    #      destination : "3.105.186.75/32", // TODO
+    #      target : "tgw-0b0fdbd326689589d"
+    #    }
   ]
 }
 

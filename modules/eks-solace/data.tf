@@ -3,7 +3,7 @@ data "aws_vpc" "vpc" {
 }
 
 data "aws_eks_cluster" "eks_cluster" {
-  name = var.eks_cluster_name
+  name = var.cluster_name
 }
 
 data "aws_ssm_parameter" "optimized-ami" {

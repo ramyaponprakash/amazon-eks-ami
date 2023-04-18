@@ -18,11 +18,6 @@ variable "vpc_id" {
   default = ""
 }
 
-variable "bastion_security_group_id" {
-  type    = string
-  default = ""
-}
-
 variable "eks_private_subnet_ids" {
   type = list(string)
 }
@@ -68,8 +63,9 @@ variable "eks_additional_no_proxy" {
 
 variable "eks_api_endpoint_access_cidrs" {
   type = list(object({
-    from = string
-    port = string
+    from        = string
+    port        = string
+    description = string
   }))
   default = []
 }
