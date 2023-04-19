@@ -179,6 +179,7 @@ variable "bastion" {
     public_key_path      = optional(string, "empty")
     hosts_number         = optional(number, 1)
     iam_role             = string
+    ami_id               = string
     ssh_cidr_blocks      = optional(list(string))
     ssh_prefix_list_ids  = optional(list(string))
   })
