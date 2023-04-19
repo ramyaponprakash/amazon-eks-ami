@@ -1,21 +1,3 @@
-data "aws_ami" "ubuntu" {
-  most_recent = true
-  owners      = ["099720109477"] # aws
-
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*"]
-  }
-  filter {
-    name   = "root-device-type"
-    values = ["ebs"]
-  }
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-}
-
 data "template_file" "userdata" {
   template = file("${path.module}/userdata.sh")
   vars = {
@@ -41,7 +23,7 @@ resource "aws_key_pair" "generated_keypair" {
 resource "aws_instance" "ubuntu_bastion" {
   count = var.bastion.hosts_number
 
-  ami                         = data.aws_ami.ubuntu.id
+  ami                         = var.bastion.ami_id
   instance_type               = var.bastion.instance_type
   key_name                    = aws_key_pair.generated_keypair.key_name
   subnet_id                   = var.bastion.subnet_ids[count.index]

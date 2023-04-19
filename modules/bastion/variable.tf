@@ -23,6 +23,7 @@ variable "az_map" {
 variable "bastion" {
   type = object({
     enable               = optional(bool, true)
+    ami_id				 = optional(string, "ami-08b59d681971c7542")
     instance_type        = optional(string, "t3.medium")
     public_access        = optional(bool, true)
     attach_eip           = optional(bool, false)
