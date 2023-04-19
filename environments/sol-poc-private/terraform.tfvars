@@ -94,7 +94,7 @@ bastion = {
   subnet_ids          = []
   instance_type       = "t2.micro"
   iam_role            = "u-ec2read"
-  ami_id              = "ami-08b59d681971c7542"
+  ami_id              = "ami-0aaee588abf059b37"
   ssh_cidr_blocks     = ["173.1.0.0/19", "173.2.0.0/19"]
   ssh_prefix_list_ids = ["pl-0af10fe06357d6aff"]
 }

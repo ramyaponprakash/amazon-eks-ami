@@ -115,7 +115,7 @@ bastion = {
   vpc_id              = ""
   subnet_ids          = []
   iam_role            = "adex-eksadmin"
-  ami_id              = "ami-08b59d681971c7542"
+  ami_id              = "ami-0aaee588abf059b37"
   ssh_cidr_blocks     = []
   ssh_prefix_list_ids = ["pl-04d17737125dbdb0f"]
 }
