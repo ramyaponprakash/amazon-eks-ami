@@ -41,7 +41,7 @@ resource "aws_route_table" "private" {
   }
 
   tags = {
-    Name = "${var.vpc_name}-rt-private-${var.az_map[count.index % length(data.aws_availability_zones.available.zone_ids)]}"
+    Name = "${var.vpc_name}-rt-private-${count.index + 1}-${var.az_map[count.index % length(data.aws_availability_zones.available.zone_ids)]}"
   }
 }
 

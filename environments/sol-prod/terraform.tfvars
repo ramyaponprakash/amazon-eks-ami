@@ -26,6 +26,10 @@ network = {
       target : "pcx-0573794d0b2a23d7e"
     },
     {
+      destination : "172.16.109.0/24", // SDX_PRD cidr
+      target : "pcx-00c00bb36f5ede8d7"
+    },
+    {
       destination : "172.16.110.0/24", // SDX_PRD cidr
       target : "pcx-0573794d0b2a23d7e"
     },
@@ -111,6 +115,7 @@ bastion = {
   vpc_id              = ""
   subnet_ids          = []
   iam_role            = "adex-eksadmin"
+  ami_id              = "ami-08b59d681971c7542"
   ssh_cidr_blocks     = []
   ssh_prefix_list_ids = ["pl-04d17737125dbdb0f"]
 }
