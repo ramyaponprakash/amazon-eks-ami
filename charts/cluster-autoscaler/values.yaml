@@ -1,4 +1,0 @@
-image:
-  repository: k8s.gcr.io/autoscaling/cluster-autoscaler
-  imagePullSecret: 
-  tag:
