@@ -34,11 +34,58 @@ variable "bastion" {
     hosts_number         = optional(number, 1)
     iam_role             = string
     ssh_cidr_blocks      = optional(list(string))
-    ssh_prefix_list_ids  = optional(list(string))
 
     // cli installation variables
     kubectl_version  = optional(string, "1.22.6/2022-03-09")
     helm_version     = optional(string, "v3.9.2")
     helmfile_version = optional(string, "0.145.2")
   })
+}
+
+variable "bastion_secgrp_ingress_cidr" {
+  type = list(object({
+    cidrs       = list(string)
+    port        = number
+    description = string
+  }))
+
+  default = [
+    {
+      cidrs       = []
+      port        = 22
+      description = "from own vpc"
+    },
+  ]
+}
+
+variable "bastion_secgrp_ingress_prefix_list" {
+  type = list(object({
+    prefix_list_ids = list(string)
+    port            = number
+    description     = string
+  }))
+
+  default = [
+    {
+      prefix_list_ids = ["pl-04d17737125dbdb0f"]
+      port            = 22
+      description     = "from ADEX team"
+    },
+  ]
+}
+
+variable "bastion_secgrp_ingress_secgrp" {
+  type = list(object({
+    secgrp_ids  = list(string)
+    port        = number
+    description = string
+  }))
+
+  default = [
+    {
+      secgrp_ids  = ["sg-0dd3d667f43ec5703"]
+      port        = 22
+      description = "from mgmt"
+    },
+  ]
 }
