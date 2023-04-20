@@ -18,7 +18,6 @@ No modules.
 | Name | Type |
 |------|------|
 | [null_resource.mock_dynano](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [null_resource.mock_s3](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 
 ## Inputs
 
