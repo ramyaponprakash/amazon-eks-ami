@@ -7,7 +7,12 @@ if [[ -z "${CLUSTER_NAME}" ]]; then
 fi
 
 aws eks --region ap-southeast-1 update-kubeconfig --name $CLUSTER_NAME
-aws eks describe-cluster --name "$CLUSTER_NAME" --query "cluster.identity.oidc.issuer" --output text
+EKS_OIDC_ID=$(aws eks describe-cluster --name "$CLUSTER_NAME" --query "cluster.identity.oidc.issuer" --output text | cut -d '/' -f 5)
+OIDC_OBJ=$(aws iam list-open-id-connect-providers | grep "$EKS_OIDC_ID" | cut -d "/" -f4)
+if [[ -z "${OIDC_OBJ}" ]]; then
+  echo "IAM OIDC provider $EKS_OIDC_ID must be created in IAM, raise Service Request to GCC team" && exit 1
+fi
+
 
 echo "decreasing the number of IPs reserved for each worker node"
 kubectl set env ds aws-node -n kube-system WARM_IP_TARGET=1
@@ -19,7 +24,3 @@ echo "patching for http_proxy"
 kubectl patch -n kube-system -p '{ "spec": {"template":{ "spec": { "containers": [ { "name": "aws-node", "envFrom": [ { "configMapRef": {"name": "proxy-environment-variables"} } ] } ] } } } }' daemonset aws-node
 kubectl patch -n kube-system -p '{ "spec": {"template":{ "spec": { "containers": [ { "name": "kube-proxy", "envFrom": [ { "configMapRef": {"name": "proxy-environment-variables"} } ] } ] } } } }' daemonset kube-proxy
 kubectl patch -n kube-system -p '{ "spec": {"template":{ "spec": { "containers": [ { "name": "coredns", "envFrom": [ { "configMapRef": {"name": "proxy-environment-variables"} } ] } ] } } } }' deployment coredns
-
-# Applying proxy config after chart installation
-kubectl patch -n kube-system -p '{ "spec": {"template":{ "spec": { "containers": [ { "name": "aws-cluster-autoscaler", "envFrom": [ { "configMapRef": {"name": "proxy-environment-variables"} } ] } ] } } } }' deployment cluster-autoscaler-aws-cluster-autoscaler
-kubectl patch -n kube-system -p '{ "spec": {"template":{ "spec": { "containers": [ { "name": "aws-load-balancer-controller", "envFrom": [ { "configMapRef": {"name": "proxy-environment-variables"} } ] } ] } } } }' deployment lb-ctrl-aws-load-balancer-controller
