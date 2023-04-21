@@ -201,3 +201,7 @@ variable "eks_additional_no_proxy" {
   description = "must start with starting comma"
   default     = ""
 }
+
+variable "cluster_node_secgrp_id" {
+  type = list(string)
+}
