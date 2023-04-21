@@ -1,4 +1,4 @@
-cluster_name = "adex-intra-solace-eks-cluster"
+cluster_name = "adex-soli-eks-cluster"
 vpc_name     = "adex-intra-solace"
 vpc_id       = "vpc-050a2b7cde1cb187e"
 
@@ -12,10 +12,12 @@ eks_admin_role_arns = [
 eks_http_proxy              = "http://squid-intra.adex.com:3128"
 eks_cluster_endpoint_public = false
 eks_api_endpoint_access_cidrs = [
-  { from : "172.22.223.0/25", port : "443", description : "SDX_PRD CIDR 1" },
-  { from : "172.16.110.0/24", port : "443", description : "SDX_PRD CIDR 2" },
-  { from : "100.112.110.0/24", port : "443", description : "SOLX CIDR 1" },
-  { from : "100.80.27.128/26", port : "443", description : "SOLX CIDR 2" },
+  { from : "172.22.223.0/25", port : "443", description : "SDX_PRD CIDR 1" }, //will be removed after ci/cd setup has been done
+  { from : "172.16.110.0/24", port : "443", description : "SDX_PRD CIDR 2" }, //will be removed after ci/cd setup has been done
+  { from : "10.193.135.0/24", port : "443", description : "SDX_INTRA CIDR 1" },
+  { from : "10.196.142.0/25", port : "443", description : "SDX_INTRA CIDR 2" },
+  { from : "172.16.109.0/24", port : "443", description : "SDX_MGMT CIDR 1" },
+  { from : "172.22.222.128/25", port : "443", description : "SDX_MGMT CIDR 2" },
   { from : "10.189.118.0/25", port : "443", description : "Self CIDR 1" },
   { from : "100.80.29.192/26", port : "443", description : "Self CIDR 2" },
 ]
@@ -24,19 +26,15 @@ network = {
   enable = true
   peers = [
     {
-      destination : "172.22.223.0/25", // SDX_PRD cidr
-      target : "pcx-0573794d0b2a23d7e"
+      destination : "10.193.135.0/24", // SDX_INTRA cidr
+      target : "pcx-057c120394a4dfe70"
     },
     {
-      destination : "172.16.109.0/24", // SDX_PRD cidr
-      target : "pcx-00c00bb36f5ede8d7"
+      destination : "10.196.142.0/25", // SDX_INTRA cidr
+      target : "pcx-057c120394a4dfe70"
     },
     {
-      destination : "172.16.110.0/24", // SDX_PRD cidr
-      target : "pcx-0573794d0b2a23d7e"
-    },
-    {
-      destination : "10.189.118.0/25", // SOLI cidr
+      destination : "100.112.110.0/24", // SOLX cidr
       target : "pcx-0183e747499457bef"
     }
   ]
@@ -120,20 +118,13 @@ bastion = {
 bastion_secgrp_ingress_cidr = [
   {
 
-    cidrs       = ["10.189.118.0/25", "100.80.29.192/26"]
+    cidrs       = ["10.193.135.0/24", "10.196.142.0/25"]
     port        = 22
-    description = "from SOLX vpc"
+    description = "from INTRA vpc"
   },
 ]
 
-bastion_secgrp_ingress_prefix_list = [
-  {
-
-    prefix_list_ids = ["pl-04d17737125dbdb0f"]
-    port            = 22
-    description     = "from ADEX team"
-  },
-]
+bastion_secgrp_ingress_prefix_list = []
 
 bastion_secgrp_ingress_secgrp = [
   {

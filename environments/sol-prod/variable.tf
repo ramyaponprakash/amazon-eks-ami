@@ -191,8 +191,55 @@ variable "bastion" {
     iam_role             = string
     ami_id               = string
     ssh_cidr_blocks      = optional(list(string))
-    ssh_prefix_list_ids  = optional(list(string))
   })
+}
+
+variable "bastion_secgrp_ingress_cidr" {
+  type = list(object({
+    cidrs       = list(string)
+    port        = number
+    description = string
+  }))
+
+  default = [
+    {
+      cidrs       = []
+      port        = 22
+      description = "from own vpc"
+    },
+  ]
+}
+
+variable "bastion_secgrp_ingress_prefix_list" {
+  type = list(object({
+    prefix_list_ids = list(string)
+    port            = number
+    description     = string
+  }))
+
+  default = [
+    {
+      prefix_list_ids = []
+      port            = 22
+      description     = "from ADEX team"
+    },
+  ]
+}
+
+variable "bastion_secgrp_ingress_secgrp" {
+  type = list(object({
+    secgrp_ids  = list(string)
+    port        = number
+    description = string
+  }))
+
+  default = [
+    {
+      secgrp_ids  = []
+      port        = 22
+      description = "from mgmt"
+    },
+  ]
 }
 
 variable "squid" {

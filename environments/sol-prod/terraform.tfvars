@@ -120,6 +120,18 @@ bastion = {
   ssh_prefix_list_ids = ["pl-04d17737125dbdb0f"]
 }
 
+bastion_secgrp_ingress_cidr = []
+
+bastion_secgrp_ingress_prefix_list = []
+
+bastion_secgrp_ingress_secgrp = [
+  {
+    secgrp_ids  = ["sg-0dd3d667f43ec5703"]
+    port        = 22
+    description = "from mgmt"
+  },
+]
+
 squid = {
   vpc_id         = ""
   subnet_ids     = []

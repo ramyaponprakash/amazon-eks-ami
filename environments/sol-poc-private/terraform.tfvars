@@ -98,3 +98,16 @@ bastion = {
   ssh_cidr_blocks     = ["173.1.0.0/19", "173.2.0.0/19"]
   ssh_prefix_list_ids = ["pl-0af10fe06357d6aff"]
 }
+
+bastion_secgrp_ingress_cidr = [
+  {
+
+    cidrs       = ["173.2.0.0/19", "173.1.0.0/19"]
+    port        = 22
+    description = "from qa vpc"
+  },
+]
+
+bastion_secgrp_ingress_prefix_list = []
+
+bastion_secgrp_ingress_secgrp = []
