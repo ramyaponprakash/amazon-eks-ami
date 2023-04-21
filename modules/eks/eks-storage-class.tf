@@ -24,7 +24,6 @@ resource "kubernetes_storage_class" "gp2" {
     type      = "gp3"
     fsType    = "xfs"
     encrypted = "true"
-    kmsKeyId  = var.eks_customer_cmk_key_arn
   }
   allow_volume_expansion = true
   volume_binding_mode    = "WaitForFirstConsumer"
@@ -44,7 +43,6 @@ resource "kubernetes_storage_class" "gp3" {
     type      = "gp3"
     fsType    = "xfs"
     encrypted = "true"
-    kmsKeyId  = var.eks_customer_cmk_key_arn
   }
   allow_volume_expansion = true
   volume_binding_mode    = "WaitForFirstConsumer"
