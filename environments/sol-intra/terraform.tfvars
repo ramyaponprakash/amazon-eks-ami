@@ -1,4 +1,4 @@
-cluster_name = "adex-soli-eks-cluster"
+cluster_name = "adex-int-solace-eks-cluster"
 vpc_name     = "adex-intra-solace"
 vpc_id       = "vpc-050a2b7cde1cb187e"
 
