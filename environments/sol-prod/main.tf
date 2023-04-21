@@ -104,6 +104,7 @@ module "eks-solace" {
   eks_node_role_arn      = module.eks.eks_node_role_arn
   eks_node_role_name     = module.eks.eks_node_role_name
   eks_http_proxy         = var.eks_http_proxy
+  cluster_node_secgrp_id = module.eks.cluster_node_secgrp_id
 
   depends_on = [
     module.eks,

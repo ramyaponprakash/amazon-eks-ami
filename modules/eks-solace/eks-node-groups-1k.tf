@@ -39,7 +39,7 @@ resource "aws_launch_template" "prod1k" {
   name = "${var.cluster_name}-prod1k-ng-tmpl"
 
   image_id               = data.aws_ssm_parameter.optimized-ami.value
-  vpc_security_group_ids = local.cluster_secgrp_ids
+  vpc_security_group_ids = var.cluster_node_secgrp_id
 
   instance_type          = var.node_groups_1k_instance_type
   update_default_version = true

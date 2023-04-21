@@ -49,3 +49,7 @@ output "storage_class_gp3" {
 output "cluster_secgrp_ids" {
   value = [aws_security_group.eks_cluster-cluster.id, aws_security_group.eks_cluster-node.id]
 }
+
+output "cluster_node_secgrp_id" {
+  value = [aws_security_group.eks_cluster-node.id]
+}

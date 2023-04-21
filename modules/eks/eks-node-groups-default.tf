@@ -36,7 +36,7 @@ resource "aws_launch_template" "default_nodegroup" {
   name = "${var.cluster_name}-default-ng-tmpl"
 
   image_id               = data.aws_ssm_parameter.optimized-ami.value
-  vpc_security_group_ids = [aws_security_group.eks_cluster-cluster.id, aws_security_group.eks_cluster-node.id]
+  vpc_security_group_ids = [aws_security_group.eks_cluster-node.id]
 
   instance_type          = "t3.medium"
   update_default_version = true

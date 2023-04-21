@@ -38,7 +38,7 @@ resource "aws_launch_template" "monitoring" {
   name = "${var.cluster_name}-monitoring-ng-tmpl"
 
   image_id               = data.aws_ssm_parameter.optimized-ami.value
-  vpc_security_group_ids = local.cluster_secgrp_ids
+  vpc_security_group_ids = var.cluster_node_secgrp_id
 
   instance_type          = var.node_groups_monitoring_instance_type
   update_default_version = true
