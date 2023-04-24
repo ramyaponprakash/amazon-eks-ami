@@ -201,13 +201,7 @@ variable "bastion_secgrp_ingress_prefix_list" {
     description     = string
   }))
 
-  default = [
-    {
-      prefix_list_ids = []
-      port            = 22
-      description     = "from ADEX team"
-    },
-  ]
+  default = []
 }
 
 variable "bastion_secgrp_ingress_secgrp" {
@@ -217,13 +211,7 @@ variable "bastion_secgrp_ingress_secgrp" {
     description = string
   }))
 
-  default = [
-    {
-      secgrp_ids  = []
-      port        = 22
-      description = "from mgmt"
-    },
-  ]
+  default = []
 }
 
 

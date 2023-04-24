@@ -257,23 +257,7 @@ variable "squid_secgrp_ingress_cidr" {
     description = string
   }))
 
-  default = [
-    {
-      cidrs       = []
-      port        = 3128
-      description = "from own vpc"
-    },
-    {
-      cidrs       = ["10.189.118.0/25"]
-      port        = 3128
-      description = "from peer vpc cidr (or the source)"
-    },
-    {
-      cidrs       = []
-      port        = 22
-      description = "from own vpc"
-    },
-  ]
+  default = []
 }
 
 variable "squid_secgrp_ingress_secgrp" {
@@ -283,13 +267,7 @@ variable "squid_secgrp_ingress_secgrp" {
     description = string
   }))
 
-  default = [
-    {
-      secgrp_ids  = ["sg-0dd3d667f43ec5703"]
-      port        = 22
-      description = "from mgmt"
-    },
-  ]
+  default = []
 }
 
 
