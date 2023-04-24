@@ -181,8 +181,37 @@ variable "bastion" {
     iam_role             = string
     ami_id               = string
     ssh_cidr_blocks      = optional(list(string))
-    ssh_prefix_list_ids  = optional(list(string))
   })
+}
+
+variable "bastion_secgrp_ingress_cidr" {
+  type = list(object({
+    cidrs       = list(string)
+    port        = number
+    description = string
+  }))
+
+  default = []
+}
+
+variable "bastion_secgrp_ingress_prefix_list" {
+  type = list(object({
+    prefix_list_ids = list(string)
+    port            = number
+    description     = string
+  }))
+
+  default = []
+}
+
+variable "bastion_secgrp_ingress_secgrp" {
+  type = list(object({
+    secgrp_ids  = list(string)
+    port        = number
+    description = string
+  }))
+
+  default = []
 }
 
 variable "eks_http_proxy" {

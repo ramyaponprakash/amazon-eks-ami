@@ -15,16 +15,6 @@ variable "vpc_id" {
   type = string
 }
 
-variable "ami_squid" {
-  type    = string
-  default = ""
-}
-
-variable "squid_key_name" {
-  type    = string
-  default = ""
-}
-
 variable "eks_customer_cmk_key_arn" {
   type    = string
   default = ""
@@ -211,13 +201,7 @@ variable "bastion_secgrp_ingress_prefix_list" {
     description     = string
   }))
 
-  default = [
-    {
-      prefix_list_ids = []
-      port            = 22
-      description     = "from ADEX team"
-    },
-  ]
+  default = []
 }
 
 variable "bastion_secgrp_ingress_secgrp" {
@@ -227,48 +211,9 @@ variable "bastion_secgrp_ingress_secgrp" {
     description = string
   }))
 
-  default = [
-    {
-      secgrp_ids  = []
-      port        = 22
-      description = "from mgmt"
-    },
-  ]
-}
-
-variable "squid" {
-  type = object({
-    instance_type  = optional(string, "t3.medium")
-    subnet_ids     = list(string)
-    subnet_gw_ids  = list(string)
-    iam_role       = string
-    zone_id        = string
-    record_name    = string
-    ami_squid      = string
-    squid_key_name = string
-    kms_key_id     = string
-  })
-}
-
-variable "squid_secgrp_ingress_cidr" {
-  type = list(object({
-    cidrs       = list(string)
-    port        = number
-    description = string
-  }))
-
   default = []
 }
 
-variable "squid_secgrp_ingress_secgrp" {
-  type = list(object({
-    secgrp_ids  = list(string)
-    port        = number
-    description = string
-  }))
-
-  default = []
-}
 
 
 variable "eks_http_proxy" {
