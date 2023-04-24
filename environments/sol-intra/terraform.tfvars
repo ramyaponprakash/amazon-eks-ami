@@ -116,25 +116,19 @@ bastion = {
 }
 
 bastion_secgrp_ingress_cidr = [
-  {
-
-    cidrs       = ["10.193.135.0/24", "10.196.142.0/25"]
-    port        = 22
-    description = "from INTRA vpc"
-  },
+  #  {
+  #    cidrs       = ["10.189.118.0/25", "100.80.29.192/26"]
+  #    port        = 22
+  #    description = "from SOLI vpc"
+  #  },
 ]
 
 bastion_secgrp_ingress_prefix_list = []
 
 bastion_secgrp_ingress_secgrp = [
   {
-    secgrp_ids  = ["sg-0dd3d667f43ec5703"]
-    port        = 22
-    description = "from mgmt"
-  },
-  {
     secgrp_ids  = ["sg-0a50de674c5138209"]
     port        = 22
-    description = "from from SDX_INTRA"
+    description = "from SDX_INTRA"
   },
 ]

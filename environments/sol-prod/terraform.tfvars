@@ -120,7 +120,13 @@ bastion = {
   ssh_prefix_list_ids = ["pl-04d17737125dbdb0f"]
 }
 
-bastion_secgrp_ingress_cidr = []
+bastion_secgrp_ingress_cidr = [
+  #  {
+  #    cidrs       = ["100.112.110.0/24", "100.80.27.128/26"]
+  #    port        = 22
+  #    description = "from SOLX vpc"
+  #  },
+]
 
 bastion_secgrp_ingress_prefix_list = []
 
