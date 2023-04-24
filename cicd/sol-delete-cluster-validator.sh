@@ -9,4 +9,4 @@ kubectl delete clusterrolebinding solace-validation-cluster-role-binding
 kubectl -n $ns  delete role solace-validation-role
 kubectl -n $ns delete rolebinding solace-validation-role-binding
 kubectl -n $ns delete job solace-validation
-
+kubectl -n $ns delete configmap solace-validation-modules
