@@ -33,6 +33,7 @@ resource "kubernetes_storage_class" "gp2" {
   ]
 }
 
+
 resource "kubernetes_storage_class" "gp3" {
   metadata {
     name = "gp3"
