@@ -191,13 +191,7 @@ variable "bastion_secgrp_ingress_cidr" {
     description = string
   }))
 
-  default = [
-    {
-      cidrs       = []
-      port        = 22
-      description = "from own vpc"
-    },
-  ]
+  default = []
 }
 
 variable "bastion_secgrp_ingress_prefix_list" {
