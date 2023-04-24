@@ -132,4 +132,9 @@ bastion_secgrp_ingress_secgrp = [
     port        = 22
     description = "from mgmt"
   },
+  {
+    secgrp_ids  = ["sg-0a50de674c5138209"]
+    port        = 22
+    description = "from from SDX_INTRA"
+  },
 ]
