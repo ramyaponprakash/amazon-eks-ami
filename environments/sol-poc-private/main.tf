@@ -89,6 +89,8 @@ module "eks" {
   eks_admin_role_arns           = var.eks_admin_role_arns
   eks_http_proxy                = var.eks_http_proxy
   eks_api_endpoint_access_cidrs = var.eks_api_endpoint_access_cidrs
+  eks_worker_node_access_cidrs  = var.eks_worker_node_access_cidrs
+  eks_worker_node_access_prefix = var.eks_worker_node_access_prefix
 }
 
 module "eks-solace" {

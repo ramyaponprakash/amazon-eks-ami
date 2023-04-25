@@ -8,6 +8,7 @@ No requirements.
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
+| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | n/a |
 | <a name="provider_null"></a> [null](#provider\_null) | n/a |
 
 ## Modules
@@ -22,6 +23,8 @@ No modules.
 | [aws_eks_node_group.prod1k](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_node_group) | resource |
 | [aws_launch_template.monitoring](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_template) | resource |
 | [aws_launch_template.prod1k](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_template) | resource |
+| [kubernetes_config_map.proxy_configmap](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/config_map) | resource |
+| [kubernetes_namespace.solace-cloud](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
 | [null_resource.monitoring-asg-tags](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.prod1k-asg-tags](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [aws_arn.monitoring](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/arn) | data source |
@@ -38,6 +41,7 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_asg_messaging_tags"></a> [asg\_messaging\_tags](#input\_asg\_messaging\_tags) | n/a | <pre>list(object({<br>    type  = string<br>    key   = string<br>    value = string<br>  }))</pre> | <pre>[<br>  {<br>    "key": "ephemeral-storage",<br>    "type": "resources",<br>    "value": "20G"<br>  }<br>]</pre> | no |
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | n/a | `string` | n/a | yes |
+| <a name="input_cluster_node_secgrp_id"></a> [cluster\_node\_secgrp\_id](#input\_cluster\_node\_secgrp\_id) | n/a | `list(string)` | n/a | yes |
 | <a name="input_eks_additional_no_proxy"></a> [eks\_additional\_no\_proxy](#input\_eks\_additional\_no\_proxy) | must start with starting comma | `string` | `""` | no |
 | <a name="input_eks_http_proxy"></a> [eks\_http\_proxy](#input\_eks\_http\_proxy) | n/a | `string` | n/a | yes |
 | <a name="input_eks_node_role_arn"></a> [eks\_node\_role\_arn](#input\_eks\_node\_role\_arn) | n/a | `string` | n/a | yes |
