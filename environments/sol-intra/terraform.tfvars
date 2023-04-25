@@ -21,6 +21,13 @@ eks_api_endpoint_access_cidrs = [
   { from : "10.189.118.0/25", port : "443", description : "Self CIDR 1" },
   { from : "100.80.29.192/26", port : "443", description : "Self CIDR 2" },
 ]
+eks_worker_node_access_cidrs = [
+  { cidrs : ["0.0.0.0/0"], port : "8883", description : "MQTTS" },
+  { cidrs : ["0.0.0.0/0"], port : "5671", description : "AMQPS" },
+  #  { cidrs : ["0.0.0.0/0"], port : "8443", description : "WSS MQTT" },
+  { cidrs : ["0.0.0.0/0"], port : "15675", description : "WS MQTT" }, # kept previous port
+  { cidrs : ["0.0.0.0/0"], port : "55443", description : "SMFS" },
+]
 
 network = {
   enable = true

@@ -10,7 +10,6 @@ No requirements.
 | <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
 | <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | n/a |
 | <a name="provider_null"></a> [null](#provider\_null) | n/a |
-| <a name="provider_tls"></a> [tls](#provider\_tls) | n/a |
 
 ## Modules
 
@@ -27,7 +26,6 @@ No requirements.
 | [aws_eks_addon.csi_driver](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_addon) | resource |
 | [aws_eks_cluster.eks_cluster](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_cluster) | resource |
 | [aws_eks_node_group.default_nodegroup](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_node_group) | resource |
-| [aws_iam_openid_connect_provider.eks_oidc_provider](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_openid_connect_provider) | resource |
 | [aws_iam_policy.autoscaling](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.aws-lb-controller-policy-nlb-ip](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.aws-policy-csi](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
@@ -64,7 +62,6 @@ No requirements.
 | [aws_region.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 | [aws_ssm_parameter.optimized-ami](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
 | [aws_vpc.vpc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc) | data source |
-| [tls_certificate.eks_oidc_issuer](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/data-sources/certificate) | data source |
 
 ## Inputs
 
@@ -81,6 +78,8 @@ No requirements.
 | <a name="input_eks_node_group_iam_role_arns"></a> [eks\_node\_group\_iam\_role\_arns](#input\_eks\_node\_group\_iam\_role\_arns) | n/a | `list(string)` | `[]` | no |
 | <a name="input_eks_private_ep_no_proxy"></a> [eks\_private\_ep\_no\_proxy](#input\_eks\_private\_ep\_no\_proxy) | n/a | `string` | `"s3.amazonaws.com,.s3.ap-southeast-1.amazonaws.com,sts.ap-southeast-1.amazonaws.com,ec2.ap-southeast-1.amazonaws.com,.dkr.ecr.ap-southeast-1.amazonaws.com,api.ecr.ap-southeast-1.amazonaws.com,autoscaling.ap-southeast-1.amazonaws.com,logs.ap-southeast-1.amazonaws.com,eks.ap-southeast-1.amazonaws.com,elasticloadbalancing.ap-southeast-1.amazonaws.com"` | no |
 | <a name="input_eks_private_subnet_ids"></a> [eks\_private\_subnet\_ids](#input\_eks\_private\_subnet\_ids) | n/a | `list(string)` | n/a | yes |
+| <a name="input_eks_worker_node_access_cidrs"></a> [eks\_worker\_node\_access\_cidrs](#input\_eks\_worker\_node\_access\_cidrs) | Provide cidr based whitelist to envs require to be accessed from public via Firewall to internal NLB (e.g. Prods) | <pre>list(object({<br>    cidrs       = list(string)<br>    port        = string<br>    description = string<br>  }))</pre> | `[]` | no |
+| <a name="input_eks_worker_node_access_prefix"></a> [eks\_worker\_node\_access\_prefix](#input\_eks\_worker\_node\_access\_prefix) | Provide prefix based whitelist to envs require to be accessed from public without Firewall (e.g. DEV/QA) | <pre>list(object({<br>    prefix_list_ids = list(string)<br>    port            = string<br>    description     = string<br>  }))</pre> | `[]` | no |
 | <a name="input_k8s_master_version"></a> [k8s\_master\_version](#input\_k8s\_master\_version) | The kubernetes version to use. Only used a creation time, ignored once the cluster exists. | `string` | `"1.23"` | no |
 | <a name="input_region"></a> [region](#input\_region) | n/a | `string` | `"ap-southeast-1"` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | n/a | `string` | `""` | no |
@@ -93,6 +92,7 @@ No requirements.
 | <a name="output_aws_partition_name"></a> [aws\_partition\_name](#output\_aws\_partition\_name) | n/a |
 | <a name="output_cluster_id"></a> [cluster\_id](#output\_cluster\_id) | n/a |
 | <a name="output_cluster_name"></a> [cluster\_name](#output\_cluster\_name) | n/a |
+| <a name="output_cluster_node_secgrp_id"></a> [cluster\_node\_secgrp\_id](#output\_cluster\_node\_secgrp\_id) | n/a |
 | <a name="output_cluster_secgrp_ids"></a> [cluster\_secgrp\_ids](#output\_cluster\_secgrp\_ids) | n/a |
 | <a name="output_eks_cluster_role_arn"></a> [eks\_cluster\_role\_arn](#output\_eks\_cluster\_role\_arn) | n/a |
 | <a name="output_eks_cluster_role_name"></a> [eks\_cluster\_role\_name](#output\_eks\_cluster\_role\_name) | n/a |
