@@ -87,6 +87,9 @@ vpc_private_sec_subnets = []
 vpc_sec_enable_cidr     = false
 vpc_sec_subnet_ids      = []
 
+bastion_secgrp_ingress_secgrp = ["sg-0e35335b81ce6a8d7"]
+#bastion_secgrp_ingress_prefix_list = ["pl-0af10fe06357d6aff"]
+
 bastion = {
   enable        = true
   public_access = false
@@ -95,11 +98,7 @@ bastion = {
   instance_type = "t2.micro"
   iam_role      = "u-ec2read"
   ami_id        = "ami-0a72af05d27b49ccb"
-  #ssh_cidr_blocks = ["173.1.0.0/19", "173.2.0.0/19"]
-  bastion_secgrp_ingress_secgrp = "sg-0e35335b81ce6a8d7"
-  #ssh_prefix_list_ids = ["pl-0af10fe06357d6aff"]
-  #update the proxy values as per specific environment
-  http_proxy  = "http://squid.adex-qa.com:3128"
-  https_proxy = "http://squid.adex-qa.com:3128"
-  no_proxy    = "localhost,127.0.0.1,169.254.169.254,172.9.0.0/24,-internal,.local,.svc,.eks.amazonaws.com"
+  http_proxy    = "http://squid.adex-qa.com:3128"
+  https_proxy   = "http://squid.adex-qa.com:3128"
+  no_proxy      = "localhost,127.0.0.1,169.254.169.254,172.9.0.0/24,-internal,.local,.svc,.eks.amazonaws.com"
 }

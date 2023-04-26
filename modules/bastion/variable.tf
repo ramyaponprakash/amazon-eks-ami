@@ -33,7 +33,6 @@ variable "bastion" {
     public_key_path      = optional(string, "empty")
     hosts_number         = optional(number, 1)
     iam_role             = string
-    ssh_cidr_blocks      = optional(list(string))
     http_proxy           = string
     https_proxy          = string
     no_proxy             = string
@@ -44,26 +43,12 @@ variable "bastion" {
   })
 }
 
-variable "bastion_secgrp_ingress_cidr" {
-  type = list(object({
-    cidrs       = list(string)
-    port        = number
-    description = string
-  }))
-
-  default = []
-}
-
 variable "bastion_secgrp_ingress_prefix_list" {
-  type = list(object({
-    prefix_list_ids = list(string)
-    port            = number
-    description     = string
-  }))
-
+  type    = list(string)
   default = []
 }
 
 variable "bastion_secgrp_ingress_secgrp" {
-  type = string
+  type    = set(string)
+  default = []
 }

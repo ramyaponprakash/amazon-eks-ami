@@ -80,15 +80,15 @@ resource "aws_security_group" "bastion_security_group" {
     from_port       = 22
     to_port         = 22
     protocol        = "tcp"
-    security_groups = split(",", var.bastion_secgrp_ingress_secgrp)
+    security_groups = var.bastion_secgrp_ingress_secgrp
   }
 
   ingress {
-    description     = "ssh access from ssh_prefix_list_ids"
+    description     = "from prefixlist"
     from_port       = 22
     to_port         = 22
     protocol        = "tcp"
-    prefix_list_ids = var.bastion.ssh_prefix_list_ids
+    prefix_list_ids = var.bastion_secgrp_ingress_prefix_list
   }
 
   egress {

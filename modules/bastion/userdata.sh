@@ -125,7 +125,7 @@ enabled_bamboo_envvars() {
   systemctl restart ssh
 }
 
-install_env_vars
+update_env_vars
 install_helpers
 install_command_if_not_exist aws install_awscli
 install_eksctl

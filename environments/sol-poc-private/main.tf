@@ -68,13 +68,11 @@ module "bastion" {
   cluster_name = var.cluster_name
   vpc_id       = var.network.enable ? module.eks_network[0].vpc_id : var.vpc_id
 
-  bastion_secgrp_ingress_cidr        = var.bastion_secgrp_ingress_cidr
   bastion_secgrp_ingress_prefix_list = var.bastion_secgrp_ingress_prefix_list
-  bastion_secgrp_ingress_secgrp      = var.bastion.bastion_secgrp_ingress_secgrp
+  bastion_secgrp_ingress_secgrp      = var.bastion_secgrp_ingress_secgrp
 
   bastion = merge(var.bastion, {
-    subnet_ids      = var.network.enable ? (var.bastion.public_access ? module.eks_network[0].public_subnet_ids : module.eks_network[0].private_subnet_ids) : var.bastion.subnet_ids
-    ssh_cidr_blocks = var.network.enable ? concat([var.vpc_cidr_pri], var.bastion.ssh_cidr_blocks) : var.bastion.ssh_cidr_blocks
+    subnet_ids = var.network.enable ? (var.bastion.public_access ? module.eks_network[0].public_subnet_ids : module.eks_network[0].private_subnet_ids) : var.bastion.subnet_ids
   })
 }
 
@@ -89,8 +87,8 @@ module "eks" {
   eks_admin_role_arns           = var.eks_admin_role_arns
   eks_http_proxy                = var.eks_http_proxy
   eks_api_endpoint_access_cidrs = var.eks_api_endpoint_access_cidrs
-  eks_worker_node_access_cidrs  = var.eks_worker_node_access_cidrs
-  eks_worker_node_access_prefix = var.eks_worker_node_access_prefix
+  #  eks_worker_node_access_cidrs  = var.eks_worker_node_access_cidrs
+  #  eks_worker_node_access_prefix = var.eks_worker_node_access_prefix
 }
 
 module "eks-solace" {
@@ -102,11 +100,9 @@ module "eks-solace" {
   eks_node_role_arn      = module.eks.eks_node_role_arn
   eks_node_role_name     = module.eks.eks_node_role_name
   eks_http_proxy         = var.eks_http_proxy
-  cluster_node_secgrp_id = module.eks.cluster_node_secgrp_id
+  # cluster_node_secgrp_id = module.eks.cluster_node_secgrp_id
 
   depends_on = [
     module.eks,
   ]
 }
-
-

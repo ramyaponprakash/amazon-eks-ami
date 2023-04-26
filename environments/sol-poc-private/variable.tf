@@ -95,12 +95,10 @@ variable "vpc_private_sec_subnets" {
   default = []
 }
 
-
 variable "vpc_enable_private" {
   type    = bool
   default = false
 }
-
 
 variable "vpc_nat_gateway" {
   type = object({
@@ -108,7 +106,6 @@ variable "vpc_nat_gateway" {
     vpc_nat_gw_eip_allocation_ids = optional(list(string))
   })
 }
-
 
 variable "vpc_igw" {
   type = object({
@@ -131,7 +128,6 @@ variable "vpc_nat_gw_eip_allocation_ids" {
   type    = list(string)
   default = []
 }
-
 
 variable "vpc_secondary_cidr_blocks" {
   type    = list(string)
@@ -181,36 +177,19 @@ variable "bastion" {
     iam_role             = string
     ami_id               = string
     ssh_cidr_blocks      = optional(list(string))
+    http_proxy           = optional(string, "empty")
+    https_proxy          = optional(string, "empty")
+    no_proxy             = optional(string, "empty")
   })
 }
 
-variable "bastion_secgrp_ingress_cidr" {
-  type = list(object({
-    cidrs       = list(string)
-    port        = number
-    description = string
-  }))
-
-  default = []
-}
-
 variable "bastion_secgrp_ingress_prefix_list" {
-  type = list(object({
-    prefix_list_ids = list(string)
-    port            = number
-    description     = string
-  }))
-
+  type    = list(string)
   default = []
 }
 
 variable "bastion_secgrp_ingress_secgrp" {
-  type = list(object({
-    secgrp_ids  = list(string)
-    port        = number
-    description = string
-  }))
-
+  type    = set(string)
   default = []
 }
 
