@@ -52,3 +52,13 @@ variable "bastion_secgrp_ingress_secgrp" {
   type    = set(string)
   default = []
 }
+
+variable "bastion_secgrp_ingress_cidr" {
+  type = list(object({
+    cidrs       = list(string)
+    port        = number
+    description = string
+  }))
+
+  default = []
+}
