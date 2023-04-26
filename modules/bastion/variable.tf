@@ -34,7 +34,9 @@ variable "bastion" {
     hosts_number         = optional(number, 1)
     iam_role             = string
     ssh_cidr_blocks      = optional(list(string))
-
+    http_proxy           = string
+    https_proxy          = string
+    no_proxy             = string
     // cli installation variables
     kubectl_version  = optional(string, "1.22.6/2022-03-09")
     helm_version     = optional(string, "v3.9.2")
@@ -63,11 +65,5 @@ variable "bastion_secgrp_ingress_prefix_list" {
 }
 
 variable "bastion_secgrp_ingress_secgrp" {
-  type = list(object({
-    secgrp_ids  = list(string)
-    port        = number
-    description = string
-  }))
-
-  default = []
+  type = string
 }

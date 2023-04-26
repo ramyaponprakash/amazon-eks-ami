@@ -8,6 +8,39 @@
 #HELM_VER="v3.9.2"
 #HELMFILE_VER="0.145.2"
 
+export http_proxy="${http_proxy}"
+export https_proxy="${https_proxy}"
+export no_proxy="${no_proxy}"
+
+
+update_env_vars() {
+# Check if http_proxy already exists in /etc/environment
+if grep -q "^http_proxy" /etc/environment; then
+  # If it exists, update its value
+  sed -i "s|^http_proxy=.*$|http_proxy=\"$http_proxy\"|" /etc/environment
+else
+  # If it doesn't exist, append it to the end of the file
+  echo "http_proxy=\"$http_proxy\"" >> /etc/environment
+fi
+
+# Check if https_proxy already exists in /etc/environment
+if grep -q "^https_proxy" /etc/environment; then
+  # If it exists, update its value
+  sed -i "s|^https_proxy=.*$|https_proxy=\"$https_proxy\"|" /etc/environment
+else
+  # If it doesn't exist, append it to the end of the file
+  echo "https_proxy=\"$https_proxy\"" >> /etc/environment
+fi
+
+# Check if no_proxy already exists in /etc/environment
+if grep -q "^no_proxy" /etc/environment; then
+  # If it exists, update its value
+  sed -i "s|^no_proxy=.*$|no_proxy=\"$no_proxy\"|" /etc/environment
+else
+  # If it doesn't exist, append it to the end of the file
+  echo "no_proxy=\"$no_proxy\"" >> /etc/environment
+fi
+}
 
 install_command_if_not_exist() {
   if ! command -v $1 &> /dev/null
@@ -92,6 +125,7 @@ enabled_bamboo_envvars() {
   systemctl restart ssh
 }
 
+install_env_vars
 install_helpers
 install_command_if_not_exist aws install_awscli
 install_eksctl
