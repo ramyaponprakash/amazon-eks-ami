@@ -90,6 +90,17 @@ resource "aws_security_group" "bastion_security_group" {
     protocol        = "tcp"
     prefix_list_ids = var.bastion_secgrp_ingress_prefix_list
   }
+  
+  dynamic "ingress" {
+    for_each = var.bastion_secgrp_ingress_cidr
+    content {
+      cidr_blocks = ingress.value.cidrs
+      protocol    = "tcp"
+      from_port   = ingress.value.port
+      to_port     = ingress.value.port
+      description = ingress.value.description
+    }
+  }
 
   egress {
     from_port   = 0
