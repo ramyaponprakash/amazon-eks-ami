@@ -84,13 +84,13 @@ resource "aws_security_group" "bastion_security_group" {
   }
 
   ingress {
-    description     = "from prefixlist"
-    from_port       = 22
-    to_port         = 22
-    protocol        = "tcp"
+    description = "from prefixlist"
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
     prefix_list_ids = var.bastion_secgrp_ingress_prefix_list
   }
-  
+
   dynamic "ingress" {
     for_each = var.bastion_secgrp_ingress_cidr
     content {
