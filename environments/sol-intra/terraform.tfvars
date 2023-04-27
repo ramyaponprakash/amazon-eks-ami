@@ -120,6 +120,9 @@ bastion = {
   iam_role        = "adex-eksadmin"
   ami_id          = "ami-0aaee588abf059b37"
   ssh_cidr_blocks = []
+  #http_proxy      = "http://squid.adex-qa.com:3128"
+  #https_proxy     = "http://squid.adex-qa.com:3128"
+  #no_proxy        = "localhost,127.0.0.1,169.254.169.254,172.9.0.0/24,-internal,.local,.svc,.eks.amazonaws.com" }
 }
 
 bastion_secgrp_ingress_cidr = [
