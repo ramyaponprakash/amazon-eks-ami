@@ -125,6 +125,9 @@ bastion = {
   ami_id              = "ami-0aaee588abf059b37"
   ssh_cidr_blocks     = []
   ssh_prefix_list_ids = ["pl-04d17737125dbdb0f"]
+  http_proxy          = "http://squid.adex.com:3128"
+  https_proxy         = "http://squid.adex.com:3128"
+  no_proxy            = "localhost,127.0.0.1,169.254.169.254,.eks.amazonaws.com"
 }
 
 bastion_secgrp_ingress_cidr = [
