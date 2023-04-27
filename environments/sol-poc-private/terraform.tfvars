@@ -98,9 +98,9 @@ bastion = {
   instance_type = "t2.micro"
   iam_role      = "u-ec2read"
   ami_id        = "ami-0a72af05d27b49ccb"
-  http_proxy  = "http://squid.adex-qa.com:3128"
-  https_proxy = "http://squid.adex-qa.com:3128"
-  no_proxy    = "localhost,127.0.0.1,169.254.169.254,172.9.0.0/24,-internal,.local,.svc,.eks.amazonaws.com"
+  http_proxy    = "http://squid.adex-qa.com:3128"
+  https_proxy   = "http://squid.adex-qa.com:3128"
+  no_proxy      = "localhost,127.0.0.1,169.254.169.254,172.9.0.0/24,-internal,.local,.svc,.eks.amazonaws.com"
 }
 
 /*
