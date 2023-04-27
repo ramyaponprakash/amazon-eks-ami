@@ -34,7 +34,7 @@ resource "aws_instance" "ubuntu_bastion" {
   vpc_security_group_ids      = [aws_security_group.bastion_security_group.id]
   user_data                   = data.template_file.userdata.rendered
   iam_instance_profile        = var.bastion.iam_role
-  #user_data_replace_on_change = true
+  user_data_replace_on_change = true
   root_block_device {
     encrypted = true
   }

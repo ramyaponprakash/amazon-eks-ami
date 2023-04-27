@@ -183,17 +183,37 @@ variable "bastion" {
   })
 }
 
-
 variable "bastion_secgrp_ingress_prefix_list" {
-  type    = list(string)
-  default = []
+  type = list(object({
+    prefix_list_ids = list(string)
+    port            = number
+    description     = string
+  }))
+
+  default = [
+    {
+      prefix_list_ids = []
+      port            = 22
+      description     = "from ADEX team"
+    },
+  ]
 }
 
 variable "bastion_secgrp_ingress_secgrp" {
-  type    = set(string)
-  default = []
-}
+  type = list(object({
+    secgrp_ids  = list(string)
+    port        = number
+    description = string
+  }))
 
+  default = [
+    {
+      secgrp_ids  = []
+      port        = 22
+      description = "from mgmt"
+    },
+  ]
+}
 variable "bastion_secgrp_ingress_cidr" {
   type = list(object({
     cidrs       = list(string)
