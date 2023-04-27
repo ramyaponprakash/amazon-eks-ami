@@ -73,14 +73,3 @@ variable "bastion_secgrp_ingress_secgrp" {
 
   default = []
 }
-/*
-variable "bastion_secgrp_ingress_prefix_list" {
-  type    = list(string)
-  default = []
-}
-
-variable "bastion_secgrp_ingress_secgrp" {
-  type    = set(string)
-  default = []
-}
-*/

@@ -191,9 +191,9 @@ variable "bastion" {
     iam_role             = string
     ami_id               = string
     ssh_cidr_blocks      = optional(list(string))
-    #http_proxy           = optional(string, "empty")
-    #https_proxy          = optional(string, "empty")
-    #no_proxy             = optional(string, "empty")
+    http_proxy           = optional(string, "empty")
+    https_proxy          = optional(string, "empty")
+    no_proxy             = optional(string, "empty")
   })
 }
 
