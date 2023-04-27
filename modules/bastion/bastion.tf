@@ -75,6 +75,7 @@ resource "aws_security_group" "bastion_security_group" {
   name   = "${var.cluster_name}_bastion_security_group"
   vpc_id = var.vpc_id
 
+  /*
   ingress {
     description     = "from bridge"
     from_port       = 22
@@ -84,13 +85,13 @@ resource "aws_security_group" "bastion_security_group" {
   }
 
   ingress {
-    description = "from prefixlist"
-    from_port = 22
-    to_port = 22
-    protocol = "tcp"
+    description     = "from prefixlist"
+    from_port       = 22
+    to_port         = 22
+    protocol        = "tcp"
     prefix_list_ids = var.bastion_secgrp_ingress_prefix_list
   }
-
+*/
   dynamic "ingress" {
     for_each = var.bastion_secgrp_ingress_cidr
     content {
@@ -102,6 +103,43 @@ resource "aws_security_group" "bastion_security_group" {
     }
   }
 
+  dynamic "ingress" {
+    for_each = var.bastion_secgrp_ingress_prefix_list
+    content {
+      prefix_list_ids = ingress.value.prefix_list_ids
+      protocol        = "tcp"
+      from_port       = ingress.value.port
+      to_port         = ingress.value.port
+      description     = ingress.value.description
+    }
+  }
+
+  dynamic "ingress" {
+    for_each = var.bastion_secgrp_ingress_secgrp
+    content {
+      security_groups = ingress.value.secgrp_ids
+      protocol        = "tcp"
+      from_port       = ingress.value.port
+      to_port         = ingress.value.port
+      description     = ingress.value.description
+    }
+  }
+
+  /*ingress {
+    description = "ssh access from ssh_cidr_blocks"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = var.bastion.ssh_cidr_blocks
+  }
+
+  ingress {
+    description     = "ssh access from ssh_prefix_list_ids"
+    from_port       = 22
+    to_port         = 22
+    protocol        = "tcp"
+    prefix_list_ids = var.bastion.ssh_prefix_list_ids
+  }*/
   egress {
     from_port   = 0
     to_port     = 0

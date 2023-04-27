@@ -33,6 +33,7 @@ variable "bastion" {
     public_key_path      = optional(string, "empty")
     hosts_number         = optional(number, 1)
     iam_role             = string
+    ssh_cidr_blocks      = optional(list(string))
     http_proxy           = string
     https_proxy          = string
     no_proxy             = string
@@ -41,16 +42,6 @@ variable "bastion" {
     helm_version     = optional(string, "v3.9.2")
     helmfile_version = optional(string, "0.145.2")
   })
-}
-
-variable "bastion_secgrp_ingress_prefix_list" {
-  type    = list(string)
-  default = []
-}
-
-variable "bastion_secgrp_ingress_secgrp" {
-  type    = set(string)
-  default = []
 }
 
 variable "bastion_secgrp_ingress_cidr" {
@@ -63,3 +54,33 @@ variable "bastion_secgrp_ingress_cidr" {
   default = []
 }
 
+variable "bastion_secgrp_ingress_prefix_list" {
+  type = list(object({
+    prefix_list_ids = list(string)
+    port            = number
+    description     = string
+  }))
+
+  default = []
+}
+
+variable "bastion_secgrp_ingress_secgrp" {
+  type = list(object({
+    secgrp_ids  = list(string)
+    port        = number
+    description = string
+  }))
+
+  default = []
+}
+/*
+variable "bastion_secgrp_ingress_prefix_list" {
+  type    = list(string)
+  default = []
+}
+
+variable "bastion_secgrp_ingress_secgrp" {
+  type    = set(string)
+  default = []
+}
+*/
