@@ -62,3 +62,4 @@ variable "bastion_secgrp_ingress_cidr" {
 
   default = []
 }
+
