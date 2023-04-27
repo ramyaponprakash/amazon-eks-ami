@@ -14,6 +14,12 @@ export no_proxy="${no_proxy}"
 
 
 update_env_vars() {
+
+# Skip update_env_vars task if http_proxy is "empty"
+if [ "$http_proxy" = "empty" ]; then
+  echo "Skipping update_env_vars task because http_proxy is empty"
+  return
+fi
 # Check if http_proxy already exists in /etc/environment
 if grep -q "^http_proxy" /etc/environment; then
   # If it exists, update its value
