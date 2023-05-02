@@ -16,7 +16,7 @@ resource "aws_security_group" "squidproxy" {
 }
 
 resource "aws_security_group_rule" "squidproxy-ingress-cidrs" {
-  for_each          = { for index, obj in var.squid_secgrp_ingress_cidr : obj.id => obj }
+  for_each          = { for index, obj in var.squid_secgrp_ingress_cidr : index => obj }
   type              = "ingress"
   description       = each.value.description
   security_group_id = aws_security_group.squidproxy.id
@@ -27,7 +27,7 @@ resource "aws_security_group_rule" "squidproxy-ingress-cidrs" {
 }
 
 resource "aws_security_group_rule" "squidproxy-ingress-secgrp" {
-  for_each                 = { for index, obj in var.squid_secgrp_ingress_secgrp : obj.id => obj }
+  for_each                 = { for index, obj in var.squid_secgrp_ingress_secgrp : index => obj }
   type                     = "ingress"
   description              = each.value.description
   security_group_id        = aws_security_group.squidproxy.id

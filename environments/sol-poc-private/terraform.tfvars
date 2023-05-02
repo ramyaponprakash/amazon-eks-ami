@@ -15,10 +15,10 @@ eks_api_endpoint_access_cidrs = [
   { from : "172.9.0.0/24", port : "443", description : "VPC self" },
 ]
 eks_worker_node_access_cidrs = [
-  { id : "0", cidrs : ["0.0.0.0/0"], from_port : 8883, to_port : 8883, description : "MQTTS" },
-  { id : "1", cidrs : ["0.0.0.0/0"], from_port : 5671, to_port : 5671, description : "AMQPS" },
-  { id : "2", cidrs : ["0.0.0.0/0"], from_port : 15675, to_port : 15675, description : "WS MQTT" }, # kept previous port
-  { id : "3", cidrs : ["0.0.0.0/0"], from_port : 55443, to_port : 55443, description : "SMFS" },
+  { cidrs : ["0.0.0.0/0"], from_port : 8883, to_port : 8883, description : "MQTTS" },
+  { cidrs : ["0.0.0.0/0"], from_port : 5671, to_port : 5671, description : "AMQPS" },
+  { cidrs : ["0.0.0.0/0"], from_port : 15675, to_port : 15675, description : "WS MQTT" }, # kept previous port
+  { cidrs : ["0.0.0.0/0"], from_port : 55443, to_port : 55443, description : "SMFS" },
 ]
 network = {
   enable     = true
@@ -106,7 +106,6 @@ bastion = {
 
 bastion_secgrp_ingress_cidr = [
   {
-    id          = "0"
     cidrs       = ["173.2.0.0/19", "173.1.0.0/19"]
     from_port   = 22
     to_port     = 22

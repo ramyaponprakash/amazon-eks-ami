@@ -196,7 +196,6 @@ variable "bastion" {
 
 variable "bastion_secgrp_ingress_cidr" {
   type = list(object({
-    id          = string
     cidrs       = list(string)
     from_port   = number
     to_port     = number
@@ -208,7 +207,6 @@ variable "bastion_secgrp_ingress_cidr" {
 
 variable "bastion_secgrp_ingress_prefix_list" {
   type = list(object({
-    id              = string
     prefix_list_ids = list(string)
     from_port       = number
     to_port         = number
@@ -220,7 +218,6 @@ variable "bastion_secgrp_ingress_prefix_list" {
 
 variable "bastion_secgrp_ingress_secgrp" {
   type = list(object({
-    id          = string
     secgrp_id   = string
     from_port   = number
     to_port     = number
@@ -246,7 +243,6 @@ variable "squid" {
 
 variable "squid_secgrp_ingress_cidr" {
   type = list(object({
-    id          = string
     cidrs       = list(string)
     from_port   = number
     to_port     = number
@@ -258,7 +254,6 @@ variable "squid_secgrp_ingress_cidr" {
 
 variable "squid_secgrp_ingress_secgrp" {
   type = list(object({
-    id          = string
     secgrp_id   = string
     from_port   = number
     to_port     = number
@@ -285,7 +280,6 @@ variable "eks_api_endpoint_access_cidrs" {
 variable "eks_worker_node_access_cidrs" {
   description = "Provide cidr based whitelist to envs require to be accessed from public via Firewall to internal NLB (e.g. Prods)"
   type = list(object({
-    id          = string
     cidrs       = list(string)
     from_port   = number
     to_port     = number
@@ -297,7 +291,6 @@ variable "eks_worker_node_access_cidrs" {
 variable "eks_worker_node_access_prefix" {
   description = "Provide prefix based whitelist to envs require to be accessed from public without Firewall (e.g. DEV/QA)"
   type = list(object({
-    id              = string
     prefix_list_ids = list(string)
     from_port       = number
     to_port         = number

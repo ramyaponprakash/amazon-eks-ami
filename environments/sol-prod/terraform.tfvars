@@ -18,10 +18,10 @@ eks_api_endpoint_access_cidrs = [
   { from : "100.80.27.128/26", port : "443", description : "Self CIDR 2" },
 ]
 eks_worker_node_access_cidrs = [
-  { id : "0", cidrs : ["0.0.0.0/0"], from_port : 8883, to_port : 8883, description : "MQTTS" },
-  { id : "1", cidrs : ["0.0.0.0/0"], from_port : 5671, to_port : 5671, description : "AMQPS" },
-  { id : "2", cidrs : ["0.0.0.0/0"], from_port : 15675, to_port : 15675, description : "WS MQTT" }, # kept previous port
-  { id : "3", cidrs : ["0.0.0.0/0"], from_port : 55443, to_port : 55443, description : "SMFS" },
+  { cidrs : ["0.0.0.0/0"], from_port : 8883, to_port : 8883, description : "MQTTS" },
+  { cidrs : ["0.0.0.0/0"], from_port : 5671, to_port : 5671, description : "AMQPS" },
+  { cidrs : ["0.0.0.0/0"], from_port : 15675, to_port : 15675, description : "WS MQTT" }, # kept previous port
+  { cidrs : ["0.0.0.0/0"], from_port : 55443, to_port : 55443, description : "SMFS" },
 ]
 
 network = {
@@ -128,7 +128,6 @@ bastion = {
 
 bastion_secgrp_ingress_cidr = [
   #  {
-  #    id          = "0"
   #    cidrs       = ["100.112.110.0/24", "100.80.27.128/26"]
   #    from_port   = 22
   #    to_port     = 22
@@ -140,7 +139,6 @@ bastion_secgrp_ingress_prefix_list = []
 
 bastion_secgrp_ingress_secgrp = [
   {
-    id          = "0"
     secgrp_id   = "sg-0dd3d667f43ec5703"
     from_port   = 22
     to_port     = 22
@@ -162,20 +160,17 @@ squid = {
 
 squid_secgrp_ingress_cidr = [
   {
-    id          = "0"
     cidrs       = ["100.112.110.0/24", "100.80.27.128/26"]
     from_port   = 3128
     to_port     = 3128
     description = "from SOLX vpc"
   },
   {
-    id          = "1"
     from_port   = 3128
     to_port     = 3128
     description = "from peer vpc cidr (SOLI)"
   },
   {
-    id          = "2"
     cidrs       = ["100.112.110.0/24", "100.80.27.128/26"]
     from_port   = 22
     to_port     = 22
@@ -185,7 +180,6 @@ squid_secgrp_ingress_cidr = [
 
 squid_secgrp_ingress_secgrp = [
   {
-    id          = "0"
     secgrp_id   = "sg-0dd3d667f43ec5703"
     from_port   = 22
     to_port     = 22

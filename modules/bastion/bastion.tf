@@ -92,7 +92,7 @@ resource "aws_eip" "ubuntu_bastion_eip" {
 }
 
 resource "aws_security_group_rule" "bastion-ingress-cidrs" {
-  for_each          = { for index, obj in var.bastion_secgrp_ingress_cidr : obj.id => obj }
+  for_each          = { for index, obj in var.bastion_secgrp_ingress_cidr : index => obj }
   type              = "ingress"
   description       = each.value.description
   security_group_id = aws_security_group.bastion_security_group.id
@@ -103,7 +103,7 @@ resource "aws_security_group_rule" "bastion-ingress-cidrs" {
 }
 
 resource "aws_security_group_rule" "bastion-ingress-prefix" {
-  for_each          = { for index, obj in var.bastion_secgrp_ingress_prefix_list : obj.id => obj }
+  for_each          = { for index, obj in var.bastion_secgrp_ingress_prefix_list : index => obj }
   type              = "ingress"
   description       = each.value.description
   security_group_id = aws_security_group.bastion_security_group.id
@@ -114,7 +114,7 @@ resource "aws_security_group_rule" "bastion-ingress-prefix" {
 }
 
 resource "aws_security_group_rule" "bastion-ingress-secgrp" {
-  for_each                 = { for index, obj in var.bastion_secgrp_ingress_secgrp : obj.id => obj }
+  for_each                 = { for index, obj in var.bastion_secgrp_ingress_secgrp : index => obj }
   type                     = "ingress"
   description              = each.value.description
   security_group_id        = aws_security_group.bastion_security_group.id

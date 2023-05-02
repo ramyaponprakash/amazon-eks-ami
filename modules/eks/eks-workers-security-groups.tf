@@ -48,7 +48,7 @@ resource "aws_security_group_rule" "eks_cluster-node-ingress-lbc" {
 }
 
 resource "aws_security_group_rule" "eks_cluster-node-ingress-cidrs" {
-  for_each          = { for index, obj in var.eks_worker_node_access_cidrs : obj.id => obj }
+  for_each          = { for index, obj in var.eks_worker_node_access_cidrs : index => obj }
   type              = "ingress"
   description       = each.value.description
   security_group_id = aws_security_group.eks_cluster-node.id
@@ -59,7 +59,7 @@ resource "aws_security_group_rule" "eks_cluster-node-ingress-cidrs" {
 }
 
 resource "aws_security_group_rule" "eks_cluster-node-ingress-prefix-list" {
-  for_each          = { for index, obj in var.eks_worker_node_access_prefix : obj.id => obj }
+  for_each          = { for index, obj in var.eks_worker_node_access_prefix : index => obj }
   type              = "ingress"
   description       = each.value.description
   security_group_id = aws_security_group.eks_cluster-node.id
