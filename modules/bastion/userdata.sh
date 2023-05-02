@@ -14,18 +14,20 @@ export no_proxy="${no_proxy}"
 
 update_env_vars() {
   # Skip update_env_vars task if http_proxy is "empty"
-  if [ "$http_proxy" = "" ]; then
+  if [ "$http_proxy" == "" ]; then
     echo "Skipping update_env_vars task because http_proxy is empty"
     return
   fi
 
    # Write the environment variables to the temporary file
-  cat <<EOF >> "/etc/environment"
+  cat <<EOF > /etc/environment
 http_proxy="$http_proxy"
 https_proxy="$https_proxy"
 no_proxy="$no_proxy"
 EOF
 } 
+
+chmod 644 /etc/environment
 
 install_command_if_not_exist() {
   if ! command -v $1 &> /dev/null

@@ -18,11 +18,10 @@ eks_api_endpoint_access_cidrs = [
   { from : "100.80.27.128/26", port : "443", description : "Self CIDR 2" },
 ]
 eks_worker_node_access_cidrs = [
-  { cidrs : ["0.0.0.0/0"], port : "8883", description : "MQTTS" },
-  { cidrs : ["0.0.0.0/0"], port : "5671", description : "AMQPS" },
-  #  { cidrs : ["0.0.0.0/0"], port : "8443", description : "WSS MQTT" },
-  { cidrs : ["0.0.0.0/0"], port : "15675", description : "WS MQTT" }, # kept previous port
-  { cidrs : ["0.0.0.0/0"], port : "55443", description : "SMFS" },
+  { cidrs : ["0.0.0.0/0"], from_port : 8883, to_port : 8883, description : "MQTTS" },
+  { cidrs : ["0.0.0.0/0"], from_port : 5671, to_port : 5671, description : "AMQPS" },
+  { cidrs : ["0.0.0.0/0"], from_port : 15675, to_port : 15675, description : "WS MQTT" }, # kept previous port
+  { cidrs : ["0.0.0.0/0"], from_port : 55443, to_port : 55443, description : "SMFS" },
 ]
 
 network = {
@@ -133,7 +132,8 @@ bastion = {
 bastion_secgrp_ingress_cidr = [
   #  {
   #    cidrs       = ["100.112.110.0/24", "100.80.27.128/26"]
-  #    port        = 22
+  #    from_port   = 22
+  #    to_port     = 22
   #    description = "from SOLX vpc"
   #  },
 ]
@@ -142,8 +142,9 @@ bastion_secgrp_ingress_prefix_list = []
 
 bastion_secgrp_ingress_secgrp = [
   {
-    secgrp_ids  = ["sg-0dd3d667f43ec5703"]
-    port        = 22
+    secgrp_id   = "sg-0dd3d667f43ec5703"
+    from_port   = 22
+    to_port     = 22
     description = "from mgmt"
   },
 ]
@@ -162,27 +163,29 @@ squid = {
 
 squid_secgrp_ingress_cidr = [
   {
-
     cidrs       = ["100.112.110.0/24", "100.80.27.128/26"]
-    port        = 3128
+    from_port   = 3128
+    to_port     = 3128
     description = "from SOLX vpc"
   },
   {
-    cidrs       = ["10.189.118.0/25"]
-    port        = 3128
+    from_port   = 3128
+    to_port     = 3128
     description = "from peer vpc cidr (SOLI)"
   },
   {
     cidrs       = ["100.112.110.0/24", "100.80.27.128/26"]
-    port        = 22
+    from_port   = 22
+    to_port     = 22
     description = "from SOLX vpc"
   },
 ]
 
 squid_secgrp_ingress_secgrp = [
   {
-    secgrp_ids  = ["sg-0dd3d667f43ec5703"]
-    port        = 22
+    secgrp_id   = "sg-0dd3d667f43ec5703"
+    from_port   = 22
+    to_port     = 22
     description = "from mgmt"
   },
 ]

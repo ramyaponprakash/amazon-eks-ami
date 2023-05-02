@@ -77,6 +77,7 @@ resource "aws_security_group" "bastion_security_group" {
   name   = "${var.cluster_name}_bastion_security_group"
   vpc_id = var.vpc_id
 
+<<<<<<< HEAD
   dynamic "ingress" {
     for_each = var.bastion_secgrp_ingress_cidr
     content {
@@ -110,6 +111,8 @@ resource "aws_security_group" "bastion_security_group" {
     }
   }
 
+=======
+>>>>>>> origin/develop
   egress {
     from_port   = 0
     to_port     = 0
@@ -127,4 +130,37 @@ resource "aws_eip" "ubuntu_bastion_eip" {
   tags = {
     Name = "${var.cluster_name}_bastion_eip"
   }
+}
+
+resource "aws_security_group_rule" "bastion-ingress-cidrs" {
+  for_each          = { for index, obj in var.bastion_secgrp_ingress_cidr : index => obj }
+  type              = "ingress"
+  description       = each.value.description
+  security_group_id = aws_security_group.bastion_security_group.id
+  cidr_blocks       = each.value.cidrs
+  protocol          = "tcp"
+  from_port         = each.value.from_port
+  to_port           = each.value.to_port
+}
+
+resource "aws_security_group_rule" "bastion-ingress-prefix" {
+  for_each          = { for index, obj in var.bastion_secgrp_ingress_prefix_list : index => obj }
+  type              = "ingress"
+  description       = each.value.description
+  security_group_id = aws_security_group.bastion_security_group.id
+  prefix_list_ids   = each.value.prefix_list_ids
+  protocol          = "tcp"
+  from_port         = each.value.from_port
+  to_port           = each.value.to_port
+}
+
+resource "aws_security_group_rule" "bastion-ingress-secgrp" {
+  for_each                 = { for index, obj in var.bastion_secgrp_ingress_secgrp : index => obj }
+  type                     = "ingress"
+  description              = each.value.description
+  security_group_id        = aws_security_group.bastion_security_group.id
+  source_security_group_id = each.value.secgrp_id
+  protocol                 = "tcp"
+  from_port                = each.value.from_port
+  to_port                  = each.value.to_port
 }

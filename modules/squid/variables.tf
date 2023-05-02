@@ -3,7 +3,6 @@ variable "region" {
   default = "ap-southeast-1"
 }
 
-
 variable "vpc_name" {
   type = string
 }
@@ -48,42 +47,24 @@ variable "squid" {
 
 variable "squid_secgrp_ingress_cidr" {
   type = list(object({
+    id          = string
     cidrs       = list(string)
-    port        = number
+    from_port   = number
+    to_port     = number
     description = string
   }))
 
-  default = [
-    {
-      cidrs       = []
-      port        = 3128
-      description = "from own vpc"
-    },
-    {
-      cidrs       = ["10.189.118.0/25"]
-      port        = 3128
-      description = "from peer vpc cidr (or the source)"
-    },
-    {
-      cidrs       = []
-      port        = 22
-      description = "from own vpc"
-    },
-  ]
+  default = []
 }
 
 variable "squid_secgrp_ingress_secgrp" {
   type = list(object({
-    secgrp_ids  = list(string)
-    port        = number
+    id          = string
+    secgrp_id   = string
+    from_port   = number
+    to_port     = number
     description = string
   }))
 
-  default = [
-    {
-      secgrp_ids  = ["sg-0dd3d667f43ec5703"]
-      port        = 22
-      description = "from mgmt"
-    },
-  ]
+  default = []
 }
