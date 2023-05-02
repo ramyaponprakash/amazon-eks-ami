@@ -171,8 +171,8 @@ variable "bastion" {
     attach_eip           = optional(bool, false)
     subnet_ids           = list(string)
     generate_private_key = optional(bool, true)
-    private_key_path     = optional(string, "empty")
-    public_key_path      = optional(string, "empty")
+    private_key_path     = optional(string, "")
+    public_key_path      = optional(string, "")
     hosts_number         = optional(number, 1)
     iam_role             = string
     ami_id               = string

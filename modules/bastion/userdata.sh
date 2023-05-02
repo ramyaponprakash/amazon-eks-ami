@@ -13,39 +13,19 @@ export https_proxy="${https_proxy}"
 export no_proxy="${no_proxy}"
 
 update_env_vars() {
+  # Skip update_env_vars task if http_proxy is "empty"
+  if [ "$http_proxy" = "" ]; then
+    echo "Skipping update_env_vars task because http_proxy is empty"
+    return
+  fi
 
-# Skip update_env_vars task if http_proxy is "empty"
-if [ "$http_proxy" = "" ]; then
-  echo "Skipping update_env_vars task because http_proxy is empty"
-  return
-fi
-# Check if http_proxy already exists in /etc/environment
-if grep -q "^http_proxy" /etc/environment; then
-  # If it exists, update its value
-  sed -i "s|^http_proxy=.*$|http_proxy=\"$http_proxy\"|" /etc/environment
-else
-  # If it doesn't exist, append it to the end of the file
-  echo "http_proxy=\"$http_proxy\"" >> /etc/environment
-fi
-
-# Check if https_proxy already exists in /etc/environment
-if grep -q "^https_proxy" /etc/environment; then
-  # If it exists, update its value
-  sed -i "s|^https_proxy=.*$|https_proxy=\"$https_proxy\"|" /etc/environment
-else
-  # If it doesn't exist, append it to the end of the file
-  echo "https_proxy=\"$https_proxy\"" >> /etc/environment
-fi
-
-# Check if no_proxy already exists in /etc/environment
-if grep -q "^no_proxy" /etc/environment; then
-  # If it exists, update its value
-  sed -i "s|^no_proxy=.*$|no_proxy=\"$no_proxy\"|" /etc/environment
-else
-  # If it doesn't exist, append it to the end of the file
-  echo "no_proxy=\"$no_proxy\"" >> /etc/environment
-fi
-}
+   # Write the environment variables to the temporary file
+  cat <<EOF >> "/etc/environment"
+http_proxy="$http_proxy"
+https_proxy="$https_proxy"
+no_proxy="$no_proxy"
+EOF
+} 
 
 install_command_if_not_exist() {
   if ! command -v $1 &> /dev/null
@@ -71,6 +51,7 @@ install_kubectl() {
   chmod +x ./kubectl &&
   mv ./kubectl /usr/local/bin/kubectl
   kubectl version --short --client
+  aws eks update-kubeconfig --name ${cluster_name}  --region ap-southeast-1
 }
 
 install_helm() {
