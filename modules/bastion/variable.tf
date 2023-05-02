@@ -45,7 +45,8 @@ variable "bastion" {
 variable "bastion_secgrp_ingress_cidr" {
   type = list(object({
     cidrs       = list(string)
-    port        = number
+    from_port   = number
+    to_port     = number
     description = string
   }))
 
@@ -55,7 +56,8 @@ variable "bastion_secgrp_ingress_cidr" {
 variable "bastion_secgrp_ingress_prefix_list" {
   type = list(object({
     prefix_list_ids = list(string)
-    port            = number
+    from_port       = number
+    to_port         = number
     description     = string
   }))
 
@@ -64,8 +66,9 @@ variable "bastion_secgrp_ingress_prefix_list" {
 
 variable "bastion_secgrp_ingress_secgrp" {
   type = list(object({
-    secgrp_ids  = list(string)
-    port        = number
+    secgrp_id   = string
+    from_port   = number
+    to_port     = number
     description = string
   }))
 
