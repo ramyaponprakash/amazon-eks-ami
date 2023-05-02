@@ -72,57 +72,6 @@ resource "aws_security_group" "bastion_security_group" {
   name   = "${var.cluster_name}_bastion_security_group"
   vpc_id = var.vpc_id
 
-
-  dynamic "ingress" {
-    for_each = var.bastion_secgrp_ingress_cidr
-    content {
-      cidr_blocks = ingress.value.cidrs
-      protocol    = "tcp"
-      from_port   = ingress.value.port
-      to_port     = ingress.value.port
-      description = ingress.value.description
-    }
-  }
-
-  dynamic "ingress" {
-    for_each = var.bastion_secgrp_ingress_prefix_list
-    content {
-      prefix_list_ids = ingress.value.prefix_list_ids
-      protocol        = "tcp"
-      from_port       = ingress.value.port
-      to_port         = ingress.value.port
-      description     = ingress.value.description
-    }
-  }
-
-  dynamic "ingress" {
-    for_each = var.bastion_secgrp_ingress_secgrp
-    content {
-      security_groups = ingress.value.secgrp_ids
-      protocol        = "tcp"
-      from_port       = ingress.value.port
-      to_port         = ingress.value.port
-      description     = ingress.value.description
-    }
-  }
-
-
-  /*ingress {
-    description = "ssh access from ssh_cidr_blocks"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = var.bastion.ssh_cidr_blocks
-  }
-
-  ingress {
-    description     = "ssh access from ssh_prefix_list_ids"
-    from_port       = 22
-    to_port         = 22
-    protocol        = "tcp"
-    prefix_list_ids = var.bastion.ssh_prefix_list_ids
-  }*/
-
   egress {
     from_port   = 0
     to_port     = 0
@@ -140,4 +89,37 @@ resource "aws_eip" "ubuntu_bastion_eip" {
   tags = {
     Name = "${var.cluster_name}_bastion_eip"
   }
+}
+
+resource "aws_security_group_rule" "bastion-ingress-cidrs" {
+  for_each          = { for index, obj in var.bastion_secgrp_ingress_cidr : obj.id => obj }
+  type              = "ingress"
+  description       = each.value.description
+  security_group_id = aws_security_group.bastion_security_group.id
+  cidr_blocks       = each.value.cidrs
+  protocol          = "tcp"
+  from_port         = each.value.from_port
+  to_port           = each.value.to_port
+}
+
+resource "aws_security_group_rule" "bastion-ingress-prefix" {
+  for_each          = { for index, obj in var.bastion_secgrp_ingress_prefix_list : obj.id => obj }
+  type              = "ingress"
+  description       = each.value.description
+  security_group_id = aws_security_group.bastion_security_group.id
+  prefix_list_ids   = each.value.prefix_list_ids
+  protocol          = "tcp"
+  from_port         = each.value.from_port
+  to_port           = each.value.to_port
+}
+
+resource "aws_security_group_rule" "bastion-ingress-secgrp" {
+  for_each                 = { for index, obj in var.bastion_secgrp_ingress_secgrp : obj.id => obj }
+  type                     = "ingress"
+  description              = each.value.description
+  security_group_id        = aws_security_group.bastion_security_group.id
+  source_security_group_id = each.value.secgrp_id
+  protocol                 = "tcp"
+  from_port                = each.value.from_port
+  to_port                  = each.value.to_port
 }

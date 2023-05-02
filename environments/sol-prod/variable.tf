@@ -196,8 +196,10 @@ variable "bastion" {
 
 variable "bastion_secgrp_ingress_cidr" {
   type = list(object({
+    id          = string
     cidrs       = list(string)
-    port        = number
+    from_port   = number
+    to_port     = number
     description = string
   }))
 
@@ -206,34 +208,26 @@ variable "bastion_secgrp_ingress_cidr" {
 
 variable "bastion_secgrp_ingress_prefix_list" {
   type = list(object({
+    id              = string
     prefix_list_ids = list(string)
-    port            = number
+    from_port       = number
+    to_port         = number
     description     = string
   }))
 
-  default = [
-    {
-      prefix_list_ids = []
-      port            = 22
-      description     = "from ADEX team"
-    },
-  ]
+  default = []
 }
 
 variable "bastion_secgrp_ingress_secgrp" {
   type = list(object({
-    secgrp_ids  = list(string)
-    port        = number
+    id          = string
+    secgrp_id   = string
+    from_port   = number
+    to_port     = number
     description = string
   }))
 
-  default = [
-    {
-      secgrp_ids  = []
-      port        = 22
-      description = "from mgmt"
-    },
-  ]
+  default = []
 }
 
 variable "squid" {
@@ -252,8 +246,10 @@ variable "squid" {
 
 variable "squid_secgrp_ingress_cidr" {
   type = list(object({
+    id          = string
     cidrs       = list(string)
-    port        = number
+    from_port   = number
+    to_port     = number
     description = string
   }))
 
@@ -262,8 +258,10 @@ variable "squid_secgrp_ingress_cidr" {
 
 variable "squid_secgrp_ingress_secgrp" {
   type = list(object({
-    secgrp_ids  = list(string)
-    port        = number
+    id          = string
+    secgrp_id   = string
+    from_port   = number
+    to_port     = number
     description = string
   }))
 

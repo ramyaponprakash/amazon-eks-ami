@@ -63,9 +63,9 @@ resource "aws_security_group_rule" "eks_cluster-node-ingress-prefix-list" {
   type              = "ingress"
   description       = each.value.description
   security_group_id = aws_security_group.eks_cluster-node.id
-  cidr_blocks       = each.value.prefix_list_ids
+  prefix_list_ids   = each.value.prefix_list_ids
   protocol          = "tcp"
-  from_port         = each.value.port
-  to_port           = each.value.port
+  from_port         = each.value.from_port
+  to_port           = each.value.to_port
 }
 

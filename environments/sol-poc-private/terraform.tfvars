@@ -106,9 +106,10 @@ bastion = {
 
 bastion_secgrp_ingress_cidr = [
   {
-
+    id          = "0"
     cidrs       = ["173.2.0.0/19", "173.1.0.0/19"]
-    port        = 22
+    from_port   = 22
+    to_port     = 22
     description = "from qa vpc"
   },
 ]

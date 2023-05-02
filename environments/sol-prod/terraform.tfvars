@@ -128,8 +128,10 @@ bastion = {
 
 bastion_secgrp_ingress_cidr = [
   #  {
+  #    id          = "0"
   #    cidrs       = ["100.112.110.0/24", "100.80.27.128/26"]
-  #    port        = 22
+  #    from_port   = 22
+  #    to_port     = 22
   #    description = "from SOLX vpc"
   #  },
 ]
@@ -138,8 +140,10 @@ bastion_secgrp_ingress_prefix_list = []
 
 bastion_secgrp_ingress_secgrp = [
   {
-    secgrp_ids  = ["sg-0dd3d667f43ec5703"]
-    port        = 22
+    id          = "0"
+    secgrp_id   = "sg-0dd3d667f43ec5703"
+    from_port   = 22
+    to_port     = 22
     description = "from mgmt"
   },
 ]
@@ -158,27 +162,33 @@ squid = {
 
 squid_secgrp_ingress_cidr = [
   {
-
+    id          = "0"
     cidrs       = ["100.112.110.0/24", "100.80.27.128/26"]
-    port        = 3128
+    from_port   = 3128
+    to_port     = 3128
     description = "from SOLX vpc"
   },
   {
-    cidrs       = ["10.189.118.0/25"]
-    port        = 3128
+    id          = "1"
+    from_port   = 3128
+    to_port     = 3128
     description = "from peer vpc cidr (SOLI)"
   },
   {
+    id          = "2"
     cidrs       = ["100.112.110.0/24", "100.80.27.128/26"]
-    port        = 22
+    from_port   = 22
+    to_port     = 22
     description = "from SOLX vpc"
   },
 ]
 
 squid_secgrp_ingress_secgrp = [
   {
-    secgrp_ids  = ["sg-0dd3d667f43ec5703"]
-    port        = 22
+    id          = "0"
+    secgrp_id   = "sg-0dd3d667f43ec5703"
+    from_port   = 22
+    to_port     = 22
     description = "from mgmt"
   },
 ]

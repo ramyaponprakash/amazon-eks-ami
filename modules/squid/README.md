@@ -26,6 +26,8 @@ No modules.
 | [aws_lb_target_group.squid_target_group_3128](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group) | resource |
 | [aws_route53_record.route53](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_security_group.squidproxy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
+| [aws_security_group_rule.squidproxy-ingress-cidrs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.squidproxy-ingress-secgrp](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [template_file.squid_userdata](https://registry.terraform.io/providers/hashicorp/template/latest/docs/data-sources/file) | data source |
 
 ## Inputs
@@ -34,8 +36,8 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_region"></a> [region](#input\_region) | n/a | `string` | `"ap-southeast-1"` | no |
 | <a name="input_squid"></a> [squid](#input\_squid) | n/a | <pre>object({<br>    enable         = optional(bool, true)<br>    instance_type  = optional(string, "t3.medium")<br>    subnet_ids     = list(string)<br>    subnet_gw_ids  = list(string)<br>    zone_id        = string<br>    ami_squid      = string<br>    record_name    = string<br>    squid_key_name = string<br>    iam_role       = string<br>    kms_key_id     = string<br>  })</pre> | n/a | yes |
-| <a name="input_squid_secgrp_ingress_cidr"></a> [squid\_secgrp\_ingress\_cidr](#input\_squid\_secgrp\_ingress\_cidr) | n/a | <pre>list(object({<br>    cidrs       = list(string)<br>    port        = number<br>    description = string<br>  }))</pre> | <pre>[<br>  {<br>    "cidrs": [],<br>    "description": "from own vpc",<br>    "port": 3128<br>  },<br>  {<br>    "cidrs": [<br>      "10.189.118.0/25"<br>    ],<br>    "description": "from peer vpc cidr (or the source)",<br>    "port": 3128<br>  },<br>  {<br>    "cidrs": [],<br>    "description": "from own vpc",<br>    "port": 22<br>  }<br>]</pre> | no |
-| <a name="input_squid_secgrp_ingress_secgrp"></a> [squid\_secgrp\_ingress\_secgrp](#input\_squid\_secgrp\_ingress\_secgrp) | n/a | <pre>list(object({<br>    secgrp_ids  = list(string)<br>    port        = number<br>    description = string<br>  }))</pre> | <pre>[<br>  {<br>    "description": "from mgmt",<br>    "port": 22,<br>    "secgrp_ids": [<br>      "sg-0dd3d667f43ec5703"<br>    ]<br>  }<br>]</pre> | no |
+| <a name="input_squid_secgrp_ingress_cidr"></a> [squid\_secgrp\_ingress\_cidr](#input\_squid\_secgrp\_ingress\_cidr) | n/a | <pre>list(object({<br>    id          = string<br>    cidrs       = list(string)<br>    from_port   = number<br>    to_port     = number<br>    description = string<br>  }))</pre> | `[]` | no |
+| <a name="input_squid_secgrp_ingress_secgrp"></a> [squid\_secgrp\_ingress\_secgrp](#input\_squid\_secgrp\_ingress\_secgrp) | n/a | <pre>list(object({<br>    id          = string<br>    secgrp_id   = string<br>    from_port   = number<br>    to_port     = number<br>    description = string<br>  }))</pre> | `[]` | no |
 | <a name="input_vpc_cidr_pri"></a> [vpc\_cidr\_pri](#input\_vpc\_cidr\_pri) | n/a | `string` | n/a | yes |
 | <a name="input_vpc_cidr_sec"></a> [vpc\_cidr\_sec](#input\_vpc\_cidr\_sec) | n/a | `string` | `""` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | If network.create\_vpc=false, it must be provided | `string` | `""` | no |
