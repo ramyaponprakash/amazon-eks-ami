@@ -92,9 +92,6 @@ vpc_private_sec_subnets = []
 vpc_sec_enable_cidr     = false
 vpc_sec_subnet_ids      = []
 
-bastion_secgrp_ingress_secgrp = ["sg-0e35335b81ce6a8d7"]
-#bastion_secgrp_ingress_prefix_list = ["pl-0af10fe06357d6aff"]
-
 bastion = {
   enable        = true
   public_access = false
@@ -102,11 +99,14 @@ bastion = {
   subnet_ids    = []
   instance_type = "t2.micro"
   iam_role      = "u-ec2read"
-  ami_id        = "ami-0a72af05d27b49ccb"
+  ami_id        = "ami-0aaee588abf059b37"
   http_proxy    = "http://squid.adex-qa.com:3128"
   https_proxy   = "http://squid.adex-qa.com:3128"
   no_proxy      = "localhost,127.0.0.1,169.254.169.254,172.9.0.0/24,.local,.svc,.eks.amazonaws.com"
 }
+
+bastion_secgrp_ingress_secgrp      = ["sg-0e35335b81ce6a8d7"]
+bastion_secgrp_ingress_prefix_list = []
 
 /*
 bastion_secgrp_ingress_cidr = [
