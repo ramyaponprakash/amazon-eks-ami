@@ -287,8 +287,10 @@ variable "eks_api_endpoint_access_cidrs" {
 variable "eks_worker_node_access_cidrs" {
   description = "Provide cidr based whitelist to envs require to be accessed from public via Firewall to internal NLB (e.g. Prods)"
   type = list(object({
+    id          = string
     cidrs       = list(string)
-    port        = string
+    from_port   = number
+    to_port     = number
     description = string
   }))
   default = []
@@ -297,8 +299,10 @@ variable "eks_worker_node_access_cidrs" {
 variable "eks_worker_node_access_prefix" {
   description = "Provide prefix based whitelist to envs require to be accessed from public without Firewall (e.g. DEV/QA)"
   type = list(object({
+    id              = string
     prefix_list_ids = list(string)
-    port            = string
+    from_port       = number
+    to_port         = number
     description     = string
   }))
   default = []

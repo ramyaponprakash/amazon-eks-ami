@@ -4,28 +4,6 @@ resource "aws_security_group" "eks_cluster-node" {
   description = "Security group for all nodes in the cluster"
   vpc_id      = var.vpc_id
 
-  dynamic "ingress" {
-    for_each = var.eks_worker_node_access_cidrs
-    content {
-      description = ingress.value.description
-      protocol    = "tcp"
-      cidr_blocks = ingress.value.cidrs
-      from_port   = ingress.value.port
-      to_port     = ingress.value.port
-    }
-  }
-
-  dynamic "ingress" {
-    for_each = var.eks_worker_node_access_prefix
-    content {
-      description     = ingress.value.description
-      protocol        = "tcp"
-      prefix_list_ids = ingress.value.prefix_list_ids
-      from_port       = ingress.value.port
-      to_port         = ingress.value.port
-    }
-  }
-
   egress {
     from_port   = 0
     to_port     = 0
@@ -67,5 +45,27 @@ resource "aws_security_group_rule" "eks_cluster-node-ingress-lbc" {
   source_security_group_id = aws_security_group.eks_cluster-cluster.id
   from_port                = 9443
   to_port                  = 9443
+}
+
+resource "aws_security_group_rule" "eks_cluster-node-ingress-cidrs" {
+  for_each          = { for index, obj in var.eks_worker_node_access_cidrs : obj.id => obj }
+  type              = "ingress"
+  description       = each.value.description
+  security_group_id = aws_security_group.eks_cluster-node.id
+  cidr_blocks       = each.value.cidrs
+  protocol          = "tcp"
+  from_port         = each.value.from_port
+  to_port           = each.value.to_port
+}
+
+resource "aws_security_group_rule" "eks_cluster-node-ingress-prefix-list" {
+  for_each          = { for index, obj in var.eks_worker_node_access_prefix : obj.id => obj }
+  type              = "ingress"
+  description       = each.value.description
+  security_group_id = aws_security_group.eks_cluster-node.id
+  cidr_blocks       = each.value.prefix_list_ids
+  protocol          = "tcp"
+  from_port         = each.value.port
+  to_port           = each.value.port
 }
 
