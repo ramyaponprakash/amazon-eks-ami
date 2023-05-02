@@ -34,9 +34,9 @@ variable "bastion" {
     hosts_number         = optional(number, 1)
     iam_role             = string
     ssh_cidr_blocks      = optional(list(string))
-    http_proxy           = optional(string, "empty")
-    https_proxy          = optional(string, "empty")
-    no_proxy             = optional(string, "empty")
+    http_proxy           = optional(string, "")
+    https_proxy          = optional(string, "")
+    no_proxy             = optional(string, "")
     // cli installation variables
     kubectl_version  = optional(string, "1.22.6/2022-03-09")
     helm_version     = optional(string, "v3.9.2")

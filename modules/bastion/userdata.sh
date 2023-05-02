@@ -12,11 +12,10 @@ export http_proxy="${http_proxy}"
 export https_proxy="${https_proxy}"
 export no_proxy="${no_proxy}"
 
-
 update_env_vars() {
 
 # Skip update_env_vars task if http_proxy is "empty"
-if [ "$http_proxy" = "empty" ]; then
+if [ "$http_proxy" = "" ]; then
   echo "Skipping update_env_vars task because http_proxy is empty"
   return
 fi
