@@ -1,6 +1,9 @@
 data "template_file" "userdata" {
   template = file("${path.module}/userdata.sh")
   vars = {
+    http_proxy       = var.bastion.http_proxy
+    https_proxy      = var.bastion.https_proxy
+    no_proxy         = var.bastion.no_proxy
     kubectl_version  = var.bastion.kubectl_version
     helm_version     = var.bastion.helm_version
     helmfile_version = var.bastion.helmfile_version
@@ -31,7 +34,7 @@ resource "aws_instance" "ubuntu_bastion" {
   vpc_security_group_ids      = [aws_security_group.bastion_security_group.id]
   user_data                   = data.template_file.userdata.rendered
   iam_instance_profile        = var.bastion.iam_role
-
+  user_data_replace_on_change = true
   root_block_device {
     encrypted = true
   }
@@ -48,7 +51,8 @@ resource "aws_instance" "ubuntu_bastion" {
 }
 
 # Ensures that terraform waits until bastion host is up and running before leaving.
-/*resource "null_resource" "wait_for_bastion" {
+/*
+resource "null_resource" "wait_for_bastion" {
   provisioner "remote-exec" {
     connection {
       host        = var.bastion.public_access ? var.bastion.attach_eip ? aws_eip.ubuntu_bastion_eip[0].public_ip : aws_instance.ubuntu_bastion[0].public_dns : aws_instance.ubuntu_bastion[0].private_dns
@@ -66,7 +70,8 @@ resource "aws_instance" "ubuntu_bastion" {
   depends_on = [
     aws_instance.ubuntu_bastion[0]
   ]
-}*/
+}
+*/
 
 resource "aws_security_group" "bastion_security_group" {
   name   = "${var.cluster_name}_bastion_security_group"

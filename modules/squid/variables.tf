@@ -47,7 +47,6 @@ variable "squid" {
 
 variable "squid_secgrp_ingress_cidr" {
   type = list(object({
-    id          = string
     cidrs       = list(string)
     from_port   = number
     to_port     = number
@@ -59,7 +58,6 @@ variable "squid_secgrp_ingress_cidr" {
 
 variable "squid_secgrp_ingress_secgrp" {
   type = list(object({
-    id          = string
     secgrp_id   = string
     from_port   = number
     to_port     = number

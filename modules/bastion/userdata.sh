@@ -8,6 +8,25 @@
 #HELM_VER="v3.9.2"
 #HELMFILE_VER="0.145.2"
 
+export http_proxy="${http_proxy}"
+export https_proxy="${https_proxy}"
+export no_proxy="${no_proxy}"
+
+update_env_vars() {
+  # Skip update_env_vars task if http_proxy is "empty"
+  if [ "$http_proxy" == "" ]; then
+    echo "Skipping update_env_vars task because http_proxy is empty"
+    return
+  fi
+
+   # Write the environment variables to the temporary file
+  cat <<EOF > /etc/environment
+http_proxy="$http_proxy"
+https_proxy="$https_proxy"
+no_proxy="$no_proxy"
+EOF
+chmod 644 /etc/environment
+} 
 
 install_command_if_not_exist() {
   if ! command -v $1 &> /dev/null
@@ -33,6 +52,7 @@ install_kubectl() {
   chmod +x ./kubectl &&
   mv ./kubectl /usr/local/bin/kubectl
   kubectl version --short --client
+  aws eks update-kubeconfig --name ${cluster_name}  --region ap-southeast-1
 }
 
 install_helm() {
@@ -92,6 +112,7 @@ enabled_bamboo_envvars() {
   systemctl restart ssh
 }
 
+update_env_vars
 install_helpers
 install_command_if_not_exist aws install_awscli
 install_eksctl

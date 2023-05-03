@@ -108,5 +108,3 @@ module "eks-solace" {
     module.eks,
   ]
 }
-
-
