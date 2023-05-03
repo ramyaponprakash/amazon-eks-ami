@@ -40,7 +40,7 @@ resource "aws_instance" "ubuntu_bastion" {
   }
 
   tags = {
-    Name                         = "${var.cluster_name}-${var.az_map[count.index]}"
+    Name                         = "${var.cluster_name}-bastion-${var.az_map[count.index]}"
     Custodian-Scheduler-StopTime = "off=();tz=sgt"
     malware-scan                 = "true"
   }

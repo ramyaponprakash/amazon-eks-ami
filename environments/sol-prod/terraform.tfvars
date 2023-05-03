@@ -42,7 +42,15 @@ network = {
     {
       destination : "10.189.118.0/25", // SOLI cidr
       target : "pcx-0183e747499457bef"
-    }
+    },
+    {
+      destination : "172.16.108.0/24", // NIPS cidr
+      target : "pcx-046a96fb0342406c7"
+    },
+    {
+      destination : "172.22.227.0/24", // NIPS cidr
+      target : "pcx-046a96fb0342406c7"
+    }  
   ]
   # https://docs.solace.com/Cloud/Deployment-Considerations/connectivity-model-k8s.htm
   tgw = [
