@@ -168,7 +168,8 @@ squid_secgrp_ingress_cidr = [
     to_port     = 3128
     description = "from SOLX vpc"
   },
-  {
+  { 
+    cidrs       = ["10.189.118.0/25"]
     from_port   = 3128
     to_port     = 3128
     description = "from peer vpc cidr (SOLI)"
