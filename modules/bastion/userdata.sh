@@ -25,9 +25,8 @@ http_proxy="$http_proxy"
 https_proxy="$https_proxy"
 no_proxy="$no_proxy"
 EOF
-} 
-
 chmod 644 /etc/environment
+} 
 
 install_command_if_not_exist() {
   if ! command -v $1 &> /dev/null
