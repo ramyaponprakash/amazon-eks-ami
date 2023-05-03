@@ -84,14 +84,12 @@ variable "vpc_sec_enable_cidr" {
   default = false
 }
 
-
 variable "vpc_nat_gateway" {
   type = object({
     enable                        = optional(bool, false)
     vpc_nat_gw_eip_allocation_ids = optional(list(string))
   })
 }
-
 
 variable "vpc_igw" {
   type = object({
@@ -180,7 +178,7 @@ variable "bastion" {
     hosts_number         = optional(number, 1)
     iam_role             = string
     ami_id               = string
-    ssh_cidr_blocks      = optional(list(string))
+    ssh_cidr_blocks      = optional(list(string), [])
     http_proxy           = optional(string, "")
     https_proxy          = optional(string, "")
     no_proxy             = optional(string, "")
@@ -219,8 +217,6 @@ variable "bastion_secgrp_ingress_secgrp" {
 
   default = []
 }
-
-
 
 variable "eks_http_proxy" {
   type = string

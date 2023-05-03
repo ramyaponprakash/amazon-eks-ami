@@ -105,7 +105,14 @@ bastion = {
   no_proxy      = "localhost,127.0.0.1,169.254.169.254,172.9.0.0/24,.local,.svc,.eks.amazonaws.com"
 }
 
-bastion_secgrp_ingress_secgrp      = ["sg-0e35335b81ce6a8d7"]
+bastion_secgrp_ingress_secgrp = [
+  {
+    secgrp_id   = "sg-0e35335b81ce6a8d7",
+    from_port   = 22
+    to_port     = 22
+    description = "sgrp-sdx-qa-ssh-bridge"
+  }
+]
 bastion_secgrp_ingress_prefix_list = []
 
 /*

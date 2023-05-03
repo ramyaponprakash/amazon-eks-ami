@@ -77,42 +77,6 @@ resource "aws_security_group" "bastion_security_group" {
   name   = "${var.cluster_name}_bastion_security_group"
   vpc_id = var.vpc_id
 
-<<<<<<< HEAD
-  dynamic "ingress" {
-    for_each = var.bastion_secgrp_ingress_cidr
-    content {
-      cidr_blocks = ingress.value.cidrs
-      protocol    = "tcp"
-      from_port   = ingress.value.port
-      to_port     = ingress.value.port
-      description = ingress.value.description
-    }
-  }
-
-  dynamic "ingress" {
-    for_each = var.bastion_secgrp_ingress_prefix_list
-    content {
-      prefix_list_ids = ingress.value.prefix_list_ids
-      protocol        = "tcp"
-      from_port       = ingress.value.port
-      to_port         = ingress.value.port
-      description     = ingress.value.description
-    }
-  }
-
-  dynamic "ingress" {
-    for_each = var.bastion_secgrp_ingress_secgrp
-    content {
-      security_groups = ingress.value.secgrp_ids
-      protocol        = "tcp"
-      from_port       = ingress.value.port
-      to_port         = ingress.value.port
-      description     = ingress.value.description
-    }
-  }
-
-=======
->>>>>>> origin/develop
   egress {
     from_port   = 0
     to_port     = 0
