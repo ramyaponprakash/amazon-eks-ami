@@ -195,6 +195,10 @@ commons:
       readOnly: true
       mountPath: /etc/sense/conf/rabbitmq_config.yaml
       subPath: rabbitmq_config.yaml
+    - name: broker
+      readOnly: true
+      mountPath: /etc/sense/conf/broker_config.yaml
+      subPath: broker_config.yaml
     - name: elasticsearch
       readOnly: true
       mountPath: /etc/sense/conf/elasticsearch_config.yaml
