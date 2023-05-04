@@ -21,7 +21,7 @@ fi
 "${LOC}"helm repo add "$CHART_NAME" "$BUCKET"
 
 echo "packaging $CHART_NAME"
-"${LOC}"helm package ./sense/base"$CHART_NAME"/ --destination "$DEST_PATH" || exit 1
+"${LOC}"helm package ./sense/base/"$CHART_NAME"/ --destination "$DEST_PATH" || exit 1
 
 for file in "$DEST_PATH"/*; do
   FILE_NAME=${file##*/}
