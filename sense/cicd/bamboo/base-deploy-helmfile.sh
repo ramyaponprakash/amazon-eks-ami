@@ -13,9 +13,9 @@ TAG=$4
 echo "deploy $CHART_NAME in $CLUSTER_NAME with image tag $TAG"
 
 if [[ -z "${TAG}" ]]; then
-  "${LOC}"/helmfile -e "$ENV" -f ./base/"$CHART_NAME"/helmfile.yaml apply || exit 1
+  "${LOC}"/helmfile -e "$ENV" -f ./sense/base"$CHART_NAME"/helmfile.yaml apply || exit 1
 else
-  "${LOC}"/helmfile -e "$ENV" -f ./base/"$CHART_NAME"/helmfile.yaml apply --set image.tag="$TAG" || exit 1
+  "${LOC}"/helmfile -e "$ENV" -f ./sense/base"$CHART_NAME"/helmfile.yaml apply --set image.tag="$TAG" || exit 1
 fi
 
 echo "deploy $CHART_NAME in $CLUSTER_NAME - done!"

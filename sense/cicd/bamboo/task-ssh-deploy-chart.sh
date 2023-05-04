@@ -18,9 +18,9 @@ CLUSTER_NAME=$CLUSTER_NAME
 echo "Started deploy chart with ENV=$ENV, CLUSTER_NAME=$CLUSTER_NAME, CHART_NAME=$CHART_NAME, IMAGE_TAG=$IMAGE_TAG"
 
 if [[ -z "${IMAGE_TAG}" ]]; then
-  helmfile -e "$BUILD_ENV" -f ./base/"$CHART_NAME"/helmfile.yaml apply || exit 1
+  helmfile -e "$BUILD_ENV" -f ./sense/base"$CHART_NAME"/helmfile.yaml apply || exit 1
 else
-  helmfile -e "$BUILD_ENV" -f ./base/"$CHART_NAME"/helmfile.yaml apply --set image.tag="$IMAGE_TAG" || exit 1
+  helmfile -e "$BUILD_ENV" -f ./sense/base"$CHART_NAME"/helmfile.yaml apply --set image.tag="$IMAGE_TAG" || exit 1
 fi
 
 echo "deploy chart '$CHART_NAME' in cluster '$CLUSTER_NAME' - done!"

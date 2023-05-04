@@ -39,12 +39,12 @@ export AWS_ACC=00000000
 
 ### Generating testing template previews
 ```shell
-helmfile -e dev -f ./base/cluster-common/helmfile.yaml template > preview.yaml 
+helmfile -e dev -f ./sense/basecluster-common/helmfile.yaml template > preview.yaml 
 ```
 
 ### Debugging composed variables
 ```shell
-helmfile -e dev -f ./base/sense-backend/helmfile.yaml write-values
+helmfile -e dev -f ./sense/basesense-backend/helmfile.yaml write-values
 ```
 
 ## Deploying application charts
