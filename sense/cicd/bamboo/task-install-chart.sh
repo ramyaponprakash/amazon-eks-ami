@@ -13,4 +13,4 @@ if [[ -z "${IMAGE_TAG}" ]]; then
   IMAGE_TAG="${BUILD_DEPLOY_VERSION}"
 fi
 
-./cicd/bamboo/base-deploy-helmfile.sh "$CHART_NAME" "$ENV" "$CLUSTER_NAME" "$IMAGE_TAG"
+./sense/cicd/bamboo/base-deploy-helmfile.sh "$CHART_NAME" "$ENV" "$CLUSTER_NAME" "$IMAGE_TAG"

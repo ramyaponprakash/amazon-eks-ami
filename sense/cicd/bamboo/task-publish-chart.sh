@@ -9,4 +9,4 @@ fi
 
 CHART_NAME="${CHART_NAME}"
 
-./cicd/bamboo/base-publish-chart.sh "$CHART_NAME" "$ENV" "$CLUSTER_NAME"
+./sense/cicd/bamboo/base-publish-chart.sh "$CHART_NAME" "$ENV" "$CLUSTER_NAME"
