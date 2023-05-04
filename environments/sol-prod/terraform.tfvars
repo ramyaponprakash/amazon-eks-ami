@@ -50,7 +50,7 @@ network = {
     {
       destination : "172.22.227.0/24", // NIPS cidr
       target : "pcx-046a96fb0342406c7"
-    }  
+    }
   ]
   # https://docs.solace.com/Cloud/Deployment-Considerations/connectivity-model-k8s.htm
   tgw = [
@@ -176,7 +176,7 @@ squid_secgrp_ingress_cidr = [
     to_port     = 3128
     description = "from SOLX vpc"
   },
-  { 
+  {
     cidrs       = ["10.189.118.0/25"]
     from_port   = 3128
     to_port     = 3128

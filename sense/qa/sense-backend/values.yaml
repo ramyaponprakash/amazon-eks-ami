@@ -43,6 +43,9 @@ secrets:
       key: rabbitmq_config.yaml
       secretKey: qa/sdx/rabbitMQ/credentials
 #      secretKey: qa/sdx/rabbitmq/credentials
+    - name: broker
+      key: broker_config.yaml
+      secretKey: qa/sdx/broker
     - name: elasticsearch
       key: elasticsearch_config.yaml
       secretKey: qa/sdx/elasticsearch/credentials
@@ -144,6 +147,9 @@ commons:
     - name: rabbitmq
       secret:
         secretName: rabbitmq
+    - name: broker
+      secret:
+        secretName: broker
     - name: elasticsearch
       secret:
         secretName: elasticsearch
