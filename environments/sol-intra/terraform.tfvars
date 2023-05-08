@@ -112,16 +112,15 @@ vpc_public_subnets      = []
 vpc_private_elb_subnets = []
 
 bastion = {
-  enable          = true
-  public_access   = false
-  vpc_id          = ""
-  subnet_ids      = []
-  iam_role        = "adex-eksadmin"
-  ami_id          = "ami-0aaee588abf059b37"
-  ssh_cidr_blocks = []
-  http_proxy      = "http://squid-intra.adex.com:3128"
-  https_proxy     = "http://squid-intra.adex.com:3128"
-  no_proxy        = "localhost,127.0.0.1,169.254.169.254,.eks.amazonaws.com"
+  enable        = true
+  public_access = false
+  vpc_id        = ""
+  subnet_ids    = []
+  iam_role      = "adex-eksadmin"
+  ami_id        = "ami-0aaee588abf059b37"
+  http_proxy    = "http://squid-intra.adex.com:3128"
+  https_proxy   = "http://squid-intra.adex.com:3128"
+  no_proxy      = "localhost,127.0.0.1,169.254.169.254,.eks.amazonaws.com"
 }
 
 bastion_secgrp_ingress_cidr = [

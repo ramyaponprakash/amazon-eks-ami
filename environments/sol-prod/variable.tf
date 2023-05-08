@@ -190,7 +190,6 @@ variable "bastion" {
     hosts_number         = optional(number, 1)
     iam_role             = string
     ami_id               = string
-    ssh_cidr_blocks      = optional(list(string))
     http_proxy           = optional(string, "")
     https_proxy          = optional(string, "")
     no_proxy             = optional(string, "")

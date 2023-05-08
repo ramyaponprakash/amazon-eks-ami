@@ -8,6 +8,11 @@ Content-Type: text/cloud-boothook; charset="us-ascii"
 mkdir -p /etc/systemd/system/containerd.service.d
 mkdir -p /etc/systemd/system/sandbox-image.service.d
 
+if [ "$http_proxy" == "" ]; then
+    cloud-init-per instance reload_daemon systemctl daemon-reload
+    exit 0
+fi
+
 # Configure yum to use the proxy
 cloud-init-per instance yum_proxy_config cat << EOF >> /etc/yum.conf
 proxy=${HTTP_PROXY}

@@ -7,6 +7,14 @@ resource "aws_route_table" "public" {
     gateway_id = var.vpc_igw.enable_igw ? aws_internet_gateway.igw[0].id : var.vpc_igw_ids[0]
   }
 
+  dynamic "route" {
+    for_each = var.network.peers
+    content {
+      cidr_block                = route.value.destination
+      vpc_peering_connection_id = route.value.target
+    }
+  }
+
   tags = {
     Name = "${var.vpc_name}-rt-public-${var.az_map[count.index % 3]}"
   }

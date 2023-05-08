@@ -47,6 +47,7 @@ helm upgrade --install lb-ctrl eks/aws-load-balancer-controller --namespace kube
   --set serviceAccount.name=aws-load-balancer-controller \
   --set serviceAccount.annotations."eks\.amazonaws\.com/role-arn"="arn:aws:iam::$AWS_ACCOUNT_ID:role/$CLUSTER_NAME-aws-lb-controller"
 
+# TODO: condition execution by the value of http_proxy
 # Applying proxy config after chart installation
 kubectl patch -n kube-system -p '{ "spec": {"template":{ "spec": { "containers": [ { "name": "aws-cluster-autoscaler", "envFrom": [ { "configMapRef": {"name": "proxy-environment-variables"} } ] } ] } } } }' deployment cluster-autoscaler-aws-cluster-autoscaler
 kubectl patch -n kube-system -p '{ "spec": {"template":{ "spec": { "containers": [ { "name": "aws-load-balancer-controller", "envFrom": [ { "configMapRef": {"name": "proxy-environment-variables"} } ] } ] } } } }' deployment lb-ctrl-aws-load-balancer-controller
