@@ -73,8 +73,7 @@ module "bastion" {
   bastion_secgrp_ingress_secgrp      = var.bastion_secgrp_ingress_secgrp
 
   bastion = merge(var.bastion, {
-    subnet_ids      = var.network.enable ? (var.bastion.public_access ? module.eks_network[0].public_subnet_ids : module.eks_network[0].private_subnet_ids) : var.bastion.subnet_ids
-    ssh_cidr_blocks = var.network.enable ? concat([var.vpc_cidr_pri], var.bastion.ssh_cidr_blocks) : var.bastion.ssh_cidr_blocks
+    subnet_ids = var.network.enable ? (var.bastion.public_access ? module.eks_network[0].public_subnet_ids : module.eks_network[0].private_subnet_ids) : var.bastion.subnet_ids
   })
 }
 

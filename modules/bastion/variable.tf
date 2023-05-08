@@ -33,7 +33,6 @@ variable "bastion" {
     public_key_path      = optional(string, "")
     hosts_number         = optional(number, 1)
     iam_role             = string
-    ssh_cidr_blocks      = optional(list(string))
     http_proxy           = optional(string, "")
     https_proxy          = optional(string, "")
     no_proxy             = optional(string, "")

@@ -12,7 +12,8 @@ variable "vpc_name" {
 }
 
 variable "vpc_id" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "eks_customer_cmk_key_arn" {
@@ -52,8 +53,8 @@ variable "network" {
 
 variable "vpc_eip" {
   type = object({
-    enable = optional(bool, false)
-    count  = optional(number, 1)
+    enable_eip = optional(bool, true)
+    count      = number
   })
 }
 
@@ -84,6 +85,7 @@ variable "vpc_sec_enable_cidr" {
   default = false
 }
 
+
 variable "vpc_nat_gateway" {
   type = object({
     enable                        = optional(bool, false)
@@ -91,10 +93,11 @@ variable "vpc_nat_gateway" {
   })
 }
 
+
 variable "vpc_igw" {
   type = object({
-    enable = optional(bool, false)
-    count  = optional(number, 0)
+    enable_igw = optional(bool, false)
+    count      = number
   })
 }
 
