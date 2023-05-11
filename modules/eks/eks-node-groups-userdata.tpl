@@ -8,7 +8,7 @@ Content-Type: text/cloud-boothook; charset="us-ascii"
 mkdir -p /etc/systemd/system/containerd.service.d
 mkdir -p /etc/systemd/system/sandbox-image.service.d
 
-if [ "$http_proxy" == "" ]; then
+if [ "${HTTP_PROXY}" == "" ]; then
     cloud-init-per instance reload_daemon systemctl daemon-reload
     exit 0
 fi

@@ -30,7 +30,10 @@ resource "aws_eks_node_group" "prod1k" {
   }
 
   lifecycle {
-    ignore_changes        = [scaling_config[0].desired_size]
+    ignore_changes = [
+      scaling_config[0].desired_size,
+      launch_template[0].version,
+    ]
     create_before_destroy = true
   }
 }

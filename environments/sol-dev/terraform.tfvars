@@ -16,7 +16,7 @@ eks_api_endpoint_access_cidrs = [
 ]
 eks_worker_node_access_cidrs = []
 eks_worker_node_access_prefix = [
-  { prefix_list_ids : ["pl-0af10fe06357d6aff"], from_port : 0, to_port : 56635, description : "For ADEX team development convenience, sense-whitelist" },
+  { prefix_list_ids : ["pl-0af10fe06357d6aff"], from_port : 0, to_port : 65535, description : "For ADEX team development convenience, sense-whitelist" },
 ]
 
 network = {
