@@ -9,7 +9,7 @@ variable "cluster_name" {
 
 variable "k8s_master_version" {
   type        = string
-  default     = "1.23"
+  default     = "1.24"
   description = "The kubernetes version to use. Only used a creation time, ignored once the cluster exists."
 }
 
