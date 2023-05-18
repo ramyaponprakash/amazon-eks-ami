@@ -42,6 +42,10 @@ network = {
     {
       destination : "100.112.110.0/24", // SOLX cidr
       target : "pcx-0183e747499457bef"
+    },
+    {
+      destination : "172.16.109.0/24", // SOLX cidr
+      target : "pcx-0376da7d85c03e667"
     }
   ]
   # https://docs.solace.com/Cloud/Deployment-Considerations/connectivity-model-k8s.htm
