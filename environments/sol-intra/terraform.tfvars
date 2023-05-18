@@ -44,7 +44,7 @@ network = {
       target : "pcx-0183e747499457bef"
     },
     {
-      destination : "172.16.109.0/24", // SOLX cidr
+      destination : "172.16.109.0/24", // MGMT cidr
       target : "pcx-0376da7d85c03e667"
     }
   ]
