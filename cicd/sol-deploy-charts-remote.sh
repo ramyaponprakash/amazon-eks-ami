@@ -18,7 +18,7 @@ if [[ $AWS_ACCOUNT_ID == "" ]]; then
   echo "AWS_ACCOUNT_ID required" && exit 1
 fi
 if [[ $K8S_VERSION == "" ]]; then
-  K8S_VERSION="1.24"
+  K8S_VERSION="1.25"
 fi
 if [[ $VPC_ID == "" ]]; then
   echo "VPC_ID required" && exit 1
