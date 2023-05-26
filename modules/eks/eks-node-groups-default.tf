@@ -8,7 +8,7 @@ resource "aws_eks_node_group" "default_nodegroup" {
   }
 
   node_role_arn          = aws_iam_role.eks_cluster-node.arn
-  subnet_ids             = [var.eks_private_subnet_ids[length(var.eks_private_subnet_ids) - 1]]
+  subnet_ids             = [var.eks_private_subnet_ids[0]] // Due to SOLI limitation
   cluster_name           = var.cluster_name
   node_group_name_prefix = "${var.cluster_name}-default-"
 
