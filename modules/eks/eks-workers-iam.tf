@@ -34,3 +34,9 @@ resource "aws_iam_role_policy_attachment" "eks_cluster-AmazonEKS_CNI_Policy" {
   policy_arn = "arn:${data.aws_partition.this.partition}:iam::aws:policy/AmazonEKS_CNI_Policy"
   role       = aws_iam_role.eks_cluster-node.name
 }
+
+// SSM
+resource "aws_iam_role_policy_attachment" "eks_cluster-AmazonSSMManagedInstanceCore" {
+  policy_arn = "arn:${data.aws_partition.this.partition}:iam::aws:policy/AmazonSSMManagedInstanceCore"
+  role       = aws_iam_role.eks_cluster-node.name
+}
