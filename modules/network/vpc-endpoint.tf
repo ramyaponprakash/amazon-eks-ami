@@ -167,6 +167,61 @@ resource "aws_vpc_endpoint" "autoscaling" {
   }
 }
 
+# For SSM setup
+resource "aws_vpc_endpoint" "ssm" {
+  count             = var.vpc_enable_private ? 1 : 0
+  vpc_id            = var.network.create_vpc ? module.vpc.vpc_id : var.vpc_id
+  service_name      = "com.amazonaws.${var.region}.ssm"
+  vpc_endpoint_type = "Interface"
+
+  security_group_ids = [
+    aws_security_group.vpc_endpoint.id,
+  ]
+
+  subnet_ids          = length(var.vpc_endpoint_subnets) > 0 ? slice(var.vpc_endpoint_subnets, 0, 3) : slice(aws_subnet.private_subnets.*.id, 0, 3)
+  private_dns_enabled = true
+
+  tags = {
+    Name = "${var.vpc_name}-ep-ssm"
+  }
+}
+
+resource "aws_vpc_endpoint" "ssmmessages" {
+  count             = var.vpc_enable_private ? 1 : 0
+  vpc_id            = var.network.create_vpc ? module.vpc.vpc_id : var.vpc_id
+  service_name      = "com.amazonaws.${var.region}.ssmmessages"
+  vpc_endpoint_type = "Interface"
+
+  security_group_ids = [
+    aws_security_group.vpc_endpoint.id,
+  ]
+
+  subnet_ids          = length(var.vpc_endpoint_subnets) > 0 ? slice(var.vpc_endpoint_subnets, 0, 3) : slice(aws_subnet.private_subnets.*.id, 0, 3)
+  private_dns_enabled = true
+
+  tags = {
+    Name = "${var.vpc_name}-ep-ssmmessages"
+  }
+}
+
+resource "aws_vpc_endpoint" "ec2messages" {
+  count             = var.vpc_enable_private ? 1 : 0
+  vpc_id            = var.network.create_vpc ? module.vpc.vpc_id : var.vpc_id
+  service_name      = "com.amazonaws.${var.region}.ec2messages"
+  vpc_endpoint_type = "Interface"
+
+  security_group_ids = [
+    aws_security_group.vpc_endpoint.id,
+  ]
+
+  subnet_ids          = length(var.vpc_endpoint_subnets) > 0 ? slice(var.vpc_endpoint_subnets, 0, 3) : slice(aws_subnet.private_subnets.*.id, 0, 3)
+  private_dns_enabled = true
+
+  tags = {
+    Name = "${var.vpc_name}-ep-ec2messages"
+  }
+}
+
 # For OIDC
 #resource "aws_vpc_endpoint" "eks" {
 #  count             = var.vpc_enable_private ? 1 : 0
