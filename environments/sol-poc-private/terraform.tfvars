@@ -14,12 +14,7 @@ eks_api_endpoint_access_cidrs = [
   { from : "173.2.0.0/19", port : "443", description : "QA CIDR 2" },
   { from : "172.9.0.0/24", port : "443", description : "VPC self" },
 ]
-eks_worker_node_access_cidrs = [
-  { cidrs : ["0.0.0.0/0"], from_port : 8883, to_port : 8883, description : "MQTTS" },
-  { cidrs : ["0.0.0.0/0"], from_port : 5671, to_port : 5671, description : "AMQPS" },
-  { cidrs : ["0.0.0.0/0"], from_port : 15675, to_port : 15675, description : "WS MQTT" }, # kept previous port
-  { cidrs : ["0.0.0.0/0"], from_port : 55443, to_port : 55443, description : "SMFS" },
-]
+
 network = {
   enable     = true
   create_vpc = true
