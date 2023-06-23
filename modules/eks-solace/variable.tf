@@ -2,6 +2,12 @@ variable "cluster_name" {
   type = string
 }
 
+variable "k8s_master_version" {
+  type        = string
+  default     = "1.25"
+  description = "The kubernetes version to use. Only used a creation time, ignored once the cluster exists. But will be used by node group update"
+}
+
 variable "eks_node_role_name" {
   type = string
 }

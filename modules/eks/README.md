@@ -38,6 +38,7 @@ No requirements.
 | [aws_iam_role_policy_attachment.eks_cluster-AmazonEKSServicePolicy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.eks_cluster-AmazonEKSWorkerNodePolicy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.eks_cluster-AmazonEKS_CNI_Policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_iam_role_policy_attachment.eks_cluster-AmazonSSMManagedInstanceCore](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_launch_template.default_nodegroup](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_template) | resource |
 | [aws_security_group.eks_cluster-cluster](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group.eks_cluster-node](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
@@ -53,6 +54,7 @@ No requirements.
 | [kubernetes_storage_class.gp2](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/storage_class) | resource |
 | [kubernetes_storage_class.gp3](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/storage_class) | resource |
 | [null_resource.default_node_group_asg_tags](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [aws_ami.latest-cis-optimized-ami](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
 | [aws_arn.default_node_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/arn) | data source |
 | [aws_autoscaling_group.default_node_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/autoscaling_group) | data source |
 | [aws_caller_identity.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
@@ -62,7 +64,6 @@ No requirements.
 | [aws_iam_session_context.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_session_context) | data source |
 | [aws_partition.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/partition) | data source |
 | [aws_region.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
-| [aws_ssm_parameter.optimized-ami](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
 | [aws_vpc.vpc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc) | data source |
 
 ## Inputs
@@ -78,11 +79,11 @@ No requirements.
 | <a name="input_eks_customer_cmk_key_arn"></a> [eks\_customer\_cmk\_key\_arn](#input\_eks\_customer\_cmk\_key\_arn) | n/a | `string` | n/a | yes |
 | <a name="input_eks_http_proxy"></a> [eks\_http\_proxy](#input\_eks\_http\_proxy) | n/a | `string` | n/a | yes |
 | <a name="input_eks_node_group_iam_role_arns"></a> [eks\_node\_group\_iam\_role\_arns](#input\_eks\_node\_group\_iam\_role\_arns) | n/a | `list(string)` | `[]` | no |
-| <a name="input_eks_private_ep_no_proxy"></a> [eks\_private\_ep\_no\_proxy](#input\_eks\_private\_ep\_no\_proxy) | n/a | `string` | `"s3.amazonaws.com,.s3.ap-southeast-1.amazonaws.com,sts.ap-southeast-1.amazonaws.com,ec2.ap-southeast-1.amazonaws.com,.dkr.ecr.ap-southeast-1.amazonaws.com,api.ecr.ap-southeast-1.amazonaws.com,autoscaling.ap-southeast-1.amazonaws.com,logs.ap-southeast-1.amazonaws.com,eks.ap-southeast-1.amazonaws.com,elasticloadbalancing.ap-southeast-1.amazonaws.com"` | no |
+| <a name="input_eks_private_ep_no_proxy"></a> [eks\_private\_ep\_no\_proxy](#input\_eks\_private\_ep\_no\_proxy) | n/a | `string` | `"s3.amazonaws.com,.s3.ap-southeast-1.amazonaws.com,sts.ap-southeast-1.amazonaws.com,ec2.ap-southeast-1.amazonaws.com,.dkr.ecr.ap-southeast-1.amazonaws.com,api.ecr.ap-southeast-1.amazonaws.com,autoscaling.ap-southeast-1.amazonaws.com,logs.ap-southeast-1.amazonaws.com,eks.ap-southeast-1.amazonaws.com,elasticloadbalancing.ap-southeast-1.amazonaws.com,ssm.ap-southeast-1.amazonaws.com,ssmmessages.ap-southeast-1.amazonaws.com,ec2messages.ap-southeast-1.amazonaws.com"` | no |
 | <a name="input_eks_private_subnet_ids"></a> [eks\_private\_subnet\_ids](#input\_eks\_private\_subnet\_ids) | n/a | `list(string)` | n/a | yes |
 | <a name="input_eks_worker_node_access_cidrs"></a> [eks\_worker\_node\_access\_cidrs](#input\_eks\_worker\_node\_access\_cidrs) | Provide cidr based whitelist to envs require to be accessed from public via Firewall to internal NLB (e.g. Prods) | <pre>list(object({<br>    cidrs       = list(string)<br>    from_port   = number<br>    to_port     = number<br>    description = string<br>  }))</pre> | `[]` | no |
 | <a name="input_eks_worker_node_access_prefix"></a> [eks\_worker\_node\_access\_prefix](#input\_eks\_worker\_node\_access\_prefix) | Provide prefix based whitelist to envs require to be accessed from public without Firewall (e.g. DEV/QA) | <pre>list(object({<br>    prefix_list_ids = list(string)<br>    from_port       = number<br>    to_port         = number<br>    description     = string<br>  }))</pre> | `[]` | no |
-| <a name="input_k8s_master_version"></a> [k8s\_master\_version](#input\_k8s\_master\_version) | The kubernetes version to use. Only used a creation time, ignored once the cluster exists. | `string` | `"1.23"` | no |
+| <a name="input_k8s_master_version"></a> [k8s\_master\_version](#input\_k8s\_master\_version) | The kubernetes version to use. Only used a creation time, ignored once the cluster exists. But will be used by node group update | `string` | `"1.25"` | no |
 | <a name="input_region"></a> [region](#input\_region) | n/a | `string` | `"ap-southeast-1"` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | n/a | `string` | `""` | no |
 
