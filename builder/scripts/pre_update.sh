@@ -1,11 +1,11 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 set -o pipefail
 set -o nounset
 set -o errexit
 
 # upgrade the operating system. add additional packages below
-sudo yum update -y && sudo yum autoremove -y
+yum update -y && yum autoremove -y
 
 
 # ===== kube-proxy iptables issue ====
@@ -13,13 +13,13 @@ sudo yum update -y && sudo yum autoremove -y
 # https://github.com/kubernetes/kubernetes/issues/112477
 # https://github.com/kubernetes/enhancements/pull/3824 (enhancement pending)
 default_iptables_legacy() {
-  sudo iptables-save | sudo tee /etc/sysconfig/iptables > /dev/null
+  iptables-save | tee /etc/sysconfig/iptables > /dev/null
   echo "Selecting iptables-legacy as the default."
-  sudo update-alternatives --set iptables /usr/sbin/iptables-legacy
+  update-alternatives --set iptables /usr/sbin/iptables-legacy
   echo "Restoring CIS hardened iptables rules"
-  sudo bash -c "iptables-restore < /etc/sysconfig/iptables"
+  bash -c "iptables-restore < /etc/sysconfig/iptables"
 }
 
 # ===== main =====
 default_iptables_legacy
-sudo reboot
+reboot

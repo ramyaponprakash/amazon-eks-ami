@@ -130,7 +130,7 @@ add_pre_provisioning_scripts() {
       "scripts": [
         "{{template_dir}}/scripts/pre_update.sh"
       ],
-      "execute_command": "{{ .Vars }} bash '\''{{ .Path }}'\''"
+      "execute_command": "{{ .Vars }} sudo bash '\''{{ .Path }}'\''"
   }] + .provisioners' $1/eks-worker-al2.json > $1/temp.json && mv $1/temp.json $1/eks-worker-al2.json
 }
 
@@ -145,7 +145,7 @@ add_post_provisioning_scripts() {
       "scripts": [
         "{{template_dir}}/scripts/post_harden.sh"
       ],
-      "execute_command": "{{ .Vars }} bash '\''{{ .Path }}'\''"
+      "execute_command": "{{ .Vars }} sudo bash '\''{{ .Path }}'\''"
   }]' $1/eks-worker-al2.json > $1/temp.json && mv $1/temp.json $1/eks-worker-al2.json
 }
 
