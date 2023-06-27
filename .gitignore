@@ -10,3 +10,9 @@ temp
 **/.terraform.lock.hcl
 **/*.tfstate
 **/*.tfstate.*
+
+# Packer
+**/*manifest.json
+**/*.swp
+**/*version-info.json
+**/*.sh-e

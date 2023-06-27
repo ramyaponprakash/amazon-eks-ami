@@ -41,7 +41,7 @@ resource "aws_eks_node_group" "prod1k" {
 resource "aws_launch_template" "prod1k" {
   name = "${var.cluster_name}-prod1k-ng-tmpl"
 
-  image_id               = data.aws_ssm_parameter.optimized-ami.value
+  image_id               = data.aws_ami.latest-cis-optimized-ami.image_id
   vpc_security_group_ids = var.cluster_node_secgrp_id
 
   instance_type          = var.node_groups_1k_instance_type

@@ -40,7 +40,7 @@ resource "aws_eks_node_group" "monitoring" {
 resource "aws_launch_template" "monitoring" {
   name = "${var.cluster_name}-monitoring-ng-tmpl"
 
-  image_id               = data.aws_ssm_parameter.optimized-ami.value
+  image_id               = data.aws_ami.latest-cis-optimized-ami.image_id
   vpc_security_group_ids = var.cluster_node_secgrp_id
 
   instance_type          = var.node_groups_monitoring_instance_type
