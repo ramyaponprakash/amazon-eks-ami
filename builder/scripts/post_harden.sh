@@ -56,9 +56,30 @@ enabled_ip_forward() {
   sysctl -p
 }
 
+# ===== kubelet =====
+# EKS CIS 3.2.9 Ensure that the --eventRecordQPS argument is set to 0 or a level which ensures appropriate event capture (Automated)
+#
+# Impact: Setting this parameter to 0 could result in a denial of service condition due to excessive events being created.
+# The cluster's event processing and storage systems should be scaled to handle expected event loads.
+# https://www.tenable.com/audits/items/CIS_Kubernetes_v1.5.1_Level_2.audit:45d7b4a3eec0a197a3441e495b02a58a
+#
+# Note: We set 5 following audit guide. From k8 1.27, it is default 50.
+set_kubelet_config() {
+  echo "Updating kubelet config"
+
+  echo "CIS 3.2.9 Ensure that the --eventRecordQPS argument is set to 0 or a level which ensures appropriate event capture"
+  echo "$(jq ".eventRecordQPS=5" /etc/kubernetes/kubelet/kubelet-config.json)" > /etc/kubernetes/kubelet/kubelet-config.json
+
+  systemctl daemon-reload
+  if [[ "$(systemctl is-active kubelet)" == "active" ]]; then
+    systemctl restart kubelet
+  fi
+}
+
 
 # ===== main =====
 setup_essential_iptables_rules
 setup_iptables_restore
 enabled_ip_forward
+set_kubelet_config
 reboot
