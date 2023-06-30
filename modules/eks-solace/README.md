@@ -43,6 +43,7 @@ No modules.
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | n/a | `string` | n/a | yes |
 | <a name="input_cluster_node_secgrp_id"></a> [cluster\_node\_secgrp\_id](#input\_cluster\_node\_secgrp\_id) | n/a | `list(string)` | n/a | yes |
 | <a name="input_eks_additional_no_proxy"></a> [eks\_additional\_no\_proxy](#input\_eks\_additional\_no\_proxy) | must start with starting comma | `string` | `""` | no |
+| <a name="input_eks_default_no_proxy"></a> [eks\_default\_no\_proxy](#input\_eks\_default\_no\_proxy) | n/a | `string` | `"localhost,127.0.0.1,169.254.169.254,.local,.internal,.eks.amazonaws.com,:8080/health"` | no |
 | <a name="input_eks_http_proxy"></a> [eks\_http\_proxy](#input\_eks\_http\_proxy) | n/a | `string` | n/a | yes |
 | <a name="input_eks_node_role_arn"></a> [eks\_node\_role\_arn](#input\_eks\_node\_role\_arn) | n/a | `string` | n/a | yes |
 | <a name="input_eks_node_role_name"></a> [eks\_node\_role\_name](#input\_eks\_node\_role\_name) | n/a | `string` | n/a | yes |

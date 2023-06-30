@@ -3,6 +3,10 @@ variable "region" {
   default = "ap-southeast-1"
 }
 
+variable "account_id" {
+  type = string
+}
+
 variable "cluster_name" {
   type = string
 }
@@ -48,6 +52,11 @@ variable "eks_cluster_endpoint_private" {
 
 variable "eks_http_proxy" {
   type = string
+}
+
+variable "eks_default_no_proxy" {
+  type    = string
+  default = "localhost,127.0.0.1,169.254.169.254,.local,.internal,.eks.amazonaws.com,:8080/health"
 }
 
 variable "eks_private_ep_no_proxy" {

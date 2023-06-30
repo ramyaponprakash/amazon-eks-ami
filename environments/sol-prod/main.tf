@@ -88,6 +88,7 @@ module "eks" {
   source = "../../modules/eks"
 
   region                        = var.region
+  account_id                    = var.account_id
   cluster_name                  = var.cluster_name
   vpc_id                        = var.network.enable ? module.eks_network[0].vpc_id : var.vpc_id
   eks_private_subnet_ids        = var.network.enable ? module.eks_network[0].private_subnet_ids : var.eks_private_subnet_ids
