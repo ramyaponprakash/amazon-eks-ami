@@ -60,6 +60,8 @@ resource "aws_launch_template" "prod1k" {
   ))
 
   metadata_options {
+    http_endpoint               = "enabled"
+    http_tokens                 = "required"
     http_put_response_hop_limit = 2
   }
 
