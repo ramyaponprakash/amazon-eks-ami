@@ -1,3 +1,4 @@
+account_id   = 342446142760
 cluster_name = "adex-poc-private-cluster"
 vpc_name     = "adex-poc-private"
 

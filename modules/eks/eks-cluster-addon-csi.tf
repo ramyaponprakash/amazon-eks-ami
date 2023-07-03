@@ -33,10 +33,6 @@ resource "aws_iam_policy" "aws-policy-csi" {
     {
       "Effect": "Allow",
       "Action": [
-        "ec2:CreateSnapshot",
-        "ec2:AttachVolume",
-        "ec2:DetachVolume",
-        "ec2:ModifyVolume",
         "ec2:DescribeAvailabilityZones",
         "ec2:DescribeInstances",
         "ec2:DescribeSnapshots",
@@ -49,11 +45,25 @@ resource "aws_iam_policy" "aws-policy-csi" {
     {
       "Effect": "Allow",
       "Action": [
+        "ec2:CreateSnapshot",
+        "ec2:AttachVolume",
+        "ec2:DetachVolume",
+        "ec2:ModifyVolume"
+      ],
+      "Resource": [
+        "arn:aws:ec2:ap-southeast-1:${var.account_id}:volume/*",
+        "arn:aws:ec2:ap-southeast-1:${var.account_id}:snapshot/*",
+        "arn:aws:ec2:ap-southeast-1:${var.account_id}:instance/*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
         "ec2:CreateTags"
       ],
       "Resource": [
-        "arn:aws:ec2:*:*:volume/*",
-        "arn:aws:ec2:*:*:snapshot/*"
+        "arn:aws:ec2:ap-southeast-1:${var.account_id}:volume/*",
+        "arn:aws:ec2:ap-southeast-1:${var.account_id}:snapshot/*"
       ],
       "Condition": {
         "StringEquals": {
@@ -70,8 +80,8 @@ resource "aws_iam_policy" "aws-policy-csi" {
         "ec2:DeleteTags"
       ],
       "Resource": [
-        "arn:aws:ec2:*:*:volume/*",
-        "arn:aws:ec2:*:*:snapshot/*"
+        "arn:aws:ec2:ap-southeast-1:${var.account_id}:volume/*",
+        "arn:aws:ec2:ap-southeast-1:${var.account_id}:snapshot/*"
       ]
     },
     {
@@ -79,7 +89,7 @@ resource "aws_iam_policy" "aws-policy-csi" {
       "Action": [
         "ec2:CreateVolume"
       ],
-      "Resource": "*",
+      "Resource": "arn:aws:ec2:ap-southeast-1:${var.account_id}:volume/*",
       "Condition": {
         "StringLike": {
           "aws:RequestTag/ebs.csi.aws.com/cluster": "true"
@@ -91,7 +101,7 @@ resource "aws_iam_policy" "aws-policy-csi" {
       "Action": [
         "ec2:CreateVolume"
       ],
-      "Resource": "*",
+      "Resource": "arn:aws:ec2:ap-southeast-1:${var.account_id}:volume/*",
       "Condition": {
         "StringLike": {
           "aws:RequestTag/CSIVolumeName": "*"
@@ -103,10 +113,10 @@ resource "aws_iam_policy" "aws-policy-csi" {
       "Action": [
         "ec2:CreateVolume"
       ],
-      "Resource": "*",
+      "Resource": "arn:aws:ec2:ap-southeast-1:${var.account_id}:volume/*",
       "Condition": {
         "StringLike": {
-          "aws:RequestTag/kubernetes.io/cluster/*": "owned"
+          "aws:RequestTag/kubernetes.io/cluster/${var.cluster_name}": "owned"
         }
       }
     },
@@ -115,10 +125,10 @@ resource "aws_iam_policy" "aws-policy-csi" {
       "Action": [
         "ec2:DeleteVolume"
       ],
-      "Resource": "*",
+      "Resource": "arn:aws:ec2:ap-southeast-1:${var.account_id}:volume/*",
       "Condition": {
         "StringLike": {
-          "ec2:ResourceTag/ebs.csi.aws.com/cluster": "true"
+          "ec2:ResourceTag/KubernetesCluster": "${var.cluster_name}"
         }
       }
     },
@@ -127,22 +137,10 @@ resource "aws_iam_policy" "aws-policy-csi" {
       "Action": [
         "ec2:DeleteVolume"
       ],
-      "Resource": "*",
+      "Resource": "arn:aws:ec2:ap-southeast-1:${var.account_id}:volume/*",
       "Condition": {
         "StringLike": {
-          "ec2:ResourceTag/CSIVolumeName": "*"
-        }
-      }
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "ec2:DeleteVolume"
-      ],
-      "Resource": "*",
-      "Condition": {
-        "StringLike": {
-          "ec2:ResourceTag/kubernetes.io/cluster/*": "owned"
+          "ec2:ResourceTag/kubernetes.io/cluster/${var.cluster_name}": "owned"
         }
       }
     },
@@ -151,7 +149,7 @@ resource "aws_iam_policy" "aws-policy-csi" {
       "Action": [
         "ec2:DeleteSnapshot"
       ],
-      "Resource": "*",
+      "Resource": "arn:aws:ec2:ap-southeast-1:${var.account_id}:snapshot/*",
       "Condition": {
         "StringLike": {
           "ec2:ResourceTag/CSIVolumeSnapshotName": "*"
@@ -163,7 +161,7 @@ resource "aws_iam_policy" "aws-policy-csi" {
       "Action": [
         "ec2:DeleteSnapshot"
       ],
-      "Resource": "*",
+      "Resource": "arn:aws:ec2:ap-southeast-1:${var.account_id}:snapshot/*",
       "Condition": {
         "StringLike": {
           "ec2:ResourceTag/ebs.csi.aws.com/cluster": "true"

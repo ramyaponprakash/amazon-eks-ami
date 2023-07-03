@@ -70,6 +70,7 @@ No requirements.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_account_id"></a> [account\_id](#input\_account\_id) | n/a | `string` | n/a | yes |
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | n/a | `string` | n/a | yes |
 | <a name="input_eks_additional_no_proxy"></a> [eks\_additional\_no\_proxy](#input\_eks\_additional\_no\_proxy) | must start with starting comma | `string` | `""` | no |
 | <a name="input_eks_admin_role_arns"></a> [eks\_admin\_role\_arns](#input\_eks\_admin\_role\_arns) | n/a | `list(string)` | `[]` | no |
@@ -77,6 +78,7 @@ No requirements.
 | <a name="input_eks_cluster_endpoint_private"></a> [eks\_cluster\_endpoint\_private](#input\_eks\_cluster\_endpoint\_private) | n/a | `bool` | `true` | no |
 | <a name="input_eks_cluster_endpoint_public"></a> [eks\_cluster\_endpoint\_public](#input\_eks\_cluster\_endpoint\_public) | n/a | `bool` | `false` | no |
 | <a name="input_eks_customer_cmk_key_arn"></a> [eks\_customer\_cmk\_key\_arn](#input\_eks\_customer\_cmk\_key\_arn) | n/a | `string` | n/a | yes |
+| <a name="input_eks_default_no_proxy"></a> [eks\_default\_no\_proxy](#input\_eks\_default\_no\_proxy) | n/a | `string` | `"localhost,127.0.0.1,169.254.169.254,.local,.internal,.eks.amazonaws.com,:8080/health"` | no |
 | <a name="input_eks_http_proxy"></a> [eks\_http\_proxy](#input\_eks\_http\_proxy) | n/a | `string` | n/a | yes |
 | <a name="input_eks_node_group_iam_role_arns"></a> [eks\_node\_group\_iam\_role\_arns](#input\_eks\_node\_group\_iam\_role\_arns) | n/a | `list(string)` | `[]` | no |
 | <a name="input_eks_private_ep_no_proxy"></a> [eks\_private\_ep\_no\_proxy](#input\_eks\_private\_ep\_no\_proxy) | n/a | `string` | `"s3.amazonaws.com,.s3.ap-southeast-1.amazonaws.com,sts.ap-southeast-1.amazonaws.com,ec2.ap-southeast-1.amazonaws.com,.dkr.ecr.ap-southeast-1.amazonaws.com,api.ecr.ap-southeast-1.amazonaws.com,autoscaling.ap-southeast-1.amazonaws.com,logs.ap-southeast-1.amazonaws.com,eks.ap-southeast-1.amazonaws.com,elasticloadbalancing.ap-southeast-1.amazonaws.com,ssm.ap-southeast-1.amazonaws.com,ssmmessages.ap-southeast-1.amazonaws.com,ec2messages.ap-southeast-1.amazonaws.com"` | no |

@@ -1,3 +1,4 @@
+account_id   = 704140326871
 cluster_name = "adex-int-solace-eks-cluster"
 vpc_name     = "adex-intra-solace"
 vpc_id       = "vpc-050a2b7cde1cb187e"

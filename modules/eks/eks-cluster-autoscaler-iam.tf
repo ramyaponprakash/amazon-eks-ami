@@ -19,13 +19,15 @@ resource "aws_iam_policy" "autoscaling" {
     {
       "Effect": "Allow",
       "Action": [
+        "ec2:DescribeInstanceTypes",
+        "ec2:DescribeLaunchTemplateVersions",
+        "ec2:DescribeImages",
+        "ec2:GetInstanceTypesFromInstanceRequirements",
+        "autoscaling:DescribeTags",
         "autoscaling:DescribeAutoScalingGroups",
         "autoscaling:DescribeAutoScalingInstances",
         "autoscaling:DescribeLaunchConfigurations",
-        "autoscaling:DescribeScalingActivities",
-        "autoscaling:DescribeTags",
-        "ec2:DescribeInstanceTypes",
-        "ec2:DescribeLaunchTemplateVersions"
+        "autoscaling:DescribeScalingActivities"
       ],
       "Resource": ["*"]
     },
@@ -34,11 +36,14 @@ resource "aws_iam_policy" "autoscaling" {
       "Action": [
         "autoscaling:SetDesiredCapacity",
         "autoscaling:TerminateInstanceInAutoScalingGroup",
-        "ec2:DescribeImages",
-        "ec2:GetInstanceTypesFromInstanceRequirements",
         "eks:DescribeNodegroup"
       ],
-      "Resource": ["*"]
+      "Resource": ["arn:aws:autoscaling:ap-southeast-1:${var.account_id}:autoScalingGroup:*:autoScalingGroupName/*"],
+      "Condition": {
+        "StringLike": {
+          "autoscaling:ResourceTag/eks:cluster-name": "${var.cluster_name}"
+        }
+      }
     }
   ]
 }

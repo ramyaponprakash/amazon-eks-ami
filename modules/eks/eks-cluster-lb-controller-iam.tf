@@ -24,7 +24,6 @@ resource "aws_iam_policy" "aws-lb-controller-policy-nlb-ip" {
         {
             "Effect": "Allow",
             "Action": [
-                "iam:CreateServiceLinkedRole",
                 "ec2:DescribeAccountAttributes",
                 "ec2:DescribeAddresses",
                 "ec2:DescribeAvailabilityZones",
@@ -53,25 +52,14 @@ resource "aws_iam_policy" "aws-lb-controller-policy-nlb-ip" {
         {
             "Effect": "Allow",
             "Action": [
-                "cognito-idp:DescribeUserPoolClient",
-                "acm:ListCertificates",
-                "acm:DescribeCertificate",
-                "iam:ListServerCertificates",
-                "iam:GetServerCertificate",
-                "waf-regional:GetWebACL",
-                "waf-regional:GetWebACLForResource",
-                "waf-regional:AssociateWebACL",
-                "waf-regional:DisassociateWebACL",
-                "wafv2:GetWebACL",
-                "wafv2:GetWebACLForResource",
-                "wafv2:AssociateWebACL",
-                "wafv2:DisassociateWebACL",
-                "shield:GetSubscriptionState",
-                "shield:DescribeProtection",
-                "shield:CreateProtection",
-                "shield:DeleteProtection"
+                "iam:CreateServiceLinkedRole"
             ],
-            "Resource": "*"
+            "Resource": "arn:aws:iam::${var.account_id}:role/*",
+            "Condition": {
+                "StringEquals": {
+                    "iam:AWSServiceName": "elasticloadbalancing.amazonaws.com"
+                }
+            }
         },
         {
             "Effect": "Allow",
@@ -79,21 +67,19 @@ resource "aws_iam_policy" "aws-lb-controller-policy-nlb-ip" {
                 "ec2:AuthorizeSecurityGroupIngress",
                 "ec2:RevokeSecurityGroupIngress"
             ],
-            "Resource": "*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "ec2:CreateSecurityGroup"
-            ],
-            "Resource": "*"
+            "Resource": "arn:aws:ec2:ap-southeast-1:${var.account_id}:security-group/*",
+            "Condition": {
+                "StringLike": {
+                  "aws:ResourceTag/kubernetes.io/cluster/${var.cluster_name}": "owned"
+                }
+            }
         },
         {
             "Effect": "Allow",
             "Action": [
                 "ec2:CreateTags"
             ],
-            "Resource": "arn:aws:ec2:*:*:security-group/*",
+            "Resource": "arn:aws:ec2:ap-southeast-1:${var.account_id}:security-group/*",
             "Condition": {
                 "StringEquals": {
                     "ec2:CreateAction": "CreateSecurityGroup"
@@ -109,7 +95,7 @@ resource "aws_iam_policy" "aws-lb-controller-policy-nlb-ip" {
                 "ec2:CreateTags",
                 "ec2:DeleteTags"
             ],
-            "Resource": "arn:aws:ec2:*:*:security-group/*",
+            "Resource": "arn:aws:ec2:ap-southeast-1:${var.account_id}:security-group/*",
             "Condition": {
                 "Null": {
                     "aws:RequestTag/elbv2.k8s.aws/cluster": "true",
@@ -124,7 +110,7 @@ resource "aws_iam_policy" "aws-lb-controller-policy-nlb-ip" {
                 "ec2:RevokeSecurityGroupIngress",
                 "ec2:DeleteSecurityGroup"
             ],
-            "Resource": "*",
+            "Resource": "arn:aws:ec2:ap-southeast-1:${var.account_id}:security-group/*",
             "Condition": {
                 "Null": {
                     "aws:ResourceTag/elbv2.k8s.aws/cluster": "false"
@@ -137,7 +123,10 @@ resource "aws_iam_policy" "aws-lb-controller-policy-nlb-ip" {
                 "elasticloadbalancing:CreateLoadBalancer",
                 "elasticloadbalancing:CreateTargetGroup"
             ],
-            "Resource": "*",
+            "Resource": [
+              "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:loadbalancer/*",
+              "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:targetgroup/*"
+            ],
             "Condition": {
                 "Null": {
                     "aws:RequestTag/elbv2.k8s.aws/cluster": "false"
@@ -152,7 +141,15 @@ resource "aws_iam_policy" "aws-lb-controller-policy-nlb-ip" {
                 "elasticloadbalancing:CreateRule",
                 "elasticloadbalancing:DeleteRule"
             ],
-            "Resource": "*"
+            "Resource": [
+                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:targetgroup/*/*",
+                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:loadbalancer/net/*/*",
+                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:loadbalancer/app/*/*",
+                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:listener/net/*/*/*",
+                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:listener/app/*/*/*",
+                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:listener-rule/net/*/*/*",
+                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:listener-rule/app/*/*/*"
+            ]
         },
         {
             "Effect": "Allow",
@@ -161,9 +158,9 @@ resource "aws_iam_policy" "aws-lb-controller-policy-nlb-ip" {
                 "elasticloadbalancing:RemoveTags"
             ],
             "Resource": [
-                "arn:aws:elasticloadbalancing:*:*:targetgroup/*/*",
-                "arn:aws:elasticloadbalancing:*:*:loadbalancer/net/*/*",
-                "arn:aws:elasticloadbalancing:*:*:loadbalancer/app/*/*"
+                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:targetgroup/*/*",
+                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:loadbalancer/net/*/*",
+                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:loadbalancer/app/*/*"
             ],
             "Condition": {
                 "Null": {
@@ -176,13 +173,17 @@ resource "aws_iam_policy" "aws-lb-controller-policy-nlb-ip" {
             "Effect": "Allow",
             "Action": [
                 "elasticloadbalancing:AddTags",
-                "elasticloadbalancing:RemoveTags"
+                "elasticloadbalancing:RemoveTags",
+                "elasticloadbalancing:ModifyListener",
+                "elasticloadbalancing:AddListenerCertificates",
+                "elasticloadbalancing:RemoveListenerCertificates",
+                "elasticloadbalancing:ModifyRule"
             ],
             "Resource": [
-                "arn:aws:elasticloadbalancing:*:*:listener/net/*/*/*",
-                "arn:aws:elasticloadbalancing:*:*:listener/app/*/*/*",
-                "arn:aws:elasticloadbalancing:*:*:listener-rule/net/*/*/*",
-                "arn:aws:elasticloadbalancing:*:*:listener-rule/app/*/*/*"
+                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:listener/net/*/*/*",
+                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:listener/app/*/*/*",
+                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:listener-rule/net/*/*/*",
+                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:listener-rule/app/*/*/*"
             ]
         },
         {
@@ -192,12 +193,12 @@ resource "aws_iam_policy" "aws-lb-controller-policy-nlb-ip" {
                 "elasticloadbalancing:SetIpAddressType",
                 "elasticloadbalancing:SetSecurityGroups",
                 "elasticloadbalancing:SetSubnets",
-                "elasticloadbalancing:DeleteLoadBalancer",
-                "elasticloadbalancing:ModifyTargetGroup",
-                "elasticloadbalancing:ModifyTargetGroupAttributes",
-                "elasticloadbalancing:DeleteTargetGroup"
+                "elasticloadbalancing:DeleteLoadBalancer"
             ],
-            "Resource": "*",
+            "Resource": [
+                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:loadbalancer/net/*/*",
+                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:loadbalancer/app/*/*"
+            ],
             "Condition": {
                 "Null": {
                     "aws:ResourceTag/elbv2.k8s.aws/cluster": "false"
@@ -207,21 +208,18 @@ resource "aws_iam_policy" "aws-lb-controller-policy-nlb-ip" {
         {
             "Effect": "Allow",
             "Action": [
+                "elasticloadbalancing:ModifyTargetGroup",
+                "elasticloadbalancing:ModifyTargetGroupAttributes",
+                "elasticloadbalancing:DeleteTargetGroup",
                 "elasticloadbalancing:RegisterTargets",
                 "elasticloadbalancing:DeregisterTargets"
             ],
-            "Resource": "arn:aws:elasticloadbalancing:*:*:targetgroup/*/*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "elasticloadbalancing:SetWebAcl",
-                "elasticloadbalancing:ModifyListener",
-                "elasticloadbalancing:AddListenerCertificates",
-                "elasticloadbalancing:RemoveListenerCertificates",
-                "elasticloadbalancing:ModifyRule"
-            ],
-            "Resource": "*"
+            "Resource": "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:targetgroup/*/*",
+            "Condition": {
+                "StringLike": {
+                  "aws:ResourceTag/elbv2.k8s.aws/cluster": "${var.cluster_name}"
+                }
+            }
         }
     ]
 }

@@ -3,6 +3,10 @@ variable "region" {
   default = "ap-southeast-1"
 }
 
+variable "account_id" {
+  type = string
+}
+
 variable "cluster_name" {
   type = string
 }
