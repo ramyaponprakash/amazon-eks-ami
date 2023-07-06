@@ -5,7 +5,8 @@ set -o nounset
 set -o errexit
 
 # upgrade the operating system. add additional packages below
-yum update -y && yum autoremove -y
+yum update -y && yum autoremove -y && \
+  yum install -y unzip
 
 
 # ===== kube-proxy iptables issue ====
@@ -20,6 +21,39 @@ default_iptables_legacy() {
   bash -c "iptables-restore < /etc/sysconfig/iptables"
 }
 
+# pipeline compatibility
+ensure_install_awscli_v2() {
+  echo "Uninstalling awscli v1"
+  yum remove -y awscli
+
+  # https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+  echo "Installing awscli v2 bundle"
+
+  MACHINE=$(uname -m)
+  if [ "$MACHINE" == "x86_64" ]; then
+    ARCH="amd64"
+  elif [ "$MACHINE" == "aarch64" ]; then
+    ARCH="arm64"
+  else
+    echo "Unknown machine architecture '$MACHINE'" >&2
+    exit 1
+  fi
+
+  AWSCLI_DIR="/home/ec2-user/awscli-install"
+  mkdir "${AWSCLI_DIR}"
+  curl \
+    --silent \
+    --show-error \
+    --retry 10 \
+    --retry-delay 1 \
+    -L "https://awscli.amazonaws.com/awscli-exe-linux-${MACHINE}.zip" -o "${AWSCLI_DIR}/awscliv2.zip"
+  unzip -q "${AWSCLI_DIR}/awscliv2.zip" -d ${AWSCLI_DIR}
+  "${AWSCLI_DIR}/aws/install" --bin-dir /bin/ --update
+  chmod -R 755 /usr/local/aws-cli/
+  aws --version
+}
+
 # ===== main =====
 default_iptables_legacy
+ensure_install_awscli_v2
 reboot

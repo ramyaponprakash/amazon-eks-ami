@@ -19,7 +19,7 @@ ensure_iptables_rule() {
 # ===== K8 networking =====
 setup_essential_iptables_rules() {
   echo "Allow 10250 for kubelet API server (so kubectl logs/exec works)"
-  ensure_iptables_rule "10250 -j ACCEPT" "iptables -I INPUT -p tcp -m tcp --dport 10250 -j ACCEPT"
+  ensure_iptables_rule "10250 -j ACCEPT" "iptables -I INPUT 1 -p tcp -m tcp --dport 10250 -j ACCEPT"
 }
 
 setup_iptables_restore() {
@@ -51,6 +51,9 @@ EOF
 enabled_ip_forward() {
   echo "3.1.1 - ensure IP forwarding is disabled - exception"
   sed -i -e "s#net.ipv4.ip_forward = 0#net.ipv4.ip_forward = 1#g" /etc/sysctl.conf # required to allow pod to pod, pod to external
+  if [ -f "/etc/sysctl.d/cis.conf" ]; then
+      sed -i -e "s#net.ipv4.ip_forward = 0#net.ipv4.ip_forward = 1#g" /etc/sysctl.d/cis.conf
+  fi
   #echo "net.bridge.bridge-nf-call-iptables = 1" | tee -a /etc/sysctl.conf # required to allow to adopt CNI plug-in
   #modprobe br_netfilter
   sysctl -p
