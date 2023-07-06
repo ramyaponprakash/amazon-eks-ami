@@ -51,11 +51,17 @@ EOF
 enabled_ip_forward() {
   echo "3.1.1 - ensure IP forwarding is disabled - exception"
   sed -i -e "s#net.ipv4.ip_forward = 0#net.ipv4.ip_forward = 1#g" /etc/sysctl.conf # required to allow pod to pod, pod to external
-  if [ -f "/etc/sysctl.d/cis.conf" ]; then
-      sed -i -e "s#net.ipv4.ip_forward = 0#net.ipv4.ip_forward = 1#g" /etc/sysctl.d/cis.conf
-  fi
+  sysctl -w net.ipv4.ip_forward=1
+  echo 1 > /proc/sys/net/ipv4/ip_forward
   #echo "net.bridge.bridge-nf-call-iptables = 1" | tee -a /etc/sysctl.conf # required to allow to adopt CNI plug-in
   #modprobe br_netfilter
+
+  # GCC CTS support
+  echo "1.5.1 - ensure core dumps are restricted - moving it to /etc/security/limits.d"
+  sed -i -e "s#* hard core 0##g" /etc/sysctl.conf
+  echo "* hard core 0" > /etc/security/limits.d/cis.conf
+  sysctl_entry "fs.suid_dumpable = 0"
+
   sysctl -p
 }
 
