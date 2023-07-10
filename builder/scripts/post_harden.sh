@@ -42,27 +42,37 @@ EOF
 }
 
 # ===== Pod to pod communication issues =====
-# CIS Amazon Linux 2) "3.1.1 - ensure IP forwarding is disabled"
-# sysctl_entry "net.ipv4.ip_forward = 0"
-# sysctl_entry "net.ipv6.conf.all.forwarding = 0"
-#
+# CIS Amazon Linux 2 and GCC CTS Amazon Linux 2)
+# "3.1.1 - ensure IP forwarding is disabled"
 # Our current AMI will skip the CIS guide
 # details) # https://repost.aws/knowledge-center/eks-pod-connections
 enabled_ip_forward() {
   echo "3.1.1 - ensure IP forwarding is disabled - exception"
   sed -i -e "s#net.ipv4.ip_forward = 0#net.ipv4.ip_forward = 1#g" /etc/sysctl.conf # required to allow pod to pod, pod to external
   sysctl -w net.ipv4.ip_forward=1
-  echo 1 > /proc/sys/net/ipv4/ip_forward
-  #echo "net.bridge.bridge-nf-call-iptables = 1" | tee -a /etc/sysctl.conf # required to allow to adopt CNI plug-in
-  #modprobe br_netfilter
+}
 
-  # GCC CTS support
+# GCC CTS compatibility due to sysctl error
+restrict_core_dump() {
   echo "1.5.1 - ensure core dumps are restricted - moving it to /etc/security/limits.d"
   sed -i -e "s#* hard core 0##g" /etc/sysctl.conf
   echo "* hard core 0" > /etc/security/limits.d/cis.conf
-  sysctl_entry "fs.suid_dumpable = 0"
+  echo "fs.suid_dumpable = 0" >> /etc/sysctl.d/cis.conf
+}
 
-  sysctl -p
+apply_sysctl_settings() {
+  enabled_ip_forward
+  restrict_core_dump
+  # NOTE: sysctl SYSTEM FILE PRECEDENCE
+  #  /etc/sysctl.d/*.conf
+  #  /run/sysctl.d/*.conf
+  #  /usr/local/lib/sysctl.d/*.conf
+  #  /usr/lib/sysctl.d/*.conf
+  #  /lib/sysctl.d/*.conf
+  #  /etc/sysctl.conf
+  #
+  # NOTE: sysctl -e --system (or sysctl -p is not working well in GCC CTS, refer 'enable_last_run_service')
+  sysctl -e --system && sysctl --all
 }
 
 # ===== kubelet =====
@@ -85,10 +95,43 @@ set_kubelet_config() {
   fi
 }
 
+# ===== GCC CTS support =====
+# TODO:
+# 1) remove the service if it is ok to be removed.
+#   > The sysctl is not overwriting the config via 'sysctl --system' and it is not persist.
+#   > So until find the root reason, the last-run service will run commands for init and reboots.
+#
+enable_last_run_service() {
+  cat << EOF > /etc/eks/last-run.sh
+#!/bin/bash
+echo "Overwriting ipv4.ip_forward for CTS image"
+sysctl -w net.ipv4.ip_forward=1
+EOF
+  chmod +x /etc/eks/last-run.sh
+
+  cat << EOF > /etc/eks/last-run.service
+[Unit]
+Description=Last run service to overwrite config or others on reboot
+After=multi-user.target
+
+[Service]
+Type=oneshot
+ExecStart=/etc/eks/last-run.sh
+
+[Install]
+WantedBy=multi-user.target
+EOF
+  cp -v /etc/eks/last-run.service /etc/systemd/system/last-run.service
+  chown root:root /etc/systemd/system/last-run.service
+  systemctl daemon-reload
+  systemctl enable last-run
+}
+
 
 # ===== main =====
 setup_essential_iptables_rules
 setup_iptables_restore
-enabled_ip_forward
+apply_sysctl_settings
 set_kubelet_config
+enable_last_run_service
 reboot

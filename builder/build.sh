@@ -146,6 +146,7 @@ ensure_repo() {
   clean_repo "$1"
   if [ -n "$AMI_REPO_TAG"  ]; then
     echo "git tag specified as $AMI_REPO_TAG"
+    git config --global advice.detachedHead false
     cd "$1" &&
       git fetch --all -v &&
       git checkout "$AMI_REPO_TAG" &&
