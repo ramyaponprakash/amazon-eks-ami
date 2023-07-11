@@ -16,12 +16,14 @@ usage () {
   echo '-i : CIDR for temporal ECS instance security group ssh access'
   echo '-p : Allowing to run packer in public host (Dev)'
   echo '-g : Pre-defined security group id for packer'
-  echo '-e : Enable own CIS hardening scripts'
+  echo '--enable-own-cis : Enable own CIS hardening scripts'
   echo '--packer : packer binary'
   echo '--jq : jq binary'
   echo '--awscli : awscli binary'
   echo '--ami-owner : source AMI owner account'
   echo '--ami-name : source AMI name to filter the latest'
+  echo '--repo-tag : the tag of the official repo'
+  echo '--working-dir : working directory'
 }
 
 parse_inputs() {
@@ -39,12 +41,14 @@ parse_inputs() {
       -i) EXEC_CIDR="$2"; shift 2;;
       -p) PUBLIC_ACCESS="$2"; shift 2;;
       -g) SECURITY_GROUP_ID="$2"; shift 2;;
-      -e) ENABLE_OWN_CIS_SCRIPTS="true"; shift 2;;
+      --enable-own-cis) ENABLE_OWN_CIS_SCRIPTS="true"; shift 2;;
       --packer) PACKER_BINARY="$2"; shift 2;;
       --jq) JQ_BINARY="$2"; shift 2;;
       --awscli) AWSCLI_BINARY="$2"; shift 2;;
       --ami-owner) AMI_OWNER_ACCOUNT_ID="$2"; shift 2;;
       --ami-name) AMI_FILTER="$2"; shift 2;;
+      --repo-tag) AMI_REPO_TAG="$2"; shift 2;;
+      --working-dir) WORKING_DIR="$2"; shift 2;;
       -h|--help) usage; shift;;
       -*|--*) echo "Unknown option $1"; usage; exit 1;;
       *) usage;;
@@ -70,12 +74,6 @@ setup_aws_vars() {
 }
 
 get_latest_ami_vars() {
-#  if [ -z "$AMI_OWNER_ACCOUNT_ID" ]; then
-#      AMI_OWNER_ACCOUNT_ID="679593333241"
-#  fi
-#  if [ -z "$AMI_FILTER" ]; then
-#     AMI_FILTER="CIS Amazon Linux 2 Kernel 5.10 Benchmark"
-#  fi
   AMI_ID=$(aws ec2 describe-images --region $AWS_REGION --filters "Name=name,Values=$AMI_FILTER*" --query 'sort_by(Images, &CreationDate)[-1].ImageId' --output text)
   AMI_NAME=$(aws ec2 describe-images --region $AWS_REGION --filters "Name=name,Values=$AMI_FILTER*" --query 'sort_by(Images, &CreationDate)[-1].Name' --output text)
   echo "AMI_OWNER_ACCOUNT_ID=$AMI_OWNER_ACCOUNT_ID"
@@ -145,7 +143,17 @@ clean_repo() {
 ensure_repo() {
   echo "git submodule update --remote"
   git submodule update --remote
-  clean_repo $1
+  clean_repo "$1"
+  if [ -n "$AMI_REPO_TAG"  ]; then
+    echo "git tag specified as $AMI_REPO_TAG"
+    git config --global advice.detachedHead false
+    cd "$1" &&
+      git fetch --all -v &&
+      git checkout "$AMI_REPO_TAG" &&
+      cd ..
+  fi
+  echo "Branch: $(git branch --show-current)"
+  echo "Tag: $(git describe --tags --exact-match 2>/dev/null)"
 }
 
 modify_repo_scripts_cis_compatibility() {
@@ -212,11 +220,17 @@ add_post_provisioning_scripts() {
 }
 
 main() {
-  echo "$(pwd)"
   REMOTE_FOLDER="/home/ec2-user"
   REPO_FOLDER="./amazon-eks-ami"
 
   parse_inputs "$@"
+
+  if [ -n "$WORKING_DIR"  ]; then
+    echo "working dir - '$WORKING_DIR'"
+    cd "$WORKING_DIR"
+  fi
+  echo "PWD - $(pwd)"
+
   setup_aws_vars
   get_latest_ami_vars
   install_deps
@@ -227,6 +241,7 @@ main() {
   modify_repo_scripts_cis_compatibility $REMOTE_FOLDER $REPO_FOLDER
   # optional run for non-CTS Images
   if [ "$ENABLE_OWN_CIS_SCRIPTS" == "true" ]; then
+      echo "Own CIS script option enabled, adding scripts..."
       add_pre_cis_scripts $REPO_FOLDER
   fi
   add_pre_provisioning_scripts $REPO_FOLDER

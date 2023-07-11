@@ -45,16 +45,19 @@ resource "aws_iam_policy" "aws-policy-csi" {
     {
       "Effect": "Allow",
       "Action": [
-        "ec2:CreateSnapshot",
         "ec2:AttachVolume",
         "ec2:DetachVolume",
         "ec2:ModifyVolume"
       ],
       "Resource": [
         "arn:aws:ec2:ap-southeast-1:${var.account_id}:volume/*",
-        "arn:aws:ec2:ap-southeast-1:${var.account_id}:snapshot/*",
         "arn:aws:ec2:ap-southeast-1:${var.account_id}:instance/*"
-      ]
+      ],
+      "Condition": {
+        "StringLike": {
+          "ec2:ResourceTag/kubernetes.io/cluster/${var.cluster_name}": "owned"
+        }
+      }
     },
     {
       "Effect": "Allow",
@@ -79,32 +82,34 @@ resource "aws_iam_policy" "aws-policy-csi" {
       "Action": [
         "ec2:DeleteTags"
       ],
-      "Resource": [
-        "arn:aws:ec2:ap-southeast-1:${var.account_id}:volume/*",
-        "arn:aws:ec2:ap-southeast-1:${var.account_id}:snapshot/*"
-      ]
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "ec2:CreateVolume"
-      ],
-      "Resource": "arn:aws:ec2:ap-southeast-1:${var.account_id}:volume/*",
+      "Resource": "arn:aws:ec2:ap-southeast-1:${var.account_id}:snapshot/*",
       "Condition": {
         "StringLike": {
-          "aws:RequestTag/ebs.csi.aws.com/cluster": "true"
+          "ec2:ResourceTag/Name": "adex-sol-eks-node-*"
         }
       }
     },
     {
       "Effect": "Allow",
       "Action": [
-        "ec2:CreateVolume"
+        "ec2:DeleteTags"
       ],
       "Resource": "arn:aws:ec2:ap-southeast-1:${var.account_id}:volume/*",
       "Condition": {
         "StringLike": {
-          "aws:RequestTag/CSIVolumeName": "*"
+          "ec2:ResourceTag/eks:cluster-name": "${var.cluster_name}"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteTags"
+      ],
+      "Resource": "arn:aws:ec2:ap-southeast-1:${var.account_id}:volume/*",
+      "Condition": {
+        "StringLike": {
+          "ec2:ResourceTag/kubernetes.io/cluster/${var.cluster_name}": "owned"
         }
       }
     },
@@ -147,12 +152,12 @@ resource "aws_iam_policy" "aws-policy-csi" {
     {
       "Effect": "Allow",
       "Action": [
-        "ec2:DeleteSnapshot"
+        "ec2:CreateSnapshot"
       ],
       "Resource": "arn:aws:ec2:ap-southeast-1:${var.account_id}:snapshot/*",
       "Condition": {
         "StringLike": {
-          "ec2:ResourceTag/CSIVolumeSnapshotName": "*"
+          "aws:RequestTag/kubernetes.io/cluster/${var.cluster_name}": "owned"
         }
       }
     },
@@ -164,7 +169,19 @@ resource "aws_iam_policy" "aws-policy-csi" {
       "Resource": "arn:aws:ec2:ap-southeast-1:${var.account_id}:snapshot/*",
       "Condition": {
         "StringLike": {
-          "ec2:ResourceTag/ebs.csi.aws.com/cluster": "true"
+          "ec2:ResourceTag/kubernetes.io/cluster/${var.cluster_name}": "owned"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteSnapshot"
+      ],
+      "Resource": "arn:aws:ec2:ap-southeast-1:${var.account_id}:snapshot/*",
+      "Condition": {
+        "StringLike": {
+          "ec2:ResourceTag/eks:cluster-name": "${var.cluster_name}"
         }
       }
     }
