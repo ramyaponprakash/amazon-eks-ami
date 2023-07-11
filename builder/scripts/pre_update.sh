@@ -9,6 +9,15 @@ yum update -y && yum autoremove -y && \
   yum install -y unzip
 
 
+remove_unused_packages() {
+    # TODO: remove below
+    echo "remove_unused_packages - removing ds_agent, splunkforwarder temporally"
+    yum remove -y ds_agent
+    yum remove -y splunkforwarder
+
+    yum autoremove -y && yum clean all
+}
+
 # ===== kube-proxy iptables issue ====
 # Select "iptables-legacy" as the default option (due to kube-proxy limitation for now)
 # https://github.com/kubernetes/kubernetes/issues/112477
@@ -54,6 +63,7 @@ ensure_install_awscli_v2() {
 }
 
 # ===== main =====
+remove_unused_packages
 default_iptables_legacy
 ensure_install_awscli_v2
 reboot
