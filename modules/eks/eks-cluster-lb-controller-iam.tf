@@ -86,6 +86,9 @@ resource "aws_iam_policy" "aws-lb-controller-policy-nlb-ip" {
                 },
                 "Null": {
                     "aws:RequestTag/elbv2.k8s.aws/cluster": "false"
+                },
+                "StringLike": {
+                    "aws:ResourceTag/kubernetes.io/cluster/${var.cluster_name}": "owned"
                 }
             }
         },
@@ -97,9 +100,8 @@ resource "aws_iam_policy" "aws-lb-controller-policy-nlb-ip" {
             ],
             "Resource": "arn:aws:ec2:ap-southeast-1:${var.account_id}:security-group/*",
             "Condition": {
-                "Null": {
-                    "aws:RequestTag/elbv2.k8s.aws/cluster": "true",
-                    "aws:ResourceTag/elbv2.k8s.aws/cluster": "false"
+                "StringLike": {
+                    "aws:ResourceTag/kubernetes.io/cluster/${var.cluster_name}": "owned"
                 }
             }
         },
@@ -112,8 +114,8 @@ resource "aws_iam_policy" "aws-lb-controller-policy-nlb-ip" {
             ],
             "Resource": "arn:aws:ec2:ap-southeast-1:${var.account_id}:security-group/*",
             "Condition": {
-                "Null": {
-                    "aws:ResourceTag/elbv2.k8s.aws/cluster": "false"
+                "StringLike": {
+                    "aws:ResourceTag/kubernetes.io/cluster/${var.cluster_name}": "owned"
                 }
             }
         },
@@ -128,8 +130,8 @@ resource "aws_iam_policy" "aws-lb-controller-policy-nlb-ip" {
               "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:targetgroup/*"
             ],
             "Condition": {
-                "Null": {
-                    "aws:RequestTag/elbv2.k8s.aws/cluster": "false"
+                "StringLike": {
+                    "aws:RequestTag/elbv2.k8s.aws/cluster": "${var.cluster_name}"
                 }
             }
         },
@@ -137,19 +139,37 @@ resource "aws_iam_policy" "aws-lb-controller-policy-nlb-ip" {
             "Effect": "Allow",
             "Action": [
                 "elasticloadbalancing:CreateListener",
+                "elasticloadbalancing:CreateRule"
+            ],
+            "Resource": [
+                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:targetgroup/*",
+                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:loadbalancer/*",
+                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:listener/*",
+                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:listener-rule/*"
+            ],
+            "Condition": {
+                "StringLike": {
+                    "aws:RequestTag/elbv2.k8s.aws/cluster": "${var.cluster_name}"
+                }
+            }
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
                 "elasticloadbalancing:DeleteListener",
-                "elasticloadbalancing:CreateRule",
                 "elasticloadbalancing:DeleteRule"
             ],
             "Resource": [
-                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:targetgroup/*/*",
-                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:loadbalancer/net/*/*",
-                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:loadbalancer/app/*/*",
-                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:listener/net/*/*/*",
-                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:listener/app/*/*/*",
-                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:listener-rule/net/*/*/*",
-                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:listener-rule/app/*/*/*"
-            ]
+                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:targetgroup/*",
+                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:loadbalancer/*",
+                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:listener/*",
+                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:listener-rule/*"
+            ],
+            "Condition": {
+                "StringLike": {
+                    "aws:ResourceTag/elbv2.k8s.aws/cluster": "${var.cluster_name}"
+                }
+            }
         },
         {
             "Effect": "Allow",
@@ -158,9 +178,8 @@ resource "aws_iam_policy" "aws-lb-controller-policy-nlb-ip" {
                 "elasticloadbalancing:RemoveTags"
             ],
             "Resource": [
-                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:targetgroup/*/*",
-                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:loadbalancer/net/*/*",
-                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:loadbalancer/app/*/*"
+                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:targetgroup/*",
+                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:loadbalancer/*"
             ],
             "Condition": {
                 "Null": {
@@ -180,11 +199,14 @@ resource "aws_iam_policy" "aws-lb-controller-policy-nlb-ip" {
                 "elasticloadbalancing:ModifyRule"
             ],
             "Resource": [
-                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:listener/net/*/*/*",
-                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:listener/app/*/*/*",
-                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:listener-rule/net/*/*/*",
-                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:listener-rule/app/*/*/*"
-            ]
+                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:listener/*",
+                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:listener-rule/*"
+            ],
+            "Condition": {
+                "StringLike": {
+                    "aws:ResourceTag/elbv2.k8s.aws/cluster": "${var.cluster_name}"
+                }
+            }
         },
         {
             "Effect": "Allow",
@@ -196,12 +218,11 @@ resource "aws_iam_policy" "aws-lb-controller-policy-nlb-ip" {
                 "elasticloadbalancing:DeleteLoadBalancer"
             ],
             "Resource": [
-                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:loadbalancer/net/*/*",
-                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:loadbalancer/app/*/*"
+                "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:loadbalancer/*"
             ],
             "Condition": {
-                "Null": {
-                    "aws:ResourceTag/elbv2.k8s.aws/cluster": "false"
+                "StringLike": {
+                    "aws:ResourceTag/elbv2.k8s.aws/cluster": "${var.cluster_name}"
                 }
             }
         },
@@ -214,7 +235,7 @@ resource "aws_iam_policy" "aws-lb-controller-policy-nlb-ip" {
                 "elasticloadbalancing:RegisterTargets",
                 "elasticloadbalancing:DeregisterTargets"
             ],
-            "Resource": "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:targetgroup/*/*",
+            "Resource": "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:targetgroup/*",
             "Condition": {
                 "StringLike": {
                   "aws:ResourceTag/elbv2.k8s.aws/cluster": "${var.cluster_name}"
