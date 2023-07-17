@@ -12,18 +12,41 @@ data "template_file" "userdata" {
   }
 }
 
+data "template_file" "ds_agent" {
+  template = file("${path.module}/ds_agent.sh")
+  vars     = {}
+}
+
+data "template_cloudinit_config" "config" {
+  gzip          = true
+  base64_encode = true
+
+  part {
+    content_type = "text/x-shellscript"
+    content      = data.template_file.userdata.rendered
+  }
+
+  part {
+    content_type = "text/x-shellscript"
+    content      = data.template_file.ds_agent.rendered
+  }
+}
+
 resource "tls_private_key" "generated_sshkey" {
-  count     = var.bastion.generate_private_key ? 1 : 0
+  count = var.bastion.generate_private_key ? 1 : 0
+  #  algorithm = "ED25519"
   algorithm = "RSA"
   rsa_bits  = 4096
 }
 
+# ssh-ed25519-cert-v01@openssh.com,ssh-ed25519,sh-rsa,ssh-rsa-cert-v01@openssh.com
+
 resource "aws_key_pair" "generated_keypair" {
-  key_name   = "keypair-${var.cluster_name}"
-  public_key = var.bastion.generate_private_key ? tls_private_key.generated_sshkey[0].public_key_openssh : file(var.bastion.public_key_path)
+  key_name_prefix = "keypair-${var.cluster_name}"
+  public_key      = var.bastion.generate_private_key ? tls_private_key.generated_sshkey[0].public_key_openssh : file(var.bastion.public_key_path)
 }
 
-resource "aws_instance" "ubuntu_bastion" {
+resource "aws_instance" "bastion" {
   count = var.bastion.hosts_number
 
   ami                         = var.bastion.ami_id
@@ -32,67 +55,38 @@ resource "aws_instance" "ubuntu_bastion" {
   subnet_id                   = var.bastion.subnet_ids[count.index]
   associate_public_ip_address = var.bastion.public_access
   vpc_security_group_ids      = [aws_security_group.bastion_security_group.id]
-  user_data                   = data.template_file.userdata.rendered
+  user_data_base64            = data.template_cloudinit_config.config.rendered
   iam_instance_profile        = var.bastion.iam_role
   user_data_replace_on_change = true
+
   root_block_device {
     encrypted = true
   }
 
+  metadata_options {
+    http_endpoint               = "enabled"
+    http_tokens                 = "required"
+    http_put_response_hop_limit = 2
+  }
+
   tags = {
-    Name                         = "${var.cluster_name}-bastion-${var.az_map[count.index]}"
+    Name                         = "${var.cluster_name}-bastion-test" # TODO: edit this
     Custodian-Scheduler-StopTime = "off=();tz=sgt"
-    malware-scan                 = "true"
-  }
-
-  lifecycle {
-    ignore_changes = [ami]
+    #    Custodian-Scheduler-StopTime = "off=(M-S,21);tz=sgt"
+    #    Custodian-Scheduler-StartTime = "on=(M-F,8);tz=sgt"
+    malware-scan = "true"
   }
 }
-
-# Ensures that terraform waits until bastion host is up and running before leaving.
-/*
-resource "null_resource" "wait_for_bastion" {
-  provisioner "remote-exec" {
-    connection {
-      host        = var.bastion.public_access ? var.bastion.attach_eip ? aws_eip.ubuntu_bastion_eip[0].public_ip : aws_instance.ubuntu_bastion[0].public_dns : aws_instance.ubuntu_bastion[0].private_dns
-      user        = "ubuntu"
-      private_key = var.bastion.generate_private_key ? tls_private_key.generated_sshkey[0].private_key_pem : file(var.bastion.host_private_key_path)
-    }
-    inline = [
-      "#!/bin/bash",
-      "while ! command -v kubectl &> /dev/null; do sleep 5; done",
-      "while ! command -v helm &> /dev/null; do sleep 5; done",
-      "while ! command -v aws &> /dev/null; do sleep 5; done",
-    ]
-  }
-
-  depends_on = [
-    aws_instance.ubuntu_bastion[0]
-  ]
-}
-*/
 
 resource "aws_security_group" "bastion_security_group" {
-  name   = "${var.cluster_name}_bastion_security_group"
-  vpc_id = var.vpc_id
+  name_prefix = "${var.cluster_name}_bastion_security_group"
+  vpc_id      = var.vpc_id
 
   egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
-  }
-}
-
-resource "aws_eip" "ubuntu_bastion_eip" {
-  count = var.bastion.public_access ? var.bastion.attach_eip ? 1 : 0 : 0
-
-  vpc      = true
-  instance = aws_instance.ubuntu_bastion[0].id
-
-  tags = {
-    Name = "${var.cluster_name}_bastion_eip"
   }
 }
 

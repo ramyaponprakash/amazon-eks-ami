@@ -1,5 +1,5 @@
 output "bastion-host" {
-  value = aws_instance.ubuntu_bastion
+  value = aws_instance.bastion
 }
 
 output "generated_ssh_public_key" {
@@ -12,17 +12,13 @@ output "generated_ssh_private_key" {
 }
 
 output "bastion_instance_id" {
-  value = aws_instance.ubuntu_bastion[var.bastion.hosts_number - 1].id
+  value = aws_instance.bastion[var.bastion.hosts_number - 1].id
 }
 
 output "bastion_sg_id" {
   value = aws_security_group.bastion_security_group.id
 }
 
-output "bastion_eip_id" {
-  value = var.bastion.attach_eip ? [aws_eip.ubuntu_bastion_eip[0].id] : []
-}
-
 output "bastion-host-public-ip" {
-  value = aws_instance.ubuntu_bastion.*.public_ip
+  value = aws_instance.bastion.*.public_ip
 }
