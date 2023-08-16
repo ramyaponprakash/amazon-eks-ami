@@ -1,0 +1,82 @@
+include:
+  - cicd/templates/.common.yml
+
+stages:
+  - publish
+  - deploy
+
+variables:
+  HELM_ROOT: $HELM_ROOT
+
+
+.helm-builder:
+  extends: .awscli-root-builder
+  variables:
+    HELM_VER: "v3.9.2"
+    HELMFILE_VER: "0.145.2"
+  before_script:
+    - !reference [.awscli-root-builder, before_script]
+    - if [ -z "$K8_VERSION" ]; then echo "variable K8_VERSION must be set." && exit 1; fi
+    - |
+      if [ "$K8_VERSION" == "1.23" ]; then
+        export KUBECTL_VER="1.23.17/2023-05-11"
+      elif [ "$K8_VERSION" == "1.24" ]; then
+        export KUBECTL_VER="1.24.13/2023-05-11"
+      elif [ "$K8_VERSION" == "1.25" ]; then
+        export KUBECTL_VER="1.25.9/2023-05-11"
+      elif [ "$K8_VERSION" == "1.26" ]; then
+        export KUBECTL_VER="1.26.4/2023-05-11"
+      elif [ "$K8_VERSION" == "1.27" ]; then
+        export KUBECTL_VER="1.27.1/2023-04-19"
+      else
+        echo "version $K8_VERSION not supported" && exit 1
+      fi
+    - chmod +x cicd/scripts/helm-install-deps.sh
+    - cicd/scripts/helm-install-deps.sh $KUBECTL_VER $HELM_VER $HELMFILE_VER
+
+
+
+.publish-chart:
+  stage: publish
+  extends: .helm-builder
+  script:
+    - if [ -z "$CHART_NAME" ]; then echo "variable CHART_NAME must be set." && exit 1; fi
+    - if [ -z "$HELM_ROOT" ]; then echo "variable HELM_ROOT must be set." && exit 1; fi
+    - chmod +x cicd/scripts/helm-publish-chart.sh
+    - cicd/scripts/helm-publish-chart.sh "$CHART_NAME" "$HELM_ROOT"
+
+.deploy-helmfile:
+  stage: deploy
+  extends: .awscli-root-builder
+  script:
+    - if [ -z "$SCP_SOURCE_FOLDER" ]; then echo "variable CHART_NAME must be set." && exit 1; fi
+    - if [ -z "$CHART_NAME" ]; then echo "variable CHART_NAME must be set." && exit 1; fi
+    - if [ -z "$ENV" ]; then echo "variable ENV must be set." && exit 1; fi
+    - if [ -z "$ROLE_ARN" ]; then echo "variable ROLE_ARN must be set." && exit 1; fi
+    - if [ -z "$CLUSTER_NAME" ]; then echo "variable CLUSTER_NAME must be set." && exit 1; fi
+    - if [ -z "$TAG" ]; then echo "variable TAG must be set." && exit 1; fi
+    - if [ -z "$BASTION_ID" ]; then echo "variable BASTION_ID must be set." && exit 1; fi
+    - |
+      export INSTANCE_ID=$BASTION_ID
+      export SOURCE=$SCP_SOURCE_FOLDER/repo.zip
+      export DEST=/home/ssm-user/tmp/charts-$CI_COMMIT_REF_SLUG/$CHART_NAME
+      export SSH_CMD=$(cat <<EOF
+        rm -rf $DEST
+        mkdir -p $DEST
+        chmod -R 775 $DEST
+        chown -R ssm-user:ssm-user $DEST
+      EOF
+      )
+      rm -rf $SOURCE
+      echo "zipping $SOURCE ..."
+      zip -r $SOURCE $SCP_SOURCE_FOLDER -x "*.terraform*/*" "*.git*/*" "*.idea*/*"
+    - echo "cleaning previous copy ..."
+    - !reference [.ssm-ssh-sh, script]
+    - echo "scp helmfiles ..."
+    - !reference [.ssm-scp-sh, script]
+    - export SSH_CMD="unzip -o $DEST/repo.zip -d $DEST/"
+    - echo "unziping $DEST/repo.zip ..."
+    - !reference [.ssm-ssh-sh, script]
+    - echo "Executing helm upgrade CLUSTER_NAME:$CLUSTER_NAME CHART_NAME:$CHART_NAME TAG:$TAG"
+    - export SSH_CMD="sudo bash -c 'export HELM_BINARY=helm; export CLUSTER_NAME=$CLUSTER_NAME; helmfile -e $ENV -f $DEST/$HELMFILE_ROOT/helmfile.yaml apply --set image.tag=$TAG'"
+    - !reference [.ssm-ssh-sh, script]

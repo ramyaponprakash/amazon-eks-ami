@@ -22,6 +22,7 @@ configure_aide() {
   # Running AIDE on an EKS cluster can potentially consume significant system resources.
   # This can impact the performance and stability of your EKS cluster.
   # If we need AIDE, need to limit the scope using config file and need cgroups to limit cpu usage.
+  # NOTE: Team member reported AIDE with cgroup caused unexpected problem, please review closely when we need to enable AIDE
   rm -f /etc/cron.d/aide
   yum remove -y aide
 }

@@ -1,1 +1,125 @@
-# placeholder
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"
+      when: never
+    - if: $ENV
+    - if: '$CI_COMMIT_BRANCH =~ /^develop\// || $CI_COMMIT_BRANCH =~ /^release\//'
+
+variables:
+  ENV: $ENV
+  K8_VERSION: $K8_VERSION
+
+.gds-account-global-vars: &gds-account-global-vars
+  AWS_ACCOUNT: $GDS_ACCOUNT
+  ROLE_ARN: $GDS_ROLE_ARN
+  DEPLOYMENT_INSTANCE_ID: $GDS_BASTION_HOST
+
+.gcc-account-global-vars: &gcc-account-global-vars
+  AWS_ACCOUNT: $GCC_ACCOUNT
+  ROLE_ARN: $GCC_ROLE_ARN
+  DEPLOYMENT_INSTANCE_ID: $GCC_BASTION_HOST
+
+stages:
+  - trigger-pipeline
+  - release
+
+release_tag:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never
+    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
+    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main"'
+    - if: '$ENV == "release/tag"'
+  script:
+    - echo "running release_tag for $TAG"
+  release:
+    tag_name: 'v1.0.$CI_PIPELINE_IID'
+    description: 'v1.0.$CI_PIPELINE_IID'
+    ref: '$CI_COMMIT_SHA'
+
+eks-pipeline:ami-image-builder:
+  stage: trigger-pipeline
+  variables:
+    AWS_REPO_TAG: $AWS_REPO_TAG
+    AMI_OWNER: $AMI_OWNER
+    AMI_NAME: $AMI_NAME
+  rules:
+    - if: '$ENV == "ami/eks/gds" || $CI_COMMIT_BRANCH == "release/ami/gds"'
+      variables:
+        <<: *gds-account-global-vars
+        ENV: ami/eks/gds
+    - if: '$ENV == "ami/eks/gcc" || $CI_COMMIT_BRANCH == "release/ami/gcc"'
+      variables:
+        <<: *gcc-account-global-vars
+        ENV: ami/eks/gcc
+  trigger:
+    include:
+      - cicd/gitlab-ci/Image-Builder.yml
+
+
+eks-pipeline:app-eks-terraform:
+  stage: trigger-pipeline
+  variables:
+    DEPLOYMENT_INSTANCE_ID: $DEPLOYMENT_INSTANCE_ID
+  rules:
+    - if: '$ENV == "app/eks/dev" || $CI_COMMIT_BRANCH == "release/app/dev"'
+      variables:
+        <<: *gds-account-global-vars
+        ENV: app/eks/dev
+      when: manual
+  trigger:
+    include:
+      - cicd/gitlab-ci/App-EKS-terraform.yml
+
+
+eks-pipeline:app-eks-chart-publish:
+  stage: trigger-pipeline
+  variables:
+    DEPLOYMENT_INSTANCE_ID: $DEPLOYMENT_INSTANCE_ID
+  rules:
+    - if: '$ENV == "app/eks/dev" || $CI_COMMIT_BRANCH == "release/app/dev"'
+      variables:
+        <<: *gds-account-global-vars
+        ENV: app/eks/dev
+        DEPLOYMENT_INSTANCE_ID: $GDS_APP_EKS_BASTION_ID
+      when: manual
+  trigger:
+    include:
+      - cicd/gitlab-ci/App-EKS-charts-publish.yml
+
+
+eks-pipeline:solace-eks-chart-deploy:
+  stage: trigger-pipeline
+  variables:
+    DEPLOYMENT_EC2_USER: $SOL_BASTION_USER
+  rules:
+    - if: '$ENV == "sol/eks/dev" || $CI_COMMIT_BRANCH == "release/sol/dev"'
+      variables:
+        <<: *gds-account-global-vars
+        ENV: sol/eks/dev
+        DEPLOYMENT_INSTANCE_ID: $SOL_DEV_BASTION_ID
+      when: manual
+    - if: '$ENV == "sol/eks/qa" || $CI_COMMIT_BRANCH == "release/sol/qa"'
+      variables:
+        <<: *gds-account-global-vars
+        ENV: sol/eks/qa
+        DEPLOYMENT_INSTANCE_ID: $SOL_QA_BASTION_ID
+      when: manual
+    - if: '$ENV == "sol/eks/prod" || $CI_COMMIT_BRANCH == "release/sol/prod"'
+      variables:
+        <<: *gcc-account-global-vars
+        ENV: sol/eks/prod
+        DEPLOYMENT_INSTANCE_ID: $SOL_PROD_BASTION_ID
+      when: manual
+    - if: '$ENV == "sol/eks/intra" || $CI_COMMIT_BRANCH == "release/sol/intra"'
+      variables:
+        <<: *gcc-account-global-vars
+        ENV: sol/eks/intra
+        DEPLOYMENT_INSTANCE_ID: $SOL_INTRA_BASTION_ID
+      when: manual
+  trigger:
+    include:
+      - cicd/gitlab-ci/Solace-EKS-charts-deploy.yml
+
