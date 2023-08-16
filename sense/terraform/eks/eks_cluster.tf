@@ -52,6 +52,10 @@ resource "aws_eks_cluster" "sdx-eks-cluster" {
     Name        = var.cluster_name
     Environment = var.environment
   }
+
+  lifecycle {
+    ignore_changes = [version]
+  }
 }
 
 resource "aws_eks_addon" "sdx-eks-cluster-kube-proxy-add-on" {

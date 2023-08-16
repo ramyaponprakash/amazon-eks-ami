@@ -1,0 +1,91 @@
+include:
+  - cicd/templates/.common.yml
+
+stages:
+  - setup
+  - build
+
+variables:
+  AWS_REPO_TAG: "v20230703"
+  AMI_OWNER: "272677769750"
+  AMI_NAME: "GT_GCCS_StandardBuild_AML_2"
+
+.gds-account-setup: &gds-account-setup
+  variables:
+    VPC_ID: "vpc-09a58d6d"
+    SUBNET_ID: "subnet-03603dbfb617e41c4"
+    SECURITY_GROUP_ID: "sg-07c0c0ddf892afe85"
+    PUBLIC_ACCESS: "true"
+    AMI_NAME: "GT_GCCS_StandardBuild_AML_2_on_2023-07-13" # temp
+
+.gcc-account-setup: &gcc-account-setup
+  variables:
+    VPC_ID: "vpc-0eca666dad48bbbb8" # cmt-1055002 (management)
+    SUBNET_ID: "subnet-050105c6ca4761d78" # sense-prd-subnet-mgnt-1a
+    SECURITY_GROUP_ID: "sg-0e4974478249329b2" # packer-ami-pipeline-ssh
+    AMI_NAME: "GT_GCCS_StandardBuild_AML_2_on_2023-07-13" # temp
+    EC2_IAM_ROLE_ARN: "arn:aws:iam::704140326871:instance-profile/u-ec2read"
+    PUBLIC_ACCESS: "true"
+
+workflow:
+  rules:
+    - if: '$ENV == "ami/eks/gds"'
+      <<: *gds-account-setup
+    - if: '$ENV == "ami/eks/gcc"'
+      <<: *gcc-account-setup
+    - when: always
+
+build-packer-ami:gds:
+  stage: build
+  extends: .awscli-root-builder
+  environment: $ENV
+  rules:
+    - if: '$ENV == "ami/eks/gds"'
+      when: manual
+  artifacts:
+    paths:
+      - builder/amazon-eks-ami/*.json
+  script:
+    - echo "Building AMI for $ENV, K8($K8_VERSION)"
+    - chmod +x builder/build.sh
+    - |
+      rm -rf "$HOME/.ssh/config"
+      builder/build.sh -k $K8_VERSION \
+        -a $AWS_ACCOUNT \
+        -v $VPC_ID \
+        -s $SUBNET_ID \
+        -g $SECURITY_GROUP_ID \
+        -p $PUBLIC_ACCESS \
+        --jq "./jq" \
+        --packer "./packer" \
+        --repo-tag $AWS_REPO_TAG \
+        --working-dir "$(pwd)/builder" \
+        --ami-owner $AMI_OWNER \
+        --ami-name $AMI_NAME
+
+build-packer-ami:gcc:
+  stage: build
+  extends: .awscli-root-builder
+  environment: $ENV
+  rules:
+    - if: '$ENV == "ami/eks/gcc"'
+      when: manual
+  artifacts:
+    paths:
+      - builder/amazon-eks-ami/*.json
+  script: # TODO: using temp bastion for packer ssh access
+    - echo "Building AMI for $ENV, K8($K8_VERSION)"
+    - chmod +x builder/build.sh
+    - |
+      builder/build.sh -k $K8_VERSION \
+        -a $AWS_ACCOUNT \
+        -v $VPC_ID \
+        -s $SUBNET_ID \
+        -g $SECURITY_GROUP_ID \
+        -p $PUBLIC_ACCESS \
+        --jq "./jq" \
+        --packer "./packer" \
+        --repo-tag $AWS_REPO_TAG \
+        --working-dir "$(pwd)/builder" \
+        --ami-owner $AMI_OWNER \
+        --ami-name $AMI_NAME

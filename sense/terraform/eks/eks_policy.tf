@@ -89,7 +89,7 @@ resource "aws_iam_role_policy_attachment" "sdx-node-AmazonEC2ContainerRegistryRe
 
 # This policy will hold additional policies
 resource "aws_iam_role_policy_attachment" "sdx-node-u-eks" {
-  policy_arn = "arn:aws:iam::aws:policy/u-eks"
+  policy_arn = "arn:aws:iam::${var.aws_account}:policy/u-eks"
   role       = aws_iam_role.sdx-eks-node.name
 }
 
