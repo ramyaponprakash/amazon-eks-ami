@@ -51,7 +51,7 @@ variables:
   script:
     - if [ -z "$SCP_SOURCE_FOLDER" ]; then echo "variable CHART_NAME must be set." && exit 1; fi
     - if [ -z "$CHART_NAME" ]; then echo "variable CHART_NAME must be set." && exit 1; fi
-    - if [ -z "$ENV" ]; then echo "variable ENV must be set." && exit 1; fi
+    - if [ -z "$HELM_ENV" ]; then echo "variable HELM_ENV must be set." && exit 1; fi
     - if [ -z "$ROLE_ARN" ]; then echo "variable ROLE_ARN must be set." && exit 1; fi
     - if [ -z "$CLUSTER_NAME" ]; then echo "variable CLUSTER_NAME must be set." && exit 1; fi
     - if [ -z "$TAG" ]; then echo "variable TAG must be set." && exit 1; fi
@@ -77,6 +77,6 @@ variables:
     - export SSH_CMD="unzip -o $DEST/repo.zip -d $DEST/"
     - echo "unziping $DEST/repo.zip ..."
     - !reference [.ssm-ssh-sh, script]
-    - echo "Executing helm upgrade CLUSTER_NAME:$CLUSTER_NAME CHART_NAME:$CHART_NAME TAG:$TAG"
-    - export SSH_CMD="sudo bash -c 'export HELM_BINARY=helm; export CLUSTER_NAME=$CLUSTER_NAME; helmfile -e $ENV -f $DEST/$HELMFILE_ROOT/helmfile.yaml apply --set image.tag=$TAG'"
+    - echo "Executing helm upgrade CLUSTER_NAME:$CLUSTER_NAME CHART_NAME:$CHART_NAME TAG:$TAG HELM_ENV:$HELM_ENV"
+    - export SSH_CMD="sudo bash -c 'export HELM_BINARY=helm; export CLUSTER_NAME=$CLUSTER_NAME; helmfile -e $HELM_ENV -f $DEST/$HELMFILE_ROOT/helmfile.yaml apply --set image.tag=$TAG'"
     - !reference [.ssm-ssh-sh, script]
