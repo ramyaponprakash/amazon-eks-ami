@@ -116,3 +116,11 @@ include:
     - export CMD=$SSH_CMD
     - !reference [.ssm-command-sh, script]
 
+
+.release_tag:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  script:
+    - if [ -z "$TAG_NAME" ]; then echo "variable TAG_NAME must be set." && exit 1; fi
+    - if [ -z "$DESCRIPTION" ]; then DESCRIPTION=$TAG_NAME ; fi
+    - release-cli create --description "$DESCRIPTION" --tag-name $TAG_NAME --ref $CI_COMMIT_SHA

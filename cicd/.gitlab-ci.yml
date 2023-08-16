@@ -1,3 +1,6 @@
+include:
+  - cicd/templates/.common.yml
+
 workflow:
   rules:
     - if: $CI_PIPELINE_SOURCE == "push"
@@ -25,7 +28,7 @@ stages:
 
 release_tag:
   stage: release
-  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  extends: .release_tag
   rules:
     - if: $CI_COMMIT_TAG
       when: never
@@ -33,11 +36,14 @@ release_tag:
     - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main"'
     - if: '$ENV == "release/tag"'
   script:
-    - echo "running release_tag for $TAG"
-  release:
-    tag_name: 'v1.0.$CI_PIPELINE_IID'
-    description: 'v1.0.$CI_PIPELINE_IID'
-    ref: '$CI_COMMIT_SHA'
+    - |
+      if [ -z "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" ]; then
+        export TAG_NAME="v1.0.$CI_PIPELINE_IID-$CI_COMMIT_BRANCH-$(date +'%Y%m%d')"
+      else
+        export TAG_NAME="v1.0.$CI_PIPELINE_IID-$CI_MERGE_REQUEST_TARGET_BRANCH_NAME-$(date +'%Y%m%d')"
+      fi
+    - !reference [.release_tag, script]
+
 
 eks-pipeline:ami-image-builder:
   stage: trigger-pipeline
