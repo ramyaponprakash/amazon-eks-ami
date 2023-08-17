@@ -1,0 +1,79 @@
+include:
+  - cicd/templates/.common.yml
+  - cicd/templates/.helmfile.yml
+
+stages:
+  - publish
+
+variables:
+  K8_VERSION: $K8_VERSION
+
+.gds-account-setup: &gds-account-setup
+  variables: {}
+
+.gcc-account-setup: &gcc-account-setup
+  variables: {}
+
+workflow:
+  rules:
+    #    - if: '$ENV == "ami/eks/gds"'
+    #      <<: *gds-account-setup
+    #    - if: '$ENV == "ami/eks/gcc"'
+    #      <<: *gcc-account-setup
+    - when: always
+
+
+app-eks-chart:common:
+  extends: .publish-chart
+  variables:
+    CHART_NAME: cluster-common
+    HELM_ROOT: sense/base
+
+
+app-eks-chart:ingress-controller:
+  extends: .publish-chart
+  variables:
+    CHART_NAME: ingress-controller
+    HELM_ROOT: sense/base
+
+
+app-eks-chart:monitoring:
+  extends: .publish-chart
+  variables:
+    CHART_NAME: monitoring
+    HELM_ROOT: sense/base
+
+
+app-eks-chart:sense-backbone:
+  extends: .publish-chart
+  variables:
+    CHART_NAME: sense-backbone
+    HELM_ROOT: sense/base
+
+
+app-eks-chart:sense-frontend-auth:
+  extends: .publish-chart
+  variables:
+    CHART_NAME: sense-frontend-auth
+    HELM_ROOT: sense/base
+
+
+app-eks-chart:sense-frontend-portal:
+  extends: .publish-chart
+  variables:
+    CHART_NAME: sense-frontend-portal
+    HELM_ROOT: sense/base
+
+
+app-eks-chart:sense-backend:
+  extends: .publish-chart
+  variables:
+    CHART_NAME: sense-backend
+    HELM_ROOT: sense/base
+
+
+app-eks-chart:sense-agent:
+  extends: .publish-chart
+  variables:
+    CHART_NAME: sense-agent
+    HELM_ROOT: sense/base

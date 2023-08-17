@@ -24,6 +24,7 @@ usage () {
   echo '--ami-name : source AMI name to filter the latest'
   echo '--repo-tag : the tag of the official repo'
   echo '--working-dir : working directory'
+  echo '--ssh-user : ssh user by packer to the temp instance'
 }
 
 parse_inputs() {
@@ -49,6 +50,7 @@ parse_inputs() {
       --ami-name) AMI_FILTER="$2"; shift 2;;
       --repo-tag) AMI_REPO_TAG="$2"; shift 2;;
       --working-dir) WORKING_DIR="$2"; shift 2;;
+      --ssh-user) SSH_USER="$2"; shift 2;;
       -h|--help) usage; shift;;
       -*|--*) echo "Unknown option $1"; usage; exit 1;;
       *) usage;;
@@ -74,8 +76,8 @@ setup_aws_vars() {
 }
 
 get_latest_ami_vars() {
-  AMI_ID=$(aws ec2 describe-images --region $AWS_REGION --filters "Name=name,Values=$AMI_FILTER*" --query 'sort_by(Images, &CreationDate)[-1].ImageId' --output text)
-  AMI_NAME=$(aws ec2 describe-images --region $AWS_REGION --filters "Name=name,Values=$AMI_FILTER*" --query 'sort_by(Images, &CreationDate)[-1].Name' --output text)
+  AMI_ID=$(aws ec2 describe-images --region $AWS_REGION --owners $AMI_OWNER_ACCOUNT_ID --filters "Name=name,Values=$AMI_FILTER*" --query 'sort_by(Images, &CreationDate)[-1].ImageId' --output text)
+  AMI_NAME=$(aws ec2 describe-images --region $AWS_REGION --owners $AMI_OWNER_ACCOUNT_ID --filters "Name=name,Values=$AMI_FILTER*" --query 'sort_by(Images, &CreationDate)[-1].Name' --output text)
   echo "AMI_OWNER_ACCOUNT_ID=$AMI_OWNER_ACCOUNT_ID"
   echo "AMI_FILTER=$AMI_FILTER"
   echo "AMI_ID=$AMI_ID"
@@ -133,27 +135,28 @@ install_deps() {
   fi
 }
 
-clean_repo() {
-  echo "cleaning repo $1"
-  cd $1
-  git reset --hard
-  cd ..
-}
-
 ensure_repo() {
+  echo "cleaning repo $1"
+  rm -rf $1
   echo "git submodule update --remote"
   git submodule update --remote
-  clean_repo "$1"
+  if [ -d "$1" ]; then
+      echo "git submodule fetched"
+  else
+      echo "git submodule failed, fetching directly"
+      git clone https://github.com/awslabs/amazon-eks-ami.git
+  fi
+
+  cd "$1"
   if [ -n "$AMI_REPO_TAG"  ]; then
     echo "git tag specified as $AMI_REPO_TAG"
     git config --global advice.detachedHead false
-    cd "$1" &&
-      git fetch --all -v &&
+    git fetch --all -v &&
       git checkout "$AMI_REPO_TAG" &&
-      cd ..
+      echo "Branch: $(git branch --show-current)" &&
+      echo "Tag: $(git describe --tags --exact-match 2>/dev/null)"
   fi
-  echo "Branch: $(git branch --show-current)"
-  echo "Tag: $(git describe --tags --exact-match 2>/dev/null)"
+  cd "$WORKING_DIR"
 }
 
 modify_repo_scripts_cis_compatibility() {
@@ -220,10 +223,10 @@ add_post_provisioning_scripts() {
 }
 
 main() {
-  REMOTE_FOLDER="/home/ec2-user"
-  REPO_FOLDER="./amazon-eks-ami"
-
   parse_inputs "$@"
+
+  REMOTE_FOLDER="/home/ec2-user"
+  REPO_FOLDER="$WORKING_DIR/amazon-eks-ami"
 
   if [ -n "$WORKING_DIR"  ]; then
     echo "working dir - '$WORKING_DIR'"
@@ -237,7 +240,7 @@ main() {
   ensure_repo $REPO_FOLDER
 
   echo "Processing scripts and configs ..."
-  cp -r ./scripts/ $REPO_FOLDER/scripts/
+  cp -r "$WORKING_DIR/scripts/." "$REPO_FOLDER/scripts/"
   modify_repo_scripts_cis_compatibility $REMOTE_FOLDER $REPO_FOLDER
   # optional run for non-CTS Images
   if [ "$ENABLE_OWN_CIS_SCRIPTS" == "true" ]; then
@@ -250,6 +253,9 @@ main() {
   cat $REPO_FOLDER/eks-worker-al2.json
 
   AMI_NAME_PREFIX="adex-sol-eks-node-$K8_VERSION-v$(date +'%Y%m%d')-$(uuidgen)"
+  if [ "$SSH_USER" == "" ]; then
+    SSH_USER=ec2-user
+  fi
 
   echo "baking AMI .... K8_VERSION=$K8_VERSION"
   make -C $REPO_FOLDER "$K8_VERSION" \
@@ -265,13 +271,12 @@ main() {
     temporary_security_group_source_cidrs="$EXEC_CIDR" \
     associate_public_ip_address="$PUBLIC_ACCESS" \
     security_group_id="$SECURITY_GROUP_ID" \
-    remote_folder="$REMOTE_FOLDER"
+    remote_folder="$REMOTE_FOLDER" \
+    ssh_username="$SSH_USER"
   echo "baking AMI .... DONE!"
 
   echo "version-info.json"
   $JQ_BINARY . "$REPO_FOLDER/$AMI_NAME_PREFIX-version-info.json"
-
-  clean_repo $REPO_FOLDER
 }
 
 main "$@"

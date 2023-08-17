@@ -15,6 +15,10 @@ data:
       rolearn: arn:aws:iam::342446142760:role/forBamboo
       username: pipeline-bamboo
     - groups:
+      - system:masters
+      rolearn: arn:aws:iam::342446142760:role/gts.gitlab-dedicated
+      username: pipeline-gitlab
+    - groups:
       - eks-console-dashboard-view-full-access-group
       rolearn: arn:aws:iam::342446142760:role/admin-role
       username: admin-role

@@ -1,0 +1,126 @@
+include:
+  - project: "WOG/GVT/ship/ship-hats-templates"
+    ref: "v1.0.8"
+    file:
+      - /templates/.gitlab-ci-aws.yml
+
+
+.yum-install-common:
+  before_script:
+    - |
+      yum update -y && yum install -y wget tar zip unzip yum-utils git make which sudo openssl jq file \
+        https://s3.amazonaws.com/session-manager-downloads/plugin/latest/linux_64bit/session-manager-plugin.rpm
+
+
+.assume-role:
+  before_script:
+    - if [ -z "$ROLE_ARN" ]; then echo "variable ROLE_ARN must be set." && exit 1; fi
+    - |
+      STS=$(aws sts assume-role-with-web-identity \
+      --role-arn "$ROLE_ARN" \
+      --role-session-name "ADEX-Devops-$CI_PIPELINE_ID-$CI_JOB_ID-Session" \
+      --web-identity-token "$CI_JOB_JWT_V2" \
+      --duration-seconds 3600 \
+      --query 'Credentials.[AccessKeyId,SecretAccessKey,SessionToken]' \
+      --output text)
+      export AWS_ACCESS_KEY_ID=$(echo "$STS" | awk '{print $1}')
+      export AWS_SECRET_ACCESS_KEY=$(echo "$STS" | awk '{print $2}')
+      export AWS_SESSION_TOKEN=$(echo "$STS" | awk '{print $3}')
+  after_script:
+    - unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
+
+
+.awscli-root-builder:
+  image:
+    name: amazon/aws-cli:latest
+    entrypoint:
+      - '/usr/bin/env'
+  tags:
+    - non_privileged
+    - ship_docker
+  before_script:
+    - !reference [.yum-install-common, before_script]
+    - !reference [.assume-role, before_script]
+  after_script:
+    - !reference [.assume-role, after_script]
+
+
+.ssm-command-sh:
+  script:
+    - if [ -z "$CMD" ]; then echo "variable CMD must be set." && exit 1; fi
+    - if [ -z "$INSTANCE_ID" ]; then echo "variable INSTANCE_ID must be set." && exit 1; fi
+    - INTERNAL_EXEC_ID=$(uuidgen)
+    - |
+      EXEC_ID=$(aws ssm send-command \
+        --instance-ids "$INSTANCE_ID" \
+        --document-name "AWS-RunShellScript" \
+        --parameters commands="\"$CMD\"" \
+        --comment "temp ssh over ssm $INTERNAL_EXEC_ID" \
+        --cloud-watch-output-config "CloudWatchOutputEnabled=true,CloudWatchLogGroupName=/aws/ssm/gitlab" \
+        --output text \
+        --query Command.CommandId)
+      echo "New send-command to $INSTANCE_ID - ref: $INTERNAL_EXEC_ID"
+      aws ssm wait command-executed --instance-id "$INSTANCE_ID" --command-id "$EXEC_ID"
+    - echo "New send-command exec-id:$EXEC_ID to instance $INSTANCE_ID - DONE"
+
+
+.ssm-send-public-key:
+  script:
+    - if [ -z "$INSTANCE_ID" ]; then echo "variable INSTANCE_ID must be set." && exit 1; fi
+    - if [ -z "$EC2_USER" ]; then export EC2_USER=ssm-user; fi
+    - if [ -z "$SSH_KEY_VALIDITY" ]; then export SSH_KEY_VALIDITY=60; fi
+    - |
+      ID=$(uuidgen)
+      export SSH_TMP_KEY=$HOME/.ssh/tmp-ssm-$ID
+      export SSH_FOLDER=/home/$EC2_USER/.ssh
+
+      echo "Generating temporal key ..."
+      rm -f ${SSH_TMP_KEY}{,.pub}
+      ssh-keygen -t ed25519 -N '' -f $SSH_TMP_KEY -C "ssh-over-ssm-$ID"
+      SSH_PUB_KEY="$(< $SSH_TMP_KEY.pub)"
+      export SSH_TMP_PUB_KEY_PATH=$SSH_TMP_KEY.pub
+      
+      # add new key, delete the key after SSH_KEY_VALIDITY
+      export CMD=$(cat <<EOF
+        grep '$SSH_PUB_KEY' $SSH_FOLDER/authorized_keys && exit 0
+        if [ ! -d \"$SSH_FOLDER\" ]; then
+          install -d -m700 -o \"$EC2_USER\" \"$SSH_FOLDER\" || exit 1
+        fi
+        printf '$SSH_PUB_KEY\n'|tee -a $SSH_FOLDER/authorized_keys || exit 1
+        (sleep $SSH_KEY_VALIDITY && sed -i '\|$SSH_PUB_KEY|d' $SSH_FOLDER/authorized_keys &) >/dev/null 2>&1
+      EOF
+      )
+    - !reference [.ssm-command-sh, script]
+  after_script:
+    - rm -rf $SSH_TMP_KEY $SSH_TMP_PUB_KEY_PATH
+    - unset SSH_TMP_KEY SSH_TMP_PUB_KEY_PATH
+
+
+.ssm-scp-sh:
+  script:
+    - !reference [.ssm-send-public-key, script]
+    - if [ -z "$INSTANCE_ID" ]; then echo "variable INSTANCE_ID must be set." && exit 1; fi
+    - if [ -z "$SOURCE" ]; then echo "variable SOURCE must be set." && exit 1; fi
+    - if [ -z "$DEST" ]; then echo "variable DEST must be set." && exit 1; fi
+    - if [ -z "$EC2_USER" ]; then export EC2_USER=ssm-user; fi
+    # https://techdocs.akamai.com/netstorage/docs/use-secure-copy
+    # https://man.openbsd.org/ssh_config
+    - scp -o IdentityFile="$SSH_TMP_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no -o ProxyCommand="sh -c \"aws ssm start-session --target $INSTANCE_ID --document-name AWS-StartSSHSession\"" $SOURCE $EC2_USER@$INSTANCE_ID:$DEST
+    - echo "SCP from $SOURCE to $EC2_USER@$INSTANCE_ID:$DEST successfully done."
+    - !reference [.ssm-send-public-key, after_script]
+
+
+.ssm-ssh-sh:
+  script:
+    - if [ -z "$SSH_CMD" ]; then echo "variable $SSH_CMD must be set." && exit 1; fi
+    - export CMD=$SSH_CMD
+    - !reference [.ssm-command-sh, script]
+
+
+.release_tag:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  script:
+    - if [ -z "$TAG_NAME" ]; then echo "variable TAG_NAME must be set." && exit 1; fi
+    - if [ -z "$DESCRIPTION" ]; then DESCRIPTION=$TAG_NAME ; fi
+    - release-cli create --description "$DESCRIPTION" --tag-name $TAG_NAME --ref $CI_COMMIT_SHA

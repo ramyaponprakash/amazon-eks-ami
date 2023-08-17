@@ -1,0 +1,196 @@
+include:
+  - cicd/templates/.common.yml
+
+.auth-ecr-token:
+  stage: setup
+  extends: .awscli-root-builder
+  artifacts:
+    public: false
+    paths:
+      - ecr_token
+  script:
+    - aws ecr get-login-password --region ap-southeast-1 > ecr_token
+
+
+.init-ecr-registry:
+  extends: .awscli-root-builder
+  script:
+    - if [ -z "$IMAGE_NAMES" ]; then echo "variable IMAGE_NAMES must be set." && exit 1; fi
+    - if [ -z "$MUTABILITY" ]; then echo "variable MUTABILITY must be set." && exit 1; fi
+    - |
+      if [ "$MUTABILITY" == "true" ]; then
+        MUTABILITY=MUTABLE
+      else
+        MUTABILITY=IMMUTABLE
+      fi
+      ensure_repo() {
+        echo "ensure_repo - $1"
+        if ! OUTPUT=$(aws ecr describe-repositories --repository-names "$1" 2>&1); then
+          if echo "${OUTPUT}" | grep -q RepositoryNotFoundException; then
+            echo 'Repository does not exist in ECR. Creating...'
+            aws ecr create-repository --repository-name "$1" \
+              --image-tag-mutability "$2" \
+              --image-scanning-configuration scanOnPush=true \
+              --encryption-configuration encryptionType=AES256 > /dev/null
+            echo "Repository $1 created!"
+          else
+            echo 'Error when retrieving repository:'
+            >&2 echo "${OUTPUT}"
+            exit 1
+          fi
+        else
+          echo "Repository $1 exists in ECR!"
+        fi
+      }
+
+      for m in ${IMAGE_NAMES//,/ }
+      do
+        if [ "$m" == "" ]; then
+          continue
+        fi
+        ensure_repo $m $MUTABILITY
+      done
+    - echo ".init-ecr-registry - DONE"
+
+.export_acm_certs:
+  stage: setup
+  extends: .awscli-root-builder
+  artifacts:
+    public: false
+    paths:
+      - certs/**
+  script:
+    - if [ -z "$CA_PATH" ]; then echo "variable CA_PATH must be set." && exit 1; fi
+    - if [ -z "$CERT_PATH" ]; then echo "variable CERT_PATH must be set." && exit 1; fi
+    - if [ -z "$KEY_PATH" ]; then echo "variable KEY_PATH must be set." && exit 1; fi
+    - |
+      mkdir -p certs ${CA_PATH%.*} ${CERT_PATH%.*} ${KEY_PATH%.*}
+      if [ -z "$CERT_ARN" ]; then
+        echo "CERT_ARN is empty, skipping..." && exit 0
+      fi
+      TEMP_PASS=$(date +%s%N | openssl dgst -md5 | cut -d' ' -f2 | head -c 12)
+      printf "%s" "$TEMP_PASS" > passphrase.txt
+      file -k passphrase.txt
+      aws acm export-certificate --certificate-arn $CERT_ARN --passphrase fileb://passphrase.txt > exported_certs.json
+      jq -r '.CertificateChain' exported_certs.json > "$CA_PATH"
+      jq -r '.Certificate' exported_certs.json > "$CERT_PATH"
+      jq -r '.PrivateKey' exported_certs.json > "$KEY_PATH"
+      openssl rsa -in $KEY_PATH -out $KEY_PATH -passin pass:$TEMP_PASS
+      rm -rf passphrase.txt exported_certs.json
+
+
+.docker-builder:
+  tags:
+    - ship_docker
+  image:
+    name: docker:latest
+  services:
+    - docker:dind
+  before_script:
+    - docker logout
+    - ECR_TOKEN=$(cat ecr_token)
+    - if [ -z "$ECR_TOKEN" ]; then echo "variable ECR_TOKEN must be set." && exit 1; fi
+    - if [ -z "$AWS_ACCOUNT" ]; then echo "variable AWS_ACCOUNT must be set." && exit 1; fi
+    - docker login --username AWS --password $ECR_TOKEN $AWS_ACCOUNT.dkr.ecr.ap-southeast-1.amazonaws.com
+    - echo "Docker login - DONE"
+
+
+.kaniko-builder:
+  tags:
+    - ship_docker
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  variables:
+    DIGESTFILE_NAME: $CI_PROJECT_DIR/digest
+  before_script:
+    - if [ -z "$AWS_ACCOUNT" ]; then echo "variable AWS_ACCOUNT must be set." && exit 1; fi
+    - if [ -z "$DOCKERFILE_PATH" ]; then echo "variable DOCKERFILE_PATH must be set." && exit 1; fi
+    - if [ -z "$DOCKERFILE_NAME" ]; then echo "variable DOCKERFILE_NAME must be set." && exit 1; fi
+    - ECR_TOKEN=$(cat ecr_token)
+    - if [ -z "$ECR_TOKEN" ]; then echo "variable ECR_TOKEN must be set." && exit 1; fi
+    - export DOCKER_TARGET_REGISTRY=$AWS_ACCOUNT.dkr.ecr.ap-southeast-1.amazonaws.com
+    - if [ -z "$DOCKERFILE_CONTEXT" ]; then DOCKERFILE_CONTEXT="$DOCKERFILE_PATH" ; fi
+    - mkdir -p $HOME/.docker
+    - touch $HOME/.docker/config.json
+    - echo "{\"auths\":{\"$DOCKER_TARGET_REGISTRY\":{\"auth\":\"$(printf "%s:%s" "AWS" "$ECR_TOKEN" | base64 | tr -d '\n')\"}}}" > ~/.docker/config.json
+    - cp ~/.docker/config.json /kaniko/.docker/config.json
+  script:
+    - if [ -z "$DOCKER_IMAGE_NAME" ]; then echo "variable DOCKER_IMAGE_NAME must be set." && exit 1; fi
+    - if [ -z "$DOCKER_IMAGE_TAG" ]; then echo "variable DOCKER_IMAGE_TAG must be set." && exit 1; fi
+  after_script:
+  - |
+    if [ -f "~/.docker/config.json" ]; then
+      echo "" > ~/.docker/config.json  # logout
+    fi
+    if [ -f "/kaniko/.docker/config.json" ]; then
+      echo "" > /kaniko/.docker/config.json  # logout
+    fi
+
+
+.docker-image-build:
+  stage: build
+  extends: .kaniko-builder
+  script:
+    - !reference [.kaniko-builder, script]
+    - |
+      if [ ! -z "$OUTPUT_IMAGE_TAR" ]; then
+        OPTS="$OPTS --tarPath $OUTPUT_IMAGE_TAR"
+      fi
+      OPTS=$(echo "$OPTS" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+      echo "kaniko OPTS=$OPTS"
+    - >
+      /kaniko/executor --context "$DOCKERFILE_CONTEXT" --dockerfile "$DOCKERFILE_PATH/$DOCKERFILE_NAME" \
+        --no-push --destination $DOCKER_IMAGE_NAME:latest $OPTS
+
+
+.docker-image-build-and-push:
+  stage: build-push
+  extends: .kaniko-builder
+  script:
+    - !reference [.kaniko-builder, script]
+    - |
+      if [ ! -z "$OUTPUT_IMAGE_TAR" ]; then
+        OPTS="$OPTS --tarPath $OUTPUT_IMAGE_TAR"
+      fi
+      if [ "$DISABLE_LATEST_TAGGING" != "true" ]; then
+        OPTS="$OPTS --destination "$DOCKER_TARGET_REGISTRY/$DOCKER_IMAGE_NAME:latest""
+      fi 
+      OPTS=$(echo "$OPTS" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+      echo "kaniko OPTS=$OPTS"
+    - >
+      /kaniko/executor --context "$DOCKERFILE_CONTEXT" \
+        --cache=true --cache-repo "$DOCKER_TARGET_REGISTRY/kaniko-caches" \
+        --dockerfile "$DOCKERFILE_PATH/$DOCKERFILE_NAME" \
+        --destination "$DOCKER_TARGET_REGISTRY/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG" \
+        --digest-file "$DIGESTFILE_NAME" $OPTS    
+
+
+
+# NOTE: According to SHIP-HATS - "removed privileged access for SHIP-HATS shared runner.
+#       This affects build of systems that used the shared runners with docker-in-docker"
+#       Errored: "error during connect: Post "https://docker:2376/v1.24/auth": dial tcp: lookup docker on 100.10.0.2:53: no such host"
+.docker-compose-image-build-and-push:
+  stage: build-push
+  extends: .docker-builder
+  script:
+    - if [ -z "$DOCKER_COMPOSE_FILE" ]; then echo "variable DOCKER_COMPOSE_FILE must be set." && exit 1; fi
+    - if [ -z "$DOCKER_IMAGE_TAG" ]; then echo "variable DOCKER_IMAGE_TAG must be set." && exit 1; fi
+    - docker-compose -f $DOCKER_COMPOSE_FILE build
+    - docker images
+    - |
+      for IMAGE_NAME in `docker images --filter "reference=$IMAGE_NAME_FILTER" --format "{{.Repository}}"` 
+      do 
+          echo "Docker tag $IMAGE_NAME as per ECR"
+          docker tag $IMAGE_NAME:latest $AWS_ACCOUNT.dkr.ecr.ap-southeast-1.amazonaws.com/$IMAGE_NAME:latest
+          docker tag $IMAGE_NAME:latest $AWS_ACCOUNT.dkr.ecr.ap-southeast-1.amazonaws.com/$IMAGE_NAME:$DOCKER_IMAGE_TAG
+      done
+    - |
+      echo "Docker push images to ECR"
+      for IMAGE_NAME in `docker images --filter "reference=${AWS_ACCOUNT}*/*" --format "{{.Repository}}:{{.Tag}}"` 
+      do 
+          echo "Docker push $iIMAGE_NAME to ECR"
+          docker push $IMAGE_NAME &
+      done
+      wait
+      echo "Docker push images to ECR Successful!!"

@@ -1,0 +1,73 @@
+include:
+  - cicd/templates/.common.yml
+
+variables:
+  TF_ROOT: $TF_ROOT
+
+stages:
+  - validate
+  - plan
+  - apply
+
+cache:
+  key: terraform-$CI_COMMIT_REF_SLUG
+  paths:
+    - $TF_ROOT/.terraform
+
+.terraform-builder:
+  extends: .awscli-root-builder
+  before_script:
+    - !reference [.awscli-root-builder, before_script]
+    - yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+    - yum -y install terraform-1.4.2-1
+    - terraform --version
+
+.terraform:validate:
+  stage: validate
+  extends: .terraform-builder
+  script:
+    - echo "Running terraform fmt (workdir=$TF_ROOT)"
+    - terraform -chdir=$TF_ROOT fmt
+    - echo "Running terraform validate (workdir=$TF_ROOT)"
+    - terraform -chdir=$TF_ROOT init
+    - terraform -chdir=$TF_ROOT validate
+
+.terraform-script:select-workspace:
+  script:
+    - export WORKSPACE=$(echo "$ENV" | cut -d'/' -f3)
+    - if [ -z "$WORKSPACE" ]; then echo "variable WORKSPACE must be set."; fi
+    - echo "Selecting workspace (workspace=$WORKSPACE)"
+    - terraform -chdir=$TF_ROOT init
+    - |
+      terraform -chdir=$TF_ROOT workspace list
+      if terraform -chdir=$TF_ROOT workspace list | grep "$WORKSPACE"; then
+        echo "Workspace $WORKSPACE already exists. skip"
+      else
+        echo "Creating Workspace $WORKSPACE."
+        terraform -chdir=$TF_ROOT workspace new $WORKSPACE
+      fi
+    - terraform -chdir=$TF_ROOT workspace select $WORKSPACE
+
+.terraform:plan:
+  stage: plan
+  extends: .terraform-builder
+  artifacts:
+    public: false
+    paths:
+      - ${TF_ROOT}/plan
+      - ${TF_ROOT}/plan.json
+    reports:
+      terraform: ${TF_ROOT}/plan.json
+  script:
+    - echo "Running terraform plan (workdir=$TF_ROOT, option=$OPTIONS)"
+    - terraform -chdir=$TF_ROOT plan $OPTIONS --out plan
+    - terraform -chdir=$TF_ROOT show -no-color -json plan > $TF_ROOT/plan.json
+
+.terraform:apply:
+  stage: apply
+  extends: .terraform-builder
+  when: manual
+  script:
+    - echo "Running terraform apply (workdir=$TF_ROOT, option=$OPTIONS)"
+    - terraform -chdir=$TF_ROOT apply $OPTIONS
+
