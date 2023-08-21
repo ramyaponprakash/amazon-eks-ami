@@ -1,7 +1,7 @@
 #!/bin/bash
 
-set -o pipefail
-set -o errexit
+#set -o pipefail
+#set -o errexit
 
 # https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html
 #KUBECTL_VER="1.22.6/2022-03-09"
@@ -100,6 +100,9 @@ install_ssm_agent() {
     snap install amazon-ssm-agent --classic
     snap start amazon-ssm-agent
   elif [ "$PKG" == "yum" ]; then
+    # NOTE: we remove ssm-agent of CTS image here and let amazon-eks-ami install it again
+    #       yum exit 1 when package is already installed
+    yum remove -y amazon-ssm-agent
     yum install -y amazon-ssm-agent
     systemctl enable amazon-ssm-agent && systemctl start amazon-ssm-agent
   fi
@@ -114,17 +117,11 @@ install_awscli() {
   fi
 
   curl -L "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-  unzip awscliv2.zip
+  unzip -q awscliv2.zip
   ./aws/install --bin-dir /bin/ --update
   rm -rf aws awscliv2.zip
   aws --version
   aws configure set default.region ap-southeast-1
-}
-
-# Allow Bamboo SSH task to pass build variables
-enabled_bamboo_envvars() {
-  sed -zi '/AcceptEnv bamboo_*/!s/$/\nAcceptEnv bamboo_*/' /etc/ssh/sshd_config
-  systemctl restart sshd
 }
 
 cleanup() {
@@ -159,6 +156,5 @@ install_awscli
 install_eksctl
 install_kubectl
 install_helm
-enabled_bamboo_envvars
 install_ssm_agent
 cleanup

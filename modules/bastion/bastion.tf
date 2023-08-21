@@ -1,3 +1,5 @@
+data "aws_partition" "this" {}
+
 data "template_file" "userdata" {
   template = file("${path.module}/userdata.sh")
   vars = {
@@ -32,31 +34,16 @@ data "template_cloudinit_config" "config" {
   }
 }
 
-resource "tls_private_key" "generated_sshkey" {
-  count = var.bastion.generate_private_key ? 1 : 0
-  #  algorithm = "ED25519"
-  algorithm = "RSA"
-  rsa_bits  = 4096
-}
-
-# ssh-ed25519-cert-v01@openssh.com,ssh-ed25519,sh-rsa,ssh-rsa-cert-v01@openssh.com
-
-resource "aws_key_pair" "generated_keypair" {
-  key_name_prefix = "keypair-${var.cluster_name}"
-  public_key      = var.bastion.generate_private_key ? tls_private_key.generated_sshkey[0].public_key_openssh : file(var.bastion.public_key_path)
-}
-
 resource "aws_instance" "bastion" {
   count = var.bastion.hosts_number
 
   ami                         = var.bastion.ami_id
   instance_type               = var.bastion.instance_type
-  key_name                    = aws_key_pair.generated_keypair.key_name
   subnet_id                   = var.bastion.subnet_ids[count.index]
   associate_public_ip_address = var.bastion.public_access
   vpc_security_group_ids      = [aws_security_group.bastion_security_group.id]
   user_data_base64            = data.template_cloudinit_config.config.rendered
-  iam_instance_profile        = var.bastion.iam_role
+  iam_instance_profile        = aws_iam_instance_profile.bastion_ec2_role.name
   user_data_replace_on_change = true
 
   root_block_device {
@@ -70,11 +57,11 @@ resource "aws_instance" "bastion" {
   }
 
   tags = {
-    Name                         = "${var.cluster_name}-bastion-test" # TODO: edit this
-    Custodian-Scheduler-StopTime = "off=();tz=sgt"
-    #    Custodian-Scheduler-StopTime = "off=(M-S,21);tz=sgt"
-    #    Custodian-Scheduler-StartTime = "on=(M-F,8);tz=sgt"
-    malware-scan = "true"
+    Name                          = "${var.cluster_name}-bastion"
+    "eks:cluster-name"            = var.cluster_name
+    Custodian-Scheduler-StopTime  = "off=(M-S,21);tz=sgt"
+    Custodian-Scheduler-StartTime = "on=(M-F,8);tz=sgt"
+    malware-scan                  = "true"
   }
 }
 

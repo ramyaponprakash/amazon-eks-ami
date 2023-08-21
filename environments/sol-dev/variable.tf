@@ -183,7 +183,6 @@ variable "bastion" {
     private_key_path     = optional(string, "")
     public_key_path      = optional(string, "")
     hosts_number         = optional(number, 1)
-    iam_role             = string
     ami_id               = string
     http_proxy           = optional(string, "")
     https_proxy          = optional(string, "")

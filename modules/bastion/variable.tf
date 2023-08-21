@@ -3,6 +3,10 @@ variable "region" {
   default = "ap-southeast-1"
 }
 
+variable "account_id" {
+  type = string
+}
+
 variable "cluster_name" {
   type = string
 }
@@ -32,7 +36,6 @@ variable "bastion" {
     private_key_path     = optional(string, "")
     public_key_path      = optional(string, "")
     hosts_number         = optional(number, 1)
-    iam_role             = string
     http_proxy           = optional(string, "")
     https_proxy          = optional(string, "")
     no_proxy             = optional(string, "")

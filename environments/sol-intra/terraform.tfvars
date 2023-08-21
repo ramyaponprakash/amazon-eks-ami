@@ -115,29 +115,12 @@ bastion = {
   public_access = false
   vpc_id        = ""
   subnet_ids    = []
-  iam_role      = "adex-eksadmin"
-  ami_id        = "ami-0aaee588abf059b37"
+  ami_id        = "ami-05ad04538563a11ac" # 148623356839/GT_GCCS_StandardBuild_AML_2_on_2023-08-17_07.35.38
   http_proxy    = "http://squid-intra.adex.com:3128"
   https_proxy   = "http://squid-intra.adex.com:3128"
   no_proxy      = "localhost,127.0.0.1,169.254.169.254,.eks.amazonaws.com"
 }
 
-bastion_secgrp_ingress_cidr = [
-  #  {
-  #    cidrs       = ["10.189.118.0/25", "100.80.29.192/26"]
-  #    from_port   = 22
-  #    to_port     = 22
-  #    description = "from SOLI vpc"
-  #  },
-]
-
+bastion_secgrp_ingress_cidr        = []
 bastion_secgrp_ingress_prefix_list = []
-
-bastion_secgrp_ingress_secgrp = [
-  {
-    secgrp_id   = "sg-0a50de674c5138209"
-    from_port   = 22
-    to_port     = 22
-    description = "from SDX_INTRA"
-  },
-]
+bastion_secgrp_ingress_secgrp      = []

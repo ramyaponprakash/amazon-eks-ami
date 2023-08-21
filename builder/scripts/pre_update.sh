@@ -15,6 +15,10 @@ remove_unused_packages() {
     yum remove -y ds_agent
     yum remove -y splunkforwarder
 
+    # NOTE: we remove ssm-agent of CTS image here and let amazon-eks-ami install it again
+    #       yum exit 1 when package is already installed
+    yum remove -y amazon-ssm-agent
+
     yum autoremove -y && yum clean all
 }
 
