@@ -117,6 +117,30 @@ include:
     - !reference [.ssm-command-sh, script]
 
 
+.ssm-clean-scp:
+  script:
+    - if [ -z "$EC2_USER" ]; then EC2_USER=ssm-user; fi
+    - if [ -z "$SOURCE" ]; then echo "variable SOURCE must be set." && exit 1; fi
+    - if [ -z "$DEST" ]; then echo "variable DEST must be set." && exit 1; fi
+    - |
+      echo "cleaning previous copy from $DEST as user $EC2_USER ..."
+      export EC2_USER=$EC2_USER
+      export SSH_CMD=$(cat <<EOF
+        rm -rf $DEST
+        mkdir -p $DEST
+        chmod -R 775 $DEST
+        chown -R $EC2_USER:$EC2_USER $DEST
+      EOF
+      )
+    - !reference [ .ssm-ssh-sh, script ]
+    - |
+      echo "SCP $SOURCE to $DEST"
+      rm -rf $SOURCE
+      echo "zipping $SOURCE ..."
+      zip -r $SOURCE $SCP_SOURCE_FOLDER -x "*.terraform*/*" "*.git*/*" "*.idea*/*"
+    - !reference [ .ssm-scp-sh, script ]
+
+
 .release_tag:
   stage: release
   image: registry.gitlab.com/gitlab-org/release-cli:latest
