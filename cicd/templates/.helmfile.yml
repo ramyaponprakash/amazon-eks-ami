@@ -45,6 +45,7 @@ variables:
     - chmod +x cicd/scripts/helm-publish-chart.sh
     - cicd/scripts/helm-publish-chart.sh "$CHART_NAME" "$HELM_ROOT"
 
+
 .deploy-helmfile:
   stage: deploy
   extends: .awscli-root-builder
@@ -57,25 +58,11 @@ variables:
     - if [ -z "$TAG" ]; then echo "variable TAG must be set." && exit 1; fi
     - if [ -z "$BASTION_ID" ]; then echo "variable BASTION_ID must be set." && exit 1; fi
     - |
+      echo "SCP helmfiles ... "
       export DEST=/home/ssm-user/tmp/charts-$CI_COMMIT_REF_SLUG/$CHART_NAME
       export INSTANCE_ID=$BASTION_ID
       export SOURCE=$SCP_SOURCE_FOLDER/repo.zip
-    - |
-      echo "cleaning previous copy ..."
-      export SSH_CMD=$(cat <<EOF
-        rm -rf $DEST
-        mkdir -p $DEST
-        chmod -R 775 $DEST
-        chown -R ssm-user:ssm-user $DEST
-      EOF
-      )
-    - !reference [.ssm-ssh-sh, script]
-    - |
-      echo "SCP helmfiles ..."
-      rm -rf $SOURCE
-      echo "zipping $SOURCE ..."
-      zip -r $SOURCE $SCP_SOURCE_FOLDER -x "*.terraform*/*" "*.git*/*" "*.idea*/*"
-    - !reference [.ssm-scp-sh, script]
+    - !reference [.ssm-clean-scp, script]
     - |
       echo "unziping $DEST/repo.zip ..."
       export SSH_CMD="unzip -o $DEST/repo.zip -d $DEST/"
