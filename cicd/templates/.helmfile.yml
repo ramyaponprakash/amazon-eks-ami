@@ -45,6 +45,7 @@ variables:
     - chmod +x cicd/scripts/helm-publish-chart.sh
     - cicd/scripts/helm-publish-chart.sh "$CHART_NAME" "$HELM_ROOT"
 
+
 .deploy-helmfile:
   stage: deploy
   extends: .awscli-root-builder
@@ -57,26 +58,16 @@ variables:
     - if [ -z "$TAG" ]; then echo "variable TAG must be set." && exit 1; fi
     - if [ -z "$BASTION_ID" ]; then echo "variable BASTION_ID must be set." && exit 1; fi
     - |
+      echo "SCP helmfiles ... "
+      export DEST=/home/ssm-user/tmp/charts-$CI_COMMIT_REF_SLUG/$CHART_NAME
       export INSTANCE_ID=$BASTION_ID
       export SOURCE=$SCP_SOURCE_FOLDER/repo.zip
-      export DEST=/home/ssm-user/tmp/charts-$CI_COMMIT_REF_SLUG/$CHART_NAME
-      export SSH_CMD=$(cat <<EOF
-        rm -rf $DEST
-        mkdir -p $DEST
-        chmod -R 775 $DEST
-        chown -R ssm-user:ssm-user $DEST
-      EOF
-      )
-      rm -rf $SOURCE
-      echo "zipping $SOURCE ..."
-      zip -r $SOURCE $SCP_SOURCE_FOLDER -x "*.terraform*/*" "*.git*/*" "*.idea*/*"
-    - echo "cleaning previous copy ..."
+    - !reference [.ssm-clean-scp, script]
+    - |
+      echo "unziping $DEST/repo.zip ..."
+      export SSH_CMD="unzip -o $DEST/repo.zip -d $DEST/"
     - !reference [.ssm-ssh-sh, script]
-    - echo "scp helmfiles ..."
-    - !reference [.ssm-scp-sh, script]
-    - export SSH_CMD="unzip -o $DEST/repo.zip -d $DEST/"
-    - echo "unziping $DEST/repo.zip ..."
-    - !reference [.ssm-ssh-sh, script]
-    - echo "Executing helm upgrade CLUSTER_NAME:$CLUSTER_NAME CHART_NAME:$CHART_NAME TAG:$TAG HELM_ENV:$HELM_ENV"
-    - export SSH_CMD="sudo bash -c 'export HELM_BINARY=helm; export CLUSTER_NAME=$CLUSTER_NAME; helmfile -e $HELM_ENV -f $DEST/$HELMFILE_ROOT/helmfile.yaml apply --set image.tag=$TAG'"
+    - |
+      echo "Executing helm upgrade CLUSTER_NAME:$CLUSTER_NAME CHART_NAME:$CHART_NAME TAG:$TAG HELM_ENV:$HELM_ENV"
+      export SSH_CMD="sudo bash -c 'export HELM_BINARY=helm; export CLUSTER_NAME=$CLUSTER_NAME; helmfile -e $HELM_ENV -f $DEST/$HELMFILE_ROOT/helmfile.yaml apply --set image.tag=$TAG'"
     - !reference [.ssm-ssh-sh, script]
