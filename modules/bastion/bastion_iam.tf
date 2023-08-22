@@ -19,7 +19,6 @@ resource "aws_iam_role" "bastion_ec2_role" {
             "Principal": {
                 "AWS": [
                   "arn:aws:iam::${var.account_id}:root",
-                  "arn:aws:iam::${var.account_id}:user/eks",
                   "arn:aws:iam::${var.account_id}:role/sgts.gitlab-dedicated"
                 ],
                 "Service": [
@@ -74,5 +73,10 @@ resource "aws_iam_role_policy_attachment" "bastion_ec2_bastion_policy" {
 // SSM
 resource "aws_iam_role_policy_attachment" "bastion_ec2_AmazonSSMManagedInstanceCore" {
   policy_arn = "arn:${data.aws_partition.this.partition}:iam::aws:policy/AmazonSSMManagedInstanceCore"
+  role       = aws_iam_role.bastion_ec2_role.name
+}
+
+resource "aws_iam_role_policy_attachment" "bastion_ec2_CloudWatchAgentServerPolicy" {
+  policy_arn = "arn:${data.aws_partition.this.partition}:iam::aws:policy/CloudWatchAgentServerPolicy"
   role       = aws_iam_role.bastion_ec2_role.name
 }

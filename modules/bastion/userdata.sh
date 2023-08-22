@@ -13,27 +13,27 @@
 
 setup_proxy() {
   # Skip update_env_vars task if http_proxy is "empty"
-  if [ "$http_proxy" == "" ]; then
+  if [ "${http_proxy}" == "" ]; then
     echo "Skipping update_env_vars task because http_proxy is empty"
     return
   fi
 
    # Write the environment variables to the temporary file
   cat <<EOF > /etc/environment
-http_proxy="$http_proxy"
-https_proxy="$https_proxy"
-no_proxy="$no_proxy"
+http_proxy="${http_proxy}"
+https_proxy="${https_proxy}"
+no_proxy="${no_proxy}"
 EOF
   chmod 644 /etc/environment
 
   if [ "$PKG" == "apt" ]; then
     cat << EOF > /etc/apt/apt.conf.d/proxy.conf
-Acquire::http::Proxy "$http_proxy";
-Acquire::https::Proxy "$https_proxy";
+Acquire::http::Proxy "${http_proxy}";
+Acquire::https::Proxy "${https_proxy}";
 EOF
   elif [ "$PKG" == "yum" ]; then
     cat << EOL >> /etc/yum.conf
-proxy=$https_proxy
+proxy="${https_proxy}"
 proxy_username=
 proxy_password=
 EOL

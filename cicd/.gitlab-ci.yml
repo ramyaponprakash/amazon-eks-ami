@@ -9,22 +9,31 @@ workflow:
     - if: '$CI_COMMIT_BRANCH =~ /^develop\// || $CI_COMMIT_BRANCH =~ /^release\//'
 
 variables:
-  ENV: $ENV
   K8_VERSION: $K8_VERSION
+  SOL_DEV_BASTION_ID: $SOL_DEV_BASTION_ID
+  SOL_QA_BASTION_ID: $SOL_QA_BASTION_ID
+  SOL_PROD_BASTION_ID: $SOL_PROD_BASTION_ID
+  SOL_INTRA_BASTION_ID: $SOL_INTRA_BASTION_ID
+  GCC_PROD_BASTION_ID: $GCC_PROD_BASTION_ID
+  GCC_INTRA_BASTION_ID: $GCC_INTRA_BASTION_ID
+
 
 .gds-account-global-vars: &gds-account-global-vars
   AWS_ACCOUNT: $GDS_ACCOUNT
   ROLE_ARN: $GDS_ROLE_ARN
   DEPLOYMENT_INSTANCE_ID: $GDS_BASTION_HOST
 
+
 .gcc-account-global-vars: &gcc-account-global-vars
   AWS_ACCOUNT: $GCC_ACCOUNT
   ROLE_ARN: $GCC_ROLE_ARN
   DEPLOYMENT_INSTANCE_ID: $GCC_BASTION_HOST
 
+
 stages:
   - trigger-pipeline
   - release
+
 
 release_tag:
   stage: release
@@ -52,14 +61,16 @@ eks-pipeline:ami-image-builder:
     AMI_OWNER: $AMI_OWNER
     AMI_NAME: $AMI_NAME
   rules:
-    - if: '$ENV == "ami/eks/gds" || $CI_COMMIT_BRANCH == "release/ami/gds"'
+    - if: '$ENV == "ami/eks/gds" || $CI_COMMIT_BRANCH == "release/dev" || $CI_COMMIT_BRANCH == "release/qa"'
       variables:
         <<: *gds-account-global-vars
         ENV: ami/eks/gds
-    - if: '$ENV == "ami/eks/gcc" || $CI_COMMIT_BRANCH == "release/ami/gcc"'
+      when: manual
+    - if: '$ENV == "ami/eks/gcc" || $CI_COMMIT_BRANCH == "release/prod" || $CI_COMMIT_BRANCH == "release/intra"'
       variables:
         <<: *gcc-account-global-vars
         ENV: ami/eks/gcc
+      when: manual
   trigger:
     include:
       - cicd/gitlab-ci/Image-Builder.yml
@@ -70,7 +81,7 @@ eks-pipeline:app-eks-terraform:
   variables:
     DEPLOYMENT_INSTANCE_ID: $DEPLOYMENT_INSTANCE_ID
   rules:
-    - if: '$ENV == "app/eks/dev" || $CI_COMMIT_BRANCH == "release/app/dev"'
+    - if: '$ENV == "app/eks/dev" || $CI_COMMIT_BRANCH == "develop" || $CI_COMMIT_BRANCH == "release/dev"'
       variables:
         <<: *gds-account-global-vars
         ENV: app/eks/dev
@@ -85,7 +96,7 @@ eks-pipeline:app-eks-chart-publish:
   variables:
     DEPLOYMENT_INSTANCE_ID: $DEPLOYMENT_INSTANCE_ID
   rules:
-    - if: '$ENV == "app/eks/dev" || $CI_COMMIT_BRANCH == "release/app/dev"'
+    - if: '$ENV == "app/eks/dev" || $CI_COMMIT_BRANCH == "release/dev"'
       variables:
         <<: *gds-account-global-vars
         ENV: app/eks/dev
@@ -96,30 +107,58 @@ eks-pipeline:app-eks-chart-publish:
       - cicd/gitlab-ci/App-EKS-charts-publish.yml
 
 
+eks-pipeline:sol-eks-terraform:
+  stage: trigger-pipeline
+  rules:
+    - if: '$ENV == "sol/eks/dev" || $CI_COMMIT_BRANCH == "release/dev"'
+      variables:
+        <<: *gds-account-global-vars
+        ENV: sol/eks/dev
+      when: manual
+    - if: '$ENV == "sol/eks/qa" || $CI_COMMIT_BRANCH == "release/qa"'
+      variables:
+        <<: *gds-account-global-vars
+        ENV: sol/eks/qa
+      when: manual
+    - if: '$ENV == "sol/eks/prod" || $CI_COMMIT_BRANCH == "release/prod"'
+      variables:
+        <<: *gcc-account-global-vars
+        ENV: sol/eks/prod
+      when: manual
+    - if: '$ENV == "sol/eks/intra" || $CI_COMMIT_BRANCH == "release/intra"'
+      variables:
+        <<: *gcc-account-global-vars
+        ENV: sol/eks/intra
+      when: manual
+  trigger:
+    include:
+      - cicd/gitlab-ci/Solace-EKS-terraform.yml
+
+
 eks-pipeline:solace-eks-chart-deploy:
   stage: trigger-pipeline
   variables:
     DEPLOYMENT_EC2_USER: $SOL_BASTION_USER
   rules:
-    - if: '$ENV == "sol/eks/dev" || $CI_COMMIT_BRANCH == "release/sol/dev"'
+    - if: '$ENV == "sol/eks/dev" || $CI_COMMIT_BRANCH == "release/dev"'
       variables:
         <<: *gds-account-global-vars
         ENV: sol/eks/dev
         DEPLOYMENT_INSTANCE_ID: $SOL_DEV_BASTION_ID
       when: manual
-    - if: '$ENV == "sol/eks/qa" || $CI_COMMIT_BRANCH == "release/sol/qa"'
+    - if: '$ENV == "sol/eks/qa" || $CI_COMMIT_BRANCH == "release/qa"'
       variables:
         <<: *gds-account-global-vars
         ENV: sol/eks/qa
         DEPLOYMENT_INSTANCE_ID: $SOL_QA_BASTION_ID
       when: manual
-    - if: '$ENV == "sol/eks/prod" || $CI_COMMIT_BRANCH == "release/sol/prod"'
+    - if: '$ENV == "sol/eks/prod" || $CI_COMMIT_BRANCH == "release/prod"'
       variables:
         <<: *gcc-account-global-vars
         ENV: sol/eks/prod
         DEPLOYMENT_INSTANCE_ID: $SOL_PROD_BASTION_ID
       when: manual
-    - if: '$ENV == "sol/eks/intra" || $CI_COMMIT_BRANCH == "release/sol/intra"'
+    - if: '$ENV == "sol/eks/intra" || $CI_COMMIT_BRANCH == "release/intra"'
       variables:
         <<: *gcc-account-global-vars
         ENV: sol/eks/intra

@@ -4,7 +4,8 @@ vpc_name     = "adex-dev-solace"
 
 eks_customer_cmk_key_arn = "arn:aws:kms:ap-southeast-1:342446142760:key/c706f705-9a56-44f7-9db8-47364dfa93a6"
 eks_admin_role_arns = [
-  "arn:aws:iam::342446142760:role/admin-role"
+  "arn:aws:iam::342446142760:role/admin-role",
+  "arn:aws:iam::342446142760:role/sgts.gitlab-dedicated",
 ]
 
 eks_http_proxy              = ""
@@ -42,6 +43,7 @@ network = {
 vpc_enable_private         = false
 vpc_endpoint_allowed_cidrs = ["172.10.0.0/16"]
 
+# DEV solace vpc will reach internet using own igw
 vpc_eip = {
   enable_eip = true
   count      = 1

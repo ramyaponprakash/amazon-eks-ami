@@ -5,9 +5,9 @@ vpc_id       = "vpc-050a2b7cde1cb187e"
 
 eks_customer_cmk_key_arn = "arn:aws:kms:ap-southeast-1:704140326871:key/544321c8-ceb8-4edd-9c47-d6a813715acf"
 eks_admin_role_arns = [
-  "arn:aws:iam::704140326871:role/u-admin",
-  "arn:aws:iam::704140326871:role/u-eksadmin",
-  "arn:aws:iam::704140326871:role/adex-eksadmin"
+  "arn:aws:iam::704140326871:role/u-admin",   # AWS console view access
+  "arn:aws:iam::704140326871:role/u-ec2read", # intra_bridge instance role
+  "arn:aws:iam::704140326871:role/sgts.gitlab-dedicated",
 ]
 
 eks_http_proxy              = "http://squid-intra.adex.com:3128"
@@ -64,7 +64,7 @@ vpc_enable_private         = true
 vpc_endpoint_allowed_cidrs = ["10.189.118.0/25", "100.80.29.192/26"] // SOLI cidr (pri, sec)
 
 vpc_eip = {
-  enable = false
+  enable_eip = false
 }
 
 vpc_nat_gateway = {

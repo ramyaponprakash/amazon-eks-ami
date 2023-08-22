@@ -58,7 +58,7 @@ variable "network" {
 variable "vpc_eip" {
   type = object({
     enable_eip = optional(bool, true)
-    count      = number
+    count      = optional(number, 1)
   })
 }
 
@@ -93,7 +93,7 @@ variable "vpc_sec_enable_cidr" {
 variable "vpc_nat_gateway" {
   type = object({
     enable                        = optional(bool, false)
-    vpc_nat_gw_eip_allocation_ids = optional(list(string))
+    vpc_nat_gw_eip_allocation_ids = optional(list(string), [])
   })
 }
 
