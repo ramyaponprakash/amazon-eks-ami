@@ -31,6 +31,8 @@ app-eks-chart:copy:
       export SOURCE_FOLDER=sense
       export SOURCE=$SOURCE_FOLDER/repo.zip
       export DEST=/home/ssm-user/tmp/charts-$CI_COMMIT_REF_SLUG
+    - |
+      echo "cleaning previous copy ..."
       export SSH_CMD=$(cat <<EOF
         rm -rf $DEST
         mkdir -p $DEST
@@ -38,9 +40,11 @@ app-eks-chart:copy:
         chown -R ssm-user:ssm-user $DEST
       EOF
       )
+    - !reference [.ssm-ssh-sh, script]
+    - |
+      echo "SCP helmfiles ..."
       rm -rf $SOURCE
       zip -r $SOURCE $SOURCE_FOLDER -x "*.terraform*/*" "*.git*/*" "*.idea*/*"
-    - !reference [.ssm-ssh-sh, script]
     - !reference [.ssm-scp-sh, script]
 
 
