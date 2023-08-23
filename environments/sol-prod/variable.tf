@@ -66,8 +66,8 @@ variable "network" {
 
 variable "vpc_eip" {
   type = object({
-    enable = optional(bool, false)
-    count  = optional(number, 1)
+    enable_eip = optional(bool, false)
+    count      = optional(number, 1)
   })
 }
 
@@ -109,8 +109,8 @@ variable "vpc_nat_gateway" {
 
 variable "vpc_igw" {
   type = object({
-    enable = optional(bool, false)
-    count  = optional(number, 0)
+    enable_eip = optional(bool, false)
+    count      = optional(number, 0)
   })
 }
 
@@ -192,7 +192,6 @@ variable "bastion" {
     private_key_path     = optional(string, "")
     public_key_path      = optional(string, "")
     hosts_number         = optional(number, 1)
-    iam_role             = string
     ami_id               = string
     http_proxy           = optional(string, "")
     https_proxy          = optional(string, "")

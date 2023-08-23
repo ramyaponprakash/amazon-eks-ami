@@ -70,6 +70,7 @@ module "bastion" {
   source = "../../modules/bastion"
 
   region       = var.region
+  account_id   = var.account_id
   cluster_name = var.cluster_name
   vpc_id       = var.network.enable ? module.eks_network[0].vpc_id : var.vpc_id
 
@@ -93,7 +94,7 @@ module "eks" {
   vpc_id                        = var.network.enable ? module.eks_network[0].vpc_id : var.vpc_id
   eks_private_subnet_ids        = var.network.enable ? module.eks_network[0].private_subnet_ids : var.eks_private_subnet_ids
   eks_customer_cmk_key_arn      = var.eks_customer_cmk_key_arn
-  eks_admin_role_arns           = var.eks_admin_role_arns
+  eks_admin_role_arns           = concat(var.eks_admin_role_arns, [module.bastion[0].bastion-iam_role_arn])
   eks_http_proxy                = var.eks_http_proxy
   eks_api_endpoint_access_cidrs = var.eks_api_endpoint_access_cidrs
   eks_worker_node_access_cidrs  = var.eks_worker_node_access_cidrs

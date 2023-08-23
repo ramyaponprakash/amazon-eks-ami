@@ -43,7 +43,8 @@ variable "vpc_sec_enable_cidr" {
 
 variable "vpc_nat_gateway" {
   type = object({
-    enable = optional(bool, true)
+    enable                        = optional(bool, true)
+    vpc_nat_gw_eip_allocation_ids = optional(list(string))
   })
 }
 

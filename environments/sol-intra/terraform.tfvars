@@ -5,9 +5,9 @@ vpc_id       = "vpc-050a2b7cde1cb187e"
 
 eks_customer_cmk_key_arn = "arn:aws:kms:ap-southeast-1:704140326871:key/544321c8-ceb8-4edd-9c47-d6a813715acf"
 eks_admin_role_arns = [
-  "arn:aws:iam::704140326871:role/u-admin",
-  "arn:aws:iam::704140326871:role/u-eksadmin",
-  "arn:aws:iam::704140326871:role/adex-eksadmin"
+  "arn:aws:iam::704140326871:role/u-admin",   # AWS console view access
+  "arn:aws:iam::704140326871:role/u-ec2read", # intra_bridge instance role
+  "arn:aws:iam::704140326871:role/sgts.gitlab-dedicated",
 ]
 
 eks_http_proxy              = "http://squid-intra.adex.com:3128"
@@ -64,7 +64,7 @@ vpc_enable_private         = true
 vpc_endpoint_allowed_cidrs = ["10.189.118.0/25", "100.80.29.192/26"] // SOLI cidr (pri, sec)
 
 vpc_eip = {
-  enable = false
+  enable_eip = false
 }
 
 vpc_nat_gateway = {
@@ -115,29 +115,12 @@ bastion = {
   public_access = false
   vpc_id        = ""
   subnet_ids    = []
-  iam_role      = "adex-eksadmin"
-  ami_id        = "ami-0aaee588abf059b37"
+  ami_id        = "ami-05ad04538563a11ac" # 148623356839/GT_GCCS_StandardBuild_AML_2_on_2023-08-17_07.35.38
   http_proxy    = "http://squid-intra.adex.com:3128"
   https_proxy   = "http://squid-intra.adex.com:3128"
   no_proxy      = "localhost,127.0.0.1,169.254.169.254,.eks.amazonaws.com"
 }
 
-bastion_secgrp_ingress_cidr = [
-  #  {
-  #    cidrs       = ["10.189.118.0/25", "100.80.29.192/26"]
-  #    from_port   = 22
-  #    to_port     = 22
-  #    description = "from SOLI vpc"
-  #  },
-]
-
+bastion_secgrp_ingress_cidr        = []
 bastion_secgrp_ingress_prefix_list = []
-
-bastion_secgrp_ingress_secgrp = [
-  {
-    secgrp_id   = "sg-0a50de674c5138209"
-    from_port   = 22
-    to_port     = 22
-    description = "from SDX_INTRA"
-  },
-]
+bastion_secgrp_ingress_secgrp      = []

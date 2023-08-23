@@ -5,8 +5,7 @@ vpc_name     = "adex-dev-solace"
 eks_customer_cmk_key_arn = "arn:aws:kms:ap-southeast-1:342446142760:key/c706f705-9a56-44f7-9db8-47364dfa93a6"
 eks_admin_role_arns = [
   "arn:aws:iam::342446142760:role/admin-role",
-  "arn:aws:iam::342446142760:role/ec2-eks-role",
-  "arn:aws:iam::342446142760:role/u-ec2read"
+  "arn:aws:iam::342446142760:role/sgts.gitlab-dedicated",
 ]
 
 eks_http_proxy              = ""
@@ -44,6 +43,7 @@ network = {
 vpc_enable_private         = false
 vpc_endpoint_allowed_cidrs = ["172.10.0.0/16"]
 
+# DEV solace vpc will reach internet using own igw
 vpc_eip = {
   enable_eip = true
   count      = 1
@@ -104,28 +104,13 @@ bastion = {
   public_access = true
   vpc_id        = ""
   subnet_ids    = []
-  ami_id        = "ami-02c4c96e0a37b397f"
+  ami_id        = "ami-05ad04538563a11ac" # 148623356839/GT_GCCS_StandardBuild_AML_2_on_2023-08-17_07.35.38
   instance_type = "t2.micro"
-  iam_role      = "u-ec2read"
   http_proxy    = ""
   https_proxy   = ""
   no_proxy      = ""
 }
 
-bastion_secgrp_ingress_cidr = [
-  {
-    cidrs       = ["172.10.0.0/16"]
-    from_port   = 22
-    to_port     = 22
-    description = "from own vpc"
-  },
-]
-bastion_secgrp_ingress_prefix_list = [
-  {
-    prefix_list_ids = ["pl-0af10fe06357d6aff"]
-    from_port       = 22
-    to_port         = 22
-    description     = "sense-whitelist"
-  },
-]
-bastion_secgrp_ingress_secgrp = []
+bastion_secgrp_ingress_cidr        = []
+bastion_secgrp_ingress_prefix_list = []
+bastion_secgrp_ingress_secgrp      = []

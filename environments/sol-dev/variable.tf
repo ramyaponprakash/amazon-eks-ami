@@ -58,7 +58,7 @@ variable "network" {
 variable "vpc_eip" {
   type = object({
     enable_eip = optional(bool, true)
-    count      = number
+    count      = optional(number, 1)
   })
 }
 
@@ -93,7 +93,7 @@ variable "vpc_sec_enable_cidr" {
 variable "vpc_nat_gateway" {
   type = object({
     enable                        = optional(bool, false)
-    vpc_nat_gw_eip_allocation_ids = optional(list(string))
+    vpc_nat_gw_eip_allocation_ids = optional(list(string), [])
   })
 }
 
@@ -183,7 +183,6 @@ variable "bastion" {
     private_key_path     = optional(string, "")
     public_key_path      = optional(string, "")
     hosts_number         = optional(number, 1)
-    iam_role             = string
     ami_id               = string
     http_proxy           = optional(string, "")
     https_proxy          = optional(string, "")

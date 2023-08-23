@@ -5,9 +5,9 @@ vpc_id       = "vpc-0f40f6277c878bbab"
 
 eks_customer_cmk_key_arn = "arn:aws:kms:ap-southeast-1:704140326871:key/544321c8-ceb8-4edd-9c47-d6a813715acf"
 eks_admin_role_arns = [
-  "arn:aws:iam::704140326871:role/u-admin",
-  "arn:aws:iam::704140326871:role/u-eksadmin",
-  "arn:aws:iam::704140326871:role/adex-eksadmin"
+  "arn:aws:iam::704140326871:role/u-admin",   # AWS console view access
+  "arn:aws:iam::704140326871:role/u-ec2read", # prd_bridge instance role
+  "arn:aws:iam::704140326871:role/sgts.gitlab-dedicated",
 ]
 
 eks_http_proxy              = "http://squid-solx.adex.com:3128"
@@ -17,6 +17,7 @@ eks_api_endpoint_access_cidrs = [
   { from : "172.16.110.0/24", port : "443", description : "SDX_PRD CIDR 2" },
   { from : "100.112.110.0/24", port : "443", description : "Self CIDR 1" },
   { from : "100.80.27.128/26", port : "443", description : "Self CIDR 2" },
+  { from : "172.16.109.0/28", port : "443", description : "prod bridge subnet for deploy" },
 ]
 
 network = {
@@ -68,7 +69,7 @@ vpc_enable_private         = true
 vpc_endpoint_allowed_cidrs = ["100.112.110.0/24", "100.80.27.128/26"] // SOLX cidr (pri, sec)
 
 vpc_eip = {
-  enable = false
+  enable_eip = false
 }
 
 vpc_nat_gateway = {
@@ -123,32 +124,15 @@ bastion = {
   public_access = false
   vpc_id        = ""
   subnet_ids    = []
-  iam_role      = "adex-eksadmin"
-  ami_id        = "ami-0aaee588abf059b37"
+  ami_id        = "ami-05ad04538563a11ac" # 148623356839/GT_GCCS_StandardBuild_AML_2_on_2023-08-17_07.35.38
   http_proxy    = "http://squid-solx.adex.com:3128"
   https_proxy   = "http://squid-solx.adex.com:3128"
   no_proxy      = "localhost,127.0.0.1,169.254.169.254,.eks.amazonaws.com"
 }
 
-bastion_secgrp_ingress_cidr = [
-  #  {
-  #    cidrs       = ["100.112.110.0/24", "100.80.27.128/26"]
-  #    from_port   = 22
-  #    to_port     = 22
-  #    description = "from SOLX vpc"
-  #  },
-]
-
+bastion_secgrp_ingress_cidr        = []
 bastion_secgrp_ingress_prefix_list = []
-
-bastion_secgrp_ingress_secgrp = [
-  {
-    secgrp_id   = "sg-0dd3d667f43ec5703"
-    from_port   = 22
-    to_port     = 22
-    description = "from mgmt"
-  },
-]
+bastion_secgrp_ingress_secgrp      = []
 
 squid = {
   vpc_id         = ""

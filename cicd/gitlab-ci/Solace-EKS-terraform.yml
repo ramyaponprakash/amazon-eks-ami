@@ -1,0 +1,71 @@
+include:
+  - cicd/templates/.common.yml
+  - cicd/templates/.helmfile.yml
+  - cicd/templates/.terraform.yml
+
+
+stages:
+  - copy
+  - validate
+  - plan
+  - apply
+
+variables:
+  TF_ROOT:
+
+
+sol-eks:copy-all:
+  stage: copy
+  extends: .helm-builder
+  rules:
+    - if: '$ENV == "sol/eks/dev"'
+      when: manual
+      variables:
+        INSTANCE_ID: $SOL_DEV_BASTION_ID
+    - if: '$ENV == "sol/eks/qa"'
+      when: manual
+      variables:
+        INSTANCE_ID: $SOL_QA_BASTION_ID
+    - if: '$ENV == "sol/eks/prod"'
+      when: manual
+      variables:
+        INSTANCE_ID: $GCC_PROD_BASTION_ID
+    - if: '$ENV == "sol/eks/intra"'
+      when: manual
+      variables:
+        INSTANCE_ID: $GCC_INTRA_BASTION_ID
+  script:
+    - |
+      export INSTANCE_ID=$INSTANCE_ID
+      export SCP_SOURCE_FOLDER=.
+      export SOURCE=$SCP_SOURCE_FOLDER/repo.zip
+      export EC2_USER=ubuntu
+      export DEST=/home/$EC2_USER/tmp/tf-$CI_COMMIT_REF_SLUG
+    - !reference [.ssm-clean-scp, script]
+
+
+
+#sol-eks-terraform:plan-qa:
+#  stage: plan
+#  extends: .terraform:plan
+#  rules:
+#    - if: '$ENV == "sol/eks/qa"'
+#      when: manual
+#  varables:
+#    TF_ROOT: environment/sol-qa
+#  script:
+#    - echo "TODO!"
+
+#sol-eks-terraform:apply-qa:
+#  stage: apply
+#  extends: .terraform:apply
+#  rules:
+#    - if: '$ENV == "sol/eks/qa"'
+#      when: manual
+#  varables:
+#    TF_ROOT: environment/sol-qa
+#  environment: $ENV
+#  needs:
+#    - sol-eks-terraform:plan-qa
+#  script:
+#    - echo "TODO!"

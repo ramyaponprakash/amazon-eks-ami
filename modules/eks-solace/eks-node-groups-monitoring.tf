@@ -107,6 +107,14 @@ resource "null_resource" "monitoring-asg-tags" {
     aws autoscaling create-or-update-tags --region ${data.aws_arn.monitoring.region} --tags '${jsonencode({
     "ResourceId" : data.aws_autoscaling_group.monitoring.name
     "ResourceType" : "auto-scaling-group",
+    "Key" : "PatchGroup",
+    "Value" : "solace",
+    "PropagateAtLaunch" : true
+    })}'
+
+    aws autoscaling create-or-update-tags --region ${data.aws_arn.monitoring.region} --tags '${jsonencode({
+    "ResourceId" : data.aws_autoscaling_group.monitoring.name
+    "ResourceType" : "auto-scaling-group",
     "Key" : "Name",
     "Value" : aws_eks_node_group.monitoring.node_group_name,
     "PropagateAtLaunch" : true
