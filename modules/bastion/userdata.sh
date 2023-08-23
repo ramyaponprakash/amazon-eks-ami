@@ -33,7 +33,7 @@ Acquire::https::Proxy "${https_proxy}";
 EOF
   elif [ "$PKG" == "yum" ]; then
     cat << EOL >> /etc/yum.conf
-proxy="${https_proxy}"
+proxy=${https_proxy}
 proxy_username=
 proxy_password=
 EOL
