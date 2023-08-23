@@ -20,9 +20,9 @@ setup_proxy() {
 
    # Write the environment variables to the temporary file
   cat <<EOF > /etc/environment
-http_proxy="${http_proxy}"
-https_proxy="${https_proxy}"
-no_proxy="${no_proxy}"
+http_proxy=${http_proxy}
+https_proxy=${https_proxy}
+no_proxy=${no_proxy}
 EOF
   chmod 644 /etc/environment
 
