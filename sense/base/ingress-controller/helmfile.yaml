@@ -22,6 +22,7 @@ repositories:
 
 missingFileHandler: Error
 
+---
 releases:
   - name: ingress-controller
     namespace: ingress-controller
@@ -86,7 +87,7 @@ releases:
     namespace: ingress-controller
     createNamespace: true
     chart: ingress-nginx/ingress-nginx
-    version: 4.2.0
+    version: 4.3.0
     condition: external-alb-default.enabled
     missingFileHandler: Warn
     values:
