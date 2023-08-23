@@ -59,6 +59,7 @@ resource "aws_instance" "bastion" {
   tags = {
     Name                          = "${var.cluster_name}-bastion"
     "eks:cluster-name"            = var.cluster_name
+    PatchGroup                    = "solace"
     Custodian-Scheduler-StopTime  = "off=(M-S,21);tz=sgt"
     Custodian-Scheduler-StartTime = "on=(M-F,8);tz=sgt"
     malware-scan                  = "true"
