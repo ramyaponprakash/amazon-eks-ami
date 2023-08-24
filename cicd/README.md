@@ -23,6 +23,35 @@ cicd/
         |----- ...
 ```
 
+## Runner selection
+
+GitLab's `shared-runner`s generally fast enough, and scalable for multiple concurrent jobs.
+But the shared runners may be run as `root` user but will not have enough privilege to access the host,
+so `docker-in-docker` build won't work as expected. SHIP-HATS's GitLab is recommending to use [kaniko](https://github.com/GoogleContainerTools/kaniko) for better security practices.
+
+The `shared-runner` is suitable for most cases.
+The exceptions by SHIP-HATS team guide are [here](https://docs.developer.tech.gov.sg/docs/ship-hats-docs/tools/gitlab/runners?id=recommended-approach).
+For creating own runners follow [this guide](https://docs.developer.tech.gov.sg/docs/ship-hats-docs/tools/gitlab/gitlab-runners)
+
+
+## Kaniko build
+
+The common handler of `.docker-image-build-and-push` performs kaniko build following the command.
+It is something similar like `docker build ...`
+```yaml
+.docker-image-build-and-push:
+  stage: build-push
+  extends: .kaniko-builder
+  script:
+    - ( ... omitted ... )
+    - >
+      /kaniko/executor --context "$DOCKERFILE_CONTEXT" \
+        --cache=true --cache-repo "$DOCKER_TARGET_REGISTRY/kaniko-caches" \
+        --dockerfile "$DOCKERFILE_PATH/$DOCKERFILE_NAME" \
+        --destination "$DOCKER_TARGET_REGISTRY/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG" \
+        --digest-file "$DIGESTFILE_NAME" $OPTS    
+```
+
 ## F&Q
 
 ### - How to include(import) common jobs or templates into pipeline
