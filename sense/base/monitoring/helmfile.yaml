@@ -26,6 +26,7 @@ repositories:
 
 missingFileHandler: Error
 
+---
 releases:
   - name: monitoring
     namespace: monitoring

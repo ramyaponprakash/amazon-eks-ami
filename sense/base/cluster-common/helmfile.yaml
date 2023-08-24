@@ -26,6 +26,7 @@ repositories:
 
 missingFileHandler: Error
 
+---
 releases:
   - name: cluster-common
     namespace: cluster-common
@@ -64,7 +65,7 @@ releases:
     namespace: cluster-common
     createNamespace: true
     chart: external-secrets/external-secrets
-    version: 0.5.8
+    version: 0.9.3
     missingFileHandler: Warn
     condition: external-secrets.enabled
     disableValidationOnInstall: true # CRD
@@ -96,7 +97,7 @@ releases:
     namespace: cluster-common
     createNamespace: true
     chart: cluster-autoscaler/cluster-autoscaler
-    version: 9.19.2
+    version: 9.29.2
     missingFileHandler: Warn
     condition: cluster-autoscaler.enabled
     disableValidationOnInstall: true # CRD
@@ -137,7 +138,7 @@ releases:
     namespace: cluster-common
     createNamespace: true
     chart: cert-manager/cert-manager
-    version: 1.9.1
+    version: 1.12.3
     missingFileHandler: Warn
     condition: cert-manager.enabled
     disableValidationOnInstall: true # CRD

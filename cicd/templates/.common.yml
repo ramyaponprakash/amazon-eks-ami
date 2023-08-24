@@ -59,8 +59,8 @@ include:
         --cloud-watch-output-config "CloudWatchOutputEnabled=true,CloudWatchLogGroupName=/aws/ssm/gitlab" \
         --output text \
         --query Command.CommandId)
-      echo "New send-command to $INSTANCE_ID - ref: $INTERNAL_EXEC_ID"
-      aws ssm wait command-executed --instance-id "$INSTANCE_ID" --command-id "$EXEC_ID"
+      echo "New send-command to $INSTANCE_ID - exec-id:$EXEC_ID, comment-ref: $INTERNAL_EXEC_ID"
+      aws ssm wait command-executed --instance-id "$INSTANCE_ID" --command-id "$EXEC_ID" --cli-read-timeout 300 --cli-connect-timeout 300
     - echo "New send-command exec-id:$EXEC_ID to instance $INSTANCE_ID - DONE"
 
 

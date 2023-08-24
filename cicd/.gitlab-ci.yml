@@ -17,7 +17,6 @@ variables:
   GCC_PROD_BASTION_ID: $GCC_PROD_BASTION_ID
   GCC_INTRA_BASTION_ID: $GCC_INTRA_BASTION_ID
 
-
 .gds-account-global-vars: &gds-account-global-vars
   AWS_ACCOUNT: $GDS_ACCOUNT
   ROLE_ARN: $GDS_ROLE_ARN
@@ -91,12 +90,11 @@ eks-pipeline:app-eks-terraform:
       - cicd/gitlab-ci/App-EKS-terraform.yml
 
 
+# Dev specific
 eks-pipeline:app-eks-chart-publish:
   stage: trigger-pipeline
-  variables:
-    DEPLOYMENT_INSTANCE_ID: $DEPLOYMENT_INSTANCE_ID
   rules:
-    - if: '$ENV == "app/eks/dev" || $CI_COMMIT_BRANCH == "release/dev"'
+    - if: '$ENV == "app/eks/dev" || $CI_COMMIT_BRANCH == "release/app/dev"'
       variables:
         <<: *gds-account-global-vars
         ENV: app/eks/dev
@@ -105,6 +103,20 @@ eks-pipeline:app-eks-chart-publish:
   trigger:
     include:
       - cicd/gitlab-ci/App-EKS-charts-publish.yml
+
+# Dev specific
+eks-pipeline:app-eks-chart-deploy:
+  stage: trigger-pipeline
+  rules:
+    - if: '$ENV == "app/eks/dev" || $CI_COMMIT_BRANCH == "release/app/dev"'
+      variables:
+        <<: *gds-account-global-vars
+        ENV: app/eks/dev
+        DEPLOYMENT_INSTANCE_ID: $GDS_APP_EKS_BASTION_ID
+      when: manual
+  trigger:
+    include:
+      - cicd/gitlab-ci/App-EKS-charts-deploy.yml
 
 
 eks-pipeline:sol-eks-terraform:
