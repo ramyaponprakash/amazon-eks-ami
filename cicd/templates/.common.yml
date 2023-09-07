@@ -120,7 +120,6 @@ include:
 .ssm-clean-scp:
   script:
     - if [ -z "$SOURCE" ]; then echo "variable SOURCE must be set." && exit 1; fi
-    - if [ -z "$SCP_SOURCE_FOLDER" ]; then echo "variable SCP_SOURCE_FOLDER must be set." && exit 1; fi
     - if [ -z "$DEST" ]; then echo "variable DEST must be set." && exit 1; fi
     - |
       if [ "$DEST" == "." ] || [ "$DEST" == "/" ] || [ "$DEST" == "./" ]; then
