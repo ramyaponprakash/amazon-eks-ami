@@ -123,6 +123,10 @@ include:
     - if [ -z "$SCP_SOURCE_FOLDER" ]; then echo "variable SCP_SOURCE_FOLDER must be set." && exit 1; fi
     - if [ -z "$DEST" ]; then echo "variable DEST must be set." && exit 1; fi
     - |
+      if [ "$DEST" == "." ] || [ "$DEST" == "/" ] || [ "$DEST" == "./" ]; then
+        echo "DEST $DEST is too widely scoped, it is dangerous for cleaning up operation" && exit 1
+      fi
+    - |
       if [ -z "$EC2_USER" ]; then EC2_USER=ssm-user; fi
       export EC2_USER=$EC2_USER
     - |
@@ -136,10 +140,12 @@ include:
       )
     - !reference [ .ssm-ssh-sh, script ]
     - |
+      if [ ! -z "$SCP_SOURCE_FOLDER" ]; then
+        echo "zipping $SOURCE freshly ..."
+        rm -rf $SOURCE
+        zip -r $SOURCE $SCP_SOURCE_FOLDER -x "*.terraform*/*" "*.git*/*" "*.idea*/*" "*.node_modules*/*" "*.cache*/*" "*vendor*/*"
+      fi
       echo "SCP $SOURCE to $DEST"
-      rm -rf $SOURCE
-      echo "zipping $SOURCE ..."
-      zip -r $SOURCE $SCP_SOURCE_FOLDER -x "*.terraform*/*" "*.git*/*" "*.idea*/*"
     - !reference [ .ssm-scp-sh, script ]
 
 
