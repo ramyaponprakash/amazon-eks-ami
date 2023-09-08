@@ -6,21 +6,13 @@ stages:
   - publish
 
 variables:
-  K8_VERSION: $K8_VERSION
+  EKS_CLUSTER_VERSION: $EKS_CLUSTER_VERSION
 
-.gds-account-setup: &gds-account-setup
-  variables: {}
-
-.gcc-account-setup: &gcc-account-setup
-  variables: {}
 
 workflow:
   rules:
-    #    - if: '$ENV == "ami/eks/gds"'
-    #      <<: *gds-account-setup
-    #    - if: '$ENV == "ami/eks/gcc"'
-    #      <<: *gcc-account-setup
-    - when: always
+    - if: '$ENV == "dev/app/chart"'
+    - when: never
 
 
 app-eks-chart:common:

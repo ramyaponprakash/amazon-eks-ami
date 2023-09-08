@@ -16,20 +16,20 @@ variables:
     HELMFILE_VER: "0.145.2"
   before_script:
     - !reference [.awscli-root-builder, before_script]
-    - if [ -z "$K8_VERSION" ]; then echo "variable K8_VERSION must be set." && exit 1; fi
+    - if [ -z "$EKS_CLUSTER_VERSION" ]; then echo "variable EKS_CLUSTER_VERSION must be set." && exit 1; fi
     - |
-      if [ "$K8_VERSION" == "1.23" ]; then
+      if [ "$EKS_CLUSTER_VERSION" == "1.23" ]; then
         export KUBECTL_VER="1.23.17/2023-05-11"
-      elif [ "$K8_VERSION" == "1.24" ]; then
+      elif [ "$EKS_CLUSTER_VERSION" == "1.24" ]; then
         export KUBECTL_VER="1.24.13/2023-05-11"
-      elif [ "$K8_VERSION" == "1.25" ]; then
+      elif [ "$EKS_CLUSTER_VERSION" == "1.25" ]; then
         export KUBECTL_VER="1.25.9/2023-05-11"
-      elif [ "$K8_VERSION" == "1.26" ]; then
+      elif [ "$EKS_CLUSTER_VERSION" == "1.26" ]; then
         export KUBECTL_VER="1.26.4/2023-05-11"
-      elif [ "$K8_VERSION" == "1.27" ]; then
+      elif [ "$EKS_CLUSTER_VERSION" == "1.27" ]; then
         export KUBECTL_VER="1.27.1/2023-04-19"
       else
-        echo "version $K8_VERSION not supported" && exit 1
+        echo "version $EKS_CLUSTER_VERSION not supported" && exit 1
       fi
     - chmod +x cicd/scripts/helm-install-deps.sh
     - cicd/scripts/helm-install-deps.sh $KUBECTL_VER $HELM_VER $HELMFILE_VER
@@ -39,6 +39,7 @@ variables:
 .publish-chart:
   stage: publish
   extends: .helm-builder
+  environment: $ENV
   script:
     - if [ -z "$CHART_NAME" ]; then echo "variable CHART_NAME must be set." && exit 1; fi
     - if [ -z "$HELM_ROOT" ]; then echo "variable HELM_ROOT must be set." && exit 1; fi
@@ -49,17 +50,18 @@ variables:
 .deploy-helmfile:
   stage: deploy
   extends: .awscli-root-builder
+  environment: $ENV
   script:
     - if [ -z "$SCP_SOURCE_FOLDER" ]; then echo "variable CHART_NAME must be set." && exit 1; fi
     - if [ -z "$CHART_NAME" ]; then echo "variable CHART_NAME must be set." && exit 1; fi
     - if [ -z "$HELM_ENV" ]; then echo "variable HELM_ENV must be set." && exit 1; fi
     - if [ -z "$ROLE_ARN" ]; then echo "variable ROLE_ARN must be set." && exit 1; fi
-    - if [ -z "$CLUSTER_NAME" ]; then echo "variable CLUSTER_NAME must be set." && exit 1; fi
-    - if [ -z "$BASTION_ID" ]; then echo "variable BASTION_ID must be set." && exit 1; fi
+    - if [ -z "$EKS_CLUSTER_NAME" ]; then echo "variable EKS_CLUSTER_NAME must be set." && exit 1; fi
+    - if [ -z "$DEPLOYMENT_INSTANCE_ID" ]; then echo "variable DEPLOYMENT_INSTANCE_ID must be set." && exit 1; fi
     - |
       echo "SCP helmfiles ... "
       export DEST=/home/ssm-user/tmp/charts-$CI_COMMIT_REF_SLUG/$CHART_NAME
-      export INSTANCE_ID=$BASTION_ID
+      export INSTANCE_ID=$DEPLOYMENT_INSTANCE_ID
       export SOURCE=$SCP_SOURCE_FOLDER/repo.zip
     - !reference [.ssm-clean-scp, script]
     - |
@@ -67,10 +69,10 @@ variables:
       export SSH_CMD="unzip -o $DEST/repo.zip -d $DEST/; find $DEST -type f -name "*.sh" -exec chmod +x {} \;"
     - !reference [.ssm-ssh-sh, script]
     - |
-      echo "Executing helm upgrade CLUSTER_NAME:$CLUSTER_NAME CHART_NAME:$CHART_NAME TAG:$TAG HELM_ENV:$HELM_ENV"
+      echo "Executing helm upgrade CLUSTER_NAME:$EKS_CLUSTER_NAME CHART_NAME:$CHART_NAME TAG:$TAG HELM_ENV:$HELM_ENV"
       if [ -z "$TAG" ]; then
-            export SSH_CMD="sudo bash -c 'export HELM_BINARY=helm; export CLUSTER_NAME=$CLUSTER_NAME; helmfile -e $HELM_ENV -f $DEST/$HELMFILE_ROOT/helmfile.yaml apply'"
+            export SSH_CMD="sudo bash -c 'export HELM_BINARY=helm; export CLUSTER_NAME=$EKS_CLUSTER_NAME; helmfile -e $HELM_ENV -f $DEST/$HELMFILE_ROOT/helmfile.yaml apply'"
       else
-            export SSH_CMD="sudo bash -c 'export HELM_BINARY=helm; export CLUSTER_NAME=$CLUSTER_NAME; helmfile -e $HELM_ENV -f $DEST/$HELMFILE_ROOT/helmfile.yaml apply --set image.tag=$TAG'"
+            export SSH_CMD="sudo bash -c 'export HELM_BINARY=helm; export CLUSTER_NAME=$EKS_CLUSTER_NAME; helmfile -e $HELM_ENV -f $DEST/$HELMFILE_ROOT/helmfile.yaml apply --set image.tag=$TAG'"
       fi
     - !reference [.ssm-ssh-sh, script]
