@@ -149,6 +149,7 @@ include:
   extends: .kaniko-builder
   script:
     - !reference [.kaniko-builder, script]
+    - export DOCKER_TARGET_REGISTRY=$AWS_ACCOUNT.dkr.ecr.ap-southeast-1.amazonaws.com
     - |
       if [ ! -z "$OUTPUT_IMAGE_TAR" ]; then
         OPTS="$OPTS --tarPath $OUTPUT_IMAGE_TAR"

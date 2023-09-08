@@ -18,7 +18,7 @@ variables:
     SUBNET_ID: "subnet-03603dbfb617e41c4"
     SECURITY_GROUP_ID: "sg-07c0c0ddf892afe85"
     PUBLIC_ACCESS: "true"
-    AMI_NAME: "GT_GCCS_StandardBuild_AML_2_on_2023-08-17" # temp
+#    AMI_NAME: "GT_GCCS_StandardBuild_AML_2_on_2023-08-17" # temp
 
 .gcc-account-setup: &gcc-account-setup
   variables:
@@ -27,7 +27,7 @@ variables:
     SECURITY_GROUP_ID: "sg-0e4974478249329b2" # packer-ami-pipeline-ssh
     EC2_IAM_ROLE_ARN: "arn:aws:iam::704140326871:instance-profile/u-ec2read"
     PUBLIC_ACCESS: "true"
-    AMI_NAME: "GT_GCCS_StandardBuild_AML_2_on_2023-08-17" # temp
+#    AMI_NAME: "GT_GCCS_StandardBuild_AML_2_on_2023-08-17" # temp
 
 workflow:
   rules:

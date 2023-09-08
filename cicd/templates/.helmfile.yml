@@ -52,7 +52,7 @@ variables:
   extends: .awscli-root-builder
   environment: $ENV
   script:
-    - if [ -z "$SCP_SOURCE_FOLDER" ]; then echo "variable CHART_NAME must be set." && exit 1; fi
+    - if [ -z "$SCP_SOURCE_FOLDER" ]; then echo "variable SCP_SOURCE_FOLDER must be set." && exit 1; fi
     - if [ -z "$CHART_NAME" ]; then echo "variable CHART_NAME must be set." && exit 1; fi
     - if [ -z "$HELM_ENV" ]; then echo "variable HELM_ENV must be set." && exit 1; fi
     - if [ -z "$ROLE_ARN" ]; then echo "variable ROLE_ARN must be set." && exit 1; fi
