@@ -40,7 +40,7 @@ eks-pipeline:ami-image-builder:
     AMI_OWNER: $AMI_OWNER
     AMI_NAME: $AMI_NAME
   rules:
-    - if: '$ENV =~ /^dev/ || $ENV =! /^qa/ || $CI_COMMIT_BRANCH == "develop" || $CI_COMMIT_BRANCH == "release/dev" || $CI_COMMIT_BRANCH == "release/qa"'
+    - if: '$ENV =~ /^dev/ || $ENV =~ /^qa/ || $CI_COMMIT_BRANCH == "develop" || $CI_COMMIT_BRANCH == "release/dev" || $CI_COMMIT_BRANCH == "release/qa"'
       variables:
         ENV: dev/eks/ami
       when: manual
