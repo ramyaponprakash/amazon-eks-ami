@@ -1,46 +1,47 @@
 include:
   - cicd/templates/.terraform.yml
 
+
 stages:
   - validate
   - plan
   - apply
 
+
 variables:
   TF_ROOT: sense/terraform
 
-.gds-account-setup: &gds-account-setup
-  variables: {}
-
-.gcc-account-setup: &gcc-account-setup
-  variables: {}
 
 workflow:
   rules:
-    - if: '$ENV == "app/eks/dev"'
-      <<: *gds-account-setup
-    - when: always
+    - if: '$ENV == "dev/app/eks"'
+    - when: never
+
 
 app-eks-terraform:validate:
   stage: validate
   extends: .terraform:validate
+  environment: $ENV
+
 
 app-eks-terraform:plan:
   stage: plan
   extends: .terraform:plan
   needs:
     - app-eks-terraform:validate
+  environment: $ENV
   script:
     - !reference [.terraform-script:select-workspace, script]
     - terraform -chdir=$TF_ROOT plan -var-file=environment/$WORKSPACE/variables.tfvars -target=module.eks_cluster --out plan
     - terraform -chdir=$TF_ROOT show -no-color -json plan > $TF_ROOT/plan.json
 
+
 app-eks-terraform:apply:
   stage: apply
   extends: .terraform:apply
-  environment: $ENV
   needs:
     - app-eks-terraform:plan
+  environment: $ENV
   script:
     - !reference [.terraform-script:select-workspace, script]
     - terraform -chdir=$TF_ROOT apply --auto-approve plan
