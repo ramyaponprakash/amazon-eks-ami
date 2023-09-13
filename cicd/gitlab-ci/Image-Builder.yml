@@ -18,7 +18,7 @@ variables:
     SUBNET_ID: "subnet-03603dbfb617e41c4"
     SECURITY_GROUP_ID: "sg-07c0c0ddf892afe85"
     PUBLIC_ACCESS: "true"
-    #AMI_NAME: "GT_GCCS_StandardBuild_AML_2_on_2023-08-17" # temp
+#    AMI_NAME: "GT_GCCS_StandardBuild_AML_2_on_2023-08-17" # temp
 
 .gcc-account-setup: &gcc-account-setup
   variables:
@@ -27,33 +27,32 @@ variables:
     SECURITY_GROUP_ID: "sg-0e4974478249329b2" # packer-ami-pipeline-ssh
     EC2_IAM_ROLE_ARN: "arn:aws:iam::704140326871:instance-profile/u-ec2read"
     PUBLIC_ACCESS: "true"
-    #AMI_NAME: "GT_GCCS_StandardBuild_AML_2_on_2023-08-17" # temp
+#    AMI_NAME: "GT_GCCS_StandardBuild_AML_2_on_2023-08-17" # temp
 
 workflow:
   rules:
-    - if: '$ENV == "ami/eks/gds"'
+    - if: '$ENV == "dev/eks/ami"'
       <<: *gds-account-setup
-    - if: '$ENV == "ami/eks/gcc"'
+    - if: '$ENV == "prod/eks/ami"'
       <<: *gcc-account-setup
-    - when: always
+    - when: never
 
-
-build-packer-ami:gds:
+build-packer-ami:non-productions:
   stage: build
   extends: .awscli-root-builder
   environment: $ENV
   rules:
-    - if: '$ENV == "ami/eks/gds"'
+    - if: '$ENV == "dev/eks/ami"'
       when: manual
   artifacts:
     paths:
       - builder/amazon-eks-ami/*.json
   script:
-    - echo "Building AMI for $ENV, K8($K8_VERSION)"
+    - echo "Building AMI for $ENV, K8($EKS_CLUSTER_VERSION)"
     - chmod +x builder/build.sh
     - |
       rm -rf "$HOME/.ssh/config"
-      builder/build.sh -k $K8_VERSION \
+      builder/build.sh -k $EKS_CLUSTER_VERSION \
         -a $AWS_ACCOUNT \
         -v $VPC_ID \
         -s $SUBNET_ID \
@@ -67,21 +66,21 @@ build-packer-ami:gds:
         --ami-name $AMI_NAME
 
 
-build-packer-ami:gcc:
+build-packer-ami:productions:
   stage: build
   extends: .awscli-root-builder
   environment: $ENV
   rules:
-    - if: '$ENV == "ami/eks/gcc"'
+    - if: '$ENV == "prod/eks/ami"'
       when: manual
   artifacts:
     paths:
       - builder/amazon-eks-ami/*.json
   script: # TODO: using temp bastion for packer ssh access
-    - echo "Building AMI for $ENV, K8($K8_VERSION)"
+    - echo "Building AMI for $ENV, K8($EKS_CLUSTER_VERSION)"
     - chmod +x builder/build.sh
     - |
-      builder/build.sh -k $K8_VERSION \
+      builder/build.sh -k $EKS_CLUSTER_VERSION \
         -a $AWS_ACCOUNT \
         -v $VPC_ID \
         -s $SUBNET_ID \

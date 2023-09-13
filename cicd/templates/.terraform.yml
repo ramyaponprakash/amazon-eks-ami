@@ -9,10 +9,12 @@ stages:
   - plan
   - apply
 
+
 cache:
   key: terraform-$CI_COMMIT_REF_SLUG
   paths:
     - $TF_ROOT/.terraform
+
 
 .terraform-builder:
   extends: .awscli-root-builder
@@ -21,6 +23,7 @@ cache:
     - yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
     - yum -y install terraform-1.4.2-1
     - terraform --version
+
 
 .terraform:validate:
   stage: validate
@@ -31,6 +34,7 @@ cache:
     - echo "Running terraform validate (workdir=$TF_ROOT)"
     - terraform -chdir=$TF_ROOT init
     - terraform -chdir=$TF_ROOT validate
+
 
 .terraform-script:select-workspace:
   script:
@@ -48,6 +52,7 @@ cache:
       fi
     - terraform -chdir=$TF_ROOT workspace select $WORKSPACE
 
+
 .terraform:plan:
   stage: plan
   extends: .terraform-builder
@@ -62,6 +67,7 @@ cache:
     - echo "Running terraform plan (workdir=$TF_ROOT, option=$OPTIONS)"
     - terraform -chdir=$TF_ROOT plan $OPTIONS --out plan
     - terraform -chdir=$TF_ROOT show -no-color -json plan > $TF_ROOT/plan.json
+
 
 .terraform:apply:
   stage: apply

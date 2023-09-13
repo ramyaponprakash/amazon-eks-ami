@@ -6,59 +6,47 @@ stages:
   - deploy
 
 variables:
-  K8_VERSION: $K8_VERSION
+  EKS_CLUSTER_VERSION: $EKS_CLUSTER_VERSION
   DEV_EKS_CLUSTER_NAME: sdx-dev-eks-blue-cluster # TODO
 
-.gds-account-setup: &gds-account-setup
-  variables: {}
-
-.gcc-account-setup: &gcc-account-setup
-  variables: {}
 
 workflow:
   rules:
-    - when: always
+    - if: '$ENV == "dev/app/chart"'
+    - when: never
 
-# dev specific
+
 app-eks-chart:install-cluster-common:
   stage: deploy
   extends: .deploy-helmfile
   variables:
     CHART_NAME: cluster-common
     SCP_SOURCE_FOLDER: sense
-    BASTION_ID: $DEPLOYMENT_INSTANCE_ID
     HELM_ENV: dev
     HELMFILE_ROOT: sense/base/cluster-common
   script:
-    - export CLUSTER_NAME=$DEV_EKS_CLUSTER_NAME
     - !reference [.deploy-helmfile, script]
 
 
-# dev specific
 app-eks-chart:install-ingress-controller:
   stage: deploy
   extends: .deploy-helmfile
   variables:
     CHART_NAME: ingress-controller
     SCP_SOURCE_FOLDER: sense
-    BASTION_ID: $DEPLOYMENT_INSTANCE_ID
     HELM_ENV: dev
     HELMFILE_ROOT: sense/base/ingress-controller
   script:
-    - export CLUSTER_NAME=$DEV_EKS_CLUSTER_NAME
     - !reference [.deploy-helmfile, script]
 
 
-# dev specific
 app-eks-chart:install-monitoring:
   stage: deploy
   extends: .deploy-helmfile
   variables:
     CHART_NAME: monitoring
     SCP_SOURCE_FOLDER: sense
-    BASTION_ID: $DEPLOYMENT_INSTANCE_ID
     HELM_ENV: dev
     HELMFILE_ROOT: sense/base/monitoring
   script:
-    - export CLUSTER_NAME=$DEV_EKS_CLUSTER_NAME
     - !reference [.deploy-helmfile, script]
