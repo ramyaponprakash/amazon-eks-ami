@@ -122,12 +122,14 @@ include:
     - if [ -z "$SOURCE" ]; then echo "variable SOURCE must be set." && exit 1; fi
     - if [ -z "$DEST" ]; then echo "variable DEST must be set." && exit 1; fi
     - |
-      if [ "$DEST" == "." ] || [ "$DEST" == "/" ] || [ "$DEST" == "./" ]; then
-        echo "DEST $DEST is too widely scoped, it is dangerous for cleaning up operation" && exit 1
-      fi
-    - |
       if [ -z "$EC2_USER" ]; then EC2_USER=ssm-user; fi
       export EC2_USER=$EC2_USER
+    - |
+      if [ "$DEST" == "." ] || [ "$DEST" == "/" ] || [ "$DEST" == "./" ] || \
+         [ "$DEST" == "/home/$EC2_USER" ] || [ "$DEST" == "/home/$EC2_USER/" ] || \
+         [ "$DEST" == "/home/$EC2_USER/tmp" ] || [ "$DEST" == "/home/$EC2_USER/tmp/" ] ; then
+        echo "DEST $DEST is too widely scoped, it is dangerous for cleaning up operation" && exit 1
+      fi
     - |
       echo "cleaning previous copy from $DEST as user $EC2_USER ..."
       export SSH_CMD=$(cat <<EOF
