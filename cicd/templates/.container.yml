@@ -99,7 +99,7 @@ include:
   tags:
     - ship_docker
   image:
-    name: gcr.io/kaniko-project/executor:debug
+    name: gcr.io/kaniko-project/executor:v1.7.0-debug
     entrypoint: [""]
   variables:
     DIGESTFILE_NAME: $CI_PROJECT_DIR/digest
