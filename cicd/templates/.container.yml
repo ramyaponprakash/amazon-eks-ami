@@ -99,7 +99,8 @@ include:
   tags:
     - ship_docker
   image:
-    name: gcr.io/kaniko-project/executor:v1.7.0-debug
+    name: gcr.io/kaniko-project/executor:debug
+#    name: gcr.io/kaniko-project/executor:v1.7.0-debug
     entrypoint: [""]
   variables:
     DIGESTFILE_NAME: $CI_PROJECT_DIR/digest
@@ -173,13 +174,12 @@ include:
       OPTS=$(echo "$OPTS" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
       echo "kaniko OPTS=$OPTS"
     - >
-      /kaniko/executor --context "$DOCKERFILE_CONTEXT" \
+      /kaniko/executor -v "$DOCKERFILE_CONTEXT":/workspace --context dir:///workspace/ \
         --cache=true --cache-repo "$DOCKER_TARGET_REGISTRY/kaniko-caches" \
         --dockerfile "$DOCKERFILE_PATH/$DOCKERFILE_NAME" \
         --destination "$DOCKER_TARGET_REGISTRY/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG" \
         --digest-file "$DIGESTFILE_NAME" $OPTS    
-
-
+      
 
 # NOTE: According to SHIP-HATS - "removed privileged access for SHIP-HATS shared runner.
 #       This affects build of systems that used the shared runners with docker-in-docker"
