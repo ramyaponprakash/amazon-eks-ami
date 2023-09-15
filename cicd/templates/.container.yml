@@ -174,11 +174,19 @@ include:
       OPTS=$(echo "$OPTS" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
       echo "kaniko OPTS=$OPTS"
     - >
-      /kaniko/executor -v "$DOCKERFILE_CONTEXT":/workspace --context dir:///workspace/ \
-        --cache=true --cache-repo "$DOCKER_TARGET_REGISTRY/kaniko-caches" \
-        --dockerfile "$DOCKERFILE_PATH/$DOCKERFILE_NAME" \
-        --destination "$DOCKER_TARGET_REGISTRY/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG" \
-        --digest-file "$DIGESTFILE_NAME" $OPTS    
+      if [ "$DISABLE_CACHE" == "true" ]; then
+        /kaniko/executor --context $DOCKERFILE_CONTEXT \
+          --dockerfile "$DOCKERFILE_PATH/$DOCKERFILE_NAME" \
+          --destination "$DOCKER_TARGET_REGISTRY/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG" \
+          --cache=false \
+          --digest-file "$DIGESTFILE_NAME" $OPTS    
+      else
+        /kaniko/executor --context $DOCKERFILE_CONTEXT \
+          --dockerfile "$DOCKERFILE_PATH/$DOCKERFILE_NAME" \
+          --destination "$DOCKER_TARGET_REGISTRY/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG" \
+          --cache=true --cache-repo "$DOCKER_TARGET_REGISTRY/kaniko-caches" \
+          --digest-file "$DIGESTFILE_NAME" $OPTS    
+      fi
       
 
 # NOTE: According to SHIP-HATS - "removed privileged access for SHIP-HATS shared runner.
