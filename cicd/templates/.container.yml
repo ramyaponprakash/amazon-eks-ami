@@ -103,6 +103,7 @@ include:
     entrypoint: [""]
   variables:
     DIGESTFILE_NAME: $CI_PROJECT_DIR/digest
+    GITLAB_IMAGE_REGISTRY: registry.sgts.gitlab-dedicated.com
   before_script:
     - if [ -z "$AWS_ACCOUNT" ]; then echo "variable AWS_ACCOUNT must be set." && exit 1; fi
     - if [ -z "$DOCKERFILE_PATH" ]; then echo "variable DOCKERFILE_PATH must be set." && exit 1; fi
@@ -113,7 +114,19 @@ include:
     - if [ -z "$DOCKERFILE_CONTEXT" ]; then DOCKERFILE_CONTEXT="$DOCKERFILE_PATH" ; fi
     - mkdir -p $HOME/.docker
     - touch $HOME/.docker/config.json
-    - echo "{\"auths\":{\"$DOCKER_TARGET_REGISTRY\":{\"auth\":\"$(printf "%s:%s" "AWS" "$ECR_TOKEN" | base64 | tr -d '\n')\"}}}" > ~/.docker/config.json
+    - |
+      cat <<EOF > ~/.docker/config.json
+      {
+        "auths": {
+          "$DOCKER_TARGET_REGISTRY": {
+            "auth": "$(printf "%s:%s" "AWS" "$ECR_TOKEN" | base64 | tr -d '\n')"
+          },
+          "$GITLAB_IMAGE_REGISTRY": {
+            "auth": "$(printf "%s:%s" "$CI_REGISTRY_USER" "$CI_REGISTRY_PASSWORD" | base64 | tr -d '\n')"
+          }
+        }
+      }
+      EOF
     - cp ~/.docker/config.json /kaniko/.docker/config.json
   script:
     - if [ -z "$DOCKER_IMAGE_NAME" ]; then echo "variable DOCKER_IMAGE_NAME must be set." && exit 1; fi
