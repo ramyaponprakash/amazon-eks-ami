@@ -175,6 +175,7 @@ include:
       echo "kaniko OPTS=$OPTS"
     - >
       if [ "$DISABLE_CACHE" == "true" ]; then
+        echo "cache disabled"
         /kaniko/executor --context $DOCKERFILE_CONTEXT \
           --dockerfile "$DOCKERFILE_PATH/$DOCKERFILE_NAME" \
           --destination "$DOCKER_TARGET_REGISTRY/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG" \
