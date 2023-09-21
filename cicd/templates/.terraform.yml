@@ -18,11 +18,6 @@ cache:
 
 .terraform-builder:
   extends: .awscli-root-builder
-  before_script:
-    - !reference [.awscli-root-builder, before_script]
-    - yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
-    - yum -y install terraform-1.4.2-1
-    - terraform --version
 
 
 .terraform:validate:

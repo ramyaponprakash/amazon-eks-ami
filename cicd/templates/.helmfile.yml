@@ -11,29 +11,6 @@ variables:
 
 .helm-builder:
   extends: .awscli-root-builder
-  variables:
-    HELM_VER: "v3.9.2"
-    HELMFILE_VER: "0.145.2"
-  before_script:
-    - !reference [.awscli-root-builder, before_script]
-    - if [ -z "$EKS_CLUSTER_VERSION" ]; then echo "variable EKS_CLUSTER_VERSION must be set." && exit 1; fi
-    - |
-      if [ "$EKS_CLUSTER_VERSION" == "1.23" ]; then
-        export KUBECTL_VER="1.23.17/2023-05-11"
-      elif [ "$EKS_CLUSTER_VERSION" == "1.24" ]; then
-        export KUBECTL_VER="1.24.13/2023-05-11"
-      elif [ "$EKS_CLUSTER_VERSION" == "1.25" ]; then
-        export KUBECTL_VER="1.25.9/2023-05-11"
-      elif [ "$EKS_CLUSTER_VERSION" == "1.26" ]; then
-        export KUBECTL_VER="1.26.4/2023-05-11"
-      elif [ "$EKS_CLUSTER_VERSION" == "1.27" ]; then
-        export KUBECTL_VER="1.27.1/2023-04-19"
-      else
-        echo "version $EKS_CLUSTER_VERSION not supported" && exit 1
-      fi
-    - chmod +x cicd/scripts/helm-install-deps.sh
-    - cicd/scripts/helm-install-deps.sh $KUBECTL_VER $HELM_VER $HELMFILE_VER
-
 
 
 .publish-chart:
