@@ -26,7 +26,7 @@ variables:
 
 .deploy-helmfile:
   stage: deploy
-  extends: .awscli-root-builder
+  extends: .helm-builder
   environment: $ENV
   script:
     - if [ -z "$SCP_SOURCE_FOLDER" ]; then echo "variable SCP_SOURCE_FOLDER must be set." && exit 1; fi

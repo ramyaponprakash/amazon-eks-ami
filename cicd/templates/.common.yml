@@ -52,7 +52,27 @@ include:
         --output text \
         --query Command.CommandId)
       echo "New send-command to $INSTANCE_ID - exec-id:$EXEC_ID, comment-ref: $INTERNAL_EXEC_ID"
-      aws ssm wait command-executed --instance-id "$INSTANCE_ID" --command-id "$EXEC_ID" --cli-read-timeout 300 --cli-connect-timeout 300
+      
+      # NOTE: the aws waiter will wait only upto 2 minutes, so we will use own waiter
+      # aws ssm wait command-executed --instance-id "$INSTANCE_ID" --command-id "$EXEC_ID" --cli-read-timeout 300 --cli-connect-timeout 300
+      
+      while true; do
+        result=$(aws ssm get-command-invocation \
+          --instance-id "$INSTANCE_ID" \
+          --command-id "$EXEC_ID" \
+          --query 'Status' \
+          --output text)
+        if [ "$result" == "Success" ]; then
+          echo "Command executed successfully."
+          break
+        elif [ "$result" == "Failed" ]; then
+          echo "Command execution failed. exec-id:$EXEC_ID"
+          exit 1
+        else
+          echo "Command execution is still in progress. Waiting..."
+          sleep 5
+        fi
+      done
     - echo "New send-command exec-id:$EXEC_ID to instance $INSTANCE_ID - DONE"
 
 
