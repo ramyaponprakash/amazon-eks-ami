@@ -1,0 +1,62 @@
+component: backend
+
+enabled: true
+
+image:
+  repository:
+  tag: latest
+  pullPolicy: IfNotPresent
+
+podAnnotations: {}
+
+podSecurityContext: {}
+
+containerSecurityContext:
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  privileged: false
+  runAsNonRoot: true
+  runAsUser: 10001 # appuser
+  capabilities:
+    drop:
+    - ALL
+
+resources:
+  requests:
+    memory: "64Mi"
+    cpu: "0.1"
+  limits:
+    memory: "256Mi"
+    cpu: "0.2"
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+cronJob:
+  enabled: true
+  jobs:
+    sense-cron-jobs-daily:
+      name: sense-cron-jobs-daily
+      imageName: sense_cron_jobs
+      schedule: "0 16 * * *"
+      concurrencyPolicy: Forbid
+      containerName: cron-jobs-daily-midnight-sgt
+      containerArgs: []
+      resources:
+        requests:
+          memory: "25Mi"
+        limits:
+          memory: "50Mi"
+    sense-cron-jobs-every-thirty-mins:
+      name: sense-cron-jobs-every-thirty-mins
+      imageName: sense_cron_jobs
+      schedule: "*/30 * * * *"
+      concurrencyPolicy: Forbid
+      containerName: cron-jobs-every-thirty-mins
+      containerArgs: []
+      resources:
+        requests:
+          memory: "25Mi"
+        limits:
+          memory: "50Mi"

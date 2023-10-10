@@ -69,3 +69,9 @@ app-eks-chart:sense-agent:
   variables:
     CHART_NAME: sense-agent
     HELM_ROOT: sense/base
+
+app-eks-chart:sense-job:
+  extends: .publish-chart
+  variables:
+    CHART_NAME: sense-job
+    HELM_ROOT: sense/base

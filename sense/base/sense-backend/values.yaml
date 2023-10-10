@@ -295,31 +295,3 @@ deployments:
     volumes: []
     mounts: []
 
-
-cronJob:
-  enabled: true
-  jobs:
-    sense-cron-jobs-daily:
-      name: sense-cron-jobs-daily
-      imageName: sense_cron_jobs
-      schedule: "0 16 * * *"
-      concurrencyPolicy: Forbid
-      containerName: cron-jobs-daily-midnight-sgt
-      containerArgs: []
-      resources:
-        requests:
-          memory: "25Mi"
-        limits:
-          memory: "50Mi"
-    sense-cron-jobs-every-thirty-mins:
-      name: sense-cron-jobs-every-thirty-mins
-      imageName: sense_cron_jobs
-      schedule: "*/30 * * * *"
-      concurrencyPolicy: Forbid
-      containerName: cron-jobs-every-thirty-mins
-      containerArgs: []
-      resources:
-        requests:
-          memory: "25Mi"
-        limits:
-          memory: "50Mi"
