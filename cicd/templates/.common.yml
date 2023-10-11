@@ -70,7 +70,7 @@ include:
           exit 1
         else
           echo "Command execution is still in progress. Waiting..."
-          sleep 5
+          sleep 15
         fi
       done
     - echo "New send-command exec-id:$EXEC_ID to instance $INSTANCE_ID - DONE"
