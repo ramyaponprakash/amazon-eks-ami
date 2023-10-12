@@ -51,7 +51,7 @@ include:
         --cloud-watch-output-config "CloudWatchOutputEnabled=true,CloudWatchLogGroupName=/aws/ssm/gitlab" \
         --output text \
         --query Command.CommandId)
-      echo "[$(date +"%Y-%m-%d %H:%M:%S %Z")] $ENV - Start New send-command to $INSTANCE_ID - exec-id:$EXEC_ID, comment-ref: $INTERNAL_EXEC_ID"
+      echo "[$(date --rfc-3339=seconds)] $ENV - Start New send-command to $INSTANCE_ID - exec-id:$EXEC_ID, comment-ref: $INTERNAL_EXEC_ID"
       echo "\e[33mYou can check the stdout and stderr logs from CloudWatch log group /aws/ssm/gitlab. Search by execution id ($EXEC_ID)"
       
       while true; do
@@ -61,18 +61,18 @@ include:
           --query 'Status' \
           --output text)
         if [ "$result" == "Success" ]; then
-          echo "\e[32m[$(date +"%Y-%m-%d %H:%M:%S %Z")] Command executed successfully."
+          echo "\e[32m[$(date --rfc-3339=seconds)] Command executed successfully."
           break
         elif [ "$result" == "Failed" ]; then
-          echo "\e[31m[$(date +"%Y-%m-%d %H:%M:%S %Z")] Command execution failed. exec-id:$EXEC_ID"
+          echo "\e[31m[$(date --rfc-3339=seconds)] Command execution failed. exec-id:$EXEC_ID"
           echo "\e[31mYou can check the stdout and stderr logs from CloudWatch log group /aws/ssm/gitlab. Search by execution id ($EXEC_ID)"
           exit 1
         else
-          echo "[$(date +"%Y-%m-%d %H:%M:%S %Z")] Command execution is still in progress. Waiting..."
+          echo "[$(date --rfc-3339=seconds)] Command execution is still in progress. Waiting..."
           sleep 15
         fi
       done
-    - echo "\e[32m[$(date +"%Y-%m-%d %H:%M:%S %Z")] $ENV - DONE New send-command exec-id:$EXEC_ID to instance $INSTANCE_ID"
+    - echo "\e[32m[$(date --rfc-3339=seconds)] $ENV - DONE New send-command exec-id:$EXEC_ID to instance $INSTANCE_ID"
 
 
 .ssm-send-public-key:
@@ -116,9 +116,9 @@ include:
     - if [ -z "$EC2_USER" ]; then export EC2_USER=ssm-user; fi
     # https://techdocs.akamai.com/netstorage/docs/use-secure-copy
     # https://man.openbsd.org/ssh_config
-    - echo "[$(date +"%Y-%m-%d %H:%M:%S %Z")] $ENV - Start SCP from $SOURCE to $EC2_USER@$INSTANCE_ID:$DEST."
+    - echo "[$(date --rfc-3339=seconds)] $ENV - Start SCP from $SOURCE to $EC2_USER@$INSTANCE_ID:$DEST."
     - scp -o IdentityFile="$SSH_TMP_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no -o ProxyCommand="sh -c \"aws ssm start-session --target $INSTANCE_ID --document-name AWS-StartSSHSession\"" $SOURCE $EC2_USER@$INSTANCE_ID:$DEST
-    - echo "\e[32m[$(date +"%Y-%m-%d %H:%M:%S %Z")] $ENV - DONE SCP from $SOURCE to $EC2_USER@$INSTANCE_ID:$DEST successfully done."
+    - echo "\e[32m[$(date --rfc-3339=seconds)] $ENV - DONE SCP from $SOURCE to $EC2_USER@$INSTANCE_ID:$DEST successfully done."
     - !reference [.ssm-send-public-key, after_script]
 
 
