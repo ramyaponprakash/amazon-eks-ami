@@ -52,7 +52,7 @@ include:
         --output text \
         --query Command.CommandId)
       echo -e "[$(date --rfc-3339=seconds)] $ENV - Start New send-command to $INSTANCE_ID - exec-id:$EXEC_ID, comment-ref: $INTERNAL_EXEC_ID"
-      echo -e "\e[93m\e[1mYou can check the stdout and stderr logs from CloudWatch log group /aws/ssm/gitlab. Search by execution id ($EXEC_ID)\e[21m\e[39m"
+      echo -e "\e[30;103mYou can check the stdout and stderr logs from CloudWatch log group /aws/ssm/gitlab. Search by execution id ($EXEC_ID)\e[0m"
       
       while true; do
         result=$(aws ssm get-command-invocation \
@@ -61,18 +61,18 @@ include:
           --query 'Status' \
           --output text)
         if [ "$result" == "Success" ]; then
-          echo -e "\e[92m\e[1m[$(date --rfc-3339=seconds)] Command executed successfully.\e[21m\e[39m"
+          echo -e "\e[0m\e[1m[$(date --rfc-3339=seconds)] Command executed successfully.\e[0m"
           break
         elif [ "$result" == "Failed" ]; then
-          echo -e "\e[31m\e[1m[$(date --rfc-3339=seconds)] Command execution failed. exec-id:$EXEC_ID\e[21m\e[39m"
-          echo -e "\e[93m\e[1mYou can check the stdout and stderr logs from CloudWatch log group /aws/ssm/gitlab. Search by execution id ($EXEC_ID)\e[21m\e[39m"
+          echo -e "\e[91m\e[1m[$(date --rfc-3339=seconds)] Command execution failed. exec-id:$EXEC_ID\e[0m"
+          echo -e "\e[30;101mYou can check the stdout and stderr logs from CloudWatch log group /aws/ssm/gitlab. Search by execution id ($EXEC_ID)\e[0m"
           exit 1
         else
-          echo -e "\e[0m\e[1m[$(date --rfc-3339=seconds)] Command execution is still in progress. Waiting...\e[21m\e[39m"
+          echo -e "\e[0m\e[1m[$(date --rfc-3339=seconds)] Command execution is still in progress. Waiting...\e[0m"
           sleep 15
         fi
       done
-    - echo -e "\e[92m\e[1m[$(date --rfc-3339=seconds)] $ENV - DONE New send-command exec-id:$EXEC_ID to instance $INSTANCE_ID\e[21m\e[39m"
+    - echo -e "\e[0m\e[1m[$(date --rfc-3339=seconds)] $ENV - DONE New send-command exec-id:$EXEC_ID to instance $INSTANCE_ID\e[0m"
 
 
 .ssm-send-public-key:
@@ -118,7 +118,7 @@ include:
     # https://man.openbsd.org/ssh_config
     - echo -e "[$(date --rfc-3339=seconds)] $ENV - Start SCP from $SOURCE to $EC2_USER@$INSTANCE_ID:$DEST."
     - scp -o IdentityFile="$SSH_TMP_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no -o ProxyCommand="sh -c \"aws ssm start-session --target $INSTANCE_ID --document-name AWS-StartSSHSession\"" $SOURCE $EC2_USER@$INSTANCE_ID:$DEST
-    - echo -e "\e[92m\e[1m[$(date --rfc-3339=seconds)] $ENV - DONE SCP from $SOURCE to $EC2_USER@$INSTANCE_ID:$DEST successfully done.\e[21m"
+    - echo -e "\e[0m\e[1m[$(date --rfc-3339=seconds)] $ENV - DONE SCP from $SOURCE to $EC2_USER@$INSTANCE_ID:$DEST successfully done.\e[0m"
     - !reference [.ssm-send-public-key, after_script]
 
 
