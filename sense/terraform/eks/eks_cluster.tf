@@ -58,7 +58,7 @@ resource "aws_eks_cluster" "sdx-eks-cluster" {
   }
 }
 
-resource "aws_eks_addon" "sdx-eks-cluster-kube-proxy-add-on" {
+/*resource "aws_eks_addon" "sdx-eks-cluster-kube-proxy-add-on" {
   cluster_name      = var.cluster_name
   addon_name        = "kube-proxy"
   resolve_conflicts = "OVERWRITE"
@@ -86,7 +86,7 @@ resource "aws_eks_addon" "sdx-eks-cluster-coredns-add-on" {
   depends_on = [
     aws_eks_cluster.sdx-eks-cluster
   ]
-}
+}*/
 
 
 
