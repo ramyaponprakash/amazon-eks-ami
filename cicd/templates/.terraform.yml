@@ -34,7 +34,7 @@ cache:
 
 .terraform-script:select-workspace:
   script:
-    - export WORKSPACE=$(echo "$ENV" | cut -d'/' -f3)
+    - export WORKSPACE=$(echo "$ENV" | cut -d'/' -f4)
     - if [ -z "$WORKSPACE" ]; then echo "variable WORKSPACE must be set."; fi
     - echo "Selecting workspace (workspace=$WORKSPACE)"
     - terraform -chdir=$TF_ROOT init
