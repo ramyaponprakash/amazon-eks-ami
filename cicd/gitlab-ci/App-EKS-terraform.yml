@@ -12,10 +12,10 @@ variables:
   TF_ROOT: sense/terraform
 
 
-#workflow:
-#  rules:
-#    - if: '$ENV == "dev/app/eks"'
-#    - when: never
+workflow:
+  rules:
+    - if: '$ENV == "dev/app/eks"'
+    - when: never
 
 
 app-eks-terraform:validate:
