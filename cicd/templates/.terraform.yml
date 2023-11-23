@@ -61,7 +61,7 @@ cache:
       terraform: ${TF_ROOT}/plan.json
   script:
     - echo "Running terraform plan (workdir=$TF_ROOT, option=$OPTIONS)"
-    - terraform -chdir=$TF_ROOT plan -target=aws_instance.sdx_kube_bastion $OPTIONS --out plan
+    - terraform -chdir=$TF_ROOT plan $OPTIONS --out plan
     - terraform -chdir=$TF_ROOT show -no-color -json plan > $TF_ROOT/plan.json
 
 
