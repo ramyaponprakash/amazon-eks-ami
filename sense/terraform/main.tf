@@ -11,7 +11,7 @@ terraform {
   }
   backend "s3" {
     bucket  = "sense-eks-infra-tf-state"
-    key     = "sense/terraform/tfstate"
+    key     = "adex/terraform/tfstate"
     region  = "ap-southeast-1"
     encrypt = true
   }

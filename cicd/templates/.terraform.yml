@@ -25,6 +25,7 @@ cache:
   extends: .terraform-builder
   script:
     - echo "Running terraform fmt (workdir=$TF_ROOT)"
+    - rm -rf ${TF_ROOT}/.terraform
     - terraform -chdir=$TF_ROOT fmt
     - echo "Running terraform validate (workdir=$TF_ROOT)"
     - terraform -chdir=$TF_ROOT init
