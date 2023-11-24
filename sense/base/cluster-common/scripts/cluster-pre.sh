@@ -37,9 +37,9 @@ EOF
   -n kube-system \
   -p "$HELM_CONTROL_PATCH"
 
-"${LOC}"eksctl utils associate-iam-oidc-provider \
-  --region=ap-southeast-1 \
-  --cluster="$CLUSTER_NAME" --approve 2> /dev/null
-
-aws eks describe-cluster --name "$CLUSTER_NAME" --query "cluster.identity.oidc.issuer" --output text
+#"${LOC}"eksctl utils associate-iam-oidc-provider \
+#  --region=ap-southeast-1 \
+#  --cluster="$CLUSTER_NAME" --approve 2> /dev/null
+#
+#aws eks describe-cluster --name "$CLUSTER_NAME" --query "cluster.identity.oidc.issuer" --output text
 

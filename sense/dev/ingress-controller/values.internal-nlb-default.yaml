@@ -17,7 +17,7 @@ controller:
       http: http
       https: http # TLS terminates at NLB
     annotations:
-      service.beta.kubernetes.io/aws-load-balancer-name: 'sdx-eks-dev-internal-nlb-blue'
+      service.beta.kubernetes.io/aws-load-balancer-name: 'adex-eks-dev-internal-nlb-blue'
       service.beta.kubernetes.io/aws-load-balancer-scheme: 'internal'
       service.beta.kubernetes.io/aws-load-balancer-type: 'external'
       service.beta.kubernetes.io/aws-load-balancer-backend-protocol: 'tcp'

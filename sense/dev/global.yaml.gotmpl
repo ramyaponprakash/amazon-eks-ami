@@ -2,6 +2,7 @@ env: dev
 clusterName: {{ requiredEnv "CLUSTER_NAME" }}
 vpcId: vpc-09a58d6d
 accountId: 342446142760
+pipelineRole: role/gts.gitlab-dedicated
 bastionRole: user/eks
-dashboardRole: admin-role
+dashboardRole: role/admin-role
 caArn: arn:aws:acm-pca:ap-southeast-1:342446142760:certificate-authority/1cddf79c-0f23-4325-981a-23a823c75cb8

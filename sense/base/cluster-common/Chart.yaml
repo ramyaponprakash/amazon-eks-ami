@@ -1,4 +1,4 @@
 apiVersion: v2
 name: cluster-common
 
-version: 0.0.5
+version: 0.0.6

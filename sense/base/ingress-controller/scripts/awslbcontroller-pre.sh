@@ -23,7 +23,7 @@ done
 echo "Create aws load balance controller setups"
 # https://docs.aws.amazon.com/eks/latest/userguide/aws-load-balancer-controller.html
 
-AWS_LB_CTR_APP_VERSION="v2.4.2"
+AWS_LB_CTR_APP_VERSION="v2.6.2"
 
 curl -s -L -o iam_policy.json "https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/$AWS_LB_CTR_APP_VERSION/docs/install/iam_policy.json"
 

@@ -13,11 +13,11 @@ data:
     - groups:
       - system:masters
       rolearn: {{ .Values.awsAuth.pipeline.roleArn }}
-      username: pipeline-bamboo
+      username: pipeline-role
     - groups:
-      - eksctl-installer
-      rolearn: {{ .Values.awsAuth.installer.roleArn }}
-      username: eksctl-installer
+      - system:masters
+      rolearn: {{ .Values.awsAuth.bastion.roleArn }}
+      username: bastion-role    
     - groups:
       - eks-console-dashboard-view-full-access-group
       rolearn: {{ .Values.awsAuth.eksConsoleDashboard.roleArn }}

@@ -8,16 +8,16 @@ data:
     - groups:
       - system:bootstrappers
       - system:nodes
-      rolearn: arn:aws:iam::342446142760:role/terraform-eks-sdx-node
+      rolearn: arn:aws:iam::342446142760:role/role-adex-dev-eks-blue-cluster-node
       username: system:node:{{EC2PrivateDNSName}}
-    - groups:
-      - system:masters
-      rolearn: arn:aws:iam::342446142760:role/forBamboo
-      username: pipeline-bamboo
     - groups:
       - system:masters
       rolearn: arn:aws:iam::342446142760:role/gts.gitlab-dedicated
       username: pipeline-gitlab
+    - groups:
+      - system:masters
+      rolearn: arn:aws:iam::342446142760:user/eks
+      username: bastion-user    
     - groups:
       - eks-console-dashboard-view-full-access-group
       rolearn: arn:aws:iam::342446142760:role/admin-role
