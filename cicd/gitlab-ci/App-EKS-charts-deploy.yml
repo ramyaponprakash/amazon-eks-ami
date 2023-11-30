@@ -51,3 +51,17 @@ app-eks-chart:install-monitoring:
     HELMFILE_ROOT: sense/base/monitoring
   script:
     - !reference [.deploy-helmfile, script]
+
+
+app-eks-chart:install-backbone:
+  stage: deploy
+  extends: .deploy-helmfile
+  rules:
+    - when: manual
+  variables:
+    CHART_NAME: sense-backbone
+    SCP_SOURCE_FOLDER: sense
+    HELM_ENV: dev
+    HELMFILE_ROOT: sense/base/sense-backbone
+  script:
+    - !reference [.deploy-helmfile, script]
