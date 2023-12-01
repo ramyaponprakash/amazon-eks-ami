@@ -28,12 +28,12 @@ network = {
       target : "pcx-0f938cc9e044556b0"
     },
     {
-      destination : "172.31.0.0/16", // DEV cidr
-      target : "pcx-0a68cef3b16699a85"
+      destination : "172.1.0.0/16", // DEV cidr
+      target : "pcx-061f1682a087da381"
     },
     {
-      destination : "172.32.0.0/16", // DEV cidr
-      target : "pcx-0a68cef3b16699a85"
+      destination : "172.2.0.0/19", // DEV cidr
+      target : "pcx-061f1682a087da381"
     },
   ]
   # https://docs.solace.com/Cloud/Deployment-Considerations/connectivity-model-k8s.htm
