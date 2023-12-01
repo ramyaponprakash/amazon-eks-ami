@@ -30,7 +30,8 @@ controller:
       service.beta.kubernetes.io/aws-load-balancer-ssl-negotiation-policy: 'ELBSecurityPolicy-TLS13-1-2-2021-06'
       service.beta.kubernetes.io/aws-load-balancer-alpn-policy: 'HTTP2Optional'
     loadBalancerSourceRanges: # internal-nlb
-      - 172.31.0.0/16 # dev default
+      - 172.1.0.0/16 # dev
+      - 172.2.0.0/19 # dev
       - 173.1.0.0/19 # qa 1
       - 173.2.0.0/19 # qa 2
 
