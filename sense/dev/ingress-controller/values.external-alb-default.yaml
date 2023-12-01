@@ -34,7 +34,7 @@ external:
         alb.ingress.kubernetes.io/scheme: 'internet-facing'
         alb.ingress.kubernetes.io/target-type: 'ip'
         alb.ingress.kubernetes.io/subnets: 'subnet-0e57510f81a0cd5a2,subnet-02460641a6c430b49'
-        alb.ingress.kubernetes.io/security-groups: 'sg-04389d1c99970c14d'
+        alb.ingress.kubernetes.io/security-groups: 'sg-028c1bd5cf753d67d'
         alb.ingress.kubernetes.io/waf-acl-id: 'b1f2eab1-0ac4-4a3f-92ac-69dba6192387'
         alb.ingress.kubernetes.io/ssl-policy: 'ELBSecurityPolicy-FS-1-2-Res-2020-10'
         alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
