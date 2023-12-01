@@ -24,7 +24,7 @@ controller:
       service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: '60'
       service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: 'true'
       service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: 'instance'
-      service.beta.kubernetes.io/aws-load-balancer-subnets: 'subnet-0459927e5a9a8ba64,subnet-0e1e99fe7c3dbd3f9'
+      service.beta.kubernetes.io/aws-load-balancer-subnets: 'subnet-0c683d5359992221c,subnet-03ae8ba0f4c5a7369'
       service.beta.kubernetes.io/aws-load-balancer-ssl-ports: '443'
       service.beta.kubernetes.io/aws-load-balancer-ssl-cert: 'arn:aws:acm:ap-southeast-1:342446142760:certificate/2e4cbfc6-b06c-4018-b9c6-2d16a299af2d'
       service.beta.kubernetes.io/aws-load-balancer-ssl-negotiation-policy: 'ELBSecurityPolicy-TLS13-1-2-2021-06'

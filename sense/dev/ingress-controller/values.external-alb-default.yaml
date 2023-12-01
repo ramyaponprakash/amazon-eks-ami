@@ -33,7 +33,7 @@ external:
         alb.ingress.kubernetes.io/load-balancer-name: 'adex-eks-dev-external-alb-blue'
         alb.ingress.kubernetes.io/scheme: 'internet-facing'
         alb.ingress.kubernetes.io/target-type: 'ip'
-        alb.ingress.kubernetes.io/subnets: 'subnet-0eaa789d06887eda5,subnet-03603dbfb617e41c4'
+        alb.ingress.kubernetes.io/subnets: 'subnet-0e57510f81a0cd5a2,subnet-02460641a6c430b49'
         alb.ingress.kubernetes.io/security-groups: 'sg-0c7762cc8c8b33e46'
         alb.ingress.kubernetes.io/waf-acl-id: 'b1f2eab1-0ac4-4a3f-92ac-69dba6192387'
         alb.ingress.kubernetes.io/ssl-policy: 'ELBSecurityPolicy-FS-1-2-Res-2020-10'
