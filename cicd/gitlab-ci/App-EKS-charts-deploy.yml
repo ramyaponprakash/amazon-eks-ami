@@ -5,14 +5,9 @@ include:
 stages:
   - deploy
 
-variables:
-  EKS_CLUSTER_VERSION: $EKS_CLUSTER_VERSION
-  DEV_EKS_CLUSTER_NAME: sdx-dev-eks-blue-cluster # TODO
-
-
 workflow:
   rules:
-    - if: '$ENV == "dev/app/chart"'
+    - if: '$ENV == "dev"'
     - when: never
 
 
@@ -24,6 +19,8 @@ app-eks-chart:install-cluster-common:
     SCP_SOURCE_FOLDER: sense
     HELM_ENV: dev
     HELMFILE_ROOT: sense/base/cluster-common
+  rules:
+    - when: manual
   script:
     - !reference [.deploy-helmfile, script]
 
@@ -31,6 +28,8 @@ app-eks-chart:install-cluster-common:
 app-eks-chart:install-ingress-controller:
   stage: deploy
   extends: .deploy-helmfile
+  rules:
+    - when: manual
   variables:
     CHART_NAME: ingress-controller
     SCP_SOURCE_FOLDER: sense
@@ -43,10 +42,26 @@ app-eks-chart:install-ingress-controller:
 app-eks-chart:install-monitoring:
   stage: deploy
   extends: .deploy-helmfile
+  rules:
+    - when: manual
   variables:
     CHART_NAME: monitoring
     SCP_SOURCE_FOLDER: sense
     HELM_ENV: dev
     HELMFILE_ROOT: sense/base/monitoring
+  script:
+    - !reference [.deploy-helmfile, script]
+
+
+app-eks-chart:install-backbone:
+  stage: deploy
+  extends: .deploy-helmfile
+  rules:
+    - when: manual
+  variables:
+    CHART_NAME: sense-backbone
+    SCP_SOURCE_FOLDER: sense
+    HELM_ENV: dev
+    HELMFILE_ROOT: sense/base/sense-backbone
   script:
     - !reference [.deploy-helmfile, script]

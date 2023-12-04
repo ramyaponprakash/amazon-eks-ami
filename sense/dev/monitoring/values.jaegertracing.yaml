@@ -4,7 +4,7 @@ provisionDataStore:
 storage:
   type: elasticsearch
   elasticsearch:
-    host: vpc-dev-sdx-es-kgfhpvtfio32mmlzxw22wbgi4i.ap-southeast-1.es.amazonaws.com
+    host: vpc-dev-adex-es-thhponeikadg6quk2hdoxtx37q.ap-southeast-1.es.amazonaws.com
     port: 443
     scheme: https
     user:

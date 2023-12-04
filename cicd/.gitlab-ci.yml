@@ -5,6 +5,7 @@ workflow:
   rules:
     - if: $CI_PIPELINE_SOURCE == "push"
       when: never
+    - if: '$ENV' # ENV explicitly submitted
     - if: '$ENV && $CI_COMMIT_REF_PROTECTED == "true"' # ENV explicitly submitted and protected branch
     - if: '$CI_COMMIT_BRANCH =~ /^develop/ || $CI_COMMIT_BRANCH =~ /^release\//'
 
@@ -70,9 +71,9 @@ eks-pipeline:app-eks-terraform:
 eks-pipeline:app-eks-chart-publish:
   stage: trigger-pipeline
   rules:
-    - if: '$ENV =~ /^dev/  || $CI_COMMIT_BRANCH == "develop" || $CI_COMMIT_BRANCH == "release/dev"'
+    - if: '$ENV =~ /^dev/ || $CI_COMMIT_BRANCH == "develop" || $CI_COMMIT_BRANCH == "release/dev"'
       variables:
-        ENV: dev/app/chart
+        ENV: dev
       when: manual
   trigger:
     include:
@@ -84,7 +85,7 @@ eks-pipeline:app-eks-chart-deploy:
   rules:
     - if: '$ENV =~ /^dev/ || $CI_COMMIT_BRANCH == "develop" || $CI_COMMIT_BRANCH == "release/dev"'
       variables:
-        ENV: dev/app/chart
+        ENV: dev
       when: manual
   trigger:
     include:

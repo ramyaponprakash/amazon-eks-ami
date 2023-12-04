@@ -7,8 +7,10 @@ awsAuth:
   boostrap:
     roleArn: arn:aws:iam::{{ .Values.accountId }}:role/role-{{ .Values.clusterName }}-node
   pipeline:
-    roleArn: arn:aws:iam::{{ .Values.accountId }}:role/forBamboo
+    roleArn: arn:aws:iam::{{ .Values.accountId }}:{{ .Values.pipelineRole }}
   installer:
+    roleArn: arn:aws:iam::{{ .Values.accountId }}:{{ .Values.pipelineRole }}
+  bastion:
     roleArn: arn:aws:iam::{{ .Values.accountId }}:{{ .Values.bastionRole }}
   eksConsoleDashboard:
     roleArn: arn:aws:iam::{{ .Values.accountId }}:role/{{ .Values.dashboardRole }}

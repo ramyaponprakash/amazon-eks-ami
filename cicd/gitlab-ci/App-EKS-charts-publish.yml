@@ -11,7 +11,7 @@ variables:
 
 workflow:
   rules:
-    - if: '$ENV == "dev/app/chart"'
+    - if: '$ENV == "dev"'
     - when: never
 
 

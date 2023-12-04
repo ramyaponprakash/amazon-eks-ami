@@ -1,6 +1,6 @@
 {{- range $k, $rangeItem := .Values.deployments }}
 {{- with $ }}
-apiVersion: autoscaling/v2beta2
+apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ default $k $rangeItem.name }}-hpa

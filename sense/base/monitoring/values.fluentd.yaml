@@ -8,6 +8,9 @@ image:
 elasticsearch:
   endpoint:
 
+podSecurityPolicy:
+  enabled: false
+
 service:
   ports:
    - name: "forwarder"
