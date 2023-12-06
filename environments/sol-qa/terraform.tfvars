@@ -4,8 +4,8 @@ vpc_name     = "adex-qa-solace"
 
 eks_customer_cmk_key_arn = "arn:aws:kms:ap-southeast-1:342446142760:key/c706f705-9a56-44f7-9db8-47364dfa93a6"
 eks_admin_role_arns = [
-  "arn:aws:iam::342446142760:role/admin-role",
   "arn:aws:iam::342446142760:role/sgts.gitlab-dedicated",
+  "arn:aws:iam::342446142760:role/AWSReservedSSO_agency_admin_df42a4dd8d917651"
 ]
 eks_http_proxy              = ""
 eks_cluster_endpoint_public = false
