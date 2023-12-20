@@ -55,14 +55,15 @@ cache:
   artifacts:
     public: false
     paths:
-      - ${TF_ROOT}/plan
-      - ${TF_ROOT}/plan.json
+      - tmp/plan
+      - tmp/plan.json
     reports:
-      terraform: ${TF_ROOT}/plan.json
+      terraform: tmp/plan.json
   script:
     - echo "Running terraform plan (workdir=$TF_ROOT, option=$OPTIONS)"
     - terraform -chdir=$TF_ROOT plan $OPTIONS --out plan
-    - terraform -chdir=$TF_ROOT show -no-color -json plan > $TF_ROOT/plan.json
+    - mkdir -p tmp && cp $TF_ROOT/plan tmp/plan
+    - terraform -chdir=$TF_ROOT show -no-color -json plan > tmp/plan.json
 
 
 .terraform:apply:
@@ -71,5 +72,10 @@ cache:
   when: manual
   script:
     - echo "Running terraform apply (workdir=$TF_ROOT, option=$OPTIONS)"
+    - |
+      if [ -e "tmp/plan" ]; then
+        echo "plan file exists, copying to $TF_ROOT"
+        cp tmp/plan $TF_ROOT/plan
+      fi
     - terraform -chdir=$TF_ROOT apply $OPTIONS
 
