@@ -61,7 +61,7 @@ eks-pipeline:app-eks-terraform:
   rules:
     - if: '$ENV =~ /^dev/ || $CI_COMMIT_BRANCH == "develop" || $CI_COMMIT_BRANCH == "release/dev"'
       variables:
-        ENV: dev/app/eks
+        ENV: dev
       when: manual
   trigger:
     include:

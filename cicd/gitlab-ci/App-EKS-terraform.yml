@@ -14,7 +14,7 @@ variables:
 
 workflow:
   rules:
-    - if: '$ENV == "dev/app/eks"'
+    - if: '$ENV == "dev"'
     - when: never
 
 
@@ -32,8 +32,8 @@ app-eks-terraform:plan:
   environment: $ENV
   script:
     - !reference [.terraform-script:select-workspace, script]
-    - terraform -chdir=$TF_ROOT plan -var-file=environment/$WORKSPACE/variables.tfvars -target=module.eks_cluster --out plan
-    - terraform -chdir=$TF_ROOT show -no-color -json plan > $TF_ROOT/plan.json
+    - export OPTIONS="-var-file=environment/$WORKSPACE/variables.tfvars -target=module.eks_cluster"
+    - !reference [.terraform:plan, script]
 
 
 app-eks-terraform:apply:
@@ -44,5 +44,6 @@ app-eks-terraform:apply:
   environment: $ENV
   script:
     - !reference [.terraform-script:select-workspace, script]
-    - terraform -chdir=$TF_ROOT apply --auto-approve plan
+    - export OPTIONS="--auto-approve plan"
+    - !reference [.terraform:apply, script]
     - terraform -chdir=$TF_ROOT apply -var-file=environment/$WORKSPACE/variables.tfvars -target=module.eks_post --auto-approve
