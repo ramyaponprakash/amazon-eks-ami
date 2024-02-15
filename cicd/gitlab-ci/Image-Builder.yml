@@ -5,54 +5,29 @@ stages:
   - setup
   - build
 
-variables:
-  #AWS_REPO_TAG: "v20230728"
-  AWS_REPO_TAG: "v20230816"
-  AMI_OWNER: "148623356839"
-  #AMI_OWNER: "272677769750"
-  AMI_NAME: "GT_GCCS_StandardBuild_AML_2"
-
-.gds-account-setup: &gds-account-setup
-  variables:
-    VPC_ID: "vpc-09a58d6d"
-    SUBNET_ID: "subnet-03603dbfb617e41c4"
-    SECURITY_GROUP_ID: "sg-07c0c0ddf892afe85"
-    PUBLIC_ACCESS: "true"
-#    AMI_NAME: "GT_GCCS_StandardBuild_AML_2_on_2023-08-17" # temp
-
-.gcc-account-setup: &gcc-account-setup
-  variables:
-    VPC_ID: "vpc-0eca666dad48bbbb8" # cmt-1055002 (management)
-    SUBNET_ID: "subnet-050105c6ca4761d78" # sense-prd-subnet-mgnt-1a
-    SECURITY_GROUP_ID: "sg-0e4974478249329b2" # packer-ami-pipeline-ssh
-    EC2_IAM_ROLE_ARN: "arn:aws:iam::704140326871:instance-profile/u-ec2read"
-    PUBLIC_ACCESS: "true"
-#    AMI_NAME: "GT_GCCS_StandardBuild_AML_2_on_2023-08-17" # temp
-
 workflow:
   rules:
-    - if: '$ENV == "dev/eks/ami"'
-      <<: *gds-account-setup
-    - if: '$ENV == "prod/eks/ami"'
-      <<: *gcc-account-setup
+    - if: '$ENV == "dev"'
+    - if: '$ENV == "prod"'
     - when: never
 
-build-packer-ami:non-productions:
+
+build-packer-ami:
   stage: build
   extends: .awscli-root-builder
   environment: $ENV
-  rules:
-    - if: '$ENV == "dev/eks/ami"'
-      when: manual
   artifacts:
     paths:
       - builder/amazon-eks-ami/*.json
   script:
-    - echo "Building AMI for $ENV, K8($EKS_CLUSTER_VERSION)"
+    - echo "Building AMI for $ENV, AWS_ACCOUNT $AWS_ACCOUNT, K8($EKS_AMI_CLUSTER_VERSION)"
+    - |
+      if [[ -z $EKS_AMI_CLUSTER_VERSION ]]; then
+        echo "EKS_AMI_CLUSTER_VERSION requires, please submit via job variable" && exit 1
+      fi
     - chmod +x builder/build.sh
     - |
-      rm -rf "$HOME/.ssh/config"
-      builder/build.sh -k $EKS_CLUSTER_VERSION \
+      builder/build.sh -k $EKS_AMI_CLUSTER_VERSION \
         -a $AWS_ACCOUNT \
         -v $VPC_ID \
         -s $SUBNET_ID \
@@ -60,35 +35,7 @@ build-packer-ami:non-productions:
         -p $PUBLIC_ACCESS \
         --jq "./jq" \
         --packer "./packer" \
-        --repo-tag $AWS_REPO_TAG \
+        --repo-tag $AWS_EKS_OPTIMISED_REPO_TAG \
         --working-dir "$(pwd)/builder" \
-        --ami-owner $AMI_OWNER \
-        --ami-name $AMI_NAME
-
-
-build-packer-ami:productions:
-  stage: build
-  extends: .awscli-root-builder
-  environment: $ENV
-  rules:
-    - if: '$ENV == "prod/eks/ami"'
-      when: manual
-  artifacts:
-    paths:
-      - builder/amazon-eks-ami/*.json
-  script: # TODO: using temp bastion for packer ssh access
-    - echo "Building AMI for $ENV, K8($EKS_CLUSTER_VERSION)"
-    - chmod +x builder/build.sh
-    - |
-      builder/build.sh -k $EKS_CLUSTER_VERSION \
-        -a $AWS_ACCOUNT \
-        -v $VPC_ID \
-        -s $SUBNET_ID \
-        -g $SECURITY_GROUP_ID \
-        -p $PUBLIC_ACCESS \
-        --jq "./jq" \
-        --packer "./packer" \
-        --repo-tag $AWS_REPO_TAG \
-        --working-dir "$(pwd)/builder" \
-        --ami-owner $AMI_OWNER \
-        --ami-name $AMI_NAME
+        --ami-owner $EKS_AMI_OWNER \
+        --ami-name $EKS_AMI_NAME
