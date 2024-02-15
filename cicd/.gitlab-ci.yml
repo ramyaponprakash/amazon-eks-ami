@@ -52,7 +52,6 @@ eks-pipeline:ami-image-builder:
         VPC_ID: "vpc-0eca666dad48bbbb8" # cmt-1055002 (management)
         SUBNET_ID: "subnet-050105c6ca4761d78" # sense-prd-subnet-mgnt-1a
         SECURITY_GROUP_ID: "sg-0e4974478249329b2" # packer-ami-pipeline-ssh
-        EC2_IAM_ROLE_ARN: "arn:aws:iam::704140326871:instance-profile/u-ec2read"
         PUBLIC_ACCESS: "true"
         EKS_AMI_CLUSTER_VERSION: $EKS_AMI_CLUSTER_VERSION
       when: manual
