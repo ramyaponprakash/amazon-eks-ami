@@ -53,7 +53,7 @@ parse_inputs() {
       --ssh-user) SSH_USER="$2"; shift 2;;
       -h|--help) usage; shift;;
       -*|--*) echo "Unknown option $1"; usage; exit 1;;
-      *) usage;;
+      *) echo "Unknown value $1"; usage; exit 1;;
     esac
   done
 }

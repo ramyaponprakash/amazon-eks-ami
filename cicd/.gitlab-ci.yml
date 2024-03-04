@@ -36,18 +36,24 @@ release_tag:
 
 eks-pipeline:ami-image-builder:
   stage: trigger-pipeline
-  variables:
-    AWS_REPO_TAG: $AWS_REPO_TAG
-    AMI_OWNER: $AMI_OWNER
-    AMI_NAME: $AMI_NAME
   rules:
     - if: '$ENV =~ /^dev/ || $ENV =~ /^qa/ || $CI_COMMIT_BRANCH == "develop" || $CI_COMMIT_BRANCH == "release/dev" || $CI_COMMIT_BRANCH == "release/qa"'
       variables:
-        ENV: dev/eks/ami
+        ENV: dev # NOTE: dev and qa share the AMI
+        VPC_ID: "vpc-00721a287031db6a2"
+        SUBNET_ID: "subnet-0b051ac3564636265" # public-1c
+        SECURITY_GROUP_ID: "sg-04bb1cbf7f67a68cb"
+        PUBLIC_ACCESS: "true"
+        EKS_AMI_CLUSTER_VERSION: $EKS_AMI_CLUSTER_VERSION
       when: manual
     - if: '$ENV =~ /^prod/ || $ENV =~ /^intra/ || $CI_COMMIT_BRANCH == "release/prod" || $CI_COMMIT_BRANCH == "release/intra"'
       variables:
-        ENV: prod/eks/ami
+        ENV: prod # NOTE: prod and intra share the AMI
+        VPC_ID: "vpc-0eca666dad48bbbb8" # cmt-1055002 (management)
+        SUBNET_ID: "subnet-050105c6ca4761d78" # sense-prd-subnet-mgnt-1a
+        SECURITY_GROUP_ID: "sg-0e4974478249329b2" # packer-ami-pipeline-ssh
+        PUBLIC_ACCESS: "true"
+        EKS_AMI_CLUSTER_VERSION: $EKS_AMI_CLUSTER_VERSION
       when: manual
   trigger:
     include:
