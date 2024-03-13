@@ -99,6 +99,9 @@ ingress:
 
 certs: []
 
+configmap:
+  common: ""
+
 # ----- micro-service configs -----
 deployments:
   # ----- auth -----
