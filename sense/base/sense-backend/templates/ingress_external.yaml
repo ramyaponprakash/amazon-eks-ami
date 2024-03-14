@@ -13,7 +13,8 @@ metadata:
 spec:
   ingressClassName: {{ .Values.external.ingressClassName }}
   rules:
-    - host: {{ .Values.hostname.external }}
+  {{- range .Values.hostname.external }}
+    - host: {{ . | quote }}
       http:
         paths:
           - path: /api/(auth/?(.*)$)
@@ -114,3 +115,4 @@ spec:
                 name: metric
                 port:
                   number: 8181
+  {{- end }}

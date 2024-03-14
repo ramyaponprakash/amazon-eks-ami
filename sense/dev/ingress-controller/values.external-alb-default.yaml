@@ -39,7 +39,7 @@ external:
         alb.ingress.kubernetes.io/ssl-policy: 'ELBSecurityPolicy-FS-1-2-Res-2020-10'
         alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
         alb.ingress.kubernetes.io/ip-address-type: 'ipv4'
-        alb.ingress.kubernetes.io/certificate-arn: 'arn:aws:acm:ap-southeast-1:342446142760:certificate/2e4cbfc6-b06c-4018-b9c6-2d16a299af2d'
+        alb.ingress.kubernetes.io/certificate-arn: 'arn:aws:acm:ap-southeast-1:342446142760:certificate/2e4cbfc6-b06c-4018-b9c6-2d16a299af2d,arn:aws:acm:ap-southeast-1:342446142760:certificate/ad82987f-b060-44bc-a67d-7c6a5035fc39'
         alb.ingress.kubernetes.io/healthcheck-path: '/healthz'
         alb.ingress.kubernetes.io/success-codes: "200,404"
         alb.ingress.kubernetes.io/ssl-redirect: '443'
