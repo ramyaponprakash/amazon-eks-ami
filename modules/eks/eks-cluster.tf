@@ -31,7 +31,8 @@ resource "aws_eks_cluster" "eks_cluster" {
   ]
 
   tags = {
-    Name = var.cluster_name
+    Name   = var.cluster_name
+    Access = "Public access by source allowlist in networking tab"
   }
 
   lifecycle {

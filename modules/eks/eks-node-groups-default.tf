@@ -4,7 +4,7 @@ resource "aws_eks_node_group" "default_nodegroup" {
   scaling_config {
     desired_size = 1
     min_size     = 0
-    max_size     = 1
+    max_size     = 2
   }
 
   node_role_arn          = aws_iam_role.eks_cluster-node.arn
