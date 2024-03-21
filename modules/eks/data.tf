@@ -25,7 +25,7 @@ data "aws_ami" "latest-cis-optimized-ami" {
   owners      = ["self"]
   filter {
     name   = "name"
-    values = ["adex-sol-eks-node-${var.k8s_master_version}*"]
+    values = ["adex-sol-eks-node-${data.aws_eks_cluster.cluster.version}*"]
   }
 }
 
