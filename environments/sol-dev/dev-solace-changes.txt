@@ -1,0 +1,756 @@
+[0m[1mmodule.eks.data.aws_region.this: Reading...[0m[0m
+[0m[1mmodule.eks.module.aws-lb-controller_assumable_role_admin.data.aws_partition.current: Reading...[0m[0m
+[0m[1mmodule.eks.data.aws_partition.this: Reading...[0m[0m
+[0m[1mmodule.eks.module.cluster-autoscaler_assumable_role_admin.data.aws_partition.current: Reading...[0m[0m
+[0m[1mmodule.eks.module.aws-lb-controller_assumable_role_admin.data.aws_caller_identity.current: Reading...[0m[0m
+[0m[1mmodule.eks.module.aws-csi_assumable_role_admin.data.aws_caller_identity.current: Reading...[0m[0m
+[0m[1mmodule.eks.module.aws-csi_assumable_role_admin.data.aws_partition.current: Reading...[0m[0m
+[0m[1mmodule.eks.aws_iam_policy.autoscaling: Refreshing state... [id=arn:aws:iam::342446142760:policy/terraform-20230507052728864600000002][0m
+[0m[1mmodule.eks.data.aws_ami.latest-cis-optimized-ami: Reading...[0m[0m
+[0m[1mmodule.eks.module.aws-csi_assumable_role_admin.data.aws_partition.current: Read complete after 0s [id=aws][0m
+[0m[1mmodule.eks.data.aws_partition.this: Read complete after 0s [id=aws][0m
+[0m[1mmodule.eks.data.aws_region.this: Read complete after 0s [id=ap-southeast-1][0m
+[0m[1mmodule.eks.module.cluster-autoscaler_assumable_role_admin.data.aws_partition.current: Read complete after 0s [id=aws][0m
+[0m[1mmodule.eks.aws_iam_policy.aws-policy-csi: Refreshing state... [id=arn:aws:iam::342446142760:policy/aws-policy-csi-adex-dev-solace-eks-cluster][0m
+[0m[1mmodule.eks.module.aws-lb-controller_assumable_role_admin.data.aws_partition.current: Read complete after 0s [id=aws][0m
+[0m[1mmodule.eks.module.cluster-autoscaler_assumable_role_admin.data.aws_caller_identity.current: Reading...[0m[0m
+[0m[1mmodule.eks.data.aws_caller_identity.this: Reading...[0m[0m
+[0m[1mmodule.eks.aws_iam_role.eks_cluster: Refreshing state... [id=adex-dev-solace-eks-cluster-cluster][0m
+[0m[1mmodule.eks_network[0].aws_eip.vpc_eip[0]: Refreshing state... [id=eipalloc-0bbff46cd3f1d638f][0m
+[0m[1mmodule.eks.aws_iam_policy.aws-lb-controller-policy-nlb-ip: Refreshing state... [id=arn:aws:iam::342446142760:policy/aws-lb-policy-nlb-adex-dev-solace-eks-cluster][0m
+[0m[1mmodule.eks.data.aws_ami.latest-cis-optimized-ami: Read complete after 0s [id=ami-08ac2bf7d85d69215][0m
+[0m[1mmodule.eks_network[0].data.aws_availability_zones.available: Reading...[0m[0m
+[0m[1mmodule.eks.aws_iam_policy.customer_cmk_access_policy[0]: Refreshing state... [id=arn:aws:iam::342446142760:policy/terraform-20230507052728864500000001][0m
+[0m[1mmodule.eks_network[0].data.aws_availability_zones.available: Read complete after 0s [id=ap-southeast-1][0m
+[0m[1mmodule.eks.aws_iam_role.eks_cluster-node: Refreshing state... [id=adex-dev-solace-eks-cluster-node][0m
+[0m[1mmodule.eks.module.aws-csi_assumable_role_admin.data.aws_caller_identity.current: Read complete after 1s [id=342446142760][0m
+[0m[1mmodule.eks_network[0].module.vpc.aws_vpc.this[0]: Refreshing state... [id=vpc-0bf383f577bb6ff80][0m
+[0m[1mmodule.eks.module.cluster-autoscaler_assumable_role_admin.data.aws_caller_identity.current: Read complete after 1s [id=342446142760][0m
+[0m[1mmodule.eks.module.aws-lb-controller_assumable_role_admin.data.aws_caller_identity.current: Read complete after 1s [id=342446142760][0m
+[0m[1mmodule.eks.data.aws_caller_identity.this: Read complete after 1s [id=342446142760][0m
+[0m[1mmodule.eks.data.aws_iam_session_context.this: Reading...[0m[0m
+[0m[1mmodule.eks.data.aws_iam_session_context.this: Read complete after 0s [id=arn:aws:iam::342446142760:user/agent-dev-test][0m
+[0m[1mmodule.eks_network[0].aws_subnet.private_subnets[2]: Refreshing state... [id=subnet-0c19101f06b6fb9d7][0m
+[0m[1mmodule.eks_network[0].aws_subnet.private_subnets[0]: Refreshing state... [id=subnet-01a482e20e7047128][0m
+[0m[1mmodule.eks_network[0].aws_subnet.private_subnets[1]: Refreshing state... [id=subnet-012268357f9c1aba7][0m
+[0m[1mmodule.eks_network[0].aws_security_group.vpc_endpoint: Refreshing state... [id=sg-04f1cd7c0c26e2f76][0m
+[0m[1mmodule.eks_network[0].aws_subnet.public_subnets[2]: Refreshing state... [id=subnet-052f87703c46ea980][0m
+[0m[1mmodule.eks_network[0].aws_subnet.public_subnets[0]: Refreshing state... [id=subnet-0e6b68d3cfac5026e][0m
+[0m[1mmodule.eks_network[0].aws_subnet.public_subnets[1]: Refreshing state... [id=subnet-017002ff4de8749f3][0m
+[0m[1mmodule.eks.aws_security_group.eks_cluster-cluster: Refreshing state... [id=sg-01dd6718eedca95c2][0m
+[0m[1mmodule.eks.data.aws_vpc.vpc: Reading...[0m[0m
+[0m[1mmodule.eks_network[0].aws_internet_gateway.igw[0]: Refreshing state... [id=igw-0b129f47fdc33ad49][0m
+[0m[1mmodule.eks.aws_security_group.eks_cluster-node: Refreshing state... [id=sg-0e074522b42eda2d6][0m
+[0m[1mmodule.eks.aws_iam_role_policy_attachment.eks_cluster-AmazonEKSClusterPolicy: Refreshing state... [id=adex-dev-solace-eks-cluster-cluster-20230507052731240900000005][0m
+[0m[1mmodule.eks.aws_iam_role_policy_attachment.eks_cluster-AmazonEKSServicePolicy: Refreshing state... [id=adex-dev-solace-eks-cluster-cluster-20230507052731208800000004][0m
+[0m[1mmodule.eks.aws_iam_role_policy_attachment.eks_cluster-AmazonEKSClusterPolicy-CMK[0]: Refreshing state... [id=adex-dev-solace-eks-cluster-cluster-20230507052731179400000003][0m
+[0m[1mmodule.eks.aws_security_group_rule.eks_cluster-cluster-ingress["172.10.0.0/16"]: Refreshing state... [id=sgrule-1374617429][0m
+[0m[1mmodule.eks_network[0].aws_security_group_rule.vpc_endpoint-secgrp-cidrs: Refreshing state... [id=sgrule-1103490632][0m
+[0m[1mmodule.eks_network[0].aws_security_group_rule.vpc_endpoint-secgrp-self: Refreshing state... [id=sgrule-276249353][0m
+[0m[1mmodule.eks_network[0].aws_route_table.private[1]: Refreshing state... [id=rtb-0b2fd5c779b933535][0m
+[0m[1mmodule.eks_network[0].aws_route_table.private[0]: Refreshing state... [id=rtb-0498a66b9212e5e53][0m
+[0m[1mmodule.eks_network[0].aws_route_table.private[2]: Refreshing state... [id=rtb-0d61fbd2ea94363b2][0m
+[0m[1mmodule.eks_network[0].aws_route_table.public[2]: Refreshing state... [id=rtb-0911027c247f066ad][0m
+[0m[1mmodule.eks_network[0].aws_route_table.public[0]: Refreshing state... [id=rtb-077c3aaa118645e03][0m
+[0m[1mmodule.eks.data.aws_vpc.vpc: Read complete after 0s [id=vpc-0bf383f577bb6ff80][0m
+[0m[1mmodule.eks_network[0].aws_route_table.public[1]: Refreshing state... [id=rtb-0e5debbb34813898c][0m
+[0m[1mmodule.eks_network[0].aws_nat_gateway.ngw[0]: Refreshing state... [id=nat-0733e808f8bc85735][0m
+[0m[1mmodule.eks.aws_security_group_rule.eks_cluster-node-ingress-cluster: Refreshing state... [id=sgrule-3326960605][0m
+[0m[1mmodule.eks.aws_security_group_rule.eks_cluster-node-ingress-self: Refreshing state... [id=sgrule-2092750634][0m
+[0m[1mmodule.eks.aws_security_group_rule.eks_cluster-node-ingress-lbc: Refreshing state... [id=sgrule-1463245897][0m
+[0m[1mmodule.eks.aws_security_group_rule.eks_cluster-node-ingress-prefix-list["0"]: Refreshing state... [id=sgrule-4004028944][0m
+[0m[1mmodule.eks_network[0].aws_route_table_association.private[2]: Refreshing state... [id=rtbassoc-0a0d6ec2f8bd7419f][0m
+[0m[1mmodule.eks_network[0].aws_route_table_association.private[0]: Refreshing state... [id=rtbassoc-099b8e90e9030ba21][0m
+[0m[1mmodule.eks_network[0].aws_route_table_association.private[1]: Refreshing state... [id=rtbassoc-096e40e1876a66f64][0m
+[0m[1mmodule.eks.aws_iam_role_policy_attachment.eks_cluster-AmazonEC2ContainerRegistryReadOnly: Refreshing state... [id=adex-dev-solace-eks-cluster-node-20230507052731249800000007][0m
+[0m[1mmodule.eks.aws_iam_role_policy_attachment.eks_cluster-AmazonSSMManagedInstanceCore: Refreshing state... [id=adex-dev-solace-eks-cluster-node-20230613090212280700000004][0m
+[0m[1mmodule.eks.aws_iam_role_policy_attachment.eks_cluster-AmazonEKS_CNI_Policy: Refreshing state... [id=adex-dev-solace-eks-cluster-node-20230507052731248400000006][0m
+[0m[1mmodule.eks.aws_iam_role_policy_attachment.eks_cluster-AmazonEKSWorkerNodePolicy: Refreshing state... [id=adex-dev-solace-eks-cluster-node-20230507052731577400000008][0m
+[0m[1mmodule.eks_network[0].aws_route.private_route_nat[0]: Refreshing state... [id=r-rtb-0498a66b9212e5e531080289494][0m
+[0m[1mmodule.eks_network[0].aws_route.private_route_nat[1]: Refreshing state... [id=r-rtb-0b2fd5c779b9335351080289494][0m
+[0m[1mmodule.eks_network[0].aws_route.private_route_nat[2]: Refreshing state... [id=r-rtb-0d61fbd2ea94363b21080289494][0m
+[0m[1mmodule.eks_network[0].aws_route_table_association.pub[0]: Refreshing state... [id=rtbassoc-084795c39fa5d48a5][0m
+[0m[1mmodule.eks_network[0].aws_route_table_association.pub[1]: Refreshing state... [id=rtbassoc-0cf3abd24952268cb][0m
+[0m[1mmodule.eks_network[0].aws_route_table_association.pub[2]: Refreshing state... [id=rtbassoc-0873b8a10de440228][0m
+[0m[1mmodule.eks.aws_eks_cluster.eks_cluster: Refreshing state... [id=adex-dev-solace-eks-cluster][0m
+[0m[1mmodule.bastion[0].aws_iam_role.bastion_ec2_role: Refreshing state... [id=eks-bastion-role-20230821072224208800000001][0m
+[0m[1mmodule.eks.data.aws_eks_cluster.cluster: Reading...[0m[0m
+[0m[1mmodule.eks.data.aws_eks_cluster.cluster_name: Reading...[0m[0m
+[0m[1mmodule.eks.data.aws_eks_cluster_auth.cluster: Reading...[0m[0m
+[0m[1mdata.aws_eks_cluster.cluster: Reading...[0m[0m
+[0m[1mdata.aws_eks_cluster_auth.cluster: Reading...[0m[0m
+[0m[1mmodule.eks.data.aws_eks_cluster_auth.cluster: Read complete after 0s [id=adex-dev-solace-eks-cluster][0m
+[0m[1mmodule.eks.module.aws-csi_assumable_role_admin.data.aws_iam_policy_document.assume_role_with_oidc[0]: Reading...[0m[0m
+[0m[1mdata.aws_eks_cluster_auth.cluster: Read complete after 0s [id=adex-dev-solace-eks-cluster][0m
+[0m[1mmodule.eks.module.cluster-autoscaler_assumable_role_admin.data.aws_iam_policy_document.assume_role_with_oidc[0]: Reading...[0m[0m
+[0m[1mmodule.eks.module.aws-lb-controller_assumable_role_admin.data.aws_iam_policy_document.assume_role_with_oidc[0]: Reading...[0m[0m
+[0m[1mmodule.eks.aws_launch_template.default_nodegroup: Refreshing state... [id=lt-0fd12d1186ea660aa][0m
+[0m[1mmodule.eks.module.aws-csi_assumable_role_admin.data.aws_iam_policy_document.assume_role_with_oidc[0]: Read complete after 0s [id=783447944][0m
+[0m[1mmodule.eks.module.cluster-autoscaler_assumable_role_admin.data.aws_iam_policy_document.assume_role_with_oidc[0]: Read complete after 0s [id=1982424169][0m
+[0m[1mmodule.eks.module.aws-lb-controller_assumable_role_admin.data.aws_iam_policy_document.assume_role_with_oidc[0]: Read complete after 0s [id=633592471][0m
+[0m[1mmodule.eks.module.cluster-autoscaler_assumable_role_admin.aws_iam_role.this[0]: Refreshing state... [id=adex-dev-solace-eks-cluster-cluster-autoscaler][0m
+[0m[1mmodule.eks.module.aws-csi_assumable_role_admin.aws_iam_role.this[0]: Refreshing state... [id=adex-dev-solace-eks-cluster-csi][0m
+[0m[1mmodule.eks.module.aws-lb-controller_assumable_role_admin.aws_iam_role.this[0]: Refreshing state... [id=adex-dev-solace-eks-cluster-aws-lb-controller][0m
+[0m[1mmodule.eks.aws_eks_node_group.default_nodegroup: Refreshing state... [id=adex-dev-solace-eks-cluster:adex-dev-solace-eks-cluster-default-20230613090212205500000002][0m
+[0m[1mmodule.eks.data.aws_eks_cluster.cluster: Read complete after 0s [id=adex-dev-solace-eks-cluster][0m
+[0m[1mmodule.eks.data.aws_eks_cluster.cluster_name: Read complete after 0s [id=adex-dev-solace-eks-cluster][0m
+[0m[1mdata.aws_eks_cluster.cluster: Read complete after 1s [id=adex-dev-solace-eks-cluster][0m
+[0m[1mmodule.eks.aws_eks_addon.core_dns: Refreshing state... [id=adex-dev-solace-eks-cluster:coredns][0m
+[0m[1mmodule.eks.data.aws_arn.default_node_group: Reading...[0m[0m
+[0m[1mmodule.eks.aws_eks_addon.kube_proxy: Refreshing state... [id=adex-dev-solace-eks-cluster:kube-proxy][0m
+[0m[1mmodule.eks.aws_eks_addon.vpc_cni: Refreshing state... [id=adex-dev-solace-eks-cluster:vpc-cni][0m
+[0m[1mmodule.eks.data.aws_autoscaling_group.default_node_group: Reading...[0m[0m
+[0m[1mmodule.eks.data.aws_arn.default_node_group: Read complete after 0s [id=arn:aws:eks:ap-southeast-1:342446142760:nodegroup/adex-dev-solace-eks-cluster/adex-dev-solace-eks-cluster-default-20230613090212205500000002/56c459fe-e1ee-3153-50ca-8471c90209e2][0m
+[0m[1mmodule.eks.kubernetes_annotations.remove_default_storage_class: Refreshing state... [id=apiVersion=storage.k8s.io/v1,kind=StorageClass,name=gp2][0m
+[0m[1mmodule.eks.kubernetes_storage_class.gp3: Refreshing state... [id=gp3][0m
+[0m[1mmodule.eks.kubernetes_config_map.proxy_configmap: Refreshing state... [id=kube-system/proxy-environment-variables][0m
+[0m[1mmodule.eks.data.aws_autoscaling_group.default_node_group: Read complete after 0s [id=eks-adex-dev-solace-eks-cluster-default-20230613090212205500000002-56c459fe-e1ee-3153-50ca-8471c90209e2][0m
+[0m[1mmodule.eks.null_resource.default_node_group_asg_tags: Refreshing state... [id=8288461473779409517][0m
+[0m[1mmodule.eks.kubernetes_config_map.aws_auth_configmap: Refreshing state... [id=kube-system/aws-auth][0m
+[0m[1mmodule.eks.module.aws-csi_assumable_role_admin.aws_iam_role_policy_attachment.custom[0]: Refreshing state... [id=adex-dev-solace-eks-cluster-csi-2023050705374616340000000d][0m
+[0m[1mmodule.eks.module.cluster-autoscaler_assumable_role_admin.aws_iam_role_policy_attachment.custom[0]: Refreshing state... [id=adex-dev-solace-eks-cluster-cluster-autoscaler-2023050705374616950000000e][0m
+[0m[1mmodule.eks.module.aws-lb-controller_assumable_role_admin.aws_iam_role_policy_attachment.custom[0]: Refreshing state... [id=adex-dev-solace-eks-cluster-aws-lb-controller-2023050705374616340000000c][0m
+[0m[1mmodule.eks.aws_eks_addon.csi_driver: Refreshing state... [id=adex-dev-solace-eks-cluster:aws-ebs-csi-driver][0m
+[0m[1mmodule.eks.kubernetes_storage_class.gp2: Refreshing state... [id=gp3-default][0m
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  [32m+[0m create[0m
+  [33m~[0m update in-place[0m
+ [36m<=[0m read (data resources)[0m
+
+Terraform will perform the following actions:
+
+[1m  # module.bastion[0].data.aws_iam_role.bastion_ec2_role[0m will be read during apply
+  # (depends on a resource or a module with changes pending)
+[0m [36m<=[0m[0m data "aws_iam_role" "bastion_ec2_role" {
+      [32m+[0m[0m arn                  = (known after apply)
+      [32m+[0m[0m assume_role_policy   = (known after apply)
+      [32m+[0m[0m create_date          = (known after apply)
+      [32m+[0m[0m description          = (known after apply)
+      [32m+[0m[0m id                   = (known after apply)
+      [32m+[0m[0m max_session_duration = (known after apply)
+      [32m+[0m[0m name                 = "eks-bastion-role-20230821072224208800000001"
+      [32m+[0m[0m path                 = (known after apply)
+      [32m+[0m[0m permissions_boundary = (known after apply)
+      [32m+[0m[0m role_last_used       = (known after apply)
+      [32m+[0m[0m tags                 = (known after apply)
+      [32m+[0m[0m unique_id            = (known after apply)
+    }
+
+[1m  # module.bastion[0].aws_iam_role.bastion_ec2_role[0m will be updated in-place
+[0m  [33m~[0m[0m resource "aws_iam_role" "bastion_ec2_role" {
+        id                    = "eks-bastion-role-20230821072224208800000001"
+        name                  = "eks-bastion-role-20230821072224208800000001"
+      [33m~[0m[0m tags                  = {
+            "ClusterName"      = "adex-dev-solace-eks-cluster"
+          [31m-[0m[0m "QSConfigId-4x59t" = "4x59t" [90m-> null[0m[0m
+        }
+      [33m~[0m[0m tags_all              = {
+          [31m-[0m[0m "QSConfigId-4x59t" = "4x59t" [90m-> null[0m[0m
+            [90m# (1 unchanged element hidden)[0m[0m
+        }
+        [90m# (10 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.eks.aws_iam_policy.autoscaling[0m will be updated in-place
+[0m  [33m~[0m[0m resource "aws_iam_policy" "autoscaling" {
+        id          = "arn:aws:iam::342446142760:policy/terraform-20230507052728864600000002"
+        name        = "terraform-20230507052728864600000002"
+      [33m~[0m[0m policy      = jsonencode(
+          [33m~[0m[0m {
+              [33m~[0m[0m Statement = [
+                  [33m~[0m[0m {
+                      [33m~[0m[0m Action    = [
+                            [90m# (8 unchanged elements hidden)[0m[0m
+                            "autoscaling:DescribeScalingActivities",
+                          [31m-[0m[0m "eks:DescribeNodegroup",
+                        ]
+                      [31m-[0m[0m Condition = {
+                          [31m-[0m[0m StringEquals = {
+                              [31m-[0m[0m "aws:PrincipalArn" = "arn:aws:iam::342446142760:role/adex-dev-solace-eks-cluster-cluster-autoscaler"
+                            }
+                        }
+                      [33m~[0m[0m Resource  = "*" [33m->[0m[0m [
+                          [32m+[0m[0m "*",
+                        ]
+                        [90m# (1 unchanged attribute hidden)[0m[0m
+                    },
+                    {
+                        Action    = [
+                            "autoscaling:SetDesiredCapacity",
+                            "autoscaling:TerminateInstanceInAutoScalingGroup",
+                            "eks:DescribeNodegroup",
+                        ]
+                        Condition = {
+                            StringLike = {
+                                "autoscaling:ResourceTag/eks:cluster-name" = "adex-dev-solace-eks-cluster"
+                            }
+                        }
+                        Effect    = "Allow"
+                        Resource  = [
+                            "arn:aws:autoscaling:ap-southeast-1:342446142760:autoScalingGroup:*:autoScalingGroupName/*",
+                        ]
+                    },
+                ]
+                [90m# (1 unchanged attribute hidden)[0m[0m
+            }
+        )
+        tags        = {}
+        [90m# (5 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.eks.aws_iam_policy.aws-lb-controller-policy-nlb-ip[0m will be updated in-place
+[0m  [33m~[0m[0m resource "aws_iam_policy" "aws-lb-controller-policy-nlb-ip" {
+        id          = "arn:aws:iam::342446142760:policy/aws-lb-policy-nlb-adex-dev-solace-eks-cluster"
+        name        = "aws-lb-policy-nlb-adex-dev-solace-eks-cluster"
+      [33m~[0m[0m policy      = jsonencode(
+          [33m~[0m[0m {
+              [33m~[0m[0m Statement = [
+                  [33m~[0m[0m {
+                      [31m-[0m[0m Condition = {
+                          [31m-[0m[0m StringEquals = {
+                              [31m-[0m[0m "aws:PrincipalArn" = "arn:aws:iam::342446142760:role/adex-dev-solace-eks-cluster-aws-lb-controller"
+                            }
+                        }
+                        [90m# (3 unchanged attributes hidden)[0m[0m
+                    },
+                    {
+                        Action    = [
+                            "iam:CreateServiceLinkedRole",
+                        ]
+                        Condition = {
+                            StringEquals = {
+                                "iam:AWSServiceName" = "elasticloadbalancing.amazonaws.com"
+                            }
+                        }
+                        Effect    = "Allow"
+                        Resource  = "arn:aws:iam::342446142760:role/aws-service-role/elasticloadbalancing.amazonaws.com/AWSServiceRoleForElasticLoadBalancing"
+                    },
+                    [90m# (6 unchanged elements hidden)[0m[0m
+                    {
+                        Action    = [
+                            "elasticloadbalancing:DeleteListener",
+                            "elasticloadbalancing:DeleteRule",
+                        ]
+                        Condition = {
+                            StringLike = {
+                                "aws:ResourceTag/elbv2.k8s.aws/cluster" = "adex-dev-solace-eks-cluster"
+                            }
+                        }
+                        Effect    = "Allow"
+                        Resource  = [
+                            "arn:aws:elasticloadbalancing:ap-southeast-1:342446142760:targetgroup/*",
+                            "arn:aws:elasticloadbalancing:ap-southeast-1:342446142760:loadbalancer/*",
+                            "arn:aws:elasticloadbalancing:ap-southeast-1:342446142760:listener/*",
+                            "arn:aws:elasticloadbalancing:ap-southeast-1:342446142760:listener-rule/*",
+                        ]
+                    },
+                  [31m-[0m[0m {
+                      [31m-[0m[0m Action   = [
+                          [31m-[0m[0m "elasticloadbalancing:AddTags",
+                        ]
+                      [31m-[0m[0m Effect   = "Allow"
+                      [31m-[0m[0m Resource = [
+                          [31m-[0m[0m "arn:aws:elasticloadbalancing:ap-southeast-1:342446142760:loadbalancer/app/sol-*",
+                          [31m-[0m[0m "arn:aws:elasticloadbalancing:ap-southeast-1:342446142760:targetgroup/k8s-*",
+                        ]
+                    },
+                    {
+                        Action    = [
+                            "elasticloadbalancing:AddTags",
+                            "elasticloadbalancing:RemoveTags",
+                        ]
+                        Condition = {
+                            Null = {
+                                "aws:RequestTag/elbv2.k8s.aws/cluster"  = "true"
+                                "aws:ResourceTag/elbv2.k8s.aws/cluster" = "false"
+                            }
+                        }
+                        Effect    = "Allow"
+                        Resource  = [
+                            "arn:aws:elasticloadbalancing:ap-southeast-1:342446142760:targetgroup/*",
+                            "arn:aws:elasticloadbalancing:ap-southeast-1:342446142760:loadbalancer/*",
+                        ]
+                    },
+                    [90m# (3 unchanged elements hidden)[0m[0m
+                ]
+                [90m# (1 unchanged attribute hidden)[0m[0m
+            }
+        )
+        tags        = {}
+        [90m# (5 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.eks.aws_iam_policy.aws-policy-csi[0m will be updated in-place
+[0m  [33m~[0m[0m resource "aws_iam_policy" "aws-policy-csi" {
+        id          = "arn:aws:iam::342446142760:policy/aws-policy-csi-adex-dev-solace-eks-cluster"
+        name        = "aws-policy-csi-adex-dev-solace-eks-cluster"
+      [33m~[0m[0m policy      = jsonencode(
+          [33m~[0m[0m {
+              [33m~[0m[0m Statement = [
+                  [33m~[0m[0m {
+                      [31m-[0m[0m Condition = {
+                          [31m-[0m[0m StringEquals = {
+                              [31m-[0m[0m "aws:PrincipalArn" = "arn:aws:iam::342446142760:role/adex-dev-solace-eks-cluster-csi"
+                            }
+                        }
+                        [90m# (3 unchanged attributes hidden)[0m[0m
+                    },
+                    {
+                        Action    = [
+                            "ec2:AttachVolume",
+                            "ec2:DetachVolume",
+                            "ec2:ModifyVolume",
+                        ]
+                        Condition = {
+                            StringLike = {
+                                "ec2:ResourceTag/kubernetes.io/cluster/adex-dev-solace-eks-cluster" = "owned"
+                            }
+                        }
+                        Effect    = "Allow"
+                        Resource  = [
+                            "arn:aws:ec2:ap-southeast-1:342446142760:volume/*",
+                            "arn:aws:ec2:ap-southeast-1:342446142760:instance/*",
+                        ]
+                    },
+                    [90m# (10 unchanged elements hidden)[0m[0m
+                ]
+                [90m# (1 unchanged attribute hidden)[0m[0m
+            }
+        )
+        tags        = {}
+        [90m# (5 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.eks.aws_iam_role.eks_cluster-node[0m will be updated in-place
+[0m  [33m~[0m[0m resource "aws_iam_role" "eks_cluster-node" {
+        id                    = "adex-dev-solace-eks-cluster-node"
+        name                  = "adex-dev-solace-eks-cluster-node"
+      [33m~[0m[0m tags                  = {
+          [31m-[0m[0m "QSConfigId-4x59t" = "4x59t" [90m-> null[0m[0m
+        }
+      [33m~[0m[0m tags_all              = {
+          [31m-[0m[0m "QSConfigId-4x59t" = "4x59t"
+        } -> (known after apply)
+        [90m# (9 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.eks.aws_iam_role_policy_attachment.eks_cluster-AmazonEC2ContainerRegistryReadOnly[0m will be created
+[0m  [32m+[0m[0m resource "aws_iam_role_policy_attachment" "eks_cluster-AmazonEC2ContainerRegistryReadOnly" {
+      [32m+[0m[0m id         = (known after apply)
+      [32m+[0m[0m policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+      [32m+[0m[0m role       = "adex-dev-solace-eks-cluster-node"
+    }
+
+[1m  # module.eks.aws_iam_role_policy_attachment.eks_cluster-AmazonEKSClusterPolicy[0m will be created
+[0m  [32m+[0m[0m resource "aws_iam_role_policy_attachment" "eks_cluster-AmazonEKSClusterPolicy" {
+      [32m+[0m[0m id         = (known after apply)
+      [32m+[0m[0m policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+      [32m+[0m[0m role       = "adex-dev-solace-eks-cluster-cluster"
+    }
+
+[1m  # module.eks.aws_iam_role_policy_attachment.eks_cluster-AmazonEKSServicePolicy[0m will be created
+[0m  [32m+[0m[0m resource "aws_iam_role_policy_attachment" "eks_cluster-AmazonEKSServicePolicy" {
+      [32m+[0m[0m id         = (known after apply)
+      [32m+[0m[0m policy_arn = "arn:aws:iam::aws:policy/AmazonEKSServicePolicy"
+      [32m+[0m[0m role       = "adex-dev-solace-eks-cluster-cluster"
+    }
+
+[1m  # module.eks.aws_iam_role_policy_attachment.eks_cluster-AmazonEKSWorkerNodePolicy[0m will be created
+[0m  [32m+[0m[0m resource "aws_iam_role_policy_attachment" "eks_cluster-AmazonEKSWorkerNodePolicy" {
+      [32m+[0m[0m id         = (known after apply)
+      [32m+[0m[0m policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+      [32m+[0m[0m role       = "adex-dev-solace-eks-cluster-node"
+    }
+
+[1m  # module.eks.aws_iam_role_policy_attachment.eks_cluster-AmazonEKS_CNI_Policy[0m will be created
+[0m  [32m+[0m[0m resource "aws_iam_role_policy_attachment" "eks_cluster-AmazonEKS_CNI_Policy" {
+      [32m+[0m[0m id         = (known after apply)
+      [32m+[0m[0m policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+      [32m+[0m[0m role       = "adex-dev-solace-eks-cluster-node"
+    }
+
+[1m  # module.eks.aws_iam_role_policy_attachment.eks_cluster-AmazonSSMManagedInstanceCore[0m will be created
+[0m  [32m+[0m[0m resource "aws_iam_role_policy_attachment" "eks_cluster-AmazonSSMManagedInstanceCore" {
+      [32m+[0m[0m id         = (known after apply)
+      [32m+[0m[0m policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+      [32m+[0m[0m role       = "adex-dev-solace-eks-cluster-node"
+    }
+
+[1m  # module.eks.aws_launch_template.default_nodegroup[0m will be updated in-place
+[0m  [33m~[0m[0m resource "aws_launch_template" "default_nodegroup" {
+      [33m~[0m[0m default_version         = 35 -> (known after apply)
+        id                      = "lt-0fd12d1186ea660aa"
+      [33m~[0m[0m image_id                = "ami-033ee2ba2c9bf4baf" [33m->[0m[0m "ami-08ac2bf7d85d69215"
+      [33m~[0m[0m latest_version          = 35 -> (known after apply)
+        name                    = "adex-dev-solace-eks-cluster-default-ng-tmpl"
+        tags                    = {
+            "eks:cluster-name"   = "adex-dev-solace-eks-cluster"
+            "eks:nodegroup-name" = "adex-dev-solace-eks-cluster-default"
+        }
+      [33m~[0m[0m user_data               = "TUlNRS1WZXJzaW9uOiAxLjAKQ29udGVudC1UeXBlOiBtdWx0aXBhcnQvbWl4ZWQ7IGJvdW5kYXJ5PSI9PU1ZQk9VTkRBUlk9PSIKCi0tPT1NWUJPVU5EQVJZPT0KQ29udGVudC1UeXBlOiB0ZXh0L2Nsb3VkLWJvb3Rob29rOyBjaGFyc2V0PSJ1cy1hc2NpaSIKCiMgQ3JlYXRlIHRoZSBjb250YWluZXJkIGFuZCBzYW5kYm94LWltYWdlIHN5c3RlbWQgZGlyZWN0b3J5Cm1rZGlyIC1wIC9ldGMvc3lzdGVtZC9zeXN0ZW0vY29udGFpbmVyZC5zZXJ2aWNlLmQKbWtkaXIgLXAgL2V0Yy9zeXN0ZW1kL3N5c3RlbS9zYW5kYm94LWltYWdlLnNlcnZpY2UuZAoKaWYgWyAiIiA9PSAiIiBdOyB0aGVuCiAgICBjbG91ZC1pbml0LXBlciBpbnN0YW5jZSByZWxvYWRfZGFlbW9uIHN5c3RlbWN0bCBkYWVtb24tcmVsb2FkCiAgICBleGl0IDAKZmkKCiMgQ29uZmlndXJlIHl1bSB0byB1c2UgdGhlIHByb3h5CmNsb3VkLWluaXQtcGVyIGluc3RhbmNlIHl1bV9wcm94eV9jb25maWcgY2F0IDw8IEVPRiA+PiAvZXRjL3l1bS5jb25mCnByb3h5PQpFT0YKCiNTZXQgdGhlIHByb3h5IGZvciBmdXR1cmUgcHJvY2Vzc2VzLCBhbmQgdXNlIGFzIGFuIGluY2x1ZGUgZmlsZQpjbG91ZC1pbml0LXBlciBpbnN0YW5jZSBwcm94eV9jb25maWcgY2F0IDw8IEVPRiA+PiAvZXRjL2Vudmlyb25tZW50Cmh0dHBfcHJveHk9Cmh0dHBzX3Byb3h5PQpIVFRQX1BST1hZPQpIVFRQU19QUk9YWT0Kbm9fcHJveHk9MTcyLjEwLjAuMC8xNixsb2NhbGhvc3QsMTI3LjAuMC4xLDE2OS4yNTQuMTY5LjI1NCwuaW50ZXJuYWwsLmVrcy5hbWF6b25hd3MuY29tLHMzLmFtYXpvbmF3cy5jb20sLnMzLmFwLXNvdXRoZWFzdC0xLmFtYXpvbmF3cy5jb20sc3RzLmFwLXNvdXRoZWFzdC0xLmFtYXpvbmF3cy5jb20sZWMyLmFwLXNvdXRoZWFzdC0xLmFtYXpvbmF3cy5jb20sLmRrci5lY3IuYXAtc291dGhlYXN0LTEuYW1hem9uYXdzLmNvbSxhcGkuZWNyLmFwLXNvdXRoZWFzdC0xLmFtYXpvbmF3cy5jb20sYXV0b3NjYWxpbmcuYXAtc291dGhlYXN0LTEuYW1hem9uYXdzLmNvbSxsb2dzLmFwLXNvdXRoZWFzdC0xLmFtYXpvbmF3cy5jb20sZWtzLmFwLXNvdXRoZWFzdC0xLmFtYXpvbmF3cy5jb20sZWxhc3RpY2xvYWRiYWxhbmNpbmcuYXAtc291dGhlYXN0LTEuYW1hem9uYXdzLmNvbSxzc20uYXAtc291dGhlYXN0LTEuYW1hem9uYXdzLmNvbSxzc21tZXNzYWdlcy5hcC1zb3V0aGVhc3QtMS5hbWF6b25hd3MuY29tLGVjMm1lc3NhZ2VzLmFwLXNvdXRoZWFzdC0xLmFtYXpvbmF3cy5jb20KTk9fUFJPWFk9MTcyLjEwLjAuMC8xNixsb2NhbGhvc3QsMTI3LjAuMC4xLDE2OS4yNTQuMTY5LjI1NCwuaW50ZXJuYWwsLmVrcy5hbWF6b25hd3MuY29tLHMzLmFtYXpvbmF3cy5jb20sLnMzLmFwLXNvdXRoZWFzdC0xLmFtYXpvbmF3cy5jb20sc3RzLmFwLXNvdXRoZWFzdC0xLmFtYXpvbmF3cy5jb20sZWMyLmFwLXNvdXRoZWFzdC0xLmFtYXpvbmF3cy5jb20sLmRrci5lY3IuYXAtc291dGhlYXN0LTEuYW1hem9uYXdzLmNvbSxhcGkuZWNyLmFwLXNvdXRoZWFzdC0xLmFtYXpvbmF3cy5jb20sYXV0b3NjYWxpbmcuYXAtc291dGhlYXN0LTEuYW1hem9uYXdzLmNvbSxsb2dzLmFwLXNvdXRoZWFzdC0xLmFtYXpvbmF3cy5jb20sZWtzLmFwLXNvdXRoZWFzdC0xLmFtYXpvbmF3cy5jb20sZWxhc3RpY2xvYWRiYWxhbmNpbmcuYXAtc291dGhlYXN0LTEuYW1hem9uYXdzLmNvbSxzc20uYXAtc291dGhlYXN0LTEuYW1hem9uYXdzLmNvbSxzc21tZXNzYWdlcy5hcC1zb3V0aGVhc3QtMS5hbWF6b25hd3MuY29tLGVjMm1lc3NhZ2VzLmFwLXNvdXRoZWFzdC0xLmFtYXpvbmF3cy5jb20KRU9GCgojQ29uZmlndXJlIENvbnRhaW5lcmQgd2l0aCB0aGUgcHJveHkKY2xvdWQtaW5pdC1wZXIgaW5zdGFuY2UgY29udGFpbmVyZF9wcm94eV9jb25maWcgdGVlIDw8RU9GIC9ldGMvc3lzdGVtZC9zeXN0ZW0vY29udGFpbmVyZC5zZXJ2aWNlLmQvaHR0cC1wcm94eS5jb25mID4vZGV2L251bGwKW1NlcnZpY2VdCkVudmlyb25tZW50RmlsZT0vZXRjL2Vudmlyb25tZW50CkVPRgoKI0NvbmZpZ3VyZSBzYW5kYm94LWltYWdlIHdpdGggdGhlIHByb3h5CmNsb3VkLWluaXQtcGVyIGluc3RhbmNlIHNhbmRib3gtaW1hZ2VfcHJveHlfY29uZmlnIHRlZSA8PEVPRiAvZXRjL3N5c3RlbWQvc3lzdGVtL3NhbmRib3gtaW1hZ2Uuc2VydmljZS5kL2h0dHAtcHJveHkuY29uZiA+L2Rldi9udWxsCltTZXJ2aWNlXQpFbnZpcm9ubWVudEZpbGU9L2V0Yy9lbnZpcm9ubWVudApFT0YKCiNDb25maWd1cmUgdGhlIGt1YmVsZXQgd2l0aCB0aGUgcHJveHkKY2xvdWQtaW5pdC1wZXIgaW5zdGFuY2Uga3ViZWxldF9wcm94eV9jb25maWcgdGVlIDw8RU9GIC9ldGMvc3lzdGVtZC9zeXN0ZW0va3ViZWxldC5zZXJ2aWNlLmQvcHJveHkuY29uZiA+L2Rldi9udWxsCltTZXJ2aWNlXQpFbnZpcm9ubWVudEZpbGU9L2V0Yy9lbnZpcm9ubWVudApFT0YKCmNsb3VkLWluaXQtcGVyIGluc3RhbmNlIHJlbG9hZF9kYWVtb24gc3lzdGVtY3RsIGRhZW1vbi1yZWxvYWQKCi0tPT1NWUJPVU5EQVJZPT0KQ29udGVudC1UeXBlOiB0ZXh0L3gtc2hlbGxzY3JpcHQ7IGNoYXJzZXQ9InVzLWFzY2lpIgoKIyEvYmluL2Jhc2gKc2V0IC1leAoKc2V0IC1hCnNvdXJjZSAvZXRjL2Vudmlyb25tZW50Cgp5dW0gaW5zdGFsbCAteSBhbWF6b24tc3NtLWFnZW50CnN5c3RlbWN0bCBlbmFibGUgYW1hem9uLXNzbS1hZ2VudCAmJiBzeXN0ZW1jdGwgc3RhcnQgYW1hem9uLXNzbS1hZ2VudAoKL2V0Yy9la3MvYm9vdHN0cmFwLnNoIGFkZXgtZGV2LXNvbGFjZS1la3MtY2x1c3RlciBcCiAgLS1hcGlzZXJ2ZXItZW5kcG9pbnQgaHR0cHM6Ly8wNkY2NkIwNzdCMTM4MTQ5OUNBQjkzNDczMjhBMjIyOC5ncjcuYXAtc291dGhlYXN0LTEuZWtzLmFtYXpvbmF3cy5jb20gXAogIC0tYjY0LWNsdXN0ZXItY2EgTFMwdExTMUNSVWRKVGlCRFJWSlVTVVpKUTBGVVJTMHRMUzB0Q2sxSlNVTXZha05EUVdWaFowRjNTVUpCWjBsQ1FVUkJUa0puYTNGb2EybEhPWGN3UWtGUmMwWkJSRUZXVFZKTmQwVlJXVVJXVVZGRVJYZHdjbVJYU213S1kyMDFiR1JIVm5wTlFqUllSRlJKZWsxRVZYZE9la0V4VFhwSmVFOUdiMWhFVkUxNlRVUlZkMDVFUVRGTmVrbDRUMFp2ZDBaVVJWUk5Ra1ZIUVRGVlJRcEJlRTFMWVROV2FWcFlTblZhV0ZKc1kzcERRMEZUU1hkRVVWbEtTMjlhU1doMlkwNUJVVVZDUWxGQlJHZG5SVkJCUkVORFFWRnZRMmRuUlVKQlQzUlRDbkZvUTFjdmFVdHNaRUpHV1dadWVuWTNRU3RSUTJRek9VY3haMUZCUzFKQ1R6QlNkM0ZNV0V0U2RFWkxkbTVFUzNwT1JqZHBUVWwwYTBRNVJGVTVNRzBLWVROeGNFRXlSbU5GZFZWRGNuZzNOa3BhSzNJeVVFVkhSWE5oYUZnMU56UjZXVEJzVkVwcGRpdFNjamhTWTBaUk1FYzJMeXN6V2t4QllrUnhVMGxtYUFwM1NEWkxVbkl2VmpKd2VVUkVNblZqZGk4eU0zcHlRbk14TjAxSFp5dE9XVm8xVTBGVU5IZE1Sa1pPZEZoSVZsUm1SR0V6WkVKbWRrNUlUblkxUm5RMUNrWk9RbkJoYVhoM01XaHBUMmxpY0VvNVF6bFBRME5TZDJaSlNHOXlRMk4yWW1sdlNVaExaekpyT0djeWVVUlhaMDQ0VVhOd1drMHJWMjAyTlZadVkzUUtUR2t4YWtWMmFIQnhibG93T0VaeldrVnlNbVpDWW5ob1pITnVUblJ6VFhwMWQwa3laazRyVUdObFoyaFVjMUF5VkZoMlptNUhZbW9yZW0wemJ5OUpkZ293VkVwcGNDdE1LMngxTHpKWFMySnZaVzFWUTBGM1JVRkJZVTVhVFVaamQwUm5XVVJXVWpCUVFWRklMMEpCVVVSQlowdHJUVUU0UjBFeFZXUkZkMFZDQ2k5M1VVWk5RVTFDUVdZNGQwaFJXVVJXVWpCUFFrSlpSVVpIT1dwQmJWRkhPWFEyZEc1R1IxaEhjbWs1VjBSdWQwUXJVbHBOUWxWSFFURlZaRVZSVVU4S1RVRjVRME50ZERGWmJWWjVZbTFXTUZwWVRYZEVVVmxLUzI5YVNXaDJZMDVCVVVWTVFsRkJSR2RuUlVKQlFtOTRaR3hxVEZwb2NtdFZWRzFGUW5Gbk1RbzFTMkpuUlZNM1Z6ZHZiazl5WlRKVmFrSTRLMmxCUm01RlVXcFNaekJZZFZaV00zbGlTbkJPSzA0MUx5dHlNMUExWkhKeVQybFhRV1YyY0V4TlRTdHRDbFF2SzJJeGIzRnpUMU5QUTBOeWFGSTRNbkJ4WlM5TE1XMDJMMlJLYVc0cmRsbDBSazR6Tm5OVUwyNUZOQzk0VTJvdllqbFFUWEpXWkhZeVpVTmljMllLVTFCVWJVMTZXSGNyTVVabVNUZ3lRVko1VVdZNUwzZEZRMHhrUVM5aFlXa3JWMjVPU25nNFVFdHBZM1pYY2xKdUt5dEpZWGMxVm05SGEzcGpiR1JJVWdvd1ZDOUxhbll3U1hkYVNGSnFRMmRxY1hCVFp6bEpiRzVFUkRsRWNVbDRSWEZsYm1wdk0zaGtUVzlwWTJGMFNGSlhVbmt6UVRsM2MwbENNVzV5V1UxT0NsQnlialpMWkZad2VqWnljekppTkZwSll6UnNXbXBZV1hSUVNHaHJOemMwVHpjeVVVNUJlbGw0YURaTWJGUkdXV2xQWVd4RGNXWnFSVEpwUVdka1RrOEtRM28wUFFvdExTMHRMVVZPUkNCRFJWSlVTVVpKUTBGVVJTMHRMUzB0Q2c9PSBcCiAgLS1jb250YWluZXItcnVudGltZSBjb250YWluZXJkIFwKICAtLWRucy1jbHVzdGVyLWlwIDEwLjEwMC4wLjEwIFwKICAtLXVzZS1tYXgtcG9kcyBmYWxzZSBcCiAgLS1rdWJlbGV0LWV4dHJhLWFyZ3MgJy0tbWF4LXBvZHM9MTcnCgotLT09TVlCT1VOREFSWT09LS0=" [33m->[0m[0m "TUlNRS1WZXJzaW9uOiAxLjAKQ29udGVudC1UeXBlOiBtdWx0aXBhcnQvbWl4ZWQ7IGJvdW5kYXJ5PSI9PU1ZQk9VTkRBUlk9PSIKCi0tPT1NWUJPVU5EQVJZPT0KQ29udGVudC1UeXBlOiB0ZXh0L2Nsb3VkLWJvb3Rob29rOyBjaGFyc2V0PSJ1cy1hc2NpaSIKCiMgQ3JlYXRlIHRoZSBjb250YWluZXJkIGFuZCBzYW5kYm94LWltYWdlIHN5c3RlbWQgZGlyZWN0b3J5Cm1rZGlyIC1wIC9ldGMvc3lzdGVtZC9zeXN0ZW0vY29udGFpbmVyZC5zZXJ2aWNlLmQKbWtkaXIgLXAgL2V0Yy9zeXN0ZW1kL3N5c3RlbS9zYW5kYm94LWltYWdlLnNlcnZpY2UuZAoKaWYgWyAiIiA9PSAiIiBdOyB0aGVuCiAgICBjbG91ZC1pbml0LXBlciBpbnN0YW5jZSByZWxvYWRfZGFlbW9uIHN5c3RlbWN0bCBkYWVtb24tcmVsb2FkCiAgICBleGl0IDAKZmkKCiMgQ29uZmlndXJlIHl1bSB0byB1c2UgdGhlIHByb3h5CmNsb3VkLWluaXQtcGVyIGluc3RhbmNlIHl1bV9wcm94eV9jb25maWcgY2F0IDw8IEVPRiA+PiAvZXRjL3l1bS5jb25mCnByb3h5PQpFT0YKCiNTZXQgdGhlIHByb3h5IGZvciBmdXR1cmUgcHJvY2Vzc2VzLCBhbmQgdXNlIGFzIGFuIGluY2x1ZGUgZmlsZQpjbG91ZC1pbml0LXBlciBpbnN0YW5jZSBwcm94eV9jb25maWcgY2F0IDw8IEVPRiA+PiAvZXRjL2Vudmlyb25tZW50Cmh0dHBfcHJveHk9Cmh0dHBzX3Byb3h5PQpIVFRQX1BST1hZPQpIVFRQU19QUk9YWT0Kbm9fcHJveHk9MTcyLjEwLjAuMC8xNixsb2NhbGhvc3QsMTI3LjAuMC4xLDE2OS4yNTQuMTY5LjI1NCwuaW50ZXJuYWwsLmVrcy5hbWF6b25hd3MuY29tLHMzLmFtYXpvbmF3cy5jb20sLnMzLmFwLXNvdXRoZWFzdC0xLmFtYXpvbmF3cy5jb20sc3RzLmFwLXNvdXRoZWFzdC0xLmFtYXpvbmF3cy5jb20sZWMyLmFwLXNvdXRoZWFzdC0xLmFtYXpvbmF3cy5jb20sLmRrci5lY3IuYXAtc291dGhlYXN0LTEuYW1hem9uYXdzLmNvbSxhcGkuZWNyLmFwLXNvdXRoZWFzdC0xLmFtYXpvbmF3cy5jb20sYXV0b3NjYWxpbmcuYXAtc291dGhlYXN0LTEuYW1hem9uYXdzLmNvbSxsb2dzLmFwLXNvdXRoZWFzdC0xLmFtYXpvbmF3cy5jb20sZWtzLmFwLXNvdXRoZWFzdC0xLmFtYXpvbmF3cy5jb20sZWxhc3RpY2xvYWRiYWxhbmNpbmcuYXAtc291dGhlYXN0LTEuYW1hem9uYXdzLmNvbSxzc20uYXAtc291dGhlYXN0LTEuYW1hem9uYXdzLmNvbSxzc21tZXNzYWdlcy5hcC1zb3V0aGVhc3QtMS5hbWF6b25hd3MuY29tLGVjMm1lc3NhZ2VzLmFwLXNvdXRoZWFzdC0xLmFtYXpvbmF3cy5jb20sbW9uaXRvcmluZy5hcC1zb3V0aGVhc3QtMS5hbWF6b25hd3MuY29tCk5PX1BST1hZPTE3Mi4xMC4wLjAvMTYsbG9jYWxob3N0LDEyNy4wLjAuMSwxNjkuMjU0LjE2OS4yNTQsLmludGVybmFsLC5la3MuYW1hem9uYXdzLmNvbSxzMy5hbWF6b25hd3MuY29tLC5zMy5hcC1zb3V0aGVhc3QtMS5hbWF6b25hd3MuY29tLHN0cy5hcC1zb3V0aGVhc3QtMS5hbWF6b25hd3MuY29tLGVjMi5hcC1zb3V0aGVhc3QtMS5hbWF6b25hd3MuY29tLC5ka3IuZWNyLmFwLXNvdXRoZWFzdC0xLmFtYXpvbmF3cy5jb20sYXBpLmVjci5hcC1zb3V0aGVhc3QtMS5hbWF6b25hd3MuY29tLGF1dG9zY2FsaW5nLmFwLXNvdXRoZWFzdC0xLmFtYXpvbmF3cy5jb20sbG9ncy5hcC1zb3V0aGVhc3QtMS5hbWF6b25hd3MuY29tLGVrcy5hcC1zb3V0aGVhc3QtMS5hbWF6b25hd3MuY29tLGVsYXN0aWNsb2FkYmFsYW5jaW5nLmFwLXNvdXRoZWFzdC0xLmFtYXpvbmF3cy5jb20sc3NtLmFwLXNvdXRoZWFzdC0xLmFtYXpvbmF3cy5jb20sc3NtbWVzc2FnZXMuYXAtc291dGhlYXN0LTEuYW1hem9uYXdzLmNvbSxlYzJtZXNzYWdlcy5hcC1zb3V0aGVhc3QtMS5hbWF6b25hd3MuY29tLG1vbml0b3JpbmcuYXAtc291dGhlYXN0LTEuYW1hem9uYXdzLmNvbQpFT0YKCiNDb25maWd1cmUgQ29udGFpbmVyZCB3aXRoIHRoZSBwcm94eQpjbG91ZC1pbml0LXBlciBpbnN0YW5jZSBjb250YWluZXJkX3Byb3h5X2NvbmZpZyB0ZWUgPDxFT0YgL2V0Yy9zeXN0ZW1kL3N5c3RlbS9jb250YWluZXJkLnNlcnZpY2UuZC9odHRwLXByb3h5LmNvbmYgPi9kZXYvbnVsbApbU2VydmljZV0KRW52aXJvbm1lbnRGaWxlPS9ldGMvZW52aXJvbm1lbnQKRU9GCgojQ29uZmlndXJlIHNhbmRib3gtaW1hZ2Ugd2l0aCB0aGUgcHJveHkKY2xvdWQtaW5pdC1wZXIgaW5zdGFuY2Ugc2FuZGJveC1pbWFnZV9wcm94eV9jb25maWcgdGVlIDw8RU9GIC9ldGMvc3lzdGVtZC9zeXN0ZW0vc2FuZGJveC1pbWFnZS5zZXJ2aWNlLmQvaHR0cC1wcm94eS5jb25mID4vZGV2L251bGwKW1NlcnZpY2VdCkVudmlyb25tZW50RmlsZT0vZXRjL2Vudmlyb25tZW50CkVPRgoKI0NvbmZpZ3VyZSB0aGUga3ViZWxldCB3aXRoIHRoZSBwcm94eQpjbG91ZC1pbml0LXBlciBpbnN0YW5jZSBrdWJlbGV0X3Byb3h5X2NvbmZpZyB0ZWUgPDxFT0YgL2V0Yy9zeXN0ZW1kL3N5c3RlbS9rdWJlbGV0LnNlcnZpY2UuZC9wcm94eS5jb25mID4vZGV2L251bGwKW1NlcnZpY2VdCkVudmlyb25tZW50RmlsZT0vZXRjL2Vudmlyb25tZW50CkVPRgoKY2xvdWQtaW5pdC1wZXIgaW5zdGFuY2UgcmVsb2FkX2RhZW1vbiBzeXN0ZW1jdGwgZGFlbW9uLXJlbG9hZAoKLS09PU1ZQk9VTkRBUlk9PQpDb250ZW50LVR5cGU6IHRleHQveC1zaGVsbHNjcmlwdDsgY2hhcnNldD0idXMtYXNjaWkiCgojIS9iaW4vYmFzaApzZXQgLWV4CgpzZXQgLWEKc291cmNlIC9ldGMvZW52aXJvbm1lbnQKCnl1bSBpbnN0YWxsIC15IGFtYXpvbi1zc20tYWdlbnQKc3lzdGVtY3RsIGVuYWJsZSBhbWF6b24tc3NtLWFnZW50ICYmIHN5c3RlbWN0bCBzdGFydCBhbWF6b24tc3NtLWFnZW50CgovZXRjL2Vrcy9ib290c3RyYXAuc2ggYWRleC1kZXYtc29sYWNlLWVrcy1jbHVzdGVyIFwKICAtLWFwaXNlcnZlci1lbmRwb2ludCBodHRwczovLzA2RjY2QjA3N0IxMzgxNDk5Q0FCOTM0NzMyOEEyMjI4LmdyNy5hcC1zb3V0aGVhc3QtMS5la3MuYW1hem9uYXdzLmNvbSBcCiAgLS1iNjQtY2x1c3Rlci1jYSBMUzB0TFMxQ1JVZEpUaUJEUlZKVVNVWkpRMEZVUlMwdExTMHRDazFKU1VNdmFrTkRRV1ZoWjBGM1NVSkJaMGxDUVVSQlRrSm5hM0ZvYTJsSE9YY3dRa0ZSYzBaQlJFRldUVkpOZDBWUldVUldVVkZFUlhkd2NtUlhTbXdLWTIwMWJHUkhWbnBOUWpSWVJGUkplazFFVlhkT2VrRXhUWHBKZUU5R2IxaEVWRTE2VFVSVmQwNUVRVEZOZWtsNFQwWnZkMFpVUlZSTlFrVkhRVEZWUlFwQmVFMUxZVE5XYVZwWVNuVmFXRkpzWTNwRFEwRlRTWGRFVVZsS1MyOWFTV2gyWTA1QlVVVkNRbEZCUkdkblJWQkJSRU5EUVZGdlEyZG5SVUpCVDNSVENuRm9RMWN2YVV0c1pFSkdXV1p1ZW5ZM1FTdFJRMlF6T1VjeFoxRkJTMUpDVHpCU2QzRk1XRXRTZEVaTGRtNUVTM3BPUmpkcFRVbDBhMFE1UkZVNU1HMEtZVE54Y0VFeVJtTkZkVlZEY25nM05rcGFLM0l5VUVWSFJYTmhhRmcxTnpSNldUQnNWRXBwZGl0U2NqaFNZMFpSTUVjMkx5c3pXa3hCWWtSeFUwbG1hQXAzU0RaTFVuSXZWakp3ZVVSRU1uVmpkaTh5TTNweVFuTXhOMDFIWnl0T1dWbzFVMEZVTkhkTVJrWk9kRmhJVmxSbVJHRXpaRUptZGs1SVRuWTFSblExQ2taT1FuQmhhWGgzTVdocFQybGljRW81UXpsUFEwTlNkMlpKU0c5eVEyTjJZbWx2U1VoTFp6SnJPR2N5ZVVSWFowNDRVWE53V2swclYyMDJOVlp1WTNRS1RHa3hha1YyYUhCeGJsb3dPRVp6V2tWeU1tWkNZbmhvWkhOdVRuUnpUWHAxZDBreVprNHJVR05sWjJoVWMxQXlWRmgyWm01SFltb3JlbTB6Ynk5SmRnb3dWRXBwY0N0TUsyeDFMekpYUzJKdlpXMVZRMEYzUlVGQllVNWFUVVpqZDBSbldVUldVakJRUVZGSUwwSkJVVVJCWjB0clRVRTRSMEV4VldSRmQwVkNDaTkzVVVaTlFVMUNRV1k0ZDBoUldVUldVakJQUWtKWlJVWkhPV3BCYlZGSE9YUTJkRzVHUjFoSGNtazVWMFJ1ZDBRclVscE5RbFZIUVRGVlpFVlJVVThLVFVGNVEwTnRkREZaYlZaNVltMVdNRnBZVFhkRVVWbEtTMjlhU1doMlkwNUJVVVZNUWxGQlJHZG5SVUpCUW05NFpHeHFURnBvY210VlZHMUZRbkZuTVFvMVMySm5SVk0zVnpkdmJrOXlaVEpWYWtJNEsybEJSbTVGVVdwU1p6QllkVlpXTTNsaVNuQk9LMDQxTHl0eU0xQTFaSEp5VDJsWFFXVjJjRXhOVFN0dENsUXZLMkl4YjNGelQxTlBRME55YUZJNE1uQnhaUzlMTVcwMkwyUkthVzRyZGxsMFJrNHpObk5VTDI1Rk5DOTRVMm92WWpsUVRYSldaSFl5WlVOaWMyWUtVMUJVYlUxNldIY3JNVVptU1RneVFWSjVVV1k1TDNkRlEweGtRUzloWVdrclYyNU9Tbmc0VUV0cFkzWlhjbEp1S3l0SllYYzFWbTlIYTNwamJHUklVZ293VkM5TGFuWXdTWGRhU0ZKcVEyZHFjWEJUWnpsSmJHNUVSRGxFY1VsNFJYRmxibXB2TTNoa1RXOXBZMkYwU0ZKWFVua3pRVGwzYzBsQ01XNXlXVTFPQ2xCeWJqWkxaRlp3ZWpaeWN6SmlORnBKWXpSc1dtcFlXWFJRU0dock56YzBUemN5VVU1QmVsbDRhRFpNYkZSR1dXbFBZV3hEY1dacVJUSnBRV2RrVGs4S1EzbzBQUW90TFMwdExVVk9SQ0JEUlZKVVNVWkpRMEZVUlMwdExTMHRDZz09IFwKICAtLWNvbnRhaW5lci1ydW50aW1lIGNvbnRhaW5lcmQgXAogIC0tZG5zLWNsdXN0ZXItaXAgMTAuMTAwLjAuMTAgXAogIC0tdXNlLW1heC1wb2RzIGZhbHNlIFwKICAtLWt1YmVsZXQtZXh0cmEtYXJncyAnLS1tYXgtcG9kcz0xNycKCi0tPT1NWUJPVU5EQVJZPT0tLQ=="
+        [90m# (8 unchanged attributes hidden)[0m[0m
+
+        [90m# (2 unchanged blocks hidden)[0m[0m
+    }
+
+[1m  # module.eks.aws_security_group.eks_cluster-node[0m will be updated in-place
+[0m  [33m~[0m[0m resource "aws_security_group" "eks_cluster-node" {
+        id                     = "sg-0e074522b42eda2d6"
+        name                   = "adex-dev-solace-eks-cluster-node"
+      [33m~[0m[0m tags                   = {
+          [31m-[0m[0m "CreatorId"                                         = "AROAU7O3BOUUMLA6FITPC" [90m-> null[0m[0m
+          [31m-[0m[0m "CreatorName"                                       = "alex" [90m-> null[0m[0m
+            "Custodian-IgnoreSG"                                = "True"
+            "kubernetes.io/cluster/adex-dev-solace-eks-cluster" = "owned"
+        }
+      [33m~[0m[0m tags_all               = {
+          [31m-[0m[0m "CreatorId"                                         = "AROAU7O3BOUUMLA6FITPC" [90m-> null[0m[0m
+          [31m-[0m[0m "CreatorName"                                       = "alex" [90m-> null[0m[0m
+            [90m# (2 unchanged elements hidden)[0m[0m
+        }
+        [90m# (7 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.eks.kubernetes_config_map.aws_auth_configmap[0m will be updated in-place
+[0m  [33m~[0m[0m resource "kubernetes_config_map" "aws_auth_configmap" {
+      [33m~[0m[0m data        = {
+          [31m-[0m[0m "api_host" = "https://06F66B077B1381499CAB9347328A2228.gr7.ap-southeast-1.eks.amazonaws.com"
+          [31m-[0m[0m "mapRoles" = <<-EOT
+                - "groups":
+                  - "system:bootstrappers"
+                  - "system:nodes"
+                  "rolearn": "arn:aws:iam::342446142760:role/adex-dev-solace-eks-cluster-node"
+                  "username": "system:node:{{EC2PrivateDNSName}}"
+                - "groups":
+                  - "system:masters"
+                  "rolearn": "arn:aws:iam::342446142760:role/AWSReservedSSO_agency_admin_df42a4dd8d917651"
+                  "username": "admin_0"
+                - "groups":
+                  - "system:masters"
+                  "rolearn": "arn:aws:iam::342446142760:role/sgts.gitlab-dedicated"
+                  "username": "admin_1"
+                - "groups":
+                  - "system:masters"
+                  "rolearn": "arn:aws:iam::342446142760:role/eks-bastion-role-20230821072224208800000001"
+                  "username": "admin_2"
+            EOT
+        } -> (known after apply)
+        id          = "kube-system/aws-auth"
+        [90m# (2 unchanged attributes hidden)[0m[0m
+
+        [90m# (1 unchanged block hidden)[0m[0m
+    }
+
+[1m  # module.eks.kubernetes_config_map.proxy_configmap[0m will be updated in-place
+[0m  [33m~[0m[0m resource "kubernetes_config_map" "proxy_configmap" {
+      [33m~[0m[0m data        = {
+          [33m~[0m[0m "NO_PROXY"    = "172.10.0.0/16,10.100.0.0/16,localhost,127.0.0.1,169.254.169.254,.local,.internal,.eks.amazonaws.com,:8080/health,s3.amazonaws.com,.s3.ap-southeast-1.amazonaws.com,sts.ap-southeast-1.amazonaws.com,ec2.ap-southeast-1.amazonaws.com,.dkr.ecr.ap-southeast-1.amazonaws.com,api.ecr.ap-southeast-1.amazonaws.com,autoscaling.ap-southeast-1.amazonaws.com,logs.ap-southeast-1.amazonaws.com,eks.ap-southeast-1.amazonaws.com,elasticloadbalancing.ap-southeast-1.amazonaws.com,ssm.ap-southeast-1.amazonaws.com,ssmmessages.ap-southeast-1.amazonaws.com,ec2messages.ap-southeast-1.amazonaws.com" [33m->[0m[0m "172.10.0.0/16,10.100.0.0/16,localhost,127.0.0.1,169.254.169.254,.local,.internal,.eks.amazonaws.com,:8080/health,s3.amazonaws.com,.s3.ap-southeast-1.amazonaws.com,sts.ap-southeast-1.amazonaws.com,ec2.ap-southeast-1.amazonaws.com,.dkr.ecr.ap-southeast-1.amazonaws.com,api.ecr.ap-southeast-1.amazonaws.com,autoscaling.ap-southeast-1.amazonaws.com,logs.ap-southeast-1.amazonaws.com,eks.ap-southeast-1.amazonaws.com,elasticloadbalancing.ap-southeast-1.amazonaws.com,ssm.ap-southeast-1.amazonaws.com,ssmmessages.ap-southeast-1.amazonaws.com,ec2messages.ap-southeast-1.amazonaws.com,monitoring.ap-southeast-1.amazonaws.com"
+            [90m# (2 unchanged elements hidden)[0m[0m
+        }
+        id          = "kube-system/proxy-environment-variables"
+        [90m# (2 unchanged attributes hidden)[0m[0m
+
+        [90m# (1 unchanged block hidden)[0m[0m
+    }
+
+[1m  # module.eks_network[0].aws_route_table.private[0][0m will be updated in-place
+[0m  [33m~[0m[0m resource "aws_route_table" "private" {
+        id               = "rtb-0498a66b9212e5e53"
+      [33m~[0m[0m route            = [
+          [31m-[0m[0m {
+              [31m-[0m[0m carrier_gateway_id         = ""
+              [31m-[0m[0m cidr_block                 = "0.0.0.0/0"
+              [31m-[0m[0m core_network_arn           = ""
+              [31m-[0m[0m destination_prefix_list_id = ""
+              [31m-[0m[0m egress_only_gateway_id     = ""
+              [31m-[0m[0m gateway_id                 = ""
+              [31m-[0m[0m instance_id                = ""
+              [31m-[0m[0m ipv6_cidr_block            = ""
+              [31m-[0m[0m local_gateway_id           = ""
+              [31m-[0m[0m nat_gateway_id             = "nat-0733e808f8bc85735"
+              [31m-[0m[0m network_interface_id       = ""
+              [31m-[0m[0m transit_gateway_id         = ""
+              [31m-[0m[0m vpc_endpoint_id            = ""
+              [31m-[0m[0m vpc_peering_connection_id  = ""
+            },
+          [31m-[0m[0m {
+              [31m-[0m[0m carrier_gateway_id         = ""
+              [31m-[0m[0m cidr_block                 = "172.1.0.0/16"
+              [31m-[0m[0m core_network_arn           = ""
+              [31m-[0m[0m destination_prefix_list_id = ""
+              [31m-[0m[0m egress_only_gateway_id     = ""
+              [31m-[0m[0m gateway_id                 = ""
+              [31m-[0m[0m instance_id                = ""
+              [31m-[0m[0m ipv6_cidr_block            = ""
+              [31m-[0m[0m local_gateway_id           = ""
+              [31m-[0m[0m nat_gateway_id             = ""
+              [31m-[0m[0m network_interface_id       = ""
+              [31m-[0m[0m transit_gateway_id         = ""
+              [31m-[0m[0m vpc_endpoint_id            = ""
+              [31m-[0m[0m vpc_peering_connection_id  = "pcx-061f1682a087da381"
+            },
+          [31m-[0m[0m {
+              [31m-[0m[0m carrier_gateway_id         = ""
+              [31m-[0m[0m cidr_block                 = "172.2.0.0/19"
+              [31m-[0m[0m core_network_arn           = ""
+              [31m-[0m[0m destination_prefix_list_id = ""
+              [31m-[0m[0m egress_only_gateway_id     = ""
+              [31m-[0m[0m gateway_id                 = ""
+              [31m-[0m[0m instance_id                = ""
+              [31m-[0m[0m ipv6_cidr_block            = ""
+              [31m-[0m[0m local_gateway_id           = ""
+              [31m-[0m[0m nat_gateway_id             = ""
+              [31m-[0m[0m network_interface_id       = ""
+              [31m-[0m[0m transit_gateway_id         = ""
+              [31m-[0m[0m vpc_endpoint_id            = ""
+              [31m-[0m[0m vpc_peering_connection_id  = "pcx-061f1682a087da381"
+            },
+          [31m-[0m[0m {
+              [31m-[0m[0m carrier_gateway_id         = ""
+              [31m-[0m[0m cidr_block                 = "173.3.0.0/19"
+              [31m-[0m[0m core_network_arn           = ""
+              [31m-[0m[0m destination_prefix_list_id = ""
+              [31m-[0m[0m egress_only_gateway_id     = ""
+              [31m-[0m[0m gateway_id                 = ""
+              [31m-[0m[0m instance_id                = ""
+              [31m-[0m[0m ipv6_cidr_block            = ""
+              [31m-[0m[0m local_gateway_id           = ""
+              [31m-[0m[0m nat_gateway_id             = ""
+              [31m-[0m[0m network_interface_id       = ""
+              [31m-[0m[0m transit_gateway_id         = ""
+              [31m-[0m[0m vpc_endpoint_id            = ""
+              [31m-[0m[0m vpc_peering_connection_id  = "pcx-0f938cc9e044556b0"
+            },
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_block                = "172.1.0.0/16"
+              [32m+[0m[0m vpc_peering_connection_id = "pcx-061f1682a087da381"
+            },
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_block                = "172.2.0.0/19"
+              [32m+[0m[0m vpc_peering_connection_id = "pcx-061f1682a087da381"
+            },
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_block                = "173.3.0.0/19"
+              [32m+[0m[0m vpc_peering_connection_id = "pcx-0f938cc9e044556b0"
+            },
+        ]
+        tags             = {
+            "Name" = "adex-dev-solace-rt-private-1-a"
+        }
+        [90m# (5 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.eks_network[0].aws_route_table.private[1][0m will be updated in-place
+[0m  [33m~[0m[0m resource "aws_route_table" "private" {
+        id               = "rtb-0b2fd5c779b933535"
+      [33m~[0m[0m route            = [
+          [31m-[0m[0m {
+              [31m-[0m[0m carrier_gateway_id         = ""
+              [31m-[0m[0m cidr_block                 = "0.0.0.0/0"
+              [31m-[0m[0m core_network_arn           = ""
+              [31m-[0m[0m destination_prefix_list_id = ""
+              [31m-[0m[0m egress_only_gateway_id     = ""
+              [31m-[0m[0m gateway_id                 = ""
+              [31m-[0m[0m instance_id                = ""
+              [31m-[0m[0m ipv6_cidr_block            = ""
+              [31m-[0m[0m local_gateway_id           = ""
+              [31m-[0m[0m nat_gateway_id             = "nat-0733e808f8bc85735"
+              [31m-[0m[0m network_interface_id       = ""
+              [31m-[0m[0m transit_gateway_id         = ""
+              [31m-[0m[0m vpc_endpoint_id            = ""
+              [31m-[0m[0m vpc_peering_connection_id  = ""
+            },
+          [31m-[0m[0m {
+              [31m-[0m[0m carrier_gateway_id         = ""
+              [31m-[0m[0m cidr_block                 = "172.1.0.0/16"
+              [31m-[0m[0m core_network_arn           = ""
+              [31m-[0m[0m destination_prefix_list_id = ""
+              [31m-[0m[0m egress_only_gateway_id     = ""
+              [31m-[0m[0m gateway_id                 = ""
+              [31m-[0m[0m instance_id                = ""
+              [31m-[0m[0m ipv6_cidr_block            = ""
+              [31m-[0m[0m local_gateway_id           = ""
+              [31m-[0m[0m nat_gateway_id             = ""
+              [31m-[0m[0m network_interface_id       = ""
+              [31m-[0m[0m transit_gateway_id         = ""
+              [31m-[0m[0m vpc_endpoint_id            = ""
+              [31m-[0m[0m vpc_peering_connection_id  = "pcx-061f1682a087da381"
+            },
+          [31m-[0m[0m {
+              [31m-[0m[0m carrier_gateway_id         = ""
+              [31m-[0m[0m cidr_block                 = "172.2.0.0/19"
+              [31m-[0m[0m core_network_arn           = ""
+              [31m-[0m[0m destination_prefix_list_id = ""
+              [31m-[0m[0m egress_only_gateway_id     = ""
+              [31m-[0m[0m gateway_id                 = ""
+              [31m-[0m[0m instance_id                = ""
+              [31m-[0m[0m ipv6_cidr_block            = ""
+              [31m-[0m[0m local_gateway_id           = ""
+              [31m-[0m[0m nat_gateway_id             = ""
+              [31m-[0m[0m network_interface_id       = ""
+              [31m-[0m[0m transit_gateway_id         = ""
+              [31m-[0m[0m vpc_endpoint_id            = ""
+              [31m-[0m[0m vpc_peering_connection_id  = "pcx-061f1682a087da381"
+            },
+          [31m-[0m[0m {
+              [31m-[0m[0m carrier_gateway_id         = ""
+              [31m-[0m[0m cidr_block                 = "173.3.0.0/19"
+              [31m-[0m[0m core_network_arn           = ""
+              [31m-[0m[0m destination_prefix_list_id = ""
+              [31m-[0m[0m egress_only_gateway_id     = ""
+              [31m-[0m[0m gateway_id                 = ""
+              [31m-[0m[0m instance_id                = ""
+              [31m-[0m[0m ipv6_cidr_block            = ""
+              [31m-[0m[0m local_gateway_id           = ""
+              [31m-[0m[0m nat_gateway_id             = ""
+              [31m-[0m[0m network_interface_id       = ""
+              [31m-[0m[0m transit_gateway_id         = ""
+              [31m-[0m[0m vpc_endpoint_id            = ""
+              [31m-[0m[0m vpc_peering_connection_id  = "pcx-0f938cc9e044556b0"
+            },
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_block                = "172.1.0.0/16"
+              [32m+[0m[0m vpc_peering_connection_id = "pcx-061f1682a087da381"
+            },
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_block                = "172.2.0.0/19"
+              [32m+[0m[0m vpc_peering_connection_id = "pcx-061f1682a087da381"
+            },
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_block                = "173.3.0.0/19"
+              [32m+[0m[0m vpc_peering_connection_id = "pcx-0f938cc9e044556b0"
+            },
+        ]
+        tags             = {
+            "Name" = "adex-dev-solace-rt-private-2-b"
+        }
+        [90m# (5 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.eks_network[0].aws_route_table.private[2][0m will be updated in-place
+[0m  [33m~[0m[0m resource "aws_route_table" "private" {
+        id               = "rtb-0d61fbd2ea94363b2"
+      [33m~[0m[0m route            = [
+          [31m-[0m[0m {
+              [31m-[0m[0m carrier_gateway_id         = ""
+              [31m-[0m[0m cidr_block                 = "0.0.0.0/0"
+              [31m-[0m[0m core_network_arn           = ""
+              [31m-[0m[0m destination_prefix_list_id = ""
+              [31m-[0m[0m egress_only_gateway_id     = ""
+              [31m-[0m[0m gateway_id                 = ""
+              [31m-[0m[0m instance_id                = ""
+              [31m-[0m[0m ipv6_cidr_block            = ""
+              [31m-[0m[0m local_gateway_id           = ""
+              [31m-[0m[0m nat_gateway_id             = "nat-0733e808f8bc85735"
+              [31m-[0m[0m network_interface_id       = ""
+              [31m-[0m[0m transit_gateway_id         = ""
+              [31m-[0m[0m vpc_endpoint_id            = ""
+              [31m-[0m[0m vpc_peering_connection_id  = ""
+            },
+          [31m-[0m[0m {
+              [31m-[0m[0m carrier_gateway_id         = ""
+              [31m-[0m[0m cidr_block                 = "172.1.0.0/16"
+              [31m-[0m[0m core_network_arn           = ""
+              [31m-[0m[0m destination_prefix_list_id = ""
+              [31m-[0m[0m egress_only_gateway_id     = ""
+              [31m-[0m[0m gateway_id                 = ""
+              [31m-[0m[0m instance_id                = ""
+              [31m-[0m[0m ipv6_cidr_block            = ""
+              [31m-[0m[0m local_gateway_id           = ""
+              [31m-[0m[0m nat_gateway_id             = ""
+              [31m-[0m[0m network_interface_id       = ""
+              [31m-[0m[0m transit_gateway_id         = ""
+              [31m-[0m[0m vpc_endpoint_id            = ""
+              [31m-[0m[0m vpc_peering_connection_id  = "pcx-061f1682a087da381"
+            },
+          [31m-[0m[0m {
+              [31m-[0m[0m carrier_gateway_id         = ""
+              [31m-[0m[0m cidr_block                 = "172.2.0.0/19"
+              [31m-[0m[0m core_network_arn           = ""
+              [31m-[0m[0m destination_prefix_list_id = ""
+              [31m-[0m[0m egress_only_gateway_id     = ""
+              [31m-[0m[0m gateway_id                 = ""
+              [31m-[0m[0m instance_id                = ""
+              [31m-[0m[0m ipv6_cidr_block            = ""
+              [31m-[0m[0m local_gateway_id           = ""
+              [31m-[0m[0m nat_gateway_id             = ""
+              [31m-[0m[0m network_interface_id       = ""
+              [31m-[0m[0m transit_gateway_id         = ""
+              [31m-[0m[0m vpc_endpoint_id            = ""
+              [31m-[0m[0m vpc_peering_connection_id  = "pcx-061f1682a087da381"
+            },
+          [31m-[0m[0m {
+              [31m-[0m[0m carrier_gateway_id         = ""
+              [31m-[0m[0m cidr_block                 = "173.3.0.0/19"
+              [31m-[0m[0m core_network_arn           = ""
+              [31m-[0m[0m destination_prefix_list_id = ""
+              [31m-[0m[0m egress_only_gateway_id     = ""
+              [31m-[0m[0m gateway_id                 = ""
+              [31m-[0m[0m instance_id                = ""
+              [31m-[0m[0m ipv6_cidr_block            = ""
+              [31m-[0m[0m local_gateway_id           = ""
+              [31m-[0m[0m nat_gateway_id             = ""
+              [31m-[0m[0m network_interface_id       = ""
+              [31m-[0m[0m transit_gateway_id         = ""
+              [31m-[0m[0m vpc_endpoint_id            = ""
+              [31m-[0m[0m vpc_peering_connection_id  = "pcx-0f938cc9e044556b0"
+            },
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_block                = "172.1.0.0/16"
+              [32m+[0m[0m vpc_peering_connection_id = "pcx-061f1682a087da381"
+            },
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_block                = "172.2.0.0/19"
+              [32m+[0m[0m vpc_peering_connection_id = "pcx-061f1682a087da381"
+            },
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_block                = "173.3.0.0/19"
+              [32m+[0m[0m vpc_peering_connection_id = "pcx-0f938cc9e044556b0"
+            },
+        ]
+        tags             = {
+            "Name" = "adex-dev-solace-rt-private-3-c"
+        }
+        [90m# (5 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.eks_network[0].module.vpc.aws_vpc.this[0][0m will be updated in-place
+[0m  [33m~[0m[0m resource "aws_vpc" "this" {
+        id                                   = "vpc-0bf383f577bb6ff80"
+      [33m~[0m[0m tags                                 = {
+            "Name"                                              = "adex-dev-solace-eks-cluster-vpc"
+          [31m-[0m[0m "Type"                                              = "Empty" [90m-> null[0m[0m
+          [31m-[0m[0m "ec2:ResourceTag/gcc:security:zone"                 = "migrated-Empty-compartment" [90m-> null[0m[0m
+          [31m-[0m[0m "gcc:origin"                                        = "v1" [90m-> null[0m[0m
+          [31m-[0m[0m "gcc:team"                                          = "Agency" [90m-> null[0m[0m
+            "kubernetes.io/cluster/adex-dev-solace-eks-cluster" = "shared"
+          [31m-[0m[0m "type"                                              = "Empty" [90m-> null[0m[0m
+        }
+      [33m~[0m[0m tags_all                             = {
+          [31m-[0m[0m "Type"                                              = "Empty" [90m-> null[0m[0m
+          [31m-[0m[0m "ec2:ResourceTag/gcc:security:zone"                 = "migrated-Empty-compartment" [90m-> null[0m[0m
+          [31m-[0m[0m "gcc:origin"                                        = "v1" [90m-> null[0m[0m
+          [31m-[0m[0m "gcc:team"                                          = "Agency" [90m-> null[0m[0m
+          [31m-[0m[0m "type"                                              = "Empty" [90m-> null[0m[0m
+            [90m# (2 unchanged elements hidden)[0m[0m
+        }
+        [90m# (16 unchanged attributes hidden)[0m[0m
+    }
+
+[1mPlan:[0m 6 to add, 13 to change, 0 to destroy.
+[0m[33m╷[0m[0m
+[33m│[0m [0m[1m[33mWarning: [0m[0m[1mResource targeting is in effect[0m
+[33m│[0m [0m
+[33m│[0m [0m[0mYou are creating a plan with the -target option, which means that the result of this plan may not represent all of the changes requested by the current
+[33m│[0m [0mconfiguration.
+[33m│[0m [0m
+[33m│[0m [0mThe -target option is not for routine use, and is provided only for exceptional situations such as recovering from errors or mistakes, or when Terraform
+[33m│[0m [0mspecifically suggests to use it as part of an error message.
+[33m╵[0m[0m
+[90m
+─────────────────────────────────────────────────────────────────────────────[0m
+
+Note: You didn't use the -out option to save this plan, so Terraform can't
+guarantee to take exactly these actions if you run "terraform apply" now.
