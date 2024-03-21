@@ -96,6 +96,13 @@ vpc_private_elb_subnets = []
 vpc_private_sec_subnets = []
 vpc_sec_enable_cidr     = false
 vpc_sec_subnet_ids      = []
+gcc_vpc_tags = {
+  "Type"                              = "Empty"
+  "ec2:ResourceTag/gcc:security:zone" = "migrated-Empty-compartment"
+  "gcc:origin"                        = "v1"
+  "gcc:team"                          = "Agency"
+  "type"                              = "Empty"
+}
 
 bastion = {
   enable        = true

@@ -4,6 +4,13 @@ data "aws_availability_zones" "available" {
   exclude_names = var.vpc_excluded_zone_names
 }
 
+locals {
+  merged_tags = merge({
+    // NOTE: https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html
+    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
+  }, var.gcc_vpc_tags)
+}
+
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "3.2.0"
@@ -20,13 +27,5 @@ module "vpc" {
   single_nat_gateway   = false
   enable_dns_hostnames = true
 
-  tags = {
-    // NOTE: https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html
-    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
-    "Type"                                      = "Empty"
-    "ec2:ResourceTag/gcc:security:zone"         = "migrated-Empty-compartment"
-    "gcc:origin"                                = "v1"
-    "gcc:team"                                  = "Agency"
-    "type"                                      = "Empty"
-  }
+  tags = local.merged_tags
 }

@@ -190,3 +190,8 @@ variable "az_map" {
     2 = "c"
   }
 }
+
+variable "gcc_vpc_tags" {
+  type    = map(string)
+  default = {}
+}
