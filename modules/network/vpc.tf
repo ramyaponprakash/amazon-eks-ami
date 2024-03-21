@@ -23,5 +23,10 @@ module "vpc" {
   tags = {
     // NOTE: https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html
     "kubernetes.io/cluster/${var.cluster_name}" = "shared"
+    "Type"                                      = "Empty"
+    "ec2:ResourceTag/gcc:security:zone"         = "migrated-Empty-compartment"
+    "gcc:origin"                                = "v1"
+    "gcc:team"                                  = "Agency"
+    "type"                                      = "Empty"
   }
 }
