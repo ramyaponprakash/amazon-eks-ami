@@ -257,3 +257,8 @@ variable "eks_worker_node_access_prefix" {
   }))
   default = []
 }
+
+variable "gcc_vpc_tags" {
+  type    = map(string)
+  default = {}
+}

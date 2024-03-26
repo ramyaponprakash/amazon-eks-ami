@@ -58,6 +58,7 @@ module "eks_network" {
   vpc_public_subnets            = var.vpc_public_subnets
   vpc_private_subnets           = var.vpc_private_subnets
   vpc_private_elb_subnets       = var.vpc_private_elb_subnets
+  gcc_vpc_tags                  = var.gcc_vpc_tags
 }
 
 module "bastion" {

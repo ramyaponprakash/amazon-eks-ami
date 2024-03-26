@@ -6,7 +6,7 @@ VPC_ID=$3
 K8S_VERSION=$4
 # https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler#releases
 # App version 1.26.2 == chart 9.28.0, k8 version 1.26.X but it works with 1.23+
-AUTOSCALER_CHART_VERSION="9.28.0"
+AUTOSCALER_CHART_VERSION="9.36.0"
 # AWS Load Balancer Controller v2.5.0+ requires Kubernetes 1.22+
 # App version v2.5.0 == chart 1.5.0
 LB_CTRL_CHART_VERSION="1.5.0"
@@ -18,7 +18,7 @@ if [[ $AWS_ACCOUNT_ID == "" ]]; then
   echo "AWS_ACCOUNT_ID required" && exit 1
 fi
 if [[ $K8S_VERSION == "" ]]; then
-  K8S_VERSION="1.25"
+  K8S_VERSION="1.26"
 fi
 if [[ $VPC_ID == "" ]]; then
   echo "VPC_ID required" && exit 1
