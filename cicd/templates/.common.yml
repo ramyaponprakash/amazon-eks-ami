@@ -8,6 +8,7 @@ include:
 .assume-role:
   before_script:
     - if [ -z "$ROLE_ARN" ]; then echo "variable ROLE_ARN must be set." && exit 1; fi
+    - echo "ROLE_ARN $ROLE_ARN"
     - |
       STS=$(aws sts assume-role-with-web-identity \
       --role-arn "$ROLE_ARN" \
