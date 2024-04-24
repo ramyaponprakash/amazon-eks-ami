@@ -103,19 +103,19 @@ eks-pipeline:sol-eks-terraform:
   rules:
     - if: '$ENV =~ /^dev/ || $CI_COMMIT_BRANCH == "develop" || $CI_COMMIT_BRANCH == "release/dev"'
       variables:
-        ENV: dev/sol/eks
+        ENV: dev
       when: manual
     - if: '$ENV =~ /^qa/ || $CI_COMMIT_BRANCH == "release/qa"'
       variables:
-        ENV: qa/sol/eks
+        ENV: qa
       when: manual
     - if: '$ENV =~ /^prod/ || $CI_COMMIT_BRANCH == "release/prod"'
       variables:
-        ENV: prod/sol/eks
+        ENV: prod
       when: manual
     - if: '$ENV =~ /^intra/ || $CI_COMMIT_BRANCH == "release/intra"'
       variables:
-        ENV: intra/sol/eks
+        ENV: intra
       when: manual
   trigger:
     include:
