@@ -61,6 +61,7 @@ cache:
       terraform: tmp/plan.json
   script:
     - echo "Running terraform plan (workdir=$TF_ROOT, option=$OPTIONS)"
+    - terraform -chdir=$TF_ROOT init
     - terraform -chdir=$TF_ROOT plan $OPTIONS --out plan
     - mkdir -p tmp && cp $TF_ROOT/plan tmp/plan
     - terraform -chdir=$TF_ROOT show -no-color -json plan > tmp/plan.json
@@ -77,5 +78,6 @@ cache:
         echo "plan file exists, copying to $TF_ROOT"
         cp tmp/plan $TF_ROOT/plan
       fi
+     - terraform -chdir=$TF_ROOT init
     - terraform -chdir=$TF_ROOT apply $OPTIONS
 
