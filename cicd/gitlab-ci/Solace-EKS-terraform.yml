@@ -13,7 +13,10 @@ stages:
 
 workflow:
   rules:
-    - if: '$ENV == "dev/app/chart"'
+    - if: '$ENV == "dev"'
+    - if: '$ENV == "qa"'
+    - if: '$ENV == "prod"'
+    - if: '$ENV == "intra"'
     - when: never
 
 
