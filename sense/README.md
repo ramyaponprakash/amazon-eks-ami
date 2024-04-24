@@ -1,16 +1,8 @@
-# SENSE helm charts
+## App EKS
 
-## Setup EKS cluster for new environment
+---
 
-Define new env variables under `/terraform/environment`.
-
-Bamboo CI: [sdx-eks-infra-deployment](https://bamboo.ship.gov.sg/browse/SEN-SDXEKSINFRA)
-
-Create release from CI build result, proceed CD.
-
-Bamboo CD: [sdx-eks-infra-deployment](https://bamboo.ship.gov.sg/deploy/viewDeploymentProjectEnvironments.action?id=71761929)
-
-## Cluster upgrade guide
+### App EKS cluster upgrade guide
 
 1. update variable `cluster_version` to desired eks version
 2. update variable `kube_proxy_version`, `vpc_cni_version`, `coredns_version` by following AWS docs
@@ -22,38 +14,32 @@ Bamboo CD: [sdx-eks-infra-deployment](https://bamboo.ship.gov.sg/deploy/viewDepl
    1. AMI change log - https://github.com/awslabs/amazon-eks-ami/blob/master/CHANGELOG.md
 4. Run CI/CD to deploy changes
 
-## Installing cluster level charts and publish application charts
+### Cluster charts
 
-Bamboo CI: [sdx-eks-charts](https://bamboo.ship.gov.sg/browse/SEN-SENEKS)
+Details:
+- [App-EKS-chart-deploy.yml](../cicd/README.md#app-eks-chart-deployyml)
+- [App-EKS-chart-publish.yml](../cicd/README.md#app-eks-chart-publishyml)
 
-Deployment: create release from the CI 
+### Getting started in local environment
 
-## Setup local testing of charts
-
-### Setting required ENV
+#### Setup ENV vars
 ```shell
 export HELM_BINARY=helm
 export CLUSTER_NAME=test-name-here
 export AWS_ACC=00000000
 ```
 
-### Generating testing template previews
+#### Generating testing template previews
 ```shell
 helmfile -e dev -f ./sense/basecluster-common/helmfile.yaml template > preview.yaml 
 ```
 
-### Debugging composed variables
+#### Debugging composed variables
 ```shell
 helmfile -e dev -f ./sense/basesense-backend/helmfile.yaml write-values
 ```
 
-## Deploying application charts
-
-Use application pipelines to create release after build.
-
-charts will be stored in [s3 bucket](https://s3.console.aws.amazon.com/s3/buckets/sdx-eks-artifacts?region=ap-southeast-1&tab=objects)
-
-## Testing terraform plan in local
+#### Testing terraform plan
 
 ```shell
 terraform plan -var-file="./environment/dev/variables.tfvars" -target=module.eks_cluster
