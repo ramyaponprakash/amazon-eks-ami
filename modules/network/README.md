@@ -56,6 +56,7 @@ No requirements.
 |------|-------------|------|---------|:--------:|
 | <a name="input_az_map"></a> [az\_map](#input\_az\_map) | n/a | `map(any)` | <pre>{<br>  "0": "a",<br>  "1": "b",<br>  "2": "c"<br>}</pre> | no |
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | Cluster name will be tagged to vpc and subnets for auto discovery by elb and ingress controller | `string` | n/a | yes |
+| <a name="input_gcc_vpc_tags"></a> [gcc\_vpc\_tags](#input\_gcc\_vpc\_tags) | n/a | `map(string)` | `{}` | no |
 | <a name="input_network"></a> [network](#input\_network) | Base config to enable/disable module. create\_vpc=false will skip vpc creation. | <pre>object({<br>    enable     = optional(bool, true)<br>    create_vpc = optional(bool, false)<br>    peers = list(object({<br>      destination = string<br>      target      = string<br>    }))<br>    tgw = list(object({<br>      destination = string<br>      target      = string<br>    }))<br>  })</pre> | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | n/a | `string` | `"ap-southeast-1"` | no |
 | <a name="input_vpc_cidr_pri"></a> [vpc\_cidr\_pri](#input\_vpc\_cidr\_pri) | n/a | `string` | n/a | yes |
@@ -69,7 +70,7 @@ No requirements.
 | <a name="input_vpc_igw"></a> [vpc\_igw](#input\_vpc\_igw) | n/a | <pre>object({<br>    enable_igw = optional(bool, false)<br>    count      = number<br>  })</pre> | n/a | yes |
 | <a name="input_vpc_igw_ids"></a> [vpc\_igw\_ids](#input\_vpc\_igw\_ids) | n/a | `list(string)` | `[]` | no |
 | <a name="input_vpc_name"></a> [vpc\_name](#input\_vpc\_name) | n/a | `string` | n/a | yes |
-| <a name="input_vpc_nat_gateway"></a> [vpc\_nat\_gateway](#input\_vpc\_nat\_gateway) | n/a | <pre>object({<br>    enable = optional(bool, true)<br>  })</pre> | n/a | yes |
+| <a name="input_vpc_nat_gateway"></a> [vpc\_nat\_gateway](#input\_vpc\_nat\_gateway) | n/a | <pre>object({<br>    enable                        = optional(bool, true)<br>    vpc_nat_gw_eip_allocation_ids = optional(list(string))<br>  })</pre> | n/a | yes |
 | <a name="input_vpc_nat_gw_eip_allocation_ids"></a> [vpc\_nat\_gw\_eip\_allocation\_ids](#input\_vpc\_nat\_gw\_eip\_allocation\_ids) | n/a | `list(string)` | `[]` | no |
 | <a name="input_vpc_nat_gw_ids"></a> [vpc\_nat\_gw\_ids](#input\_vpc\_nat\_gw\_ids) | n/a | `list(string)` | `[]` | no |
 | <a name="input_vpc_private_elb_subnets"></a> [vpc\_private\_elb\_subnets](#input\_vpc\_private\_elb\_subnets) | n/a | <pre>list(object({<br>    cidr       = string<br>    enable_elb = number<br>  }))</pre> | `[]` | no |

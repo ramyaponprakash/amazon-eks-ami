@@ -23,7 +23,10 @@ No requirements.
 
 | Name | Type |
 |------|------|
+| [aws_eks_addon.core_dns](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_addon) | resource |
 | [aws_eks_addon.csi_driver](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_addon) | resource |
+| [aws_eks_addon.kube_proxy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_addon) | resource |
+| [aws_eks_addon.vpc_cni](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_addon) | resource |
 | [aws_eks_cluster.eks_cluster](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_cluster) | resource |
 | [aws_eks_node_group.default_nodegroup](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_node_group) | resource |
 | [aws_iam_policy.autoscaling](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
@@ -81,7 +84,7 @@ No requirements.
 | <a name="input_eks_default_no_proxy"></a> [eks\_default\_no\_proxy](#input\_eks\_default\_no\_proxy) | n/a | `string` | `"localhost,127.0.0.1,169.254.169.254,.local,.internal,.eks.amazonaws.com,:8080/health"` | no |
 | <a name="input_eks_http_proxy"></a> [eks\_http\_proxy](#input\_eks\_http\_proxy) | n/a | `string` | n/a | yes |
 | <a name="input_eks_node_group_iam_role_arns"></a> [eks\_node\_group\_iam\_role\_arns](#input\_eks\_node\_group\_iam\_role\_arns) | n/a | `list(string)` | `[]` | no |
-| <a name="input_eks_private_ep_no_proxy"></a> [eks\_private\_ep\_no\_proxy](#input\_eks\_private\_ep\_no\_proxy) | n/a | `string` | `"s3.amazonaws.com,.s3.ap-southeast-1.amazonaws.com,sts.ap-southeast-1.amazonaws.com,ec2.ap-southeast-1.amazonaws.com,.dkr.ecr.ap-southeast-1.amazonaws.com,api.ecr.ap-southeast-1.amazonaws.com,autoscaling.ap-southeast-1.amazonaws.com,logs.ap-southeast-1.amazonaws.com,eks.ap-southeast-1.amazonaws.com,elasticloadbalancing.ap-southeast-1.amazonaws.com,ssm.ap-southeast-1.amazonaws.com,ssmmessages.ap-southeast-1.amazonaws.com,ec2messages.ap-southeast-1.amazonaws.com"` | no |
+| <a name="input_eks_private_ep_no_proxy"></a> [eks\_private\_ep\_no\_proxy](#input\_eks\_private\_ep\_no\_proxy) | n/a | `string` | `"s3.amazonaws.com,.s3.ap-southeast-1.amazonaws.com,sts.ap-southeast-1.amazonaws.com,ec2.ap-southeast-1.amazonaws.com,.dkr.ecr.ap-southeast-1.amazonaws.com,api.ecr.ap-southeast-1.amazonaws.com,autoscaling.ap-southeast-1.amazonaws.com,logs.ap-southeast-1.amazonaws.com,eks.ap-southeast-1.amazonaws.com,elasticloadbalancing.ap-southeast-1.amazonaws.com,ssm.ap-southeast-1.amazonaws.com,ssmmessages.ap-southeast-1.amazonaws.com,ec2messages.ap-southeast-1.amazonaws.com,monitoring.ap-southeast-1.amazonaws.com"` | no |
 | <a name="input_eks_private_subnet_ids"></a> [eks\_private\_subnet\_ids](#input\_eks\_private\_subnet\_ids) | n/a | `list(string)` | n/a | yes |
 | <a name="input_eks_worker_node_access_cidrs"></a> [eks\_worker\_node\_access\_cidrs](#input\_eks\_worker\_node\_access\_cidrs) | Provide cidr based whitelist to envs require to be accessed from public via Firewall to internal NLB (e.g. Prods) | <pre>list(object({<br>    cidrs       = list(string)<br>    from_port   = number<br>    to_port     = number<br>    description = string<br>  }))</pre> | `[]` | no |
 | <a name="input_eks_worker_node_access_prefix"></a> [eks\_worker\_node\_access\_prefix](#input\_eks\_worker\_node\_access\_prefix) | Provide prefix based whitelist to envs require to be accessed from public without Firewall (e.g. DEV/QA) | <pre>list(object({<br>    prefix_list_ids = list(string)<br>    from_port       = number<br>    to_port         = number<br>    description     = string<br>  }))</pre> | `[]` | no |
