@@ -78,6 +78,6 @@ cache:
         echo "plan file exists, copying to $TF_ROOT"
         cp tmp/plan $TF_ROOT/plan
       fi
-     - terraform -chdir=$TF_ROOT init
+    - terraform -chdir=$TF_ROOT init
     - terraform -chdir=$TF_ROOT apply $OPTIONS
 
