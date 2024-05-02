@@ -1,90 +1,47 @@
 include:
+- project: "WOG/GVT/ADEX/ADEX/sense-eks-deployment"
+  ref: "develop"
+  file:
   - cicd/templates/.common.yml
-  - cicd/templates/.helmfile.yml
-  - cicd/templates/.terraform.yml
+- cicd/templates/.common.yml
+- cicd/templates/.helmfile.yml
+- cicd/templates/.terraform.yml
 
 
 stages:
-  #- copy
-  - validate
-  - plan
-  - apply
+#- copy
+- validate
+- copy
+- plan
+- apply
 
 
 workflow:
   rules:
-    - if: '$ENV == "dev"'
-    - if: '$ENV == "qa"'
-    - if: '$ENV == "prod"'
-    - if: '$ENV == "intra"'
-    - when: never
+  - if: '$ENV == "dev"'
+  - if: '$ENV == "qa"'
+  - if: '$ENV == "prod"'
+  - if: '$ENV == "intra"'
+  - when: never
 
 
 variables:
   TF_ROOT: environments/sol-$ENV
 
 
-# sol-eks:copy-all:
-#   stage: copy
-#   extends: .helm-builder
-#   environment: $ENV
-#   script:
-#     - |
-#       export INSTANCE_ID=$DEPLOYMENT_INSTANCE_ID
-#       export SCP_SOURCE_FOLDER=.
-#       export SOURCE=$SCP_SOURCE_FOLDER/repo.zip
-#       export EC2_USER=ubuntu
-#       export DEST=/home/$EC2_USER/tmp/tf-$CI_COMMIT_REF_SLUG
-#     - !reference [.ssm-clean-scp, script]
-
-
-# TODO: plan & apply
-# app-eks-terraform:validate:
-#  stage: validate
-#  extends: .terraform:validate
-#  environment: $ENV
-
-
-eks-terraform:plan:
-  stage: plan
-  extends: .terraform:plan
-#  needs:
-#    - app-eks-terraform:validate
+solace-eks-terraform:copy-artifacts-to-bastion:
+  stage: copy
   environment: $ENV
+  extends: .awscli-root-builder
   script:
-    - export OPTIONS="-target=module.eks"
-    - !reference [.terraform:plan, script]
+  - |
+    echo "SCP build artifacts into Bridge"
+    echo "****Folder***"
+    echo $CI_PROJECT_DIR
+    export EC2_USER=ubuntu
+    export DEST=/tmp/solace
+    export SCP_SOURCE_FOLDER=$CI_PROJECT_DIR
+    export SOURCE=$CI_PROJECT_DIR.zip
+    export INSTANCE_ID=$DEPLOYMENT_INSTANCE_ID
+  - !reference [.ssm-clean-scp, script]
 
-  
-solace-eks-terraform:plan:
-  stage: plan
-  extends: .terraform:plan
-#  needs:
-#    - app-eks-terraform:validate
-  environment: $ENV
-  script:
-    - export OPTIONS="-target=module.eks-solace"
-    - !reference [.terraform:plan, script]
-
-
-eks-terraform:apply:
-  stage: apply
-  extends: .terraform:apply
-  needs:
-    - eks-terraform:plan
-  environment: $ENV
-  script:
-    - export OPTIONS="--auto-approve plan"
-  #  - export OPTIONS="-target=module.eks-solace --auto-approve"
-    - !reference [.terraform:apply, script]
-
-
-solace-eks-terraform:apply:
-  stage: apply
-  extends: .terraform:apply
-  needs:
-    - solace-eks-terraform:plan
-  environment: $ENV
-  script:
-    - export OPTIONS="--auto-approve plan"
-    - !reference [.terraform:apply, script]
