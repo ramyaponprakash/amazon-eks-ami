@@ -38,7 +38,7 @@ solace-eks-terraform:copy-artifacts-to-bastion:
     echo "SCP build artifacts into Bridge"
     echo "****Folder***"
     echo $CI_PROJECT_DIR
-    export EC2_USER=ubuntu
+    export EC2_USER=ec2-user
     export DEST=/tmp/solace
     export SCP_SOURCE_FOLDER=$CI_PROJECT_DIR
     export SOURCE=$CI_PROJECT_DIR.zip
