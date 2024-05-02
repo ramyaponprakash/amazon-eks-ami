@@ -42,6 +42,7 @@ solace-eks-terraform:copy-artifacts-to-bastion:
     export DEST=/tmp/solace
     export SCP_SOURCE_FOLDER=$CI_PROJECT_DIR
     export SOURCE=$CI_PROJECT_DIR.zip
-    export INSTANCE_ID=$DEPLOYMENT_INSTANCE_ID
+  #  export INSTANCE_ID=$DEPLOYMENT_INSTANCE_ID 
+    export INSTANCE_ID=SOL_QA_BASTION_ID
   - !reference [.ssm-clean-scp, script]
 
