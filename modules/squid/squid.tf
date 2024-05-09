@@ -126,7 +126,7 @@ resource "aws_autoscaling_group" "squid_asg" {
   tags = [
     {
       key                 = "Name"
-      value               = "test-${var.vpc_name}-squid"
+      value               = "${var.vpc_name}-squid"
       propagate_at_launch = true
     },
     {
@@ -169,7 +169,7 @@ resource "aws_autoscaling_group" "squid_asg_green" {
   tags = [
     {
       key                 = "Name"
-      value               = "${var.vpc_name}-squid"
+      value               = "test-${var.vpc_name}-squid"
       propagate_at_launch = true
     },
     {
