@@ -134,15 +134,16 @@ bastion_secgrp_ingress_prefix_list = []
 bastion_secgrp_ingress_secgrp      = []
 
 squid = {
-  vpc_id         = ""
-  subnet_ids     = []
-  subnet_gw_ids  = []
-  iam_role       = "adex-squid-role"
-  ami_squid      = "ami-0b6b2786d08d30845"
-  zone_id        = "Z0608925I3JGEL99Z85J"
-  record_name    = "squid-solx"
-  squid_key_name = "adex-squid-solx"
-  kms_key_id     = "arn:aws:kms:ap-southeast-1:704140326871:key/0e7a17d3-f755-49f4-958b-c8e3976f4d4f"
+  vpc_id          = ""
+  subnet_ids      = []
+  subnet_gw_ids   = []
+  iam_role        = "adex-squid-role"
+  ami_squid       = "ami-0b6b2786d08d30845"
+  ami_squid_green = "ami-02084325ceb8d3f06"
+  zone_id         = "Z0608925I3JGEL99Z85J"
+  record_name     = "squid-solx"
+  squid_key_name  = "adex-squid-solx"
+  kms_key_id      = "arn:aws:kms:ap-southeast-1:704140326871:key/0e7a17d3-f755-49f4-958b-c8e3976f4d4f"
 }
 
 squid_secgrp_ingress_cidr = [

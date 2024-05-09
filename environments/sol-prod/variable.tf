@@ -24,6 +24,11 @@ variable "ami_squid" {
   default = ""
 }
 
+variable "ami_squid_green" {
+  type    = string
+  default = ""
+}
+
 variable "squid_key_name" {
   type    = string
   default = ""
@@ -234,15 +239,16 @@ variable "bastion_secgrp_ingress_secgrp" {
 
 variable "squid" {
   type = object({
-    instance_type  = optional(string, "t3.medium")
-    subnet_ids     = list(string)
-    subnet_gw_ids  = list(string)
-    iam_role       = string
-    zone_id        = string
-    record_name    = string
-    ami_squid      = string
-    squid_key_name = string
-    kms_key_id     = string
+    instance_type   = optional(string, "t3.medium")
+    subnet_ids      = list(string)
+    subnet_gw_ids   = list(string)
+    iam_role        = string
+    zone_id         = string
+    record_name     = string
+    ami_squid       = string
+    ami_squid_green = string
+    squid_key_name  = string
+    kms_key_id      = string
   })
 }
 
