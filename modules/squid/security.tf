@@ -4,9 +4,33 @@ resource "aws_security_group" "squidproxy" {
   #description = "Allows traffic from and to the EC2 instances
 
   egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
+    from_port   = 3128
+    to_port     = 3128
+    protocol    = "tcp"
+    cidr_blocks = ["172.16.110.0/24"]
+    description = "to prod squid"
+  }
+
+  egress {
+    from_port   = 4122
+    to_port     = 4122
+    protocol    = "tcp"
+    cidr_blocks = ["172.16.109.0/24"]
+    description = "to dsm"
+  }
+
+  egress {
+    from_port   = 4120
+    to_port     = 4120
+    protocol    = "tcp"
+    cidr_blocks = ["172.16.109.0/24"]
+    description = "to dsm"
+  }
+
+  egress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
