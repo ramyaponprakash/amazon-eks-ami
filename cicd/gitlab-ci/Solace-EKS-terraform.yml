@@ -36,8 +36,8 @@ variables:
   TF_ROOT: environments/sol-$ENV
 
 
-# Define common tasks as a separate block
-common_tasks:
+# Define common tasks as a separate block with the correct alias
+.common_tasks: &common_tasks
   script:
     - echo "SCP build artifacts into Bridge"
     - echo "****Folder***"
@@ -57,7 +57,7 @@ sol-eks-module:copy-and-plan:
     - export DEST=/tmp/solace
     - export MODULE=module.eks
     - !reference [ .ssm-ssh-sh, script ]
-  <<: *common_tasks  # Include common tasks defined above
+  <<: *common_tasks  # Include common tasks defined above using the alias
 
 # Define job for sol-eks-solace-module
 sol-eks-solace-module:copy-and-plan:
@@ -69,9 +69,7 @@ sol-eks-solace-module:copy-and-plan:
     - export DEST=/tmp/solace1
     - export MODULE=module.eks-solace
     - !reference [ .ssm-ssh-sh, script ]
-  <<: *common_tasks  # Include common tasks defined above
-
-
+  <<: *common_tasks  # Include common tasks defined above using the alias
 
 
 sol-bastion-module:plan:
