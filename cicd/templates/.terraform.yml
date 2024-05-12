@@ -80,9 +80,8 @@ cache:
     export SCP_SOURCE_FOLDER=$CI_PROJECT_DIR
     export SOURCE=$CI_PROJECT_DIR.zip
     export INSTANCE_ID=$SOL_QA_BASTION_ID
-    export MODULE=module.eks
   - !reference [.ssm-clean-scp, script]
-  - export SSH_CMD="cd $DEST; unzip $DEST/sense-eks-deployment.zip; cd $DEST/$SCP_SOURCE_FOLDER/environments/sol-$ENV/; terraform init; terraform plan -target=$MODULE; rm -rf /tmp/solace"
+  - export SSH_CMD="cd $DEST; unzip $DEST/sense-eks-deployment.zip; cd $DEST/$SCP_SOURCE_FOLDER/environments/sol-$ENV/; terraform init; terraform plan $OPTIONS; rm -rf /tmp/solace"
   - !reference [ .ssm-ssh-sh, script ]
 
 
