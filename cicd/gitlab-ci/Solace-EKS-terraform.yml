@@ -47,7 +47,7 @@ variables:
 
 eks-terraform:plan:
   stage: plan
-  extends: .terraform:plan
+  extends: .terraform:plan-module
 #  needs:
 #    - app-eks-terraform:validate
   environment: $ENV
@@ -56,15 +56,15 @@ eks-terraform:plan:
     - !reference [.terraform:plan-module, script]
 
   
-solace-eks-terraform:plan:
-  stage: plan
-  extends: .terraform:plan
-#  needs:
-#    - app-eks-terraform:validate
-  environment: $ENV
-  script:
-    - export OPTIONS="-target=module.eks-solace"
-    - !reference [.terraform:plan-module, script]
+#solace-eks-terraform:plan:
+#  stage: plan
+#  extends: .terraform:plan-module
+##  needs:
+##    - app-eks-terraform:validate
+#  environment: $ENV
+#  script:
+#    - export OPTIONS="-target=module.eks-solace"
+#    - !reference [.terraform:plan-module, script]
 
 solace-bastion-terraform:plan:
   stage: plan
