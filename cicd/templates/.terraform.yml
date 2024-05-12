@@ -52,6 +52,7 @@ cache:
 .terraform:plan:
   stage: plan
   extends: .terraform-builder
+  when: manual
   artifacts:
     public: false
     paths:
@@ -70,6 +71,7 @@ cache:
 .terraform:plan-module:
   stage: plan
   extends: .awscli-root-builder
+  when: manual
   script:
   - |
     echo "SCP terraformf files into Bastion and do tf plan for a specific module"

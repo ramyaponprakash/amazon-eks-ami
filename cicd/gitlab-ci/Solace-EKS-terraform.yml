@@ -9,7 +9,6 @@ include:
 
 
 stages:
-#- copy
 - validate
 - copy
 - plan
@@ -29,7 +28,7 @@ variables:
   TF_ROOT: environments/sol-$ENV
 
 
-solace-eks-module:copy-and-plan:
+sol-eks-module:copy-and-plan:
   stage: plan
   environment: $ENV
   extends: .awscli-root-builder
@@ -52,7 +51,30 @@ solace-eks-module:copy-and-plan:
   - !reference [ .ssm-ssh-sh, script ]
 
 
-solace-bastion-terraform:plan:
+sol-eks-solace-module:copy-and-plan:
+  stage: plan
+  environment: $ENV
+  extends: .awscli-root-builder
+  script:
+  - |
+    echo "SCP build artifacts into Bridge"
+    echo "****Folder***"
+    echo $CI_PROJECT_DIR
+    export EC2_USER=ec2-user
+    export DEST=/tmp/solace
+    export SCP_SOURCE_FOLDER=$CI_PROJECT_DIR
+    echo "Source folder is $SCP_SOURCE_FOLDER"
+    export SOURCE=$CI_PROJECT_DIR.zip
+    echo "Source file is $SOURCE"
+    export INSTANCE_ID=$SOL_QA_BASTION_ID
+    export MODULE=module.eks-solace
+  - !reference [.ssm-clean-scp, script]
+  - export SSH_CMD="cd $DEST; unzip $DEST/sense-eks-deployment.zip; cd $DEST/$SCP_SOURCE_FOLDER/environments/sol-$ENV/; terraform init; terraform plan -target=$MODULE; rm -rf /tmp/solace"
+  #- export SSH_CMD="cd /tmp/solace; unzip /tmp/solace/sense-eks-deployment.zip; cd /tmp/solace/builds/wog/gvt/adex/adex/sense-eks-deployment/environments/sol-$ENV; terraform init; terraform plan -target=module.eks"
+  - !reference [ .ssm-ssh-sh, script ]
+
+
+sol-bastion-module:plan:
   stage: plan
   extends: .terraform:plan
 #  needs:
@@ -63,7 +85,7 @@ solace-bastion-terraform:plan:
     - !reference [.terraform:plan, script]
     
 
-solace-squid-terraform:plan:
+sol-squid-module:plan:
   stage: plan
   extends: .terraform:plan
 #  needs:
@@ -74,11 +96,11 @@ solace-squid-terraform:plan:
     - !reference [.terraform:plan, script]
 
 
-eks-terraform:apply:
+sol-eks-module:apply:
   stage: apply
   extends: .terraform:apply
   needs:
-    - solace-eks-module:copy-and-plan
+    - sol-eks-module:copy-and-plan
   environment: $ENV
   script:
     - export OPTIONS="--auto-approve plan"
@@ -86,7 +108,19 @@ eks-terraform:apply:
     - !reference [.terraform:apply, script]
 
 
-solace-bastion-terraform:apply:
+sol-eks-solace-module:apply:
+  stage: apply
+  extends: .terraform:apply
+  needs:
+    - sol-eks-solace-module:copy-and-plan
+  environment: $ENV
+  script:
+    - export OPTIONS="--auto-approve plan"
+  #  - export OPTIONS="-target=module.eks-solace --auto-approve"
+    - !reference [.terraform:apply, script]
+
+
+sol-bastion-module:apply:
   stage: apply
   extends: .terraform:apply
   needs:
@@ -97,11 +131,11 @@ solace-bastion-terraform:apply:
     - !reference [.terraform:apply, script]
 
 
-solace-squid-terraform:apply:
+sol-squid-module:apply:
   stage: apply
   extends: .terraform:apply
   needs:
-    - solace-squid-terraform:plan
+    - sol-squid-module:plan
   environment: $ENV
   script:
     - export OPTIONS="--auto-approve plan"
