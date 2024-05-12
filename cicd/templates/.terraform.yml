@@ -77,7 +77,7 @@ cache:
     - export SOURCE=$CI_PROJECT_DIR.zip
     - export DEST=/tmp/solace
     - !reference [.ssm-clean-scp, script]
-    - export SSH_CMD="cd $DEST; unzip $DEST/sense-eks-deployment.zip; cd $DEST/$SCP_SOURCE_FOLDER/environments/sol-$ENV/; terraform init; terraform plan -target=$MODULE"
+    - export SSH_CMD="cd $DEST; unzip $DEST/sense-eks-deployment.zip; cd $DEST/$SCP_SOURCE_FOLDER/environments/sol-$ENV/; terraform init -reconfigure; terraform plan -target=$MODULE"
     - !reference [ .ssm-ssh-sh, script ]
 
 .terraform:plan-module:
