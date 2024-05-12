@@ -25,7 +25,8 @@ workflow:
       INSTANCE_ID: "$SOL_QA_BASTION_ID"
   - if: '$ENV == "prod"'
     variables:
-      INSTANCE_ID: "$SOL_PROD_BASTION_ID"
+  #    INSTANCE_ID: "$SOL_PROD_BASTION_ID"
+      INSTANCE_ID: "i-0bfa8a399230f5ef0" # for testing only
   - if: '$ENV == "intra"'
     variables:
       INSTANCE_ID: "$SOL_INTRA_BASTION_ID"
@@ -86,7 +87,7 @@ sol-eks-module:apply:
     - sol-eks-module:copy-and-plan
   environment: $ENV
   script:
-    - export OPTIONS="--auto-approve plan"
+    - export OPTIONS="--auto-approve plannnn"
   #  - export OPTIONS="-target=module.eks-solace --auto-approve"
     - !reference [.terraform:apply, script]
     - echo " 'apply' task of eks module in sol-$ENV environment is completed"
@@ -99,7 +100,7 @@ sol-eks-solace-module:apply:
     - sol-eks-solace-module:copy-and-plan
   environment: $ENV
   script:
-    - export OPTIONS="--auto-approve plan"
+    - export OPTIONS="--auto-approve plannnn"
   #  - export OPTIONS="-target=module.eks-solace --auto-approve"
     - !reference [.terraform:apply, script]
     - echo " 'apply' task of eks-solace module in sol-$ENV environment is completed"
@@ -112,7 +113,7 @@ sol-bastion-module:apply:
     - sol-bastion-module:plan
   environment: $ENV
   script:
-    - export OPTIONS="--auto-approve plan"
+    - export OPTIONS="--auto-approve plannnn"
     - !reference [.terraform:apply, script]
     - echo " 'apply' task of bastion module in sol-$ENV environment is completed"
 
@@ -124,6 +125,6 @@ sol-squid-module:apply:
     - sol-squid-module:plan
   environment: $ENV
   script:
-    - export OPTIONS="--auto-approve plan"
+    - export OPTIONS="--auto-approve plannnn"
     - !reference [.terraform:apply, script]
     - echo " 'apply' task of squid module in sol-$ENV environment is completed"
