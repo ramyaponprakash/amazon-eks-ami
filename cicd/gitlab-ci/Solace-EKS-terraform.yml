@@ -47,6 +47,8 @@ variables:
     - export DEST=/tmp/solace
     - !reference [.ssm-clean-scp, script]
     - export SSH_CMD="cd $DEST; unzip $DEST/sense-eks-deployment.zip; cd $DEST/$SCP_SOURCE_FOLDER/environments/sol-$ENV/; terraform init; terraform plan -target=$MODULE; rm -rf $DEST"
+    - !reference [ .ssm-ssh-sh, script ]
+
 
 # Define job for sol-eks-module
 sol-eks-module:copy-and-plan:
@@ -56,7 +58,6 @@ sol-eks-module:copy-and-plan:
   when: manual
   script:
     - export MODULE=module.eks
-    - !reference [ .ssm-ssh-sh, script ]
   <<: *common_tasks  # Include common tasks defined above using the alias
 
 # Define job for sol-eks-solace-module
@@ -67,7 +68,6 @@ sol-eks-solace-module:copy-and-plan:
   when: manual
   script:
     - export MODULE=module.eks-solace
-    - !reference [ .ssm-ssh-sh, script ]
   <<: *common_tasks  # Include common tasks defined above using the alias
 
 
