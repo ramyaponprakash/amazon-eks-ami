@@ -32,6 +32,7 @@ sol-eks-module:copy-and-plan:
   stage: plan
   environment: $ENV
   extends: .awscli-root-builder
+  when: manual
   script:
   - |
     echo "SCP build artifacts into Bridge"
@@ -55,6 +56,7 @@ sol-eks-solace-module:copy-and-plan:
   stage: plan
   environment: $ENV
   extends: .awscli-root-builder
+  when: manual
   script:
   - |
     echo "SCP build artifacts into Bridge"
