@@ -72,7 +72,7 @@ cache:
   extends: .awscli-root-builder
   script:
   - |
-    echo "SCP terraformf files into Bastion and do tf plan for "
+    echo "SCP terraformf files into Bastion and do tf plan for a specific module"
     echo "****Folder***"
     echo $CI_PROJECT_DIR
     export EC2_USER=ec2-user
@@ -80,7 +80,7 @@ cache:
     export SOURCE=$CI_PROJECT_DIR.zip
     export INSTANCE_ID=$SOL_QA_BASTION_ID
   - !reference [.ssm-clean-scp, script]
-  - export SSH_CMD="cd $DEST; unzip $DEST/sense-eks-deployment.zip; cd $DEST/$SCP_SOURCE_FOLDER/environments/sol-$ENV/; terraform init; terraform plan $OPTIONS; rm -rf /tmp/solace"
+  - export SSH_CMD="cd $DEST; unzip $DEST/sense-eks-deployment.zip; cd $DEST/$SCP_SOURCE_FOLDER/environments/sol-$ENV/; terraform init; terraform plan -target=$MODULE; rm -rf /tmp/solace"
   - !reference [ .ssm-ssh-sh, script ]
 
 

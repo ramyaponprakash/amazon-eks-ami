@@ -52,7 +52,7 @@ eks-terraform:plan:
 #    - app-eks-terraform:validate
   environment: $ENV
   script:
-    - export OPTIONS="-target=module.eks"
+    - export MODULE=module.eks
     - export DEST=/tmp/eks
     - !reference [.terraform:plan-module, script]
 
@@ -64,7 +64,7 @@ solace-eks-terraform:plan:
 #    - app-eks-terraform:validate
   environment: $ENV
   script:
-    - export OPTIONS="-target=module.eks-solace"
+    - export MODULE=module.eks-solace
     - export DEST=/tmp/eks-solace
     - !reference [.terraform:plan-module, script]
 
