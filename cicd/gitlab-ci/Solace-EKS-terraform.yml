@@ -29,7 +29,7 @@ variables:
   TF_ROOT: environments/sol-$ENV
 
 
-solace-eks-modulem:copy-and-plan:
+solace-eks-module:copy-and-plan:
   stage: plan
   environment: $ENV
   extends: .awscli-root-builder
@@ -78,7 +78,7 @@ eks-terraform:apply:
   stage: apply
   extends: .terraform:apply
   needs:
-    - solace-eks-terraform:copy-and-plan
+    - solace-eks-module:copy-and-plan
   environment: $ENV
   script:
     - export OPTIONS="--auto-approve plan"
