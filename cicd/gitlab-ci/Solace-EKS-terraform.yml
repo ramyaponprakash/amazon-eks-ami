@@ -56,7 +56,7 @@ sol-eks-solace-module:copy-and-plan:
   when: manual
   script:
     - export MODULE=module.eks-solace
-  - !reference [.terraform:copy-plan, script]
+    - !reference [.terraform:copy-plan, script]
 
 
 sol-bastion-module:plan:
