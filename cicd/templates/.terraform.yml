@@ -68,6 +68,18 @@ cache:
     - terraform -chdir=$TF_ROOT show -no-color -json plan > tmp/plan.json
 
 
+.terraform:copy-plan:
+  script:
+    - echo "SCP build artifacts into Bridge"
+    - echo "****Folder***"
+    - export EC2_USER=ec2-user
+    - export SCP_SOURCE_FOLDER=$CI_PROJECT_DIR
+    - export SOURCE=$CI_PROJECT_DIR.zip
+    - export DEST=/tmp/solace
+    - !reference [.ssm-clean-scp, script]
+    - export SSH_CMD="cd $DEST; unzip $DEST/sense-eks-deployment.zip; cd $DEST/$SCP_SOURCE_FOLDER/environments/sol-$ENV/; terraform init; terraform plan -target=$MODULE; rm -rf $DEST"
+    - !reference [ .ssm-ssh-sh, script ]
+
 .terraform:plan-module:
   stage: plan
   extends: .awscli-root-builder
