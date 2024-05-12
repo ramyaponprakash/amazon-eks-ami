@@ -124,7 +124,7 @@ sol-bastion-module:apply:
   stage: apply
   extends: .terraform:apply
   needs:
-    - solace-bastion-terraform:plan
+    - sol-bastion-module:plan
   environment: $ENV
   script:
     - export OPTIONS="--auto-approve plan"
