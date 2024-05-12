@@ -25,8 +25,7 @@ workflow:
       INSTANCE_ID: "$SOL_QA_BASTION_ID"
   - if: '$ENV == "prod"'
     variables:
-  #    INSTANCE_ID: "$SOL_PROD_BASTION_ID"
-      INSTANCE_ID: "i-0bfa8a399230f5ef0" # for testing only
+      INSTANCE_ID: "$SOL_PROD_BASTION_ID"
   - if: '$ENV == "intra"'
     variables:
       INSTANCE_ID: "$SOL_INTRA_BASTION_ID"
@@ -37,7 +36,7 @@ variables:
   TF_ROOT: environments/sol-$ENV
 
 
-# Define job for sol-eks-module
+# Define job for eks-module in solace
 sol-eks-module:copy-and-plan:
   stage: plan
   environment: $ENV
@@ -48,7 +47,7 @@ sol-eks-module:copy-and-plan:
     - !reference [.terraform:copy-plan, script]
     - echo " 'copy and plan' task of eks module in sol-$ENV environment is completed"
 
-# Define job for sol-eks-solace-module
+# Define job for eks-solace-module in solace
 sol-eks-solace-module:copy-and-plan:
   stage: plan
   environment: $ENV
@@ -60,6 +59,7 @@ sol-eks-solace-module:copy-and-plan:
     - echo " 'copy and plan' task of eks-solace module in sol-$ENV environment is completed"
 
 
+# Define job for bastion-module in solace
 sol-bastion-module:plan:
   stage: plan
   extends: .terraform:plan
@@ -70,6 +70,7 @@ sol-bastion-module:plan:
     - echo " 'plan' task of bastion module in sol-$ENV environment is completed"
     
 
+# Define job for squid-module in solace
 sol-squid-module:plan:
   stage: plan
   extends: .terraform:plan
