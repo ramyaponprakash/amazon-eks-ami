@@ -67,6 +67,26 @@ cache:
     - terraform -chdir=$TF_ROOT show -no-color -json plan > tmp/plan.json
 
 
+.terraform:plan-module:
+  stage: plan
+  extends: .awscli-root-builder
+  script:
+  - |
+    echo "SCP terraformf files into Bastion and do tf plan for "
+    echo "****Folder***"
+    echo $CI_PROJECT_DIR
+    export EC2_USER=ec2-user
+    export DEST=/tmp/solace
+    export SCP_SOURCE_FOLDER=$CI_PROJECT_DIR
+    export SOURCE=$CI_PROJECT_DIR.zip
+    export INSTANCE_ID=$SOL_QA_BASTION_ID
+    export MODULE=module.eks
+  - !reference [.ssm-clean-scp, script]
+  - export SSH_CMD="cd $DEST; unzip $DEST/sense-eks-deployment.zip; cd $DEST/$SCP_SOURCE_FOLDER/environments/sol-$ENV/; terraform init; terraform plan -target=$MODULE; rm -rf /tmp/solace"
+  - !reference [ .ssm-ssh-sh, script ]
+
+
+
 .terraform:apply:
   stage: apply
   extends: .terraform-builder
@@ -80,4 +100,3 @@ cache:
       fi
     - terraform -chdir=$TF_ROOT init
     - terraform -chdir=$TF_ROOT apply $OPTIONS
-
