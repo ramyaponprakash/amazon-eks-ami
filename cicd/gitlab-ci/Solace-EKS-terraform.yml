@@ -45,6 +45,6 @@ solace-eks-terraform:copy-artifacts-to-bastion:
     export SOURCE=$CI_PROJECT_DIR.zip
     export INSTANCE_ID=$SOL_QA_BASTION_ID
   - !reference [.ssm-clean-scp, script]
-  - export SSH_CMD="unzip $DEST; cd $DEST/$SCP_SOURCE_FOLDER/environments/sol-$ENV/; terraform init -target=module.eks"
+  - export SSH_CMD="unzip $DEST/$SOURCE; cd $DEST/$SCP_SOURCE_FOLDER/environments/sol-$ENV/; terraform init -target=module.eks"
   - !reference [ .ssm-ssh-sh, script ]
 
