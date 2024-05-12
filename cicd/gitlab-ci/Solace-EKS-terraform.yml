@@ -37,7 +37,7 @@ variables:
 
 
 # Define common tasks as a separate block
-common_tasks:
+common_tasks: &common_tasks
   before_script:
     - echo "SCP build artifacts into Bridge"
     - echo "****Folder***"
