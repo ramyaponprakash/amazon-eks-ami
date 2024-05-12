@@ -18,9 +18,17 @@ stages:
 workflow:
   rules:
   - if: '$ENV == "dev"'
+    variables:
+      INSTANCE_ID: "$SOL_DEV_BASTION_ID"
   - if: '$ENV == "qa"'
+    variables:
+      INSTANCE_ID: "$SOL_QA_BASTION_ID"
   - if: '$ENV == "prod"'
+    variables:
+      INSTANCE_ID: "$SOL_PROD_BASTION_ID"
   - if: '$ENV == "intra"'
+    variables:
+      INSTANCE_ID: "$SOL_INTRA_BASTION_ID"
   - when: never
 
 
@@ -28,59 +36,47 @@ variables:
   TF_ROOT: environments/sol-$ENV
 
 
+# Define common tasks as a separate block
+common_tasks:
+  before_script:
+    - echo "SCP build artifacts into Bridge"
+    - echo "****Folder***"
+    - export EC2_USER=ec2-user
+    - export SCP_SOURCE_FOLDER=$CI_PROJECT_DIR
+    - export SOURCE=$CI_PROJECT_DIR.zip
+  after_script:
+    - !reference [.ssm-clean-scp, script]
+    - export SSH_CMD="cd $DEST; unzip $DEST/sense-eks-deployment.zip; cd $DEST/$SCP_SOURCE_FOLDER/environments/sol-$ENV/; terraform init; terraform plan -target=$MODULE; rm -rf $DEST"
+
+# Define job for sol-eks-module
 sol-eks-module:copy-and-plan:
   stage: plan
   environment: $ENV
   extends: .awscli-root-builder
   when: manual
   script:
-  - |
-    echo "SCP build artifacts into Bridge"
-    echo "****Folder***"
-    echo $CI_PROJECT_DIR
-    export EC2_USER=ec2-user
-    export DEST=/tmp/solace
-    export SCP_SOURCE_FOLDER=$CI_PROJECT_DIR
-    echo "Source folder is $SCP_SOURCE_FOLDER"
-    export SOURCE=$CI_PROJECT_DIR.zip
-    echo "Source file is $SOURCE"
-    export INSTANCE_ID=$SOL_QA_BASTION_ID
-    export MODULE=module.eks
-  - !reference [.ssm-clean-scp, script]
-  - export SSH_CMD="cd $DEST; unzip $DEST/sense-eks-deployment.zip; cd $DEST/$SCP_SOURCE_FOLDER/environments/sol-$ENV/; terraform init; terraform plan -target=$MODULE; rm -rf /tmp/solace"
-  #- export SSH_CMD="cd /tmp/solace; unzip /tmp/solace/sense-eks-deployment.zip; cd /tmp/solace/builds/wog/gvt/adex/adex/sense-eks-deployment/environments/sol-$ENV; terraform init; terraform plan -target=module.eks"
-  - !reference [ .ssm-ssh-sh, script ]
+    - export DEST=/tmp/solace
+    - export MODULE=module.eks
+    - !reference [ .ssm-ssh-sh, script ]
+  <<: *common_tasks  # Include common tasks defined above
 
-
+# Define job for sol-eks-solace-module
 sol-eks-solace-module:copy-and-plan:
   stage: plan
   environment: $ENV
   extends: .awscli-root-builder
   when: manual
   script:
-  - |
-    echo "SCP build artifacts into Bridge"
-    echo "****Folder***"
-    echo $CI_PROJECT_DIR
-    export EC2_USER=ec2-user
-    export DEST=/tmp/solace1
-    export SCP_SOURCE_FOLDER=$CI_PROJECT_DIR
-    echo "Source folder is $SCP_SOURCE_FOLDER"
-    export SOURCE=$CI_PROJECT_DIR.zip
-    echo "Source file is $SOURCE"
-    export INSTANCE_ID=$SOL_QA_BASTION_ID
-    export MODULE=module.eks-solace
-  - !reference [.ssm-clean-scp, script]
-  - export SSH_CMD="cd $DEST; unzip $DEST/sense-eks-deployment.zip; cd $DEST/$SCP_SOURCE_FOLDER/environments/sol-$ENV/; terraform init; terraform plan -target=$MODULE; rm -rf /tmp/solace1"
-  #- export SSH_CMD="cd /tmp/solace; unzip /tmp/solace/sense-eks-deployment.zip; cd /tmp/solace/builds/wog/gvt/adex/adex/sense-eks-deployment/environments/sol-$ENV; terraform init; terraform plan -target=module.eks"
-  - !reference [ .ssm-ssh-sh, script ]
+    - export DEST=/tmp/solace1
+    - export MODULE=module.eks-solace
+    - !reference [ .ssm-ssh-sh, script ]
+  <<: *common_tasks  # Include common tasks defined above
+
 
 
 sol-bastion-module:plan:
   stage: plan
   extends: .terraform:plan
-#  needs:
-#    - app-eks-terraform:validate
   environment: $ENV
   script:
     - export OPTIONS="-target=module.bastion"
@@ -90,8 +86,6 @@ sol-bastion-module:plan:
 sol-squid-module:plan:
   stage: plan
   extends: .terraform:plan
-#  needs:
-#    - app-eks-terraform:validate
   environment: $ENV
   script:
     - export OPTIONS="-target=module.squid"
