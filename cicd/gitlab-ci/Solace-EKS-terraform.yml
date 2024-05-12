@@ -37,14 +37,13 @@ variables:
 
 
 # Define common tasks as a separate block
-common_tasks: &common_tasks
-  before_script:
+common_tasks:
+  script:
     - echo "SCP build artifacts into Bridge"
     - echo "****Folder***"
     - export EC2_USER=ec2-user
     - export SCP_SOURCE_FOLDER=$CI_PROJECT_DIR
     - export SOURCE=$CI_PROJECT_DIR.zip
-  after_script:
     - !reference [.ssm-clean-scp, script]
     - export SSH_CMD="cd $DEST; unzip $DEST/sense-eks-deployment.zip; cd $DEST/$SCP_SOURCE_FOLDER/environments/sol-$ENV/; terraform init; terraform plan -target=$MODULE; rm -rf $DEST"
 
@@ -71,6 +70,7 @@ sol-eks-solace-module:copy-and-plan:
     - export MODULE=module.eks-solace
     - !reference [ .ssm-ssh-sh, script ]
   <<: *common_tasks  # Include common tasks defined above
+
 
 
 
