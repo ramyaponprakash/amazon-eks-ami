@@ -29,8 +29,8 @@ variables:
   TF_ROOT: environments/sol-$ENV
 
 
-solace-eks-terraform:copy-and-plan:
-  stage: copy
+solace-eks-modulem:copy-and-plan:
+  stage: plan
   environment: $ENV
   extends: .awscli-root-builder
   script:
