@@ -113,7 +113,7 @@ sol-eks-module:apply:
   stage: apply
   extends: .terraform:apply
   needs:
-    - sol-eks-module:copy-and-plan
+    - sol-eks-module:terraform-init-plan
   environment: $ENV
   script:
     - export OPTIONS="--auto-approve plannnn"
@@ -126,7 +126,7 @@ sol-eks-solace-module:apply:
   stage: apply
   extends: .terraform:apply
   needs:
-    - sol-eks-solace-module:copy-and-plan
+    - sol-eks-solace-module:terraform-init-plan
   environment: $ENV
   script:
     - export OPTIONS="--auto-approve plannnn"
