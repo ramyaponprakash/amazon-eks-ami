@@ -70,8 +70,7 @@ cache:
 
 .terraform:copy:
   script:
-    - echo "SCP build artifacts into Bridge"
-    - echo "****Folder***"
+    - echo "SCP artifacts into Bastion"
     - export EC2_USER=ec2-user
     - export SCP_SOURCE_FOLDER=$CI_PROJECT_DIR
     - export SOURCE=$CI_PROJECT_DIR.zip
@@ -88,7 +87,7 @@ cache:
     - export EC2_USER=ec2-user
     - export SCP_SOURCE_FOLDER=$CI_PROJECT_DIR
     - export DEST=/tmp/solace
-    - export SSH_CMD="cd /tmp/solace/builds/wog/gvt/adex/adex/sense-eks-deployment/environments/sol-$ENV/; ls -ltr; rm -rf .terraform; terraform init; ls -la; terraform plan -target=$MODULE"
+    - export SSH_CMD="terraform -chdir=/tmp/solace/builds/wog/gvt/adex/adex/sense-eks-deployment/environments/sol-$ENV init;  ls -ltr /tmp/solace/builds/wog/gvt/adex/adex/sense-eks-deployment/environments/sol-$ENV/.terraform/modules/; terraform plan -target=$MODULE"
    # - export SSH_CMD="cd $DEST; unzip $DEST/sense-eks-deployment.zip; cd $DEST/$SCP_SOURCE_FOLDER/environments/sol-$ENV/; terraform init -reconfigure; terraform plan -target=$MODULE"
     - !reference [ .ssm-ssh-sh, script ]
 
