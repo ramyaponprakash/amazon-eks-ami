@@ -37,8 +37,8 @@ variables:
 
 
 # Define job for eks-module in solace
-sol-eks-module:copy-and-plan:
-  stage: plan
+sol-eks-module:copy:
+  stage: copy
   environment: $ENV
   extends: .awscli-root-builder
   when: manual
@@ -48,15 +48,43 @@ sol-eks-module:copy-and-plan:
     - echo " 'copy and plan' task of eks module in sol-$ENV environment is completed"
 
 # Define job for eks-solace-module in solace
-sol-eks-solace-module:copy-and-plan:
-  stage: plan
+sol-eks-solace-module:copy:
+  stage: copy
   environment: $ENV
   extends: .awscli-root-builder
   when: manual
   script:
     - export MODULE=module.eks-solace
     - !reference [.terraform:copy-plan, script]
-    - echo " 'copy and plan' task of eks-solace module in sol-$ENV environment is completed"
+    - echo " 'copy' task of eks-solace module in sol-$ENV environment is completed"
+
+sol-eks-module:terraform-init-plan:
+  stage: terraform_plan
+  environment: $ENV
+  extends: .awscli-root-builder
+  needs:
+    - sol-eks-module:copy
+  when: manual
+  script:
+    - echo "Initializing Terraform"
+    - aws ssm send-command --document-name "AWS-RunShellScript" --targets "Key=instanceids,Values=$INSTANCE_ID" --parameters '{"commands":["cd /tmp/solace/builds/wog/gvt/adex/adex/sense-eks-deployment/environments/sol-$ENV/", "terraform init"]}' --output text
+    - echo "Running Terraform Plan"
+    - aws ssm send-command --document-name "AWS-RunShellScript" --targets "Key=instanceids,Values=$INSTANCE_ID" --parameters '{"commands":["cd $DEST", "terraform plan -target=module.eks"]}' --output text
+
+
+sol-eks-solace-module:terraform-init-plan:
+  stage: terraform_plan
+  environment: $ENV
+  extends: .awscli-root-builder
+  needs:
+    - sol-eks-solace-module:copy
+  when: manual
+  script:
+    - echo "Initializing Terraform"
+    - aws ssm send-command --document-name "AWS-RunShellScript" --targets "Key=instanceids,Values=$INSTANCE_ID" --parameters '{"commands":["cd /tmp/solace/builds/wog/gvt/adex/adex/sense-eks-deployment/environments/sol-$ENV/", "terraform init"]}' --output text
+    - echo "Running Terraform Plan"
+    - aws ssm send-command --document-name "AWS-RunShellScript" --targets "Key=instanceids,Values=$INSTANCE_ID" --parameters '{"commands":["cd $DEST", "terraform plan -target=module.eks"]}' --output text
+
 
 
 # Define job for bastion-module in solace
