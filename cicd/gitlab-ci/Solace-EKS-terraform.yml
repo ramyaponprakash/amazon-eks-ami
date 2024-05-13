@@ -60,7 +60,7 @@ sol-eks-module:terraform-init-plan:
   when: manual
   script:
     - export MODULE=module.eks
-    - !reference [.terraform:plan-module, script]
+    - !reference [.terraform:copy-plan, script]
     - echo " 'plan' task of terraform eks module of sol-$ENV environment is completed"
 
 sol-eks-solace-module:terraform-init-plan:
@@ -72,7 +72,7 @@ sol-eks-solace-module:terraform-init-plan:
   when: manual
   script:
     - export MODULE=module.eks-solace
-    - !reference [.terraform:plan-module, script]
+    - !reference [.terraform:copy-plan, script]
     - echo " 'plan' task of terraform eks-solace module of sol-$ENV environment is completed"
 
 
