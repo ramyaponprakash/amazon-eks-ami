@@ -81,7 +81,7 @@ resource "aws_launch_template" "squid_launch_template_green" {
       delete_on_termination = true
       volume_type           = "gp2"
       encrypted             = "true"
-      kms_key_id            = var.squid.kms_key_id
+      kms_key_id            = var.squid.kms_key_id_green
     }
   }
   monitoring {
