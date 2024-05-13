@@ -67,9 +67,9 @@ sol-eks-module:terraform-init-plan:
   when: manual
   script:
     - echo "Initializing Terraform"
-    - aws ssm send-command --document-name "AWS-RunShellScript" --targets "Key=instanceids,Values=$INSTANCE_ID" --parameters '{"commands":["cd /tmp/solace/builds/wog/gvt/adex/adex/sense-eks-deployment/environments/sol-$ENV/", "terraform init"]}' --output text
+    - aws ssm send-command --document-name "AWS-RunShellScript" --targets "Key=instanceids,Values=$INSTANCE_ID" --parameters '{"commands":["cd /tmp/solace/builds/wog/gvt/adex/adex/sense-eks-deployment/environments/sol-$ENV/", "terraform init > terraform_init_log_eks.txt 2>&1"]}' --output text
     - echo "Running Terraform Plan"
-    - aws ssm send-command --document-name "AWS-RunShellScript" --targets "Key=instanceids,Values=$INSTANCE_ID" --parameters '{"commands":["cd $DEST", "terraform plan -target=module.eks"]}' --output text
+    - aws ssm send-command --document-name "AWS-RunShellScript" --targets "Key=instanceids,Values=$INSTANCE_ID" --parameters '{"commands":["cd /tmp/solace/builds/wog/gvt/adex/adex/sense-eks-deployment/environments/sol-$ENV/", "terraform plan -target=module.eks > terraform_plan_log_eks.txt 2>&1"]}' --output text
 
 
 sol-eks-solace-module:terraform-init-plan:
@@ -81,9 +81,9 @@ sol-eks-solace-module:terraform-init-plan:
   when: manual
   script:
     - echo "Initializing Terraform"
-    - aws ssm send-command --document-name "AWS-RunShellScript" --targets "Key=instanceids,Values=$INSTANCE_ID" --parameters '{"commands":["cd /tmp/solace/builds/wog/gvt/adex/adex/sense-eks-deployment/environments/sol-$ENV/", "terraform init"]}' --output text
+    - aws ssm send-command --document-name "AWS-RunShellScript" --targets "Key=instanceids,Values=$INSTANCE_ID" --parameters '{"commands":["cd /tmp/solace/builds/wog/gvt/adex/adex/sense-eks-deployment/environments/sol-$ENV/", "terraform init > terraform_init_log_eks-solace.txt 2>&1"]}' --output text
     - echo "Running Terraform Plan"
-    - aws ssm send-command --document-name "AWS-RunShellScript" --targets "Key=instanceids,Values=$INSTANCE_ID" --parameters '{"commands":["cd $DEST", "terraform plan -target=module.eks"]}' --output text
+    - aws ssm send-command --document-name "AWS-RunShellScript" --targets "Key=instanceids,Values=$INSTANCE_ID" --parameters '{"commands":["cd /tmp/solace/builds/wog/gvt/adex/adex/sense-eks-deployment/environments/sol-$ENV/", "terraform plan -target=module.eks-solace > terraform_plan_log_eks-solace.txt 2>&1"]}' --output text
 
 
 
