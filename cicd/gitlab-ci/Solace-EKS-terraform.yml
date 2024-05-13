@@ -47,8 +47,8 @@ sol-eks-modules:copy:
   extends: .awscli-root-builder
   when: manual
   script:
-    - !reference [.terraform:copy-plan, script]
-    - echo " 'copy and plan' task of eks module in sol-$ENV environment is completed"
+    - !reference [.terraform:copy, script]
+    - echo " 'copy' task of terraform modules in sol-$ENV environment is completed"
 
 
 sol-eks-module:terraform-init-plan:
@@ -59,12 +59,9 @@ sol-eks-module:terraform-init-plan:
     - sol-eks-modules:copy
   when: manual
   script:
-    - echo "Initializing Terraform"
-    - aws ssm send-command --document-name "AWS-RunShellScript" --targets "Key=instanceids,Values=$INSTANCE_ID" --parameters '{"commands":["cd /tmp/solace/builds/wog/gvt/adex/adex/sense-eks-deployment/environments/sol-$ENV", "terraform init > terraform_init_log_eks.txt 2>&1"]}' --output text
-    - sleep 15
-    - echo "Running Terraform Plan"
-    - aws ssm send-command --document-name "AWS-RunShellScript" --targets "Key=instanceids,Values=$INSTANCE_ID" --parameters '{"commands":["cd /tmp/solace/builds/wog/gvt/adex/adex/sense-eks-deployment/environments/sol-$ENV", "terraform plan -target=module.eks > terraform_plan_log_eks.txt 2>&1"]}' --output text
-
+    - export MODULE=module.eks
+    - !reference [.terraform:plan-module, script]
+    - echo " 'plan' task of terraform eks module of sol-$ENV environment is completed"
 
 sol-eks-solace-module:terraform-init-plan:
   stage: plan
@@ -74,12 +71,9 @@ sol-eks-solace-module:terraform-init-plan:
     - sol-eks-modules:copy
   when: manual
   script:
-    - echo "Initializing Terraform"
-    - aws ssm send-command --document-name "AWS-RunShellScript" --targets "Key=instanceids,Values=$INSTANCE_ID" --parameters '{"commands":["cd /tmp/solace/builds/wog/gvt/adex/adex/sense-eks-deployment/environments/sol-qa", "terraform init > terraform_init_log_eks-solace.txt 2>&1"]}' --output text
-    - sleep 15
-    - echo "Running Terraform Plan"
-    - aws ssm send-command --document-name "AWS-RunShellScript" --targets "Key=instanceids,Values=$INSTANCE_ID" --parameters '{"commands":["cd /tmp/solace/builds/wog/gvt/adex/adex/sense-eks-deployment/environments/sol-qa", "terraform plan -target=module.eks-solace > terraform_plan_log_eks-solace.txt 2>&1"]}' --output text
-
+    - export MODULE=module.eks-solace
+    - !reference [.terraform:plan-module, script]
+    - echo " 'plan' task of terraform eks-solace module of sol-$ENV environment is completed"
 
 
 # Define job for bastion-module in solace

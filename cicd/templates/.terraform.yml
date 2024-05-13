@@ -68,7 +68,7 @@ cache:
     - terraform -chdir=$TF_ROOT show -no-color -json plan > tmp/plan.json
 
 
-.terraform:copy-plan:
+.terraform:copy:
   script:
     - echo "SCP build artifacts into Bridge"
     - echo "****Folder***"
@@ -78,6 +78,17 @@ cache:
     - export DEST=/tmp/solace
     - !reference [.ssm-clean-scp, script]
     - export SSH_CMD="cd $DEST; unzip $DEST/sense-eks-deployment.zip; cd $DEST/$SCP_SOURCE_FOLDER/environments/sol-$ENV/; ls -ltr"
+   # - export SSH_CMD="cd $DEST; unzip $DEST/sense-eks-deployment.zip; cd $DEST/$SCP_SOURCE_FOLDER/environments/sol-$ENV/; terraform init -reconfigure; terraform plan -target=$MODULE"
+    - !reference [ .ssm-ssh-sh, script ]
+
+.terraform:copy-plan:
+  script:
+    - echo "Performing terraform plan for target module "
+    - echo "****Folder***"
+    - export EC2_USER=ec2-user
+    - export SCP_SOURCE_FOLDER=$CI_PROJECT_DIR
+    - export DEST=/tmp/solace
+    - export SSH_CMD="cd $DEST/$SCP_SOURCE_FOLDER/environments/sol-$ENV/; ls -ltr; terraform init; terraform plan -target=module "
    # - export SSH_CMD="cd $DEST; unzip $DEST/sense-eks-deployment.zip; cd $DEST/$SCP_SOURCE_FOLDER/environments/sol-$ENV/; terraform init -reconfigure; terraform plan -target=$MODULE"
     - !reference [ .ssm-ssh-sh, script ]
 
