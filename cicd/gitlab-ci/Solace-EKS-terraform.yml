@@ -59,7 +59,7 @@ sol-eks-solace-module:copy:
     - echo " 'copy' task of eks-solace module in sol-$ENV environment is completed"
 
 sol-eks-module:terraform-init-plan:
-  stage: terraform_plan
+  stage: plan
   environment: $ENV
   extends: .awscli-root-builder
   needs:
@@ -73,7 +73,7 @@ sol-eks-module:terraform-init-plan:
 
 
 sol-eks-solace-module:terraform-init-plan:
-  stage: terraform_plan
+  stage: plan
   environment: $ENV
   extends: .awscli-root-builder
   needs:
