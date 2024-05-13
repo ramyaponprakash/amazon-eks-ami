@@ -20,15 +20,19 @@ workflow:
   - if: '$ENV == "dev"'
     variables:
       INSTANCE_ID: "$SOL_DEV_BASTION_ID"
+      ENV: dev
   - if: '$ENV == "qa"'
     variables:
       INSTANCE_ID: "$SOL_QA_BASTION_ID"
+      ENV: qa
   - if: '$ENV == "prod"'
     variables:
       INSTANCE_ID: "$SOL_PROD_BASTION_ID"
+      ENV: prod
   - if: '$ENV == "intra"'
     variables:
       INSTANCE_ID: "$SOL_INTRA_BASTION_ID"
+      ENV: intra
   - when: never
 
 
@@ -37,37 +41,27 @@ variables:
 
 
 # Define job for eks-module in solace
-sol-eks-module:copy:
+sol-eks-modules:copy:
   stage: copy
   environment: $ENV
   extends: .awscli-root-builder
   when: manual
   script:
-    - export MODULE=module.eks
     - !reference [.terraform:copy-plan, script]
     - echo " 'copy and plan' task of eks module in sol-$ENV environment is completed"
 
-# Define job for eks-solace-module in solace
-sol-eks-solace-module:copy:
-  stage: copy
-  environment: $ENV
-  extends: .awscli-root-builder
-  when: manual
-  script:
-    - export MODULE=module.eks-solace
-    - !reference [.terraform:copy-plan, script]
-    - echo " 'copy' task of eks-solace module in sol-$ENV environment is completed"
 
 sol-eks-module:terraform-init-plan:
   stage: plan
   environment: $ENV
   extends: .awscli-root-builder
   needs:
-    - sol-eks-module:copy
+    - sol-eks-modules:copy
   when: manual
   script:
     - echo "Initializing Terraform"
     - aws ssm send-command --document-name "AWS-RunShellScript" --targets "Key=instanceids,Values=$INSTANCE_ID" --parameters '{"commands":["cd /tmp/solace/builds/wog/gvt/adex/adex/sense-eks-deployment/environments/sol-$ENV", "terraform init > terraform_init_log_eks.txt 2>&1"]}' --output text
+    - sleep 15
     - echo "Running Terraform Plan"
     - aws ssm send-command --document-name "AWS-RunShellScript" --targets "Key=instanceids,Values=$INSTANCE_ID" --parameters '{"commands":["cd /tmp/solace/builds/wog/gvt/adex/adex/sense-eks-deployment/environments/sol-$ENV", "terraform plan -target=module.eks > terraform_plan_log_eks.txt 2>&1"]}' --output text
 
@@ -77,11 +71,12 @@ sol-eks-solace-module:terraform-init-plan:
   environment: $ENV
   extends: .awscli-root-builder
   needs:
-    - sol-eks-solace-module:copy
+    - sol-eks-modules:copy
   when: manual
   script:
     - echo "Initializing Terraform"
     - aws ssm send-command --document-name "AWS-RunShellScript" --targets "Key=instanceids,Values=$INSTANCE_ID" --parameters '{"commands":["cd /tmp/solace/builds/wog/gvt/adex/adex/sense-eks-deployment/environments/sol-qa", "terraform init > terraform_init_log_eks-solace.txt 2>&1"]}' --output text
+    - sleep 15
     - echo "Running Terraform Plan"
     - aws ssm send-command --document-name "AWS-RunShellScript" --targets "Key=instanceids,Values=$INSTANCE_ID" --parameters '{"commands":["cd /tmp/solace/builds/wog/gvt/adex/adex/sense-eks-deployment/environments/sol-qa", "terraform plan -target=module.eks-solace > terraform_plan_log_eks-solace.txt 2>&1"]}' --output text
 
