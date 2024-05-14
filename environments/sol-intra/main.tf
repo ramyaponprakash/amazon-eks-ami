@@ -13,6 +13,8 @@ terraform {
 
 provider "aws" {
   region = "ap-southeast-1"
+  http_proxy = http://squid-intra.adex.com:3128
+  https_proxy = http://squid-intra.adex.com:3128
 }
 
 provider "kubernetes" {
