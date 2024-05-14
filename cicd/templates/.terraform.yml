@@ -85,9 +85,8 @@ cache:
     - export EC2_USER=ec2-user
     - export SCP_SOURCE_FOLDER=$CI_PROJECT_DIR
     - export DEST=/tmp/solace
-    - export PROXY_SETTINGS=$(curl -sS http://squid-intra.adex.com:3128) # Replace with actual path
-    - export SSH_CMD="eval $PROXY_SETTINGS && cd $DEST/$SCP_SOURCE_FOLDER/environments/sol-$ENV/; pwd; ls -ltr; terraform init; ls -ltr $DEST/$SCP_SOURCE_FOLDER/environments/sol-$ENV/.terraform/modules; terraform plan -target=$MODULE"
-    #- export SSH_CMD="cd $DEST/$SCP_SOURCE_FOLDER/environments/sol-$ENV/; pwd; ls -ltr; terraform init; ls -ltr $DEST/$SCP_SOURCE_FOLDER/environments/sol-$ENV/.terraform/modules; terraform plan -target=$MODULE"
+    - export $(grep -E -v '^#' /etc/environment | xargs)
+    - export SSH_CMD="cd $DEST/$SCP_SOURCE_FOLDER/environments/sol-$ENV/; pwd; ls -ltr; terraform init; ls -ltr $DEST/$SCP_SOURCE_FOLDER/environments/sol-$ENV/.terraform/modules; terraform plan -target=$MODULE"
     - !reference [ .ssm-ssh-sh, script ]
 
 .terraform:plan-module:
