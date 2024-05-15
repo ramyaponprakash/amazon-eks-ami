@@ -1,8 +1,10 @@
 include:
   - cicd/templates/.common.yml
 
+
 variables:
   TF_ROOT: $TF_ROOT
+
 
 stages:
   - validate
@@ -79,6 +81,7 @@ cache:
     - export SSH_CMD="cd $DEST; unzip $DEST/sense-eks-deployment.zip; cd $DEST/$SCP_SOURCE_FOLDER/environments/sol-$ENV/; ls -ltr"
     - !reference [ .ssm-ssh-sh, script ]
 
+
 .terraform:copy-plan:
   script:
     - echo "Performing terraform plan for target module "
@@ -87,24 +90,6 @@ cache:
     - export DEST=/tmp/solace
     - export SSH_CMD="cd $DEST/$SCP_SOURCE_FOLDER/environments/sol-$ENV/; terraform init; terraform plan -target=$MODULE"
     - !reference [ .ssm-ssh-sh, script ]
-
-.terraform:plan-module:
-  stage: plan
-  extends: .awscli-root-builder
-  when: manual
-  script:
-  - |
-    echo "SCP terraformf files into Bastion and do tf plan for a specific module"
-    echo "****Folder***"
-    echo $CI_PROJECT_DIR
-    export EC2_USER=ec2-user
-    export SCP_SOURCE_FOLDER=$CI_PROJECT_DIR
-    export SOURCE=$CI_PROJECT_DIR.zip
-    export INSTANCE_ID=$SOL_QA_BASTION_ID
-  - !reference [.ssm-clean-scp, script]
-  - export SSH_CMD="cd $DEST; unzip $DEST/sense-eks-deployment.zip; cd $DEST/$SCP_SOURCE_FOLDER/environments/sol-$ENV/; rm -rf .terraform; terraform init; terraform plan -target=$MODULE; rm -rf /tmp/solace"
-  - !reference [ .ssm-ssh-sh, script ]
-
 
 
 .terraform:apply:
