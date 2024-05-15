@@ -85,7 +85,6 @@ cache:
     - export EC2_USER=ec2-user
     - export SCP_SOURCE_FOLDER=$CI_PROJECT_DIR
     - export DEST=/tmp/solace
-    - export $(cat /etc/environment) || true
     - export SSH_CMD="cd $DEST/$SCP_SOURCE_FOLDER/environments/sol-$ENV/; terraform init; terraform plan -target=$MODULE"
     - !reference [ .ssm-ssh-sh, script ]
 
