@@ -143,6 +143,6 @@ sol-squid-module:apply:
     - sol-squid-module:plan
   environment: $ENV
   script:
-    - export OPTIONS="--auto-approve plannnn"
+    - export OPTIONS="--auto-approve plan"
     - !reference [.terraform:apply, script]
     - echo " 'apply' task of squid module in sol-$ENV environment is completed"
