@@ -40,7 +40,12 @@ resource "aws_iam_policy" "aws-policy-csi" {
         "ec2:DescribeVolumes",
         "ec2:DescribeVolumesModifications"
       ],
-      "Resource": "*"
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "aws:PrincipalArn": "arn:aws:iam::${var.account_id}:role/${var.cluster_name}-csi"
+          }
+        }
     },
     {
       "Effect": "Allow",
