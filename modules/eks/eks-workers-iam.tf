@@ -43,7 +43,7 @@ resource "aws_iam_role_policy_attachment" "eks_cluster-AmazonSSMManagedInstanceC
 
 
 resource "aws_iam_policy" "EC2ContainerRegistryReadOnly" {
-  name        = "ec2containerregistryreadOnly-${var.cluster_name}"
+  name        = "ec2ContaineRregistryReadOnly-${var.cluster_name}"
   description = "IAM policy with permissions for the ecr"
   policy = <<POLICY
 {
@@ -124,7 +124,7 @@ POLICY
 }
 
 resource "aws_iam_policy" "EKSWorkerNodePolicy" {
-  name        = "eksworkernodepolicy-${var.cluster_name}"
+  name        = "eksWorkerNodePolicy-${var.cluster_name}"
   description = "IAM policy with permissions for the eks worker node"
   policy = <<POLICY
 {
@@ -159,7 +159,7 @@ POLICY
 }
 
 resource "aws_iam_policy" "SSMManagedInstanceCore" {
-  name        = "ssmmanagedinstancecore-${var.cluster_name}"
+  name        = "ssmManagedInstanceCore-${var.cluster_name}"
   description = "IAM policy with permissions for the ssm"
   policy = <<POLICY
 {
