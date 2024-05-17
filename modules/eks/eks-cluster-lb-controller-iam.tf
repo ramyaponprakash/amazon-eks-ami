@@ -47,7 +47,12 @@ resource "aws_iam_policy" "aws-lb-controller-policy-nlb-ip" {
                 "elasticloadbalancing:DescribeTargetHealth",
                 "elasticloadbalancing:DescribeTags"
             ],
-            "Resource": "*"
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": {
+                    "aws:PrincipalArn": "arn:aws:iam::${var.account_id}:role/${var.cluster_name}-aws-lb-controller"
+                }
+            }
         },
         {
             "Effect": "Allow",
@@ -241,6 +246,14 @@ resource "aws_iam_policy" "aws-lb-controller-policy-nlb-ip" {
                   "aws:ResourceTag/elbv2.k8s.aws/cluster": "${var.cluster_name}"
                 }
             }
+        },
+        {
+            "Sid": "AddedforAdexVapt",
+            "Action": [
+                "elasticloadbalancing:AddTags"
+            ],
+            "Effect": "Allow",
+            "Resource": "arn:aws:elasticloadbalancing:ap-southeast-1:${var.account_id}:targetgroup/*"
         }
     ]
 }

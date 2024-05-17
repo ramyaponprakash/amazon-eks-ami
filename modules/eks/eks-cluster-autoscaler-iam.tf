@@ -27,9 +27,15 @@ resource "aws_iam_policy" "autoscaling" {
         "autoscaling:DescribeAutoScalingGroups",
         "autoscaling:DescribeAutoScalingInstances",
         "autoscaling:DescribeLaunchConfigurations",
-        "autoscaling:DescribeScalingActivities"
+        "autoscaling:DescribeScalingActivities",
+        "eks:DescribeNodegroup"
       ],
-      "Resource": ["*"]
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "aws:PrincipalArn": "arn:aws:iam::${var.account_id}:role/${var.cluster_name}-cluster-autoscaler"
+        }
+      }
     },
     {
       "Effect": "Allow",
