@@ -144,7 +144,7 @@ resource "aws_iam_policy" "EKSServicePolicy" {
             "Effect": "Allow",
             "Action": "logs:CreateLogGroup",
             "Resource": [
-                "arn:aws:logs:ap-southeast-1::/*"
+                "arn:aws:logs:ap-southeast-1:${var.account_id}:/*"
             ]
         },
         {
