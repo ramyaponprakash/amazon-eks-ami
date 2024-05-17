@@ -40,7 +40,7 @@ variables:
   TF_ROOT: environments/sol-$ENV
 
 
-# Define job for eks-module in solace
+# The Copy job for eks and eks-solace modules in solace
 sol-eks-modules:copy:
   stage: copy
   environment: $ENV
@@ -50,7 +50,7 @@ sol-eks-modules:copy:
     - !reference [.terraform:copy, script]
     - echo " 'copy' task of terraform modules in sol-$ENV environment is completed"
 
-
+# Plan job for eks-module in solace
 sol-eks-module:terraform-init-plan:
   stage: plan
   environment: $ENV
@@ -61,8 +61,9 @@ sol-eks-module:terraform-init-plan:
   script:
     - export MODULE=module.eks
     - !reference [.terraform:copy-plan, script]
-    - echo " 'plan' task of terraform eks module of sol-$ENV environment is completed"
+    - echo " 'terraform plan' task of terraform eks module of sol-$ENV environment is completed"
 
+# Plan job for eks-solace-module in solace
 sol-eks-solace-module:terraform-init-plan:
   stage: plan
   environment: $ENV
@@ -73,10 +74,10 @@ sol-eks-solace-module:terraform-init-plan:
   script:
     - export MODULE=module.eks-solace
     - !reference [.terraform:copy-plan, script]
-    - echo " 'plan' task of terraform eks-solace module of sol-$ENV environment is completed"
+    - echo " 'terraform plan' task of terraform eks-solace module of sol-$ENV environment is completed"
 
 
-# Define job for bastion-module in solace
+# Plan job for bastion-module in solace
 sol-bastion-module:plan:
   stage: plan
   extends: .terraform:plan
@@ -84,10 +85,10 @@ sol-bastion-module:plan:
   script:
     - export OPTIONS="-target=module.bastion"
     - !reference [.terraform:plan, script]
-    - echo " 'plan' task of bastion module in sol-$ENV environment is completed"
+    - echo " 'terraform plan' task of bastion module in sol-$ENV environment is completed"
     
 
-# Define job for squid-module in solace
+# Plan job for squid-module in solace
 sol-squid-module:plan:
   stage: plan
   extends: .terraform:plan
@@ -95,9 +96,10 @@ sol-squid-module:plan:
   script:
     - export OPTIONS="-target=module.squid"
     - !reference [.terraform:plan, script]
-    - echo " 'plan' task of squid module in sol-$ENV environment is completed"
+    - echo " 'terraform plan' task of squid module in sol-$ENV environment is completed"
 
 
+# Apply job for eks module in solace
 sol-eks-module:apply:
   stage: apply
   extends: .terraform:apply
@@ -105,12 +107,11 @@ sol-eks-module:apply:
     - sol-eks-module:terraform-init-plan
   environment: $ENV
   script:
-    - export OPTIONS="--auto-approve plannnn"
-  #  - export OPTIONS="-target=module.eks-solace --auto-approve"
-    - !reference [.terraform:apply, script]
-    - echo " 'apply' task of eks module in sol-$ENV environment is completed"
+    - export MODULE=module.eks
+    - !reference [.terraform:copy-apply, script]
+    - echo " 'terraform apply' task of eks module of sol-$ENV environment is completed"
 
-
+# Apply job for eks-solace module in solace
 sol-eks-solace-module:apply:
   stage: apply
   extends: .terraform:apply
@@ -118,12 +119,12 @@ sol-eks-solace-module:apply:
     - sol-eks-solace-module:terraform-init-plan
   environment: $ENV
   script:
-    - export OPTIONS="--auto-approve plannnn"
-  #  - export OPTIONS="-target=module.eks-solace --auto-approve"
-    - !reference [.terraform:apply, script]
-    - echo " 'apply' task of eks-solace module in sol-$ENV environment is completed"
+    - export MODULE=module.eks
+    - !reference [.terraform:copy-apply, script]
+    - echo " 'terraform apply' task of eks-solace module of sol-$ENV environment is completed"
 
 
+# Apply job for bastion module in solace
 sol-bastion-module:apply:
   stage: apply
   extends: .terraform:apply
@@ -131,11 +132,12 @@ sol-bastion-module:apply:
     - sol-bastion-module:plan
   environment: $ENV
   script:
-    - export OPTIONS="--auto-approve plannnn"
+    - export OPTIONS="--auto-approve plan"
     - !reference [.terraform:apply, script]
-    - echo " 'apply' task of bastion module in sol-$ENV environment is completed"
+    - echo " 'terraform apply' task of bastion module in sol-$ENV environment is completed"
 
 
+# Apply job for squid module in solace
 sol-squid-module:apply:
   stage: apply
   extends: .terraform:apply
@@ -145,4 +147,4 @@ sol-squid-module:apply:
   script:
     - export OPTIONS="--auto-approve plan"
     - !reference [.terraform:apply, script]
-    - echo " 'apply' task of squid module in sol-$ENV environment is completed"
+    - echo " 'terraform apply' task of squid module in sol-$ENV environment is completed"

@@ -92,6 +92,15 @@ cache:
     - !reference [ .ssm-ssh-sh, script ]
 
 
+.terraform:copy-apply:
+  script:
+    - echo "Performing terraform apply for target module "
+    - export EC2_USER=ec2-user
+    - export SCP_SOURCE_FOLDER=$CI_PROJECT_DIR
+    - export DEST=/tmp/solace
+    - export SSH_CMD="cd $DEST/$SCP_SOURCE_FOLDER/environments/sol-$ENV/; terraform init; terraform apply --auto-approve -target=$MODULE"
+    - !reference [ .ssm-ssh-sh, script ]
+
 .terraform:apply:
   stage: apply
   extends: .terraform-builder
