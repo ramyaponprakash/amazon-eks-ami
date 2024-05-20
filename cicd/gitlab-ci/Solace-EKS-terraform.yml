@@ -1,37 +1,150 @@
 include:
+- project: "WOG/GVT/ADEX/ADEX/sense-eks-deployment"
+  ref: "develop"
+  file:
   - cicd/templates/.common.yml
-  - cicd/templates/.helmfile.yml
-  - cicd/templates/.terraform.yml
+- cicd/templates/.common.yml
+- cicd/templates/.helmfile.yml
+- cicd/templates/.terraform.yml
 
 
 stages:
-  - copy
-  - validate
-  - plan
-  - apply
+- validate
+- copy
+- plan
+- apply
 
 
 workflow:
   rules:
-    - if: '$ENV == "dev/app/chart"'
-    - when: never
+  - if: '$ENV == "dev"'
+    variables:
+      INSTANCE_ID: "$SOL_DEV_BASTION_ID"
+      ENV: dev
+  - if: '$ENV == "qa"'
+    variables:
+      INSTANCE_ID: "$SOL_QA_BASTION_ID"
+      ENV: qa
+  - if: '$ENV == "prod"'
+    variables:
+      INSTANCE_ID: "$SOL_PROD_BASTION_ID"
+      ENV: prod
+  - if: '$ENV == "intra"'
+    variables:
+      INSTANCE_ID: "$SOL_INTRA_BASTION_ID"
+      ENV: intra
+  - when: never
 
 
 variables:
-  TF_ROOT:
+  TF_ROOT: environments/sol-$ENV
 
 
-sol-eks:copy-all:
+# The Copy job for eks and eks-solace modules in solace
+sol-eks-modules:copy:
   stage: copy
-  extends: .helm-builder
+  environment: $ENV
+  extends: .awscli-root-builder
+  when: manual
+  script:
+    - !reference [.terraform:copy, script]
+    - echo " 'copy' task of terraform modules in sol-$ENV environment is completed"
+
+# Plan job for eks-module in solace
+sol-eks-module:terraform-init-plan:
+  stage: plan
+  environment: $ENV
+  extends: .awscli-root-builder
+  needs:
+    - sol-eks-modules:copy
+  when: manual
+  script:
+    - export MODULE=module.eks
+    - !reference [.terraform:copy-plan, script]
+    - echo " 'terraform plan' task of terraform eks module of sol-$ENV environment is completed"
+
+# Plan job for eks-solace-module in solace
+sol-eks-solace-module:terraform-init-plan:
+  stage: plan
+  environment: $ENV
+  extends: .awscli-root-builder
+  needs:
+    - sol-eks-modules:copy
+  when: manual
+  script:
+    - export MODULE=module.eks-solace
+    - !reference [.terraform:copy-plan, script]
+    - echo " 'terraform plan' task of terraform eks-solace module of sol-$ENV environment is completed"
+
+
+# Plan job for bastion-module in solace
+sol-bastion-module:plan:
+  stage: plan
+  extends: .terraform:plan
   environment: $ENV
   script:
-    - |
-      export INSTANCE_ID=$DEPLOYMENT_INSTANCE_ID
-      export SCP_SOURCE_FOLDER=.
-      export SOURCE=$SCP_SOURCE_FOLDER/repo.zip
-      export EC2_USER=ubuntu
-      export DEST=/home/$EC2_USER/tmp/tf-$CI_COMMIT_REF_SLUG
-    - !reference [.ssm-clean-scp, script]
+    - export OPTIONS="-target=module.bastion"
+    - !reference [.terraform:plan, script]
+    - echo " 'terraform plan' task of bastion module in sol-$ENV environment is completed"
+    
 
-# TODO: plan & apply
+# Plan job for squid-module in solace
+sol-squid-module:plan:
+  stage: plan
+  extends: .terraform:plan
+  environment: $ENV
+  script:
+    - export OPTIONS="-target=module.squid"
+    - !reference [.terraform:plan, script]
+    - echo " 'terraform plan' task of squid module in sol-$ENV environment is completed"
+
+
+# Apply job for eks module in solace
+sol-eks-module:apply:
+  stage: apply
+  extends: .terraform:apply
+  needs:
+    - sol-eks-module:terraform-init-plan
+  environment: $ENV
+  script:
+    - export MODULE=module.eks
+    - !reference [.terraform:copy-apply, script]
+    - echo " 'terraform apply' task of eks module of sol-$ENV environment is completed"
+
+# Apply job for eks-solace module in solace
+sol-eks-solace-module:apply:
+  stage: apply
+  extends: .terraform:apply
+  needs:
+    - sol-eks-solace-module:terraform-init-plan
+  environment: $ENV
+  script:
+    - export MODULE=module.eks
+    - !reference [.terraform:copy-apply, script]
+    - echo " 'terraform apply' task of eks-solace module of sol-$ENV environment is completed"
+
+
+# Apply job for bastion module in solace
+sol-bastion-module:apply:
+  stage: apply
+  extends: .terraform:apply
+  needs:
+    - sol-bastion-module:plan
+  environment: $ENV
+  script:
+    - export OPTIONS="--auto-approve plan"
+    - !reference [.terraform:apply, script]
+    - echo " 'terraform apply' task of bastion module in sol-$ENV environment is completed"
+
+
+# Apply job for squid module in solace
+sol-squid-module:apply:
+  stage: apply
+  extends: .terraform:apply
+  needs:
+    - sol-squid-module:plan
+  environment: $ENV
+  script:
+    - export OPTIONS="--auto-approve plan"
+    - !reference [.terraform:apply, script]
+    - echo " 'terraform apply' task of squid module in sol-$ENV environment is completed"
