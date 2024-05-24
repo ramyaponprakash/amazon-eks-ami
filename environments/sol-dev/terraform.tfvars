@@ -36,9 +36,13 @@ eks_worker_node_egress_access_cidrs = [
   { from : "172.10.0.0/16", port : "8741", description : "Self CIDR 1" },
 ]
 
-eks_worker_node_egress_tcp_HA = ["172.10.0.0/16"]
+eks_worker_node_egress_tcp_HA = [
+  { from : "172.10.0.0/16", port : "8300", to : "8302", description : "Self CIDR 1" },
+]
 
-eks_worker_node_egress_udp_HA = ["172.10.0.0/16"]
+eks_worker_node_egress_udp_HA = [
+  { from : "172.10.0.0/16", port : "8301", to : "8302", description : "Self CIDR 1" },
+]
 
 eks_worker_node_egress_tcp_dns = [
   { from : "172.10.0.0/16", port : "53", description : "Self CIDR 1" },

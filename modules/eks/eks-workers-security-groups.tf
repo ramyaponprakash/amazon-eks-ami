@@ -73,21 +73,23 @@ resource "aws_security_group_rule" "eks_cluster-node-egress" {
 }
 
 resource "aws_security_group_rule" "eks_cluster-node-egress-tcp-HA" {
-  cidr_blocks              = var.eks_worker_node_egress_tcp_HA
-  from_port                = 8300
-  protocol                 = "tcp"
-  security_group_id        = aws_security_group.eks_cluster-node.id
-  to_port                  = 8302
+  for_each                 = { for index, obj in var.eks_worker_node_egress_tcp_HA : index => obj }
   type                     = "egress"
+  security_group_id        = aws_security_group.eks_cluster-node.id
+  source_security_group_id = aws_security_group.eks_cluster-node.id
+  protocol                 = "tcp"
+  from_port                = each.value.port
+  to_port                  = each.value.port
 }
 
 resource "aws_security_group_rule" "eks_cluster-node-egress-udp-HA" {
-  cidr_blocks              = var.eks_worker_node_egress_udp_HA
-  from_port                = 8301
-  protocol                 = "udp"
-  security_group_id        = aws_security_group.eks_cluster-node.id
-  to_port                  = 8302
+  for_each                 = { for index, obj in var.eks_worker_node_egress_udp_HA : index => obj }
   type                     = "egress"
+  security_group_id        = aws_security_group.eks_cluster-node.id
+  source_security_group_id = aws_security_group.eks_cluster-node.id
+  protocol                 = "udp"
+  from_port                = each.value.port
+  to_port                  = each.value.port
 }
 
 resource "aws_security_group_rule" "eks_cluster-node-egress-tcp-dns" {
