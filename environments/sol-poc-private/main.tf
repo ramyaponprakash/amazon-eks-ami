@@ -92,8 +92,8 @@ module "eks" {
   eks_api_endpoint_access_cidrs       = var.eks_api_endpoint_access_cidrs
   eks_cluster_egress_access_cidrs     = var.eks_cluster_egress_access_cidrs
   eks_worker_node_egress_tcp_HA       = var.eks_worker_node_egress_tcp_HA
-  eks_eks_worker_node_egress_udp_HA   = var.eks_worker_node_egress_udp_HA
-  eks_eks_worker_node_egress_tcp_dns  = var.eks_worker_node_egress_tcp_dns
+  eks_worker_node_egress_udp_HA       = var.eks_worker_node_egress_udp_HA
+  eks_worker_node_egress_tcp_dns      = var.eks_worker_node_egress_tcp_dns
   eks_worker_node_egress_udp_dns      = var.eks_worker_node_egress_udp_dns
   eks_worker_node_egress_access_cidrs = var.eks_worker_node_egress_access_cidrs
   eks_worker_node_access_cidrs        = var.eks_worker_node_access_cidrs
