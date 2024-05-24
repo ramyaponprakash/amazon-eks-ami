@@ -292,21 +292,14 @@ variable "eks_cluster_egress_access_cidrs" {
 }
 
 variable "eks_worker_node_egress_tcp_HA" {
-  type = list(object({
-    from        = string
-    port        = string
-    description = string
-  }))
+  type    = list(string)
   default = []
 }
 
 variable "eks_worker_node_egress_udp_HA" {
-  type = list(object({
-    from        = string
-    port        = string
-    description = string
-  }))
+  type    = list(string)
   default = []
+
 }
 
 variable "eks_worker_node_egress_tcp_dns" {

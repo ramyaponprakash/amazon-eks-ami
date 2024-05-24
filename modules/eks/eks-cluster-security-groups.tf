@@ -3,13 +3,6 @@ resource "aws_security_group" "eks_cluster-cluster" {
   name        = "${var.cluster_name}-cluster-secgrp"
   description = "Cluster communication with worker nodes"
   vpc_id      = var.vpc_id
-
-  /*egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }*/
 }
 
 resource "aws_security_group_rule" "eks_cluster-cluster-ingress" {
