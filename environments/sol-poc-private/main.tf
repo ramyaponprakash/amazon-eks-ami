@@ -81,17 +81,23 @@ module "bastion" {
 module "eks" {
   source = "../../modules/eks"
 
-  region                        = var.region
-  account_id                    = var.account_id
-  cluster_name                  = var.cluster_name
-  vpc_id                        = var.network.enable ? module.eks_network[0].vpc_id : var.vpc_id
-  eks_private_subnet_ids        = var.network.enable ? module.eks_network[0].private_subnet_ids : var.eks_private_subnet_ids
-  eks_customer_cmk_key_arn      = var.eks_customer_cmk_key_arn
-  eks_admin_role_arns           = var.eks_admin_role_arns
-  eks_http_proxy                = var.eks_http_proxy
-  eks_api_endpoint_access_cidrs = var.eks_api_endpoint_access_cidrs
-  eks_worker_node_access_cidrs  = var.eks_worker_node_access_cidrs
-  eks_worker_node_access_prefix = var.eks_worker_node_access_prefix
+  region                              = var.region
+  account_id                          = var.account_id
+  cluster_name                        = var.cluster_name
+  vpc_id                              = var.network.enable ? module.eks_network[0].vpc_id : var.vpc_id
+  eks_private_subnet_ids              = var.network.enable ? module.eks_network[0].private_subnet_ids : var.eks_private_subnet_ids
+  eks_customer_cmk_key_arn            = var.eks_customer_cmk_key_arn
+  eks_admin_role_arns                 = var.eks_admin_role_arns
+  eks_http_proxy                      = var.eks_http_proxy
+  eks_api_endpoint_access_cidrs       = var.eks_api_endpoint_access_cidrs
+  eks_cluster_egress_access_cidrs     = var.eks_cluster_egress_access_cidrs
+  eks_worker_node_egress_tcp_HA       = var.eks_worker_node_egress_tcp_HA
+  eks_eks_worker_node_egress_udp_HA   = var.eks_worker_node_egress_udp_HA
+  eks_eks_worker_node_egress_tcp_dns  = var.eks_worker_node_egress_tcp_dns
+  eks_worker_node_egress_udp_dns      = var.eks_worker_node_egress_udp_dns
+  eks_worker_node_egress_access_cidrs = var.eks_worker_node_egress_access_cidrs
+  eks_worker_node_access_cidrs        = var.eks_worker_node_access_cidrs
+  eks_worker_node_access_prefix       = var.eks_worker_node_access_prefix
 }
 
 module "eks-solace" {

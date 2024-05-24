@@ -14,6 +14,40 @@ eks_cluster_endpoint_public = true
 eks_api_endpoint_access_cidrs = [
   { from : "172.10.0.0/16", port : "443", description : "self CIDR" },
 ]
+
+eks_cluster_egress_access_cidrs = [
+  { from : "172.10.0.0/16", port : "4443", description : "Self CIDR 1" },
+  { from : "172.10.0.0/16", port : "9943", description : "Self CIDR 1" },
+]
+
+eks_worker_node_egress_access_cidrs = [
+  { from : "172.10.0.0/16", port : "10250", description : "Self CIDR 1" },
+  { from : "0.0.0.0/0", port : "443", description : "for OS updates" },
+  { from : "172.10.0.0/16", port : "443", description : "Self CIDR 1" },
+  { from : "172.10.0.0/16", port : "514", description : "Self CIDR 1" },
+  { from : "173.3.0.0/19", port : "55443", description : "to qa bridge" },
+  { from : "3.106.10.188/32", port : "55443", description : "for Solace MCA" },
+  { from : "172.10.0.0/16", port : "55443", description : "Self CIDR 1" },
+  { from : "3.105.186.75/32", port : "55443", description : "for Solace MCA" },
+  { from : "13.236.32.115/32", port : "55443", description : "for Solace MCA" },
+  { from : "172.10.0.0/16", port : "5550", description : "Self CIDR 1" },
+  { from : "172.10.0.0/16", port : "55555", description : "Self CIDR 1" },
+  { from : "0.0.0.0/0", port : "80", description : "for OS updates" },
+  { from : "172.10.0.0/16", port : "8741", description : "Self CIDR 1" },
+]
+
+eks_worker_node_egress_tcp_HA = ["172.10.0.0/16"]
+
+eks_worker_node_egress_udp_HA = ["172.10.0.0/16"]
+
+eks_worker_node_egress_tcp_dns = [
+  { from : "172.10.0.0/16", port : "53", description : "Self CIDR 1" },
+]
+
+eks_worker_node_egress_udp_dns = [
+  { from : "172.10.0.0/16", port : "53", description : "Self CIDR 1" },
+]
+
 eks_worker_node_access_cidrs = []
 eks_worker_node_access_prefix = [
   { prefix_list_ids : ["pl-0af10fe06357d6aff"], from_port : 0, to_port : 65535, description : "For ADEX team development convenience, sense-whitelist" },

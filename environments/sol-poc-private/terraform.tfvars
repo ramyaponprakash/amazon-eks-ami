@@ -16,6 +16,38 @@ eks_api_endpoint_access_cidrs = [
   { from : "172.9.0.0/24", port : "443", description : "VPC self" },
 ]
 
+eks_cluster_egress_access_cidrs = [
+  { from : "172.9.0.0/24", port : "4443", description : "Self CIDR 1" },
+  { from : "172.9.0.0/24", port : "9943", description : "Self CIDR 1" },
+]
+
+eks_worker_node_egress_access_cidrs = [
+  { from : "173.3.0.0/19", port : "10250", description : "Self CIDR 1" },
+  { from : "0.0.0.0/0", port : "443", description : "for OS updates" },
+  { from : "173.3.0.0/19", port : "514", description : "Self CIDR 1" },
+  { from : "172.10.0.0/16", port : "55443", description : "to dev bridge" },
+  { from : "3.106.10.188/32", port : "55443", description : "for Solace MCA" },
+  { from : "173.3.0.0/19", port : "55443", description : "Self CIDR 1" },
+  { from : "3.105.186.75/32", port : "55443", description : "for Solace MCA" },
+  { from : "13.236.32.115/32", port : "55443", description : "for Solace MCA" },
+  { from : "173.3.0.0/19", port : "5550", description : "Self CIDR 1" },
+  { from : "173.3.0.0/19", port : "55555", description : "Self CIDR 1" },
+  { from : "0.0.0.0/0", port : "80", description : "for OS updates" },
+  { from : "173.3.0.0/19", port : "8741", description : "Self CIDR 1" },
+]
+
+eks_worker_node_egress_tcp_HA = ["173.3.0.0/19"]
+
+eks_worker_node_egress_udp_HA = ["173.3.0.0/19"]
+
+eks_worker_node_egress_tcp_dns = [
+  { from : "173.3.0.0/19", port : "53", description : "Self CIDR 1" },
+]
+
+eks_worker_node_egress_udp_dns = [
+  { from : "173.3.0.0/19", port : "53", description : "Self CIDR 1" },
+]
+
 network = {
   enable     = true
   create_vpc = true

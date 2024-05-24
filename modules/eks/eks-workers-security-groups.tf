@@ -4,12 +4,12 @@ resource "aws_security_group" "eks_cluster-node" {
   description = "Security group for all nodes in the cluster"
   vpc_id      = var.vpc_id
 
-  egress {
+  /*egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
-  }
+  }*/
 
   tags = {
     "kubernetes.io/cluster/${var.cluster_name}" = "owned"
@@ -64,6 +64,53 @@ resource "aws_security_group_rule" "eks_cluster-node-ingress-prefix-list" {
   description       = each.value.description
   security_group_id = aws_security_group.eks_cluster-node.id
   prefix_list_ids   = each.value.prefix_list_ids
+  protocol          = "tcp"
+  from_port         = each.value.from_port
+  to_port           = each.value.to_port
+}
+
+resource "aws_security_group_rule" "eks_cluster-node-egress" {
+  for_each          = { for index, obj in var.eks_worker_node_egress_access_cidrs : index => obj }
+  type              = "egress"
+  description       = each.value.description
+  security_group_id = aws_security_group.eks_cluster-node.id
+  prefix_list_ids   = each.value.prefix_list_ids
+  protocol          = "tcp"
+  from_port         = each.value.from_port
+  to_port           = each.value.to_port
+}
+
+resource "aws_security_group_rule" "eks_cluster-node-egress-tcp-HA" {
+  for_each                 = { for index, obj in var.eks_worker_node_egress_tcp_HA : index => obj }
+  from_port                = 8300
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.eks_cluster-node.id
+  to_port                  = 8302
+  type                     = "egress"
+}
+
+resource "aws_security_group_rule" "eks_cluster-node-egress-udp-HA" {
+  for_each                 = { for index, obj in var.eks_worker_node_egress_udp_HA : index => obj }
+  from_port                = 8301
+  protocol                 = "udp"
+  security_group_id        = aws_security_group.eks_cluster-node.id
+  to_port                  = 8302
+  type                     = "egress"
+}
+
+resource "aws_security_group_rule" "eks_cluster-node-egress-tcp-dns" {
+  for_each          = { for index, obj in var.eks_worker_node_egress_tcp_dns : index => obj }
+  type              = "egress"
+  security_group_id = aws_security_group.eks_cluster-node.id
+  protocol          = "tcp"
+  from_port         = each.value.from_port
+  to_port           = each.value.to_port
+}
+
+resource "aws_security_group_rule" "eks_cluster-node-egress-udp-dns" {
+  for_each          = { for index, obj in var.eks_worker_node_egress_udp_dns : index => obj }
+  type              = "egress"
+  security_group_id = aws_security_group.eks_cluster-node.id
   protocol          = "tcp"
   from_port         = each.value.from_port
   to_port           = each.value.to_port
