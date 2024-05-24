@@ -29,7 +29,7 @@ eks_cluster_egress_access_cidrs = [
 
 eks_worker_node_egress_access_cidrs = [
   { from : "10.189.118.0/25", port : "10250", description : "Self CIDR 1" },
-  { from : "10.189.118.0/25", port : "3128", description : "for squid" },
+  { from : "10.193.135.128/28", port : "3128", description : "for squid" },
   { from : "0.0.0.0/0", port : "443", description : "for OS updates" },
   { from : "10.189.118.0/25", port : "443", description : "Self CIDR 1" },
   { from : "172.16.109.128/28", port : "50514", description : "for logstash-server" },

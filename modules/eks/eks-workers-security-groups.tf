@@ -62,14 +62,14 @@ resource "aws_security_group_rule" "eks_cluster-node-ingress-prefix-list" {
 }
 
 resource "aws_security_group_rule" "eks_cluster-node-egress" {
-  for_each          = { for index, obj in var.eks_worker_node_egress_access_cidrs : index => obj }
-  type              = "egress"
-  description       = each.value.description
-  security_group_id = aws_security_group.eks_cluster-node.id
-  prefix_list_ids   = each.value.prefix_list_ids
-  protocol          = "tcp"
-  from_port         = each.value.from_port
-  to_port           = each.value.to_port
+  for_each                 = { for index, obj in var.eks_worker_node_egress_access_cidrs : index => obj }
+  type                     = "egress"
+  description              = each.value.description
+  security_group_id        = aws_security_group.eks_cluster-node.id
+  source_security_group_id = aws_security_group.eks_cluster-cluster.id
+  protocol                 = "tcp"
+  from_port                = each.value.port
+  to_port                  = each.value.port
 }
 
 resource "aws_security_group_rule" "eks_cluster-node-egress-tcp-HA" {
@@ -96,8 +96,8 @@ resource "aws_security_group_rule" "eks_cluster-node-egress-tcp-dns" {
   security_group_id        = aws_security_group.eks_cluster-node.id
   source_security_group_id = aws_security_group.eks_cluster-node.id
   protocol                 = "tcp"
-  from_port                = each.value.from_port
-  to_port                  = each.value.to_port
+  from_port                = each.value.port
+  to_port                  = each.value.port
 }
 
 resource "aws_security_group_rule" "eks_cluster-node-egress-udp-dns" {
@@ -106,7 +106,7 @@ resource "aws_security_group_rule" "eks_cluster-node-egress-udp-dns" {
   security_group_id        = aws_security_group.eks_cluster-node.id
   source_security_group_id = aws_security_group.eks_cluster-node.id
   protocol                 = "udp"
-  from_port                = each.value.from_port
-  to_port                  = each.value.to_port
+  from_port                = each.value.port
+  to_port                  = each.value.port
 }
 
