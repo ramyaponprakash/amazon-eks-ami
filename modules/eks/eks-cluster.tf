@@ -27,7 +27,7 @@ resource "aws_eks_cluster" "eks_cluster" {
 
   depends_on = [
     aws_iam_role_policy_attachment.eks_cluster-EKSClusterPolicy,
-    aws_iam_role_policy_attachment.eks_cluster-eks_cluster-EKSServicePolicy,
+    aws_iam_role_policy_attachment.eks_cluster-EKSServicePolicy,
   ]
 
   tags = {
