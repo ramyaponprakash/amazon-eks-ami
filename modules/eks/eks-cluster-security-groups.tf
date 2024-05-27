@@ -6,7 +6,7 @@ resource "aws_security_group" "eks_cluster-cluster" {
 }
 
 resource "aws_security_group_rule" "eks_cluster-cluster-ingress" {
-  for_each          = { for index, obj in var.eks_api_endpoint_access_cidrs : md5("${obj.from}/${obj.port}")=> obj }
+  for_each          = { for index, obj in var.eks_api_endpoint_access_cidrs : md5("${obj.from}/${obj.port}/${obj.description}") => obj }
   type              = "ingress"
   description       = each.value.description
   security_group_id = aws_security_group.eks_cluster-cluster.id
@@ -17,7 +17,7 @@ resource "aws_security_group_rule" "eks_cluster-cluster-ingress" {
 }
 
 resource "aws_security_group_rule" "eks_cluster-cluster-egress" {
-  for_each          = { for index, obj in var.eks_cluster_egress_access_cidrs : md5("${obj.from}/${obj.port}") => obj }
+  for_each          = { for index, obj in var.eks_cluster_egress_access_cidrs : md5("${obj.from}/${obj.port}/${obj.description}") => obj }
   type              = "egress"
   description       = each.value.description
   security_group_id = aws_security_group.eks_cluster-cluster.id
