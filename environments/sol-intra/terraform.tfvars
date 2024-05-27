@@ -22,6 +22,45 @@ eks_api_endpoint_access_cidrs = [
   { from : "100.80.29.192/26", port : "443", description : "Self CIDR 2" },
 ]
 
+eks_cluster_egress_access_cidrs = [
+  { from : "10.189.118.0/25", port : "4443", description : "Self CIDR 1" },
+  { from : "10.189.118.0/25", port : "9443", description : "Self CIDR 1" },
+]
+
+eks_worker_node_egress_access_cidrs = [
+  { from : "10.189.118.0/25", port : "10250", description : "Self CIDR 1" },
+  { from : "10.193.135.128/28", port : "3128", description : "for squid" },
+  { from : "0.0.0.0/0", port : "443", description : "for OS updates" },
+  { from : "10.189.118.0/25", port : "443", description : "Self CIDR 1" },
+  { from : "172.16.109.128/28", port : "50514", description : "for logstash-server" },
+  { from : "10.189.118.0/25", port : "514", description : "Self CIDR 1" },
+  { from : "100.112.110.0/24", port : "55443", description : "to SOLI bridge" },
+  { from : "3.106.10.188/32", port : "55443", description : "for Solace MCA" },
+  { from : "10.189.118.0/25", port : "55443", description : "Self CIDR 1" },
+  { from : "3.105.186.75/32", port : "55443", description : "for Solace MCA" },
+  { from : "13.236.32.115/32", port : "55443", description : "for Solace MCA" },
+  { from : "10.189.118.0/25", port : "5550", description : "Self CIDR 1" },
+  { from : "10.189.118.0/25", port : "55555", description : "Self CIDR 1" },
+  { from : "0.0.0.0/0", port : "80", description : "for OS updates" },
+  { from : "10.189.118.0/25", port : "8741", description : "Self CIDR 1" },
+]
+
+eks_worker_node_egress_tcp_HA = [
+  { cidrs : ["10.189.118.0/25"], from_port : 8300, to_port : 8302, description : "Self CIDR 1" },
+]
+
+eks_worker_node_egress_udp_HA = [
+  { cidrs : ["10.189.118.0/25"], from_port : 8301, to_port : 8302, description : "Self CIDR 1" },
+]
+
+eks_worker_node_egress_tcp_dns = [
+  { from : "10.189.118.0/25", port : "53", description : "Self CIDR 1" },
+]
+
+eks_worker_node_egress_udp_dns = [
+  { from : "10.189.118.0/25", port : "53", description : "Self CIDR 1" },
+]
+
 network = {
   enable = true
   peers = [

@@ -17,6 +17,46 @@ eks_api_endpoint_access_cidrs = [
   { from : "100.112.110.0/24", port : "443", description : "Self CIDR 1" },
   { from : "100.80.27.128/26", port : "443", description : "Self CIDR 2" },
   { from : "172.16.109.0/28", port : "443", description : "prod bridge subnet for deploy" },
+  { from : "100.112.110.0/24", port : "943", description : "for mca" },
+]
+
+eks_cluster_egress_access_cidrs = [
+  { from : "100.112.110.0/24", port : "4443", description : "Self CIDR 1" },
+  { from : "100.112.110.0/24", port : "9443", description : "Self CIDR 1" },
+]
+
+eks_worker_node_egress_access_cidrs = [
+  { from : "100.112.110.0/24", port : "10250", description : "Self CIDR 1" },
+  { from : "100.80.27.0/24", port : "3128", description : "for squid" },
+  { from : "0.0.0.0/0", port : "443", description : "for OS updates" },
+  { from : "100.112.110.0/24", port : "443", description : "Self CIDR 1" },
+  { from : "172.16.109.128/28", port : "50514", description : "for logstash-server" },
+  { from : "100.112.110.0/24", port : "514", description : "Self CIDR 1" },
+  { from : "10.189.118.0/24", port : "55443", description : "to SOLI bridge" },
+  { from : "3.106.10.188/32", port : "55443", description : "for Solace MCA" },
+  { from : "100.112.110.0/24", port : "55443", description : "Self CIDR 1" },
+  { from : "3.105.186.75/32", port : "55443", description : "for Solace MCA" },
+  { from : "13.236.32.115/32", port : "55443", description : "for Solace MCA" },
+  { from : "100.112.110.0/24", port : "5550", description : "Self CIDR 1" },
+  { from : "100.112.110.0/24", port : "55555", description : "Self CIDR 1" },
+  { from : "0.0.0.0/0", port : "80", description : "for OS updates" },
+  { from : "100.112.110.0/24", port : "8741", description : "Self CIDR 1" },
+]
+
+eks_worker_node_egress_tcp_HA = [
+  { cidrs : ["100.112.110.0/24"], from_port : 8300, to_port : 8302, description : "Self CIDR 1" },
+]
+
+eks_worker_node_egress_udp_HA = [
+  { cidrs : ["100.112.110.0/24"], from_port : 8301, to_port : 8302, description : "Self CIDR 1" },
+]
+
+eks_worker_node_egress_tcp_dns = [
+  { from : "100.112.110.0/24", port : "53", description : "Self CIDR 1" },
+]
+
+eks_worker_node_egress_udp_dns = [
+  { from : "100.112.110.0/24", port : "53", description : "Self CIDR 1" },
 ]
 
 network = {
@@ -45,7 +85,12 @@ network = {
     {
       destination : "172.22.227.0/24", // NIPS cidr
       target : "pcx-046a96fb0342406c7"
+    },
+    {
+      destination : "172.23.78.0/24", // NIPS cidr
+      target : "pcx-046a96fb0342406c7"
     }
+
   ]
   # https://docs.solace.com/Cloud/Deployment-Considerations/connectivity-model-k8s.htm
   tgw = [
