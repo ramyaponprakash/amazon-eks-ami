@@ -2,22 +2,8 @@ resource "aws_security_group" "vpc_endpoint" {
   name   = "${var.vpc_name}-vpc_endpoint-secgrp"
   vpc_id = var.network.create_vpc ? module.vpc.vpc_id : var.vpc_id
 
-  /*egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }*/
 }
 
-/*resource "aws_security_group_rule" "vpc_endpoint-secgrp-self" {
-  security_group_id        = aws_security_group.vpc_endpoint.id
-  type                     = "ingress"
-  from_port                = 0
-  to_port                  = 65535
-  protocol                 = "-1"
-  source_security_group_id = aws_security_group.vpc_endpoint.id
-}*/
 
 resource "aws_security_group_rule" "vpc_endpoint-secgrp-cidrs" {
   security_group_id = aws_security_group.vpc_endpoint.id
