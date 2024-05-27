@@ -62,7 +62,7 @@ resource "aws_security_group_rule" "eks_cluster-node-ingress-prefix-list" {
 }
 
 resource "aws_security_group_rule" "eks_cluster-node-egress" {
-  for_each                 = { for index, obj in var.eks_worker_node_egress_access_cidrs : index => obj }
+  for_each                 = { for index, obj in var.eks_worker_node_egress_access_cidrs : md5("${obj.from}/${obj.port}/${obj.description}") => obj }
   type                     = "egress"
   description              = each.value.description
   security_group_id        = aws_security_group.eks_cluster-node.id
@@ -73,7 +73,7 @@ resource "aws_security_group_rule" "eks_cluster-node-egress" {
 }
 
 resource "aws_security_group_rule" "eks_cluster-node-egress-tcp-HA" {
-  for_each                 = { for index, obj in var.eks_worker_node_egress_tcp_HA : index => obj }
+  for_each                 = { for index, obj in var.eks_worker_node_egress_tcp_HA : md5("${obj.cidrs}/${obj.from_port}/${obj.description}") => obj }
   type                     = "egress"
   security_group_id        = aws_security_group.eks_cluster-node.id
   cidr_blocks              = each.value.cidrs
@@ -83,7 +83,7 @@ resource "aws_security_group_rule" "eks_cluster-node-egress-tcp-HA" {
 }
 
 resource "aws_security_group_rule" "eks_cluster-node-egress-udp-HA" {
-  for_each                 = { for index, obj in var.eks_worker_node_egress_udp_HA : index => obj }
+  for_each                 = { for index, obj in var.eks_worker_node_egress_udp_HA : md5("${obj.cidrs}/${obj.from_port}/${obj.description}") => obj }
   type                     = "egress"
   security_group_id        = aws_security_group.eks_cluster-node.id
   cidr_blocks              = each.value.cidrs
@@ -93,7 +93,7 @@ resource "aws_security_group_rule" "eks_cluster-node-egress-udp-HA" {
 }
 
 resource "aws_security_group_rule" "eks_cluster-node-egress-tcp-dns" {
-  for_each                 = { for index, obj in var.eks_worker_node_egress_tcp_dns : index => obj }
+  for_each                 = { for index, obj in var.eks_worker_node_egress_tcp_dns : md5("${obj.from}/${obj.port}/${obj.description}") => obj }
   type                     = "egress"
   security_group_id        = aws_security_group.eks_cluster-node.id
   cidr_blocks              = [each.value.from]
@@ -103,7 +103,7 @@ resource "aws_security_group_rule" "eks_cluster-node-egress-tcp-dns" {
 }
 
 resource "aws_security_group_rule" "eks_cluster-node-egress-udp-dns" {
-  for_each                 = { for index, obj in var.eks_worker_node_egress_udp_dns : index => obj }
+  for_each                 = { for index, obj in var.eks_worker_node_egress_udp_dns : md5("${obj.from}/${obj.port}/${obj.description}") => obj }
   type                     = "egress"
   security_group_id        = aws_security_group.eks_cluster-node.id
   cidr_blocks              = [each.value.from]
