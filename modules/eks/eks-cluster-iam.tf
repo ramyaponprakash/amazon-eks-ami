@@ -19,7 +19,7 @@ resource "aws_iam_role" "eks_cluster" {
 POLICY
 }
 
-resource "aws_iam_role_policy_attachment" "eks_cluster-AmazonEKSClusterPolicy" {
+/*resource "aws_iam_role_policy_attachment" "eks_cluster-AmazonEKSClusterPolicy" {
   policy_arn = "arn:${data.aws_partition.this.partition}:iam::aws:policy/AmazonEKSClusterPolicy"
   role       = aws_iam_role.eks_cluster.name
 }
@@ -27,4 +27,4 @@ resource "aws_iam_role_policy_attachment" "eks_cluster-AmazonEKSClusterPolicy" {
 resource "aws_iam_role_policy_attachment" "eks_cluster-AmazonEKSServicePolicy" {
   policy_arn = "arn:${data.aws_partition.this.partition}:iam::aws:policy/AmazonEKSServicePolicy"
   role       = aws_iam_role.eks_cluster.name
-}
+}*/
