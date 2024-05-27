@@ -26,8 +26,8 @@ resource "aws_eks_cluster" "eks_cluster" {
   enabled_cluster_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
 
   depends_on = [
-    aws_iam_role_policy_attachment.eks_cluster-AmazonEKSClusterPolicy,
-    aws_iam_role_policy_attachment.eks_cluster-AmazonEKSServicePolicy,
+    aws_iam_role_policy_attachment.eks_cluster-EKSClusterPolicy,
+    aws_iam_role_policy_attachment.eks_cluster-eks_cluster-EKSServicePolicy,
   ]
 
   tags = {
