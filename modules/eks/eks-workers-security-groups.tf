@@ -79,7 +79,7 @@ resource "aws_security_group_rule" "eks_cluster-node-egress-tcp-HA" {
   source_security_group_id = aws_security_group.eks_cluster-node.id
   protocol                 = "tcp"
   from_port                = each.value.port
-  to_port                  = each.value.port
+  to_port                  = each.value.to
 }
 
 resource "aws_security_group_rule" "eks_cluster-node-egress-udp-HA" {
@@ -89,7 +89,7 @@ resource "aws_security_group_rule" "eks_cluster-node-egress-udp-HA" {
   source_security_group_id = aws_security_group.eks_cluster-node.id
   protocol                 = "udp"
   from_port                = each.value.port
-  to_port                  = each.value.port
+  to_port                  = each.value.to
 }
 
 resource "aws_security_group_rule" "eks_cluster-node-egress-tcp-dns" {
