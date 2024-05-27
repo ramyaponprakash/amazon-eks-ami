@@ -100,6 +100,7 @@ variable "eks_worker_node_egress_tcp_HA" {
 variable "eks_worker_node_egress_udp_HA" {
   type = list(object({
     from        = string
+    to          = string
     port        = string
     description = string
   }))
@@ -109,6 +110,7 @@ variable "eks_worker_node_egress_udp_HA" {
 variable "eks_worker_node_egress_tcp_dns" {
   type = list(object({
     from        = string
+    to          = string
     port        = string
     description = string
   }))
