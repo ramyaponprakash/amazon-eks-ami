@@ -24,7 +24,7 @@ eks_api_endpoint_access_cidrs = [
 
 eks_cluster_egress_access_cidrs = [
   { from : "10.189.118.0/25", port : "4443", description : "Self CIDR 1" },
-  { from : "10.189.118.0/25", port : "9943", description : "Self CIDR 1" },
+  { from : "10.189.118.0/25", port : "9443", description : "Self CIDR 1" },
 ]
 
 eks_worker_node_egress_access_cidrs = [
