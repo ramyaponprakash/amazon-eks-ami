@@ -10,7 +10,7 @@ resource "aws_security_group_rule" "vpc_endpoint-secgrp-cidrs" {
   type              = "ingress"
   from_port         = 443
   to_port           = 443
-  protocol          = "https"
+  protocol          = "tcp"
   cidr_blocks       = var.vpc_endpoint_allowed_cidrs
 }
 
