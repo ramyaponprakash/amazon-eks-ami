@@ -91,6 +91,7 @@ module "eks" {
   eks_http_proxy                      = var.eks_http_proxy
   eks_api_endpoint_access_cidrs       = var.eks_api_endpoint_access_cidrs
   eks_cluster_egress_access_cidrs     = var.eks_cluster_egress_access_cidrs
+  eks_worker_node_egress_udp_syslog   = var.eks_worker_node_egress_udp_syslog
   eks_worker_node_egress_tcp_HA       = var.eks_worker_node_egress_tcp_HA
   eks_worker_node_egress_udp_HA       = var.eks_worker_node_egress_udp_HA
   eks_worker_node_egress_tcp_dns      = var.eks_worker_node_egress_tcp_dns
