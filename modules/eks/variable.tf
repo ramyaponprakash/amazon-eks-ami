@@ -126,6 +126,15 @@ variable "eks_worker_node_egress_udp_dns" {
   default = []
 }
 
+variable "eks_worker_node_egress_udp_syslog" {
+  type = list(object({
+    from        = string
+    port        = string
+    description = string
+  }))
+  default = []
+}
+
 variable "eks_worker_node_egress_access_cidrs" {
   type = list(object({
     from        = string

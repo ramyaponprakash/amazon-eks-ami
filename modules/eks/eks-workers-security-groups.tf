@@ -112,3 +112,13 @@ resource "aws_security_group_rule" "eks_cluster-node-egress-udp-dns" {
   to_port                  = each.value.port
 }
 
+resource "aws_security_group_rule" "eks_cluster-node-egress-udp-syslog" {
+  for_each                 = { for index, obj in var.eks_worker_node_egress_udp_syslog : md5("${obj.from}/${obj.port}/${obj.description}") => obj }
+  type                     = "egress"
+  security_group_id        = aws_security_group.eks_cluster-node.id
+  cidr_blocks              = [each.value.from]
+  protocol                 = "udp"
+  from_port                = each.value.port
+  to_port                  = each.value.port
+}
+

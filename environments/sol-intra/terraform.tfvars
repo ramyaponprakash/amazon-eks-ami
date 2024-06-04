@@ -33,7 +33,6 @@ eks_worker_node_egress_access_cidrs = [
   { from : "0.0.0.0/0", port : "443", description : "for OS updates" },
   { from : "10.189.118.0/25", port : "443", description : "Self CIDR 1" },
   { from : "172.16.109.128/28", port : "50514", description : "for logstash-server" },
-  { from : "10.189.118.0/25", port : "514", description : "Self CIDR 1" },
   { from : "100.112.110.0/24", port : "55443", description : "to SOLI bridge" },
   { from : "3.106.10.188/32", port : "55443", description : "for Solace MCA" },
   { from : "10.189.118.0/25", port : "55443", description : "Self CIDR 1" },
@@ -43,6 +42,10 @@ eks_worker_node_egress_access_cidrs = [
   { from : "10.189.118.0/25", port : "55555", description : "Self CIDR 1" },
   { from : "0.0.0.0/0", port : "80", description : "for OS updates" },
   { from : "10.189.118.0/25", port : "8741", description : "Self CIDR 1" },
+]
+
+eks_worker_node_egress_udp_syslog = [
+  { from : "10.189.118.0/25", port : "514", description : "Self CIDR 1" },
 ]
 
 eks_worker_node_egress_tcp_HA = [
