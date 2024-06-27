@@ -8,7 +8,7 @@ include:
 .assume-role:
   id_tokens:
     GITLAB_OIDC_TOKEN:
-      aud: https://sgts.gitlab-dedicated.com
+      aud: https://$CI_SERVER_HOST
   before_script:
     - if [ -z "$ROLE_ARN" ]; then echo "variable ROLE_ARN must be set." && exit 1; fi
     - echo "ROLE_ARN $ROLE_ARN"
@@ -35,6 +35,9 @@ include:
   tags:
     - non_privileged
     - ship_docker
+  id_tokens:
+    GITLAB_OIDC_TOKEN:
+      aud: https://$CI_SERVER_HOST
   before_script:
     - !reference [.assume-role, before_script]
   after_script:
