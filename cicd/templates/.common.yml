@@ -1,6 +1,6 @@
 include:
   - project: "WOG/GVT/ship/ship-hats-templates"
-    ref: "v1.0.8" 
+    ref: "v1.0.9" 
     file:
       - /templates/.gitlab-ci-aws.yml #think this is not used
 
