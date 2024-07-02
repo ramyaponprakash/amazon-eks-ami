@@ -1,6 +1,6 @@
 include:
   - project: "WOG/GVT/ship/ship-hats-templates"
-    ref: "v1.0.9" 
+    ref: "v1.0.9"
     file:
       - /templates/.gitlab-ci-aws.yml #think this is not used
 
@@ -12,17 +12,16 @@ include:
   before_script:
     - if [ -z "$ROLE_ARN" ]; then echo "variable ROLE_ARN must be set." && exit 1; fi
     - echo "ROLE_ARN $ROLE_ARN"
-    - |
-      STS=$(aws sts assume-role-with-web-identity \
-      --role-arn "$ROLE_ARN" \
-      --role-session-name "ADEX-Devops-$CI_PIPELINE_ID-$CI_JOB_ID-Session" \
-      --web-identity-token ${GITLAB_OIDC_TOKEN} \
+    - STS=$(aws sts assume-role-with-web-identity
+      --role-arn "$ROLE_ARN"
+      --role-session-name "ADEX-Devops-$CI_PIPELINE_ID-$CI_JOB_ID-Session"
+      --web-identity-token "${GITLAB_OIDC_TOKEN}"
       --duration-seconds 3600 \
-      --query 'Credentials.[AccessKeyId,SecretAccessKey,SessionToken]' \
+      --query 'Credentials.[AccessKeyId,SecretAccessKey,SessionToken]'
       --output text)
-      export AWS_ACCESS_KEY_ID="${STS[0]}"
-      export AWS_SECRET_ACCESS_KEY="${STS[1]}"
-      export AWS_SESSION_TOKEN="${STS[2]}"
+    - export AWS_ACCESS_KEY_ID="${STS[0]}"
+    - export AWS_SECRET_ACCESS_KEY="${STS[1]}"
+    - export AWS_SESSION_TOKEN="${STS[2]}"
   after_script:
     - unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
 
@@ -60,7 +59,7 @@ include:
         --query Command.CommandId)
       echo -e "[$(date --rfc-3339=seconds)] $ENV - Start New send-command to $INSTANCE_ID - exec-id:$EXEC_ID, comment-ref: $INTERNAL_EXEC_ID"
       echo -e "\e[30;103mYou can check the stdout and stderr logs from CloudWatch log group /aws/ssm/gitlab. Search by execution id ($EXEC_ID)\e[0m"
-      
+
       while true; do
         result=$(aws ssm get-command-invocation \
           --instance-id "$INSTANCE_ID" \
@@ -97,7 +96,7 @@ include:
       ssh-keygen -t ed25519 -N '' -f $SSH_TMP_KEY -C "ssh-over-ssm-$ID"
       SSH_PUB_KEY="$(< $SSH_TMP_KEY.pub)"
       export SSH_TMP_PUB_KEY_PATH=$SSH_TMP_KEY.pub
-      
+
       # add new key, delete the key after SSH_KEY_VALIDITY
       export CMD=$(cat <<EOF
         grep '$SSH_PUB_KEY' $SSH_FOLDER/authorized_keys && exit 0
@@ -165,7 +164,7 @@ include:
         rm -rf $SOURCE
         zip -r $SOURCE $SCP_SOURCE_FOLDER -x "*.terraform*/*" "*.git*/*" "*.idea*/*" "*.node_modules*/*" "*.cache*/*" "*vendor*/*"
       fi
-      echo "SCP $SOURCE to $DEST"
+    - echo "SCP $SOURCE to $DEST"
     - !reference [ .ssm-scp-sh, script ]
 
 
