@@ -50,7 +50,7 @@ eks-pipeline:ami-image-builder:
       variables:
         ENV: prod # NOTE: prod and intra share the AMI
         VPC_ID: "vpc-0eca666dad48bbbb8" # cmt-1055002 (management)
-        SUBNET_ID: "subnet-050105c6ca4761d78" # sense-prd-subnet-mgnt-1a
+        SUBNET_ID: "subnet-0cbe12742b0d1842d" # sense-prd-subnet-mgnt-2a
         SECURITY_GROUP_ID: "sg-0e4974478249329b2" # packer-ami-pipeline-ssh
         PUBLIC_ACCESS: "true"
         EKS_AMI_CLUSTER_VERSION: $EKS_AMI_CLUSTER_VERSION
