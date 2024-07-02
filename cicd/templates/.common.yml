@@ -12,16 +12,17 @@ include:
   before_script:
     - if [ -z "$ROLE_ARN" ]; then echo "variable ROLE_ARN must be set." && exit 1; fi
     - echo "ROLE_ARN $ROLE_ARN"
-    - STS=$(aws sts assume-role-with-web-identity
-      --role-arn "$ROLE_ARN"
-      --role-session-name "ADEX-Devops-$CI_PIPELINE_ID-$CI_JOB_ID-Session"
-      --web-identity-token "${GITLAB_OIDC_TOKEN}"
-      --duration-seconds 3600
-      --query 'Credentials.[AccessKeyId,SecretAccessKey,SessionToken]'
-      --output text)
-    - export AWS_ACCESS_KEY_ID="${STS[0]}"
-    - export AWS_SECRET_ACCESS_KEY="${STS[1]}"
-    - export AWS_SESSION_TOKEN="${STS[2]}"
+    - |
+      STS=($(aws sts assume-role-with-web-identity \
+      --role-arn ${ROLE_ARN} \
+      --role-session-name "ADEX-Devops-${CI_PIPELINE_ID}-${CI_JOB_ID}-Session" \
+      --web-identity-token ${GITLAB_OIDC_TOKEN} \
+      --duration-seconds 3600 \
+      --query 'Credentials.[AccessKeyId,SecretAccessKey,SessionToken]' \
+      --output text))
+      export AWS_ACCESS_KEY_ID="${STS[0]}"
+      export AWS_SECRET_ACCESS_KEY="${STS[1]}"
+      export AWS_SESSION_TOKEN="${STS[2]}"
   after_script:
     - unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
 
