@@ -169,8 +169,8 @@ include:
         OPTS="$OPTS --tarPath $OUTPUT_IMAGE_TAR"
       fi
       if [ "$DISABLE_LATEST_TAGGING" != "true" ]; then
-        OPTS="$OPTS --destination "$DOCKER_TARGET_REGISTRY/$DOCKER_IMAGE_NAME:latest""
-      fi 
+        OPTS="$OPTS --destination $DOCKER_TARGET_REGISTRY/$DOCKER_IMAGE_NAME:"latest
+      fi
       OPTS=$(echo "$OPTS" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
       echo "kaniko OPTS=$OPTS"
     - >
@@ -180,15 +180,15 @@ include:
           --dockerfile "$DOCKERFILE_PATH/$DOCKERFILE_NAME" \
           --destination "$DOCKER_TARGET_REGISTRY/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG" \
           --cache=false \
-          --digest-file "$DIGESTFILE_NAME" $OPTS    
+          --digest-file "$DIGESTFILE_NAME" $OPTS
       else
         /kaniko/executor --context $DOCKERFILE_CONTEXT \
           --dockerfile "$DOCKERFILE_PATH/$DOCKERFILE_NAME" \
           --destination "$DOCKER_TARGET_REGISTRY/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG" \
           --cache=true --cache-repo "$DOCKER_TARGET_REGISTRY/kaniko-caches" \
-          --digest-file "$DIGESTFILE_NAME" $OPTS    
+          --digest-file "$DIGESTFILE_NAME" $OPTS
       fi
-      
+
 
 # NOTE: According to SHIP-HATS - "removed privileged access for SHIP-HATS shared runner.
 #       This affects build of systems that used the shared runners with docker-in-docker"
@@ -202,16 +202,16 @@ include:
     - docker-compose -f $DOCKER_COMPOSE_FILE build
     - docker images
     - |
-      for IMAGE_NAME in `docker images --filter "reference=$IMAGE_NAME_FILTER" --format "{{.Repository}}"` 
-      do 
+      for IMAGE_NAME in `docker images --filter "reference=$IMAGE_NAME_FILTER" --format "{{.Repository}}"`
+      do
           echo "Docker tag $IMAGE_NAME as per ECR"
           docker tag $IMAGE_NAME:latest $AWS_ACCOUNT.dkr.ecr.ap-southeast-1.amazonaws.com/$IMAGE_NAME:latest
           docker tag $IMAGE_NAME:latest $AWS_ACCOUNT.dkr.ecr.ap-southeast-1.amazonaws.com/$IMAGE_NAME:$DOCKER_IMAGE_TAG
       done
     - |
       echo "Docker push images to ECR"
-      for IMAGE_NAME in `docker images --filter "reference=${AWS_ACCOUNT}*/*" --format "{{.Repository}}:{{.Tag}}"` 
-      do 
+      for IMAGE_NAME in `docker images --filter "reference=${AWS_ACCOUNT}*/*" --format "{{.Repository}}:{{.Tag}}"`
+      do
           echo "Docker push $iIMAGE_NAME to ECR"
           docker push $IMAGE_NAME &
       done
