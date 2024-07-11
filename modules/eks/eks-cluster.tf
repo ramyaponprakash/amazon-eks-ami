@@ -35,7 +35,7 @@ resource "aws_eks_cluster" "eks_cluster" {
     Access = "Public access by source allowlist in networking tab"
   }
 
-  lifecycle {
+  /*lifecycle {
     ignore_changes = [version]
-  }
+  }*/
 }
