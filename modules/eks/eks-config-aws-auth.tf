@@ -41,4 +41,7 @@ resource "kubernetes_config_map" "aws_auth_configmap" {
       ))
     )
   }
+  lifecycle {
+    ignore_changes        = all
+  }
 }
