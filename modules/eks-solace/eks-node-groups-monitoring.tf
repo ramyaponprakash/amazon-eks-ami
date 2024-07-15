@@ -71,9 +71,9 @@ resource "aws_launch_template" "monitoring" {
       "Custodian-Scheduler-StopTime"              = "off=();tz=sgt"
     }
   }
-  lifecycle {
+  /*lifecycle {
     ignore_changes = all
-}
+}*/
 
   tags = {
     Name = "${var.cluster_name}-monitoring-ng-tmpl"
