@@ -76,6 +76,11 @@ network = {
       destination : "172.2.0.0/19", // DEV cidr
       target : "pcx-061f1682a087da381"
     },
+    {
+      destination : "173.2.0.0/24", // QA cidr
+      target : "pcx-0f8665b9d095488cc"
+    },
+
   ]
   # https://docs.solace.com/Cloud/Deployment-Considerations/connectivity-model-k8s.htm
   tgw = []
