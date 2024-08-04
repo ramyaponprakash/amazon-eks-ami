@@ -240,7 +240,7 @@ main() {
   ensure_repo $REPO_FOLDER
 
   echo "Processing scripts and configs ..."
-  cp -r "$WORKING_DIR/scripts/." "$REPO_FOLDER/scripts/
+  cp -r "$WORKING_DIR/scripts/." "$REPO_FOLDER/scripts/"
   echo "Processing scripts for 1.29 ..."
   cp -f "$WORKING_DIR/amazon-eks-ami/Makefile" "$REPO_FOLDER/Makefile"
   cat $REPO_FOLDER/Makefile
