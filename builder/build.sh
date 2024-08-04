@@ -240,7 +240,10 @@ main() {
   ensure_repo $REPO_FOLDER
 
   echo "Processing scripts and configs ..."
-  cp -r "$WORKING_DIR/scripts/." "$REPO_FOLDER/scripts/"
+  cp -r "$WORKING_DIR/scripts/." "$REPO_FOLDER/scripts/
+  echo "Processing scripts for 1.29 ..."
+  cp -f "$WORKING_DIR/amazon-eks-ami/Makefile" "$REPO_FOLDER/Makefile"
+  cat $REPO_FOLDER/Makefile
   modify_repo_scripts_cis_compatibility $REMOTE_FOLDER $REPO_FOLDER
   # optional run for non-CTS Images
   if [ "$ENABLE_OWN_CIS_SCRIPTS" == "true" ]; then
