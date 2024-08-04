@@ -242,7 +242,7 @@ main() {
   echo "Processing scripts and configs ..."
   cp -r "$WORKING_DIR/scripts/." "$REPO_FOLDER/scripts/"
   echo "Processing scripts for 1.29 ..."
-  cp -f "$WORKING_DIR/amazon-eks-ami/Makefile" "$REPO_FOLDER/Makefile"
+  cp -f "$WORKING_DIR/Makefile" "$REPO_FOLDER/Makefile"
   cat $REPO_FOLDER/Makefile
   modify_repo_scripts_cis_compatibility $REMOTE_FOLDER $REPO_FOLDER
   # optional run for non-CTS Images
