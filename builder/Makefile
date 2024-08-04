@@ -123,7 +123,7 @@ k8s: validate ## Build default K8s version of EKS Optimized AMI
 
 
 .PHONY: 1.29
-1.28: ## Build EKS Optimized AMI - K8s 1.28 - DEPRECATED: use the `k8s` variable instead
+1.29: ## Build EKS Optimized AMI - K8s 1.29 - DEPRECATED: use the `k8s` variable instead
 	$(MAKE) k8s $(shell hack/latest-binaries.sh 1.29)
 
 .PHONY: lint-docs
