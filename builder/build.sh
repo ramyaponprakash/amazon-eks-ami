@@ -241,6 +241,7 @@ main() {
 
   echo "Processing scripts and configs ..."
   cp -r "$WORKING_DIR/scripts/." "$REPO_FOLDER/scripts/"
+
   modify_repo_scripts_cis_compatibility $REMOTE_FOLDER $REPO_FOLDER
   # optional run for non-CTS Images
   if [ "$ENABLE_OWN_CIS_SCRIPTS" == "true" ]; then
@@ -258,7 +259,8 @@ main() {
   fi
 
   echo "baking AMI .... K8_VERSION=$K8_VERSION"
-  make -C $REPO_FOLDER "$K8_VERSION" \
+  make -C $REPO_FOLDER  \
+    k8s="$K8_VERSION" \
     PACKER_BINARY="../packer" \
     aws_region="$AWS_REGION" \
     source_ami_id="$AMI_ID" \
