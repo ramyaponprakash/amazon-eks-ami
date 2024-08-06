@@ -98,7 +98,7 @@ install_mongosh() {
   echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-6.0.list
   apt-get update
   apt-get install -y mongodb-mongosh
-  wget https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem
+  wget https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem
 }
 
 install_helpers
