@@ -42,21 +42,29 @@ resource "aws_iam_policy" "bastion_policy" {
 
   policy = <<POLICY
 {
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-          "eks:DescribeCluster"
-      ],
-      "Effect": "Allow",
-      "Resource": "arn:aws:eks:ap-southeast-1:${var.account_id}:cluster/${var.cluster_name}"
-    },
-    {
-      "Effect": "Allow",
-      "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::aws-quicksetup-patchpolicy-*"
-    }
-  ]
+    "Statement": [
+        {
+            "Action": [
+                "eks:DescribeCluster"
+            ],
+            "Effect": "Allow",
+            "Resource": "arn:aws:eks:ap-southeast-1:${var.account_id}:cluster/${var.cluster_name}"
+        },
+        {
+            "Action": "s3:GetObject",
+            "Effect": "Allow",
+            "Resource": "arn:aws:s3:::aws-quicksetup-patchpolicy-*"
+        },
+        {
+            "Action": [
+                "eks:*",
+                "ecr:*"
+            ],
+            "Effect": "Allow",
+            "Resource": "*"
+        }
+    ],
+    "Version": "2012-10-17"
 }
 POLICY
 

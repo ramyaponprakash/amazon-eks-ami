@@ -149,6 +149,7 @@ bastion_secgrp_ingress_secgrp = [
   }
 ]
 bastion_secgrp_ingress_prefix_list = []
+bastion_egress                     = []
 
 /*
 bastion_secgrp_ingress_cidr = [

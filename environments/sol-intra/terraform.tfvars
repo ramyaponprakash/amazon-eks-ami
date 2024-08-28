@@ -165,3 +165,8 @@ bastion = {
 bastion_secgrp_ingress_cidr        = []
 bastion_secgrp_ingress_prefix_list = []
 bastion_secgrp_ingress_secgrp      = []
+bastion_egress                     = [
+  { cidrs : ["0.0.0.0/0"], from_port : 443, to_port : 443, description : "OS updates" },
+  { cidrs : ["0.0.0.0/0"], from_port : 80, to_port : 80, description : "OS updates" },
+  { cidrs : ["100.80.27.0/24"], from_port : 3128, to_port : 3128, description : "squid" },  
+]

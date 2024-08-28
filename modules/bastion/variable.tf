@@ -28,6 +28,7 @@ variable "bastion" {
   type = object({
     enable               = optional(bool, true)
     ami_id               = string
+    ami_id_green         = string
     instance_type        = optional(string, "t3.medium")
     public_access        = optional(bool, true)
     attach_eip           = optional(bool, false)
@@ -71,6 +72,17 @@ variable "bastion_secgrp_ingress_prefix_list" {
 variable "bastion_secgrp_ingress_secgrp" {
   type = list(object({
     secgrp_id   = string
+    from_port   = number
+    to_port     = number
+    description = string
+  }))
+
+  default = []
+}
+
+variable "bastion_egress" {
+  type = list(object({
+    cidrs       = list(string)
     from_port   = number
     to_port     = number
     description = string

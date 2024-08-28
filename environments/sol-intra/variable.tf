@@ -220,6 +220,17 @@ variable "bastion_secgrp_ingress_secgrp" {
   default = []
 }
 
+variable "bastion_egress" {
+  type = list(object({
+    cidrs       = list(string)
+    from_port   = number
+    to_port     = number
+    description = string
+  }))
+
+  default = []
+}
+
 variable "eks_http_proxy" {
   type = string
 }
