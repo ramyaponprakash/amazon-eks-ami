@@ -181,6 +181,7 @@ variable "bastion" {
     public_key_path      = optional(string, "")
     hosts_number         = optional(number, 1)
     ami_id               = string
+    ami_id_green         = string
     http_proxy           = optional(string, "")
     https_proxy          = optional(string, "")
     no_proxy             = optional(string, "")
@@ -212,6 +213,17 @@ variable "bastion_secgrp_ingress_prefix_list" {
 variable "bastion_secgrp_ingress_secgrp" {
   type = list(object({
     secgrp_id   = string
+    from_port   = number
+    to_port     = number
+    description = string
+  }))
+
+  default = []
+}
+
+variable "bastion_egress" {
+  type = list(object({
+    cidrs       = list(string)
     from_port   = number
     to_port     = number
     description = string
