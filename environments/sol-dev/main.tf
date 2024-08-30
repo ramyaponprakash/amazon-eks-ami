@@ -74,7 +74,7 @@ module "bastion" {
   bastion_secgrp_ingress_cidr        = var.bastion_secgrp_ingress_cidr
   bastion_secgrp_ingress_prefix_list = var.bastion_secgrp_ingress_prefix_list
   bastion_secgrp_ingress_secgrp      = var.bastion_secgrp_ingress_secgrp
-  bastion_egress                    = var.bastion_egress
+  bastion_egress                     = var.bastion_egress
 
   bastion = merge(var.bastion, {
     subnet_ids = var.network.enable ? (var.bastion.public_access ? module.eks_network[0].public_subnet_ids : module.eks_network[0].private_subnet_ids) : var.bastion.subnet_ids
