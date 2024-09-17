@@ -24,6 +24,11 @@ variable "ami_squid" {
   default = ""
 }
 
+variable "ami_squid_green" {
+  type    = string
+  default = ""
+}
+
 variable "squid_key_name" {
   type    = string
   default = ""
@@ -272,6 +277,17 @@ variable "squid_secgrp_ingress_cidr" {
 variable "squid_secgrp_ingress_secgrp" {
   type = list(object({
     secgrp_id   = string
+    from_port   = number
+    to_port     = number
+    description = string
+  }))
+
+  default = []
+}
+
+variable "squid_secgrp_egress_cidr" {
+  type = list(object({
+    cidrs       = list(string)
     from_port   = number
     to_port     = number
     description = string
