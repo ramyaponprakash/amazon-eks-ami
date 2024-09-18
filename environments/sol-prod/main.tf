@@ -134,9 +134,8 @@ module "squid" {
   vpc_cidr_sec = var.vpc_cidr_sec
   vpc_id       = var.vpc_id
   squid = merge(var.squid, {
-    subnet_gw_ids   = var.vpc_sec_enable_cidr ? module.eks_network[0].private_subnet_sec_ids : var.vpc_sec_subnet_ids
-    subnet_ids      = var.network.enable ? (var.bastion.public_access ? module.eks_network[0].public_subnet_ids : module.eks_network[0].private_subnet_ids) : var.bastion.subnet_ids
-    ami_squid_green = var.ami_squid_green
+    subnet_gw_ids = var.vpc_sec_enable_cidr ? module.eks_network[0].private_subnet_sec_ids : var.vpc_sec_subnet_ids
+    subnet_ids    = var.network.enable ? (var.bastion.public_access ? module.eks_network[0].public_subnet_ids : module.eks_network[0].private_subnet_ids) : var.bastion.subnet_ids
   })
   squid_secgrp_ingress_cidr   = var.squid_secgrp_ingress_cidr
   squid_secgrp_ingress_secgrp = var.squid_secgrp_ingress_secgrp

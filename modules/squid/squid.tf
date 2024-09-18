@@ -6,6 +6,13 @@ data "template_file" "squid_userdata" {
   }
 }
 
+data "template_file" "squid_userdata_green" {
+  template = file("${path.module}/userdata-green.sh")
+  vars = {
+    region = var.region
+  }
+}
+
 resource "aws_launch_template" "squid_launch_template" {
   name          = "${var.vpc_name}-squid-launch-template"
   description   = "${var.vpc_name}-squid-launch-template"
@@ -97,7 +104,7 @@ resource "aws_autoscaling_group" "squid_asg" {
 }
 
 resource "aws_launch_template" "squid_launch_template_green" {
-  name          = "${var.vpc_name}-squid-launch-template-green"
+  name          = "${var.vpc_name}-squid-launch-template"
   description   = "${var.vpc_name}-squid-launch-template"
   image_id      = var.squid.ami_squid_green
   instance_type = var.squid.instance_type
@@ -106,7 +113,7 @@ resource "aws_launch_template" "squid_launch_template_green" {
   }
   vpc_security_group_ids = [aws_security_group.squidproxy.id]
   key_name               = var.squid.squid_key_name
-  user_data              = base64encode(data.template_file.squid_userdata.rendered)
+  user_data              = base64encode(data.template_file.squid_userdata_green.rendered)
   ebs_optimized          = true
   #default_version = 1
   #update_default_version = true
