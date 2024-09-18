@@ -104,8 +104,8 @@ resource "aws_autoscaling_group" "squid_asg" {
 }
 
 resource "aws_launch_template" "squid_launch_template_green" {
-  name          = "${var.vpc_name}-squid-launch-template"
-  description   = "${var.vpc_name}-squid-launch-template"
+  name          = "${var.vpc_name}-squid-launch-template-green"
+  description   = "${var.vpc_name}-squid-launch-template-green"
   image_id      = var.squid.ami_squid_green
   instance_type = var.squid.instance_type
   iam_instance_profile {
