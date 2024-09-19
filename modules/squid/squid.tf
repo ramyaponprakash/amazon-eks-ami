@@ -103,7 +103,7 @@ resource "aws_autoscaling_group" "squid_asg" {
   ]
 }
 
-resource "aws_launch_template" "squid_launch_template_green" {
+/*resource "aws_launch_template" "squid_launch_template_green" {
   name          = "${var.vpc_name}-squid-launch-template-green"
   description   = "${var.vpc_name}-squid-launch-template-green"
   image_id      = var.squid.ami_squid_green
@@ -191,8 +191,38 @@ resource "aws_autoscaling_group" "squid_asg_green" {
       propagate_at_launch = true
     },
   ]
-}
+}*/
 
+resource "aws_instance" "squid_green" {
+  count = 1
+  ami                         = var.squid.ami_squid_green
+  instance_type               = var.squid.instance_type
+  key_name                    = var.squid.squid_key_name
+  subnet_id                   = [var.squid.subnet_ids[0]]
+  vpc_security_group_ids      = [aws_security_group.squidproxy.id]
+  user_data_base64            = base64encode(data.template_file.squid_userdata_green.rendered)
+  iam_instance_profile        = var.squid.iam_role
+  user_data_replace_on_change = true
+
+  root_block_device {
+    encrypted = true
+  }
+
+  metadata_options {
+    http_endpoint               = "enabled"
+    http_tokens                 = "required"
+    http_put_response_hop_limit = 2
+  }
+
+  tags = {
+    Name                          = "test-${var.vpc_name}-squid"
+    PatchGroup                    = "Prd"
+    Custodian-Scheduler-StopTime  = "off=();tz=sgt"
+    Group                         = "squid"
+    Environment                   = "prd"
+    Remarks                       = "GT_GCCS_StandardBuild_RHEL_8_on_2024-07-18_06.17.25 "
+  }
+}
 
 resource "aws_autoscaling_attachment" "sdx_intra_prd_nlb_jaeger_att" {
   alb_target_group_arn   = aws_lb_target_group.squid_target_group_3128.arn
