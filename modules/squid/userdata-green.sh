@@ -59,7 +59,6 @@ install_squid() {
     echo "proxy=http://127.0.0.1:3128" >> /etc/yum.conf
     export http_proxy=http://127.0.0.1:3128
     export https_proxy=http://127.0.0.1:3128
-    systemctl disable rsyslog
 }
 install_squid
 
@@ -71,7 +70,8 @@ stop_cts_services
 
 
 cleanup_history() {
-    echo "history -cw && rm -f /home/ec2-user/.bash_history" >> /etc/bash.bash_logout && chmod 644 /etc/bash.bash_logout
-    echo "history -cw && rm -f /root/.bash_history" >> /root/.bashrc && chmod 644 /root/.bashrc
+    if [ -f /usr/lib/systemd/system/rsyslog.service ]; then (systemctl stop rsyslog && systemctl disable rsyslog); fi
+    grep -q 'history -cw' /etc/bash.bash_logout || echo "history -cw && rm -f ~/.bash_history" >> /etc/bash.bash_logout && chmod 644 /etc/bash.bash_logout
+    grep -q 'history -cw' /root/.bashrc || echo "history -cw && rm -f ~/.bash_history" >> /root/.bashrc && chmod 644 /root/.bashrc
 }
 cleanup_history
