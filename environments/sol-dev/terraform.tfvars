@@ -158,6 +158,7 @@ bastion = {
   vpc_id        = ""
   subnet_ids    = []
   ami_id        = "ami-05ad04538563a11ac" # 148623356839/GT_GCCS_StandardBuild_AML_2_on_2023-08-17_07.35.38
+  ami_id_green  = "ami-07ce093e9bfedf8d4" # 148623356839/GT_GCCS_StandardBuild_AML_2_on_2024-08-22_07.35.44
   instance_type = "t2.micro"
   http_proxy    = ""
   https_proxy   = ""
