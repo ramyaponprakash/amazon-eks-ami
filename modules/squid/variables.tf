@@ -32,16 +32,18 @@ variable "vpc_private_subnets" {
 
 variable "squid" {
   type = object({
-    enable         = optional(bool, true)
-    instance_type  = optional(string, "t3.medium")
-    subnet_ids     = list(string)
-    subnet_gw_ids  = list(string)
-    zone_id        = string
-    ami_squid      = string
-    record_name    = string
-    squid_key_name = string
-    iam_role       = string
-    kms_key_id     = string
+    enable           = optional(bool, true)
+    instance_type    = optional(string, "t3.medium")
+    subnet_ids       = list(string)
+    subnet_gw_ids    = list(string)
+    zone_id          = string
+    ami_squid        = string
+    ami_squid_green  = string
+    record_name      = string
+    squid_key_name   = string
+    iam_role         = string
+    kms_key_id       = string
+    kms_key_id_green = string
   })
 }
 
