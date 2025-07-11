@@ -181,24 +181,23 @@ bastion = {
 bastion_secgrp_ingress_cidr        = []
 bastion_secgrp_ingress_prefix_list = []
 bastion_secgrp_ingress_secgrp      = []
-bastion_egress                     = [
+bastion_egress = [
   { cidrs : ["0.0.0.0/0"], from_port : 443, to_port : 443, description : "OS updates" },
   { cidrs : ["0.0.0.0/0"], from_port : 80, to_port : 80, description : "OS updates" },
-  { cidrs : ["100.80.27.0/24"], from_port : 3128, to_port : 3128, description : "squid" },  
+  { cidrs : ["100.80.27.0/24"], from_port : 3128, to_port : 3128, description : "squid" },
 ]
 
 squid = {
-  vpc_id           = ""
-  subnet_ids       = []
-  subnet_gw_ids    = []
-  iam_role         = "adex-squid-role"
-  ami_squid        = "ami-0b6b2786d08d30845"
-  ami_squid_green  = "ami-02084325ceb8d3f06"
-  zone_id          = "Z0608925I3JGEL99Z85J"
-  record_name      = "squid-solx"
-  squid_key_name   = "adex-squid-solx"
-  kms_key_id       = "arn:aws:kms:ap-southeast-1:704140326871:key/0e7a17d3-f755-49f4-958b-c8e3976f4d4f"
-  kms_key_id_green = "arn:aws:kms:ap-southeast-1:704140326871:key/82f24229-b14e-4d49-b58e-f03513e2b387"
+  vpc_id          = ""
+  subnet_ids      = []
+  subnet_gw_ids   = []
+  iam_role        = "adex-squid-role"
+  ami_squid       = "ami-0b6b2786d08d30845"
+  ami_squid_green = "ami-06dac3e36018994b5"
+  zone_id         = "Z0608925I3JGEL99Z85J"
+  record_name     = "squid-solx"
+  squid_key_name  = "adex-squid-solx"
+  kms_key_id      = "arn:aws:kms:ap-southeast-1:704140326871:key/0e7a17d3-f755-49f4-958b-c8e3976f4d4f"
 }
 
 squid_secgrp_ingress_cidr = [
@@ -230,4 +229,20 @@ squid_secgrp_ingress_secgrp = [
     description = "from mgmt"
   },
 ]
+
+squid_secgrp_egress_cidr = [
+  {
+    cidrs       = ["172.16.110.0/24"]
+    from_port   = 3128
+    to_port     = 3128
+    description = "to prod squid"
+  },
+  {
+    cidrs       = ["0.0.0.0/0"]
+    from_port   = 443
+    to_port     = 443
+    description = "172.16.109.0/24"
+  },
+]
+
 

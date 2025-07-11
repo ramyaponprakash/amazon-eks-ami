@@ -139,6 +139,7 @@ module "squid" {
   })
   squid_secgrp_ingress_cidr   = var.squid_secgrp_ingress_cidr
   squid_secgrp_ingress_secgrp = var.squid_secgrp_ingress_secgrp
+  squid_secgrp_egress_cidr    = var.squid_secgrp_egress_cidr
 }
 
 
