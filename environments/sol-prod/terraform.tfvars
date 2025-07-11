@@ -238,18 +238,6 @@ squid_secgrp_egress_cidr = [
     description = "to prod squid"
   },
   {
-    cidrs       = ["172.16.109.0/24"]
-    from_port   = 4122
-    to_port     = 4122
-    description = "to dsm"
-  },
-  {
-    cidrs       = ["172.16.109.0/24"]
-    from_port   = 4120
-    to_port     = 4120
-    description = "172.16.109.0/24"
-  },
-  {
     cidrs       = ["0.0.0.0/0"]
     from_port   = 443
     to_port     = 443

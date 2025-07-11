@@ -10,6 +10,9 @@ data "template_file" "squid_userdata_green" {
   template = file("${path.module}/userdata-green.sh")
   vars = {
     region = var.region
+    http_proxy  = "http://127.0.0.1:3128"
+    https_proxy = "http://127.0.0.1:3128"
+    no_proxy="localhost,127.0.0.1,169.254.169.254,172.16.109.125,vpc-sdx-intra-prd-es-rkpr7jf37kfeqlqvgqrn2atwfm.ap-southeast-1.es.amazonaws.com,.adex.com"
   }
 }
 
@@ -198,7 +201,7 @@ resource "aws_instance" "squid_green" {
   ami                         = var.squid.ami_squid_green
   instance_type               = var.squid.instance_type
   key_name                    = var.squid.squid_key_name
-  subnet_id                   = [var.squid.subnet_ids[0]]
+  subnet_id                   = var.squid.subnet_ids[0]
   vpc_security_group_ids      = [aws_security_group.squidproxy.id]
   user_data_base64            = base64encode(data.template_file.squid_userdata_green.rendered)
   iam_instance_profile        = var.squid.iam_role
@@ -214,6 +217,10 @@ resource "aws_instance" "squid_green" {
     http_put_response_hop_limit = 2
   }
 
+  lifecycle {
+    ignore_changes = all
+  }
+  
   tags = {
     Name                          = "test-${var.vpc_name}-squid"
     PatchGroup                    = "Prd"
