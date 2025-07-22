@@ -22,7 +22,7 @@ resource "aws_lb_listener" "squid_nlb_listener_3128" {
   protocol          = "TCP"
 
   default_action {
-    target_group_arn = aws_lb_target_group.squid_target_group_3128.arn
+    target_group_arn = aws_lb_target_group.squid_nlb_solace_ecs_tg.arn
     type             = "forward"
   }
 }
@@ -32,6 +32,21 @@ resource "aws_lb_target_group" "squid_target_group_3128" {
   port     = 3128
   protocol = "TCP"
   vpc_id   = var.vpc_id
+  health_check {
+    protocol            = "TCP"
+    port                = 3128
+    healthy_threshold   = 3
+    unhealthy_threshold = 3
+    interval            = 10
+  }
+}
+
+resource "aws_lb_target_group" "squid_nlb_solace_ecs_tg" {
+  name     = "sense-solace-nlb-tg-ecs-squid"
+  port     = 3128
+  protocol = "TCP"
+  vpc_id   = var.vpc_id
+  target_type = "ip"
   health_check {
     protocol            = "TCP"
     port                = 3128
