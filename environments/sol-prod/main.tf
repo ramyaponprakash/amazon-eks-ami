@@ -142,5 +142,15 @@ module "squid" {
   squid_secgrp_egress_cidr    = var.squid_secgrp_egress_cidr
 }
 
-
-
+module "ecs-squid" {
+  source          = "../../modules/ecs-squid"
+  cluster_name    = "adex-prd-solace-squid-cluster"
+  number_replicas = 3
+  squid_port      = 3128
+  solace_subnets  = ["subnet-0b1c2c0888b39f6ef", "subnet-0b1a0b403d9f7219e", "subnet-04ef45b8c54500dd2"]
+  security_groups = ["sg-028117260677818eb"]
+  container_name  = "adex-ecs-solace-squid"
+  nlb_arn         = module.squid.squid_nlb_solace_arn
+  nlb_ecs_tg_arn  = module.squid.squid_nlb_solace_ecs_tg_arn
+  depends_on      = [module.squid]
+}
