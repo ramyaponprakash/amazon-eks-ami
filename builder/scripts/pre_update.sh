@@ -1,21 +1,20 @@
+#!/bin/bash
+
 # --- Ensure legacy iptables is used ---
 dnf install -y iptables iptables-legacy
 
 # Switch to legacy iptables alternatives
 alternatives --set iptables /usr/sbin/iptables-legacy
-alternatives --set ip6tables /usr/sbin/ip6tables-legacy
-
-# Stop and disable nftables
-systemctl stop nftables
-systemctl disable nftables
 
 # Restore saved iptables rules if any
 if [ -f /etc/sysconfig/iptables ]; then
     iptables-restore < /etc/sysconfig/iptables
 fi
 
+# Stop and disable nftables
+systemctl stop nftables
+systemctl disable nftables
 
-#!/bin/bash
 
 set -o pipefail
 set -o nounset
