@@ -34,7 +34,7 @@ yum_remove() {
   local package_name=$1
 
   if rpm -q $package_name; then
-    yum remove -y $package_name
+    dnf remove -y $package_name
   fi
 }
 
@@ -116,14 +116,14 @@ echo "1.2.1 - ensure GPG keys are configured"
 rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\n'
 
 echo "1.2.2 - ensure package manager repositories are configured"
-yum repolist
+dnf repolist
 
 echo "1.2.3 - ensure gpgcheck is globally activated"
 grep ^gpgcheck /etc/yum.conf
 grep ^gpgcheck /etc/yum.repos.d/*
 
 echo "1.3.1 - ensure AIDE is installed"
-yum install -y aide
+dnf install -y aide
 aide --init
 mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
 
@@ -235,7 +235,7 @@ chown root:root /etc/issue.net
 chmod 644 /etc/issue.net
 
 echo "1.8 - ensure updates, patches, and additional security software are installed"
-yum update -y
+dnf update -y
 
 echo "2.1.2 - ensure X11 Window System is not installed"
 yum_remove xorg-x11*
@@ -319,7 +319,7 @@ sysctl_entry "net.ipv4.conf.all.send_redirects = 0"
 sysctl_entry "net.ipv4.conf.default.send_redirects = 0"
 
 echo "3.3.1 - ensure TCP Wrappers is installed"
-yum install -y tcp_wrappers
+dnf install -y tcp_wrappers
 
 echo "3.4.1 - ensure DCCP is disabled"
 unload_module dccp
@@ -334,7 +334,7 @@ echo "3.4.4 - ensure TIPC is disabled"
 unload_module tipc
 
 echo "4.1.1.1 - ensure audit log storage size is configured"
-yum install -y audit
+dnf install -y audit
 set_conf_value max_log_file 10 /etc/audit/auditd.conf
 
 echo "4.1.1.2 - ensure system is disabled when audit logs are full"
@@ -432,7 +432,7 @@ echo "4.1.18 - ensure the audit configuration is immutable"
 echo "-e 2" >> /etc/audit/rules.d/cis.rules
 
 echo "4.2.1.1 - ensure rsyslog Service is enabled"
-yum install -y rsyslog
+dnf install -y rsyslog
 systemctl enable rsyslog
 
 echo "4.2.1.2 - ensure logging is configured"
@@ -462,7 +462,7 @@ echo "4.2.1.5 - ensure remote rsyslog messages are only accepted on designated l
 echo "[not scored] - customer responsible for this configuration"
 
 echo "4.2.2.1 - ensure syslog-ng service is enabled"
-#yum install -y syslog-ng
+#dnf install -y syslog-ng
 #systemctl enable syslog-ng && systemctl start syslog-ng
 
 echo "4.2.2.2 - Ensure logging is configured"

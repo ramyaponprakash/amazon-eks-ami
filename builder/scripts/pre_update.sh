@@ -1,3 +1,20 @@
+# --- Ensure legacy iptables is used ---
+dnf install -y iptables iptables-legacy
+
+# Switch to legacy iptables alternatives
+alternatives --set iptables /usr/sbin/iptables-legacy
+alternatives --set ip6tables /usr/sbin/ip6tables-legacy
+
+# Stop and disable nftables
+systemctl stop nftables
+systemctl disable nftables
+
+# Restore saved iptables rules if any
+if [ -f /etc/sysconfig/iptables ]; then
+    iptables-restore < /etc/sysconfig/iptables
+fi
+
+
 #!/bin/bash
 
 set -o pipefail
@@ -5,21 +22,21 @@ set -o nounset
 set -o errexit
 
 # upgrade the operating system. add additional packages below
-yum update -y && yum autoremove -y && \
-  yum install -y unzip
+dnf update -y && dnf autoremove -y && \
+  dnf install -y unzip
 
 
 remove_unused_packages() {
     # TODO: remove below
     echo "remove_unused_packages - removing ds_agent, splunkforwarder temporally"
-    yum remove -y ds_agent
-    yum remove -y splunkforwarder
+    dnf remove -y ds_agent
+    dnf remove -y splunkforwarder
 
     # NOTE: we remove ssm-agent of CTS image here and let amazon-eks-ami install it again
-    #       yum exit 1 when package is already installed
-    yum remove -y amazon-ssm-agent
+    #       dnf exit 1 when package is already installed
+    dnf remove -y amazon-ssm-agent
 
-    yum autoremove -y && yum clean all
+    dnf autoremove -y && dnf clean all
 }
 
 # ===== kube-proxy iptables issue ====
@@ -37,7 +54,7 @@ default_iptables_legacy() {
 # pipeline compatibility
 ensure_install_awscli_v2() {
   echo "Uninstalling awscli v1"
-  yum remove -y awscli
+  dnf remove -y awscli
 
   # https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
   echo "Installing awscli v2 bundle"

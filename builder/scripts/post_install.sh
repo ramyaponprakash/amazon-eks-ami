@@ -24,11 +24,11 @@ configure_aide() {
   # If we need AIDE, need to limit the scope using config file and need cgroups to limit cpu usage.
   # NOTE: Team member reported AIDE with cgroup caused unexpected problem, please review closely when we need to enable AIDE
   rm -f /etc/cron.d/aide
-  yum remove -y aide
+  dnf remove -y aide
 }
 
 # ===== main =====
 configure_ds_agent
 configure_splunk
 configure_aide
-yum autoremove -y && yum clean all
+dnf autoremove -y && dnf clean all
