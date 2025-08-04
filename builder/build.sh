@@ -1,11 +1,15 @@
 #!/bin/bash
 
+dnf install -y iptables iptables-legacy
+alternatives --set iptables /usr/sbin/iptables-legacy
+systemctl disable nftables --now
+
 set -o pipefail
 set -o errexit
 
 usage () {
   echo '============================================'
-  echo 'CIS Amazon Linux 2 EKS optimised AMI builder'
+  echo 'CIS Amazon Linux 2023 EKS optimised AMI builder'
   echo '============================================'
   echo 'Please run this within the host that able to access the ES via security group settings'
   echo '-a : aws account id'
@@ -135,7 +139,7 @@ install_deps() {
   fi
 }
 
-ensure_repo() {
+git commit -m "Update amazon-eks-ami submodule to v20250704 for AL2023"() {
   echo "cleaning repo $1"
   rm -rf $1
   echo "git submodule update --remote"
@@ -160,7 +164,7 @@ ensure_repo() {
 }
 
 modify_repo_scripts_cis_compatibility() {
-  sed -i -e "s#/tmp#$1#g" $2/eks-worker-al2.json
+  sed -i -e "s#/tmp#$1#g" $2/eks-worker-al2023.json
   sed -i -e "s#/tmp#$1#g" $2/scripts/cleanup.sh
   sed -i -e "s#/tmp#$1#g" $2/scripts/generate-version-info.sh
   sed -i -e "s#/tmp#$1#g" $2/scripts/install-worker.sh
@@ -168,13 +172,12 @@ modify_repo_scripts_cis_compatibility() {
   sed -i -e "s#/tmp#$1#g" $2/files/bootstrap.sh
   sed -i -e "s#/tmp#$1#g" $2/files/bin/imds
 
-  sed -i -e 's#chmod +x#chmod 755#g' $2/eks-worker-al2.json
+  sed -i -e 's#chmod +x#chmod 755#g' $2/eks-worker-al2023.json
   sed -i -e 's#sudo chmod +x $binary#sudo chmod 755 $binary#g' $2/scripts/install-worker.sh
   sed -i -e 's#aws --version#sudo /bin/aws --version#g' $2/scripts/generate-version-info.sh
 
-  # https://github.com/hashicorp/packer/issues/10011
   echo "Adding CIS compatibility to packer conf file"
-  $JQ_BINARY '(.provisioners[] | select(.type == "shell" and (.execute_command | not))) |= . + {"execute_command": "{{ .Vars }} bash '\''{{ .Path }}'\''"}' $2/eks-worker-al2.json > $2/temp.json && mv $2/temp.json $2/eks-worker-al2.json
+  $JQ_BINARY '(.provisioners[] | select(.type == "shell" and (.execute_command | not))) |= . + {"execute_command": "{{ .Vars }} bash '\''{{ .Path }}'\''"}' $2/eks-worker-al2023.json > $2/temp.json && mv $2/temp.json $2/eks-worker-al2023.json
 }
 
 add_pre_provisioning_scripts() {
@@ -188,7 +191,7 @@ add_pre_provisioning_scripts() {
         \"{{template_dir}}/scripts/pre_update.sh\"
       ],
       \"execute_command\": \"{{ .Vars }} sudo -S -E bash -eux '{{ .Path }}'\"
-  }] + .provisioners" "$1/eks-worker-al2.json" > "$1/temp.json" && mv "$1/temp.json" "$1/eks-worker-al2.json"
+  }] + .provisioners" "$1/eks-worker-al2023.json" > "$1/temp.json" && mv "$1/temp.json" "$1/eks-worker-al2023.json"
 }
 
 add_pre_cis_scripts() {
@@ -200,10 +203,10 @@ add_pre_cis_scripts() {
       \"pause_after\": \"90s\",
       \"scripts\": [
         \"{{template_dir}}/scripts/pre_cis_iptables.sh\",
-        \"{{template_dir}}/scripts/pre_cis_amaz2.sh\"
+        \"{{template_dir}}/scripts/pre_cis_amaz2023.sh\"
       ],
       \"execute_command\": \"{{ .Vars }} sudo -S -E bash -eux '{{ .Path }}'\"
-  }] + .provisioners" "$1/eks-worker-al2.json" > "$1/temp.json" && mv "$1/temp.json" "$1/eks-worker-al2.json"
+  }] + .provisioners" "$1/eks-worker-al2023.json" > "$1/temp.json" && mv "$1/temp.json" "$1/eks-worker-al2023.json"
 }
 
 add_post_provisioning_scripts() {
@@ -219,7 +222,7 @@ add_post_provisioning_scripts() {
         \"{{template_dir}}/scripts/post_harden.sh\"
       ],
       \"execute_command\": \"{{ .Vars }} sudo -S -E bash -eux '{{ .Path }}'\"
-  }]" "$1/eks-worker-al2.json" > "$1/temp.json" && mv "$1/temp.json" "$1/eks-worker-al2.json"
+  }]" "$1/eks-worker-al2023.json" > "$1/temp.json" && mv "$1/temp.json" "$1/eks-worker-al2023.json"
 }
 
 main() {
@@ -243,7 +246,6 @@ main() {
   cp -r "$WORKING_DIR/scripts/." "$REPO_FOLDER/scripts/"
 
   modify_repo_scripts_cis_compatibility $REMOTE_FOLDER $REPO_FOLDER
-  # optional run for non-CTS Images
   if [ "$ENABLE_OWN_CIS_SCRIPTS" == "true" ]; then
       echo "Own CIS script option enabled, adding scripts..."
       add_pre_cis_scripts $REPO_FOLDER
@@ -251,7 +253,7 @@ main() {
   add_pre_provisioning_scripts $REPO_FOLDER
   add_post_provisioning_scripts $REPO_FOLDER
   echo "packer config so far..."
-  cat $REPO_FOLDER/eks-worker-al2.json
+  cat $REPO_FOLDER/eks-worker-al2023.json
 
   AMI_NAME_PREFIX="adex-sol-eks-node-$K8_VERSION-v$(date +'%Y%m%d')-$(uuidgen)"
   if [ "$SSH_USER" == "" ]; then
@@ -274,7 +276,8 @@ main() {
     associate_public_ip_address="$PUBLIC_ACCESS" \
     security_group_id="$SECURITY_GROUP_ID" \
     remote_folder="$REMOTE_FOLDER" \
-    ssh_username="$SSH_USER"
+    ssh_username="$SSH_USER" \
+    packer_config="eks-worker-al2023.json"
   echo "baking AMI .... DONE!"
 
   echo "version-info.json"
